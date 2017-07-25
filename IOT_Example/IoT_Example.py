@@ -133,12 +133,12 @@ EconomyThirdStageExportCompartment = cp.Sink("Third Stage Use (Economy)", logInf
 EconomyImportOfAdInflow = cp.ExternalListInflow(EconomyFirstStageUseCompartment, FixedValueInflows1)
 EconomyImportOfSendInflow = cp.ExternalListInflow(StochasticInflows1, FixedValueInflows1)
 EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
-    EconomyFirstStageUseCompartment,
-    cp.FixedValueInflow(10),
-    expInflowFunction,
-    0,
-    nr.normal,
-    [1000, 250]
+    target=EconomyFirstStageUseCompartment, 
+    basicInflow=cp.FixedValueInflow(10),
+    inflowFunction=expInflowFunction,
+    derivationDistribution=nr.normal,
+    derivationParameters=[1000, 250],
+    delay=3
 )
 
 
