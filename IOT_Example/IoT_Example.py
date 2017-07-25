@@ -10,17 +10,17 @@ most of the functionality of th DPMFA package. The model threfore does not descr
 scientifically justified model. It has been created only for demonstration purposes.
 
 The system boundary of the model is Switzerland. The model differentiates between
-two distinct areas, the economy and the private households.
+two distinct areas, the  and the private households.
 
 Each of those arease includes three material inflow sources (Import of different Devices). The inflow go
-directly to the flow compartment "Frist Stage Use of Economy" resp. "First Stage Use 
+directly to the flow compartment "Frist Stage Use of " resp. "First Stage Use 
 of Households". Thsese inflows were used to illustrate all the different types of 
 inflows provided by the DPFMA package:
 
 - External List Inflow -> fixed, random or stochastic
 - External Function Inflow -> fixed, randmom or stochastic
 
-After the first flow compartment (i. e. First Stage Use (of either Economy or Households)) 
+After the first flow compartment (i. e. First Stage Use (of either  or Households)) 
 the flow is split into a part that is transfered to the sink "Frist Stage Disposal", the flow
 compartment "Frist Stage Recycling" or the flow compartment "Second Stage Use".
 
@@ -72,9 +72,24 @@ import simulator as sim
 # creation of the model
 IotModel = model.Model("IoT Model")
 
+# creation of the flow compartments
+FirstStageFlowCompartment = cp.FlowCompartment(name="First Stage Flow Compartment ()", logInflows = True, logOutflows = True)
+SecondStageFlowCompartment = cp.FlowCompartment(name="Second Stage Flow Compartment ()", logInflows = True, logOutflows = True)
+
+# creation of the stock
+FirstStageUseCompartment = cp.Stock(name="First Stage Use ()", logInflows = True, logOutflows = True)
+FirstStageRecyclingCompartment = cp.Stock(name="First Stage Recycling ()", logInflows = True, logOutflows = True)
+SecondStageUseCompartment = cp.Stock(name="Second Stage Use ()", logInflows = True, logOutflows = True)
+SecondStageRecyclingCompartment = cp.Stock(name="Second Stage Recycling ()", logInflows = True, logOutflows = True)
+ThirdStageUseCompartment = cp.Stock(name="Third Stage Use ()", logInflows = True)
+
+# creation of the sinks
+FirstStageDisposalCompartment = cp.Sink(name="First Stage Disposal ()", logInflows = True)
+SecondStageDisposalCompartment = cp.Sink(name="Second Stage Disposal ()", logInflows = True)
+ThirdStageDisposalCompartment = cp.Sink(name="Third Stage Use ()", logInflows = True)
+ThirdStageExportCompartment = cp.Sink(name="Third Stage Use ()", logInflows = True)
+
 # creation of the external inflows to the system
-
-
 # These Inflows can be used in ExternalListInflow
 
 FixedValueInflows1 = [
@@ -103,39 +118,10 @@ def expInflowFunction(base, period):
 def squareInflowfunction(base, period):
     return base * period ** 2
 
-#RandomChoiceInflows1 = [
-#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
-#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
-#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
-#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
-#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
-#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
-#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7])
-#]
-
-# creation of the flow compartments
-EconomyFirstStageUseCompartment = cp.Stock(name="First Stage Use (Economy)", logInflows = True, logOutflows = True)
-EconomyFirstStageRecyclingCompartment = cp.Stock(name="First Stage Recycling (Economy)", logInflows = True, logOutflows = True)
-EconomyFirstStageDisposalCompartment = cp.Sink(name="First Stage Disposal (Economy)", logInflows = True)
-
-EconomyFirstStageFlowCompartment = cp.FlowCompartment(name="First Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
-
-EconomySecondStageUseCompartment = cp.Stock(name="Second Stage Use (Economy)", logInflows = True, logOutflows = True)
-EconomySecondStageRecyclingCompartment = cp.Stock(name="Second Stage Recycling (Economy)", logInflows = True, logOutflows = True)
-EconomySecondStageDisposalCompartment = cp.Sink(name="Second Stage Disposal (Economy)", logInflows = True)
-
-EconomySecondStageFlowCompartment = cp.FlowCompartment(name="Second Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
-
-EconomyThirdStageUseCompartment = cp.Stock(name="Third Stage Use (Economy)", logInflows = True)
-EconomyThirdStageDisposalCompartment = cp.Sink(name="Third Stage Use (Economy)", logInflows = True)
-EconomyThirdStageExportCompartment = cp.Sink(name="Third Stage Use (Economy)", logInflows = True)
-
-
-
-EconomyImportOfAdInflow = cp.ExternalListInflow(target=EconomyFirstStageUseCompartment, inflowList=FixedValueInflows1)
-EconomyImportOfSendInflow = cp.ExternalListInflow(target=EconomyFirstStageUseCompartment, inflowList=StochasticInflows1)
-EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
-    target=EconomyFirstStageUseCompartment, 
+ImportOfAdInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=FixedValueInflows1)
+ImportOfSendInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=StochasticInflows1)
+ImportOfStdInflow = cp.ExternalFunctionInflow(
+    target=FirstStageUseCompartment, 
     basicInflow=cp.FixedValueInflow(10),
     inflowFunction=expInflowFunction,
     derivationDistribution=nr.normal,
@@ -143,11 +129,22 @@ EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
     startDelay=3
 )
 
+# release strategy, defining the delay time and the release rates based on material transferred to First Stage Use
+FirstStageUseCompartment.localRelease = cp.ListRelease([0.5, 0.5], delay = 2)
+
+
+# material transfer from flow compartment First Stage Flow Compartment to First Stage Disposal
+FirstStageFlowCompartment.transfers = [
+    cp.StochasticTransfer(fucntion=nr.triangular, parameters=[0.5, 0.7, 0.9], target=SecondStageUseCompartment, priority = 3),
+    cp.RandomChoiceTransfer(sample=[0.3, 0.4, 0.5], target=FirstStageRecyclingCompartment, priority=2),
+    cp.ConstTransfer(value=1, target=FirstStageDisposalCompartment, priority = 1)
+]
+
 # add compartments and inflow to the model
-IotModel.setCompartments([EconomyFirstStageUseCompartment])
-IotModel.setInflows([EconomyImportOfAdInflow, 
-                         EconomyImportOfSendInflow, 
-                         EconomyImportOfStdInflow])
+IotModel.setCompartments([FirstStageUseCompartment])
+IotModel.setInflows([ImportOfAdInflow, 
+                         ImportOfSendInflow, 
+                         ImportOfStdInflow])
 
 # check validity of the model
 IotModel.checkModelValidity()
