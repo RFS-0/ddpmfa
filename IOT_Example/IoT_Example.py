@@ -76,19 +76,21 @@ EconomyImportOfAdInflow = cp.ExternalListInflow('Import of Actuator Devices (Eco
 EconomyImportOfSendInflow = cp.ExternalListInflow('Import of Sensor Devices (Economy)')
 EconomyImportOfStdInflow = cp.ExternalListInflow('Import of Streaming Devices (Economy)')
 
-HouseholdsImportOfAdInflow = cp.ExternalFunctionInflow('Import of Actuator Devices (Households)')
-HouseholdsImportOfSendInflow = cp.ExternalFunctionInflow('Import of Sensor Devices (Households)')
-HouseholdsImportOfStdInflow = cp.ExternalFunctionInflow('Import of Streaming Devices (Households)')
+#HouseholdsImportOfAdInflow = cp.ExternalFunctionInflow('Import of Actuator Devices (Households)')
+#HouseholdsImportOfSendInflow = cp.ExternalFunctionInflow('Import of Sensor Devices (Households)')
+#HouseholdsImportOfStdInflow = cp.ExternalFunctionInflow('Import of Streaming Devices (Households)')
 
 # creation of the flow compartments
-EconomyFirstStageUseCompartment = cp.FlowCompartment("First Stage Use (Economy)")
-EconomyFirstStageRecyclingCompartment = cp.FlowCompartment("First Stage Use (Economy)")
-EconomyFirstStageDisposalCompartment = cp.FlowCompartment("First Stage Use (Economy)")
+EconomyFirstStageUseCompartment = cp.Stock("First Stage Use (Economy)", logInflows = True, logOutflows = True)
+EconomyFirstStageRecyclingCompartment = cp.Stock("First Stage Recycling (Economy)", logInflows = True, logOutflows = True)
+EconomyFirstStageDisposalCompartment = cp.Sink("First Stage Disposal (Economy)", logInflows = True)
 
-EconomySecondStageUseCompartment = cp.FlowCompartment("Second Stage Use (Economy)")
-EconomySecondStageRecyclingCompartment = cp.FlowCompartment("Second Stage Use (Economy)")
-EconomySecondStageDisposalCompartment = cp.FlowCompartment("Second Stage Use (Economy)")
+FirstStageFlowCompartment = cp.FlowCompartment("First Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
 
-EconomyThirdStageUseCompartment = cp.FlowCompartment("Third Stage Use (Economy)")
-EconomyThirdStageRecyclingCompartment = cp.FlowCompartment("Third Stage Use (Economy)")
-EconomyThirdStageDisposalCompartment = cp.FlowCompartment("Third Stage Use (Economy)")
+EconomySecondStageUseCompartment = cp.Stock("Second Stage Use (Economy)", logInflows = True, logOutflows = True)
+EconomySecondStageRecyclingCompartment = cp.Stock("Second Stage Recycling (Economy)", logInflows = True, logOutflows = True)
+EconomySecondStageDisposalCompartment = cp.Sink("Second Stage Disposal (Economy)", logInflows = True)
+
+EconomyThirdStageUseCompartment = cp.Stock("Third Stage Use (Economy)", logInflows = True)
+EconomyThirdStageDisposalCompartment = cp.Sink("Third Stage Use (Economy)", logInflows = True)
+EconomyThirdStageExportCompartment = cp.Sink("Third Stage Use (Economy)", logInflows = True)
