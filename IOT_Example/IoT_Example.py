@@ -72,25 +72,65 @@ IotModel = model.Model("IoT Model")
 
 # creation of the external inflows to the system
 
-EconomyImportOfAdInflow = cp.ExternalListInflow('Import of Actuator Devices (Economy)')
-EconomyImportOfSendInflow = cp.ExternalListInflow('Import of Sensor Devices (Economy)')
-EconomyImportOfStdInflow = cp.ExternalListInflow('Import of Streaming Devices (Economy)')
 
-#HouseholdsImportOfAdInflow = cp.ExternalFunctionInflow('Import of Actuator Devices (Households)')
-#HouseholdsImportOfSendInflow = cp.ExternalFunctionInflow('Import of Sensor Devices (Households)')
-#HouseholdsImportOfStdInflow = cp.ExternalFunctionInflow('Import of Streaming Devices (Households)')
+# These Inflows can be used in ExternalListInflow
+
+FixedValueInflows1 = [
+    cp.FixedValueInflow(10),
+    cp.FixedValueInflow(20),
+    cp.FixedValueInflow(10),
+    cp.FixedValueInflow(20),
+    cp.FixedValueInflow(10),
+    cp.FixedValueInflow(10),
+    cp.RandomChoiceInflow([0, 10, 100, 1000, 1000])
+]
+
+StochasticInflows1 = [
+    cp.StochasticFunctionInflow(nr.normal, [1000, 250]),
+    cp.StochasticFunctionInflow(nr.normal, [1200, 250]),
+    cp.StochasticFunctionInflow(nr.normal, [1400, 250]),
+    cp.StochasticFunctionInflow(nr.normal, [1600, 250]),
+    cp.StochasticFunctionInflow(nr.normal, [1800, 250]),
+    cp.StochasticFunctionInflow(nr.normal, [1800, 250]),
+    cp.StochasticFunctionInflow(nr.normal, [1800, 250])
+]
+
+#RandomChoiceInflows1 = [
+#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
+#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
+#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
+#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
+#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
+#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
+#    cp.RandomChoiceInflow([10, 100, 1000, 4, 7])
+#]
 
 # creation of the flow compartments
 EconomyFirstStageUseCompartment = cp.Stock("First Stage Use (Economy)", logInflows = True, logOutflows = True)
 EconomyFirstStageRecyclingCompartment = cp.Stock("First Stage Recycling (Economy)", logInflows = True, logOutflows = True)
 EconomyFirstStageDisposalCompartment = cp.Sink("First Stage Disposal (Economy)", logInflows = True)
 
-FirstStageFlowCompartment = cp.FlowCompartment("First Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
+EconomyFirstStageFlowCompartment = cp.FlowCompartment("First Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
 
 EconomySecondStageUseCompartment = cp.Stock("Second Stage Use (Economy)", logInflows = True, logOutflows = True)
 EconomySecondStageRecyclingCompartment = cp.Stock("Second Stage Recycling (Economy)", logInflows = True, logOutflows = True)
 EconomySecondStageDisposalCompartment = cp.Sink("Second Stage Disposal (Economy)", logInflows = True)
 
+EconomySecondStageFlowCompartment = cp.FlowCompartment("Second Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
+
 EconomyThirdStageUseCompartment = cp.Stock("Third Stage Use (Economy)", logInflows = True)
 EconomyThirdStageDisposalCompartment = cp.Sink("Third Stage Use (Economy)", logInflows = True)
 EconomyThirdStageExportCompartment = cp.Sink("Third Stage Use (Economy)", logInflows = True)
+
+
+
+EconomyImportOfAdInflow = cp.ExternalListInflow(EconomyFirstStageUseCompartment, FixedValueInflows1)
+EconomyImportOfSendInflow = cp.ExternalListInflow(StochasticInflows1, FixedValueInflows1)
+EconomyImportOfStdInflow = cp.ExternalListInflow(EconomyFirstStageUseCompartment, FixedValueInflows1)
+
+
+
+
+
+
+
