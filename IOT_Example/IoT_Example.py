@@ -63,6 +63,7 @@ The Sinks 1 and 2 mark the endpoints of the material streams.
 
 """
 
+import numpy as np
 import numpy.random as nr
 import components as cp
 import model as model
@@ -142,6 +143,12 @@ EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
     startDelay=3
 )
 
+# add compartments and inflow to the model
+IotModel.setCompartments([EconomyFirstStageUseCompartment])
+IotModel.setInflows([EconomyImportOfAdInflow, 
+                         EconomyImportOfSendInflow, 
+                         EconomyImportOfStdInflow])
+
 # check validity of the model
 IotModel.checkModelValidity()
 
@@ -175,7 +182,7 @@ simulator.runSimulation()
 #==============================================================================
 
 
-sinks = simulator.getSinks()
+stock = simulator.getStocks()
 
 # plotting \\ evaluation
 allFigures = []
@@ -183,7 +190,7 @@ figureNumber = 0
 xRange = np.arange(PERIODS)
 for sink in sinks:
     print ''
-    print sink.name + ':'
+    print stock + ':'
     print sink.inventory
     fig = plt.figure(figureNumber)
     figureNumber +=1
@@ -195,10 +202,10 @@ for sink in sinks:
 
     for row in sinkInv:
         plt.plot(xRange, row, color = '0.5', lw = 1)
-        plt.show()
+        #plt.show()
 
     sinkMeans = []
     for row in sink.inventory.transpose():
         sinkMeans.append(np.mean(row))
     plt.plot(xRange, sinkMeans, color = 'red', linewidth=2)
-    plt.show()
+    #plt.show()
