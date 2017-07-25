@@ -66,6 +66,7 @@ The Sinks 1 and 2 mark the endpoints of the material streams.
 import numpy.random as nr
 import components as cp
 import model as model
+import simulator as sim
 
 # creation of the model
 IotModel = model.Model("IoT Model")
@@ -112,26 +113,26 @@ def squareInflowfunction(base, period):
 #]
 
 # creation of the flow compartments
-EconomyFirstStageUseCompartment = cp.Stock("First Stage Use (Economy)", logInflows = True, logOutflows = True)
-EconomyFirstStageRecyclingCompartment = cp.Stock("First Stage Recycling (Economy)", logInflows = True, logOutflows = True)
-EconomyFirstStageDisposalCompartment = cp.Sink("First Stage Disposal (Economy)", logInflows = True)
+EconomyFirstStageUseCompartment = cp.Stock(name="First Stage Use (Economy)", logInflows = True, logOutflows = True)
+EconomyFirstStageRecyclingCompartment = cp.Stock(name="First Stage Recycling (Economy)", logInflows = True, logOutflows = True)
+EconomyFirstStageDisposalCompartment = cp.Sink(name="First Stage Disposal (Economy)", logInflows = True)
 
-EconomyFirstStageFlowCompartment = cp.FlowCompartment("First Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
+EconomyFirstStageFlowCompartment = cp.FlowCompartment(name="First Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
 
-EconomySecondStageUseCompartment = cp.Stock("Second Stage Use (Economy)", logInflows = True, logOutflows = True)
-EconomySecondStageRecyclingCompartment = cp.Stock("Second Stage Recycling (Economy)", logInflows = True, logOutflows = True)
-EconomySecondStageDisposalCompartment = cp.Sink("Second Stage Disposal (Economy)", logInflows = True)
+EconomySecondStageUseCompartment = cp.Stock(name="Second Stage Use (Economy)", logInflows = True, logOutflows = True)
+EconomySecondStageRecyclingCompartment = cp.Stock(name="Second Stage Recycling (Economy)", logInflows = True, logOutflows = True)
+EconomySecondStageDisposalCompartment = cp.Sink(name="Second Stage Disposal (Economy)", logInflows = True)
 
-EconomySecondStageFlowCompartment = cp.FlowCompartment("Second Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
+EconomySecondStageFlowCompartment = cp.FlowCompartment(name="Second Stage Flow Compartment (Economy)", logInflows = True, logOutflows = True)
 
-EconomyThirdStageUseCompartment = cp.Stock("Third Stage Use (Economy)", logInflows = True)
-EconomyThirdStageDisposalCompartment = cp.Sink("Third Stage Use (Economy)", logInflows = True)
-EconomyThirdStageExportCompartment = cp.Sink("Third Stage Use (Economy)", logInflows = True)
+EconomyThirdStageUseCompartment = cp.Stock(name="Third Stage Use (Economy)", logInflows = True)
+EconomyThirdStageDisposalCompartment = cp.Sink(name="Third Stage Use (Economy)", logInflows = True)
+EconomyThirdStageExportCompartment = cp.Sink(name="Third Stage Use (Economy)", logInflows = True)
 
 
 
-EconomyImportOfAdInflow = cp.ExternalListInflow(EconomyFirstStageUseCompartment, FixedValueInflows1)
-EconomyImportOfSendInflow = cp.ExternalListInflow(StochasticInflows1, FixedValueInflows1)
+EconomyImportOfAdInflow = cp.ExternalListInflow(target=EconomyFirstStageUseCompartment, inflowList=FixedValueInflows1)
+EconomyImportOfSendInflow = cp.ExternalListInflow(target=EconomyFirstStageUseCompartment, inflowList=StochasticInflows1)
 EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
     target=EconomyFirstStageUseCompartment, 
     basicInflow=cp.FixedValueInflow(10),
@@ -141,9 +142,63 @@ EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
     delay=3
 )
 
+# check validity of the model
+IotModel.checkModelValidity()
+
+# investigated number of periods (e.g. Years in the origninal system)
+PERIODS = 7
+# For each element of the sample the model is calculated once using a set of
+# random values for the model parameters from the underlying probability distributions.
+SAMPLESIZE = 100
+
+# create the simulator
+simulator = sim.Simulator(
+    runs=SAMPLESIZE, 
+    periods=PERIODS, 
+    seed=1, 
+    useGlobalTCSettings=True, 
+    normalizeTCs=True)
+
+# connect the model
+simulator.setModel(IotModel)
+
+# The Monte-Carlo simultion process is perfomed.
+simulator.runSimulation()
+
+#==============================================================================
+#  Evalutation of the simulation results.
+#
+#  Display the material amount in sinks and stocks over time:
+#   - by printing the inventory matrix
+#   - plotting the simulation output as serieses of annual values for each sample (grey lines)
+#   - calculating the annual mean values (red line)
+#==============================================================================
 
 
+sinks = simulator.getSinks()
 
+# plotting \\ evaluation
+allFigures = []
+figureNumber = 0
+xRange = np.arange(PERIODS)
+for sink in sinks:
+    print ''
+    print sink.name + ':'
+    print sink.inventory
+    fig = plt.figure(figureNumber)
+    figureNumber +=1
+    plt.title(sink.name)
+    plt.xlabel('Period')
+    plt.ylabel('Amount in tons')
 
+    sinkInv = sink.inventory
 
+    for row in sinkInv:
+        plt.plot(xRange, row, color = '0.5', lw = 1)
+        plt.show()
 
+    sinkMeans = []
+    for row in sink.inventory.transpose():
+        sinkMeans.append(np.mean(row))
+    plt.plot(xRange, sinkMeans, color = 'red', linewidth=2)
+    plt.show()
