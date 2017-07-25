@@ -139,7 +139,7 @@ EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
     inflowFunction=expInflowFunction,
     derivationDistribution=nr.normal,
     derivationParameters=[1000, 250],
-    delay=3
+    startDelay=3
 )
 
 # check validity of the model
