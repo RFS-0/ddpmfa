@@ -689,8 +689,7 @@ class ExternalFunctionInflow(ExternalInflow):
         knowledge about the true value of the model inflows. The derivation \
         is calculated once per simulation rund and applied to the whole inflow list
     derivationParameters: list<float>
-        parameter list of the probability distribution function of the \
-        derivation               
+        paramete
     startDelay: integer
         time lag between the simulation start and the first release from the source.    
         
@@ -731,4 +730,4 @@ class ExternalFunctionInflow(ExternalInflow):
         return base
        
         
-          
+        
