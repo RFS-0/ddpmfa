@@ -95,6 +95,12 @@ StochasticInflows1 = [
     cp.StochasticFunctionInflow(nr.normal, [1800, 250])
 ]
 
+def expInflowFunction(base, period):
+    return base ** period
+
+def squareInflowfunction(base, period):
+    return base * period ** 2
+
 #RandomChoiceInflows1 = [
 #    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
 #    cp.RandomChoiceInflow([10, 100, 1000, 4, 7]),
@@ -126,7 +132,14 @@ EconomyThirdStageExportCompartment = cp.Sink("Third Stage Use (Economy)", logInf
 
 EconomyImportOfAdInflow = cp.ExternalListInflow(EconomyFirstStageUseCompartment, FixedValueInflows1)
 EconomyImportOfSendInflow = cp.ExternalListInflow(StochasticInflows1, FixedValueInflows1)
-EconomyImportOfStdInflow = cp.ExternalListInflow(EconomyFirstStageUseCompartment, FixedValueInflows1)
+EconomyImportOfStdInflow = cp.ExternalFunctionInflow(
+    EconomyFirstStageUseCompartment,
+    cp.FixedValueInflow(10),
+    expInflowFunction,
+    0,
+    nr.normal,
+    [1000, 250]
+)
 
 
 
