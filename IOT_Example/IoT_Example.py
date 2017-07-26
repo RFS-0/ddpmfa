@@ -68,6 +68,7 @@ import numpy.random as nr
 import components as cp
 import model as model
 import simulator as sim
+import matplotlib.pyplot as plt
 
 # creation of the model
 IotModel = model.Model("IoT Model")
@@ -131,20 +132,20 @@ ImportOfStdInflow = cp.ExternalFunctionInflow(
     inflowFunction=expInflowFunction,
     derivationDistribution=nr.normal,
     derivationParameters=[1000, 250],
-    startDelay=2
+    startDelay=0
 )
 
 # release strategy, defining the delay time and the release rates based on material transferred to First Stage Flow Compartment
-FirstStageUseCompartment.localRelease = cp.ListRelease(releaseRatesList=[0.5, 0.5], delay = 2)
+FirstStageUseCompartment.localRelease = cp.ListRelease(releaseRatesList=[0.5, 0.5], delay = 0)
 
 # release strategy, defining the delay time and the release rates based on material transferred to Second Stage Flow Compartment
-FirstStageRecyclingCompartment.localRelease = cp.FunctionRelease(releaseFunction=linearReleaseFunction, delay = 3)
+FirstStageRecyclingCompartment.localRelease = cp.FunctionRelease(releaseFunction=linearReleaseFunction, delay = 0)
 
 # release strategy, defining the delay time and the release rates based on material transferred to Second Stage Flow Compartment
-SecondStageUseCompartment.localRelease = cp.FixedRateRelease(releaseRate=0.2, delay = 5)
+SecondStageUseCompartment.localRelease = cp.FixedRateRelease(releaseRate=0.2, delay = 0)
 
 # release strategy, defining the delay time and the release rates based on material transferred to Second Stage Flow Compartment
-ThirdStageUseCompartment.localRelease = cp.FunctionRelease(releaseFunction=linearReleaseFunction, delay = 1)
+ThirdStageUseCompartment.localRelease = cp.FunctionRelease(releaseFunction=linearReleaseFunction, delay = 0)
 
 
 # material transfer from flow compartment First Stage Flow Compartment to First Stage Disposal
@@ -228,8 +229,7 @@ simulator.runSimulation()
 #   - calculating the annual mean values (red line)
 #==============================================================================
 
-
-stock = simulator.getStocks()
+sinks = simulator.getSinks()
 
 # plotting \\ evaluation
 allFigures = []
@@ -237,7 +237,7 @@ figureNumber = 0
 xRange = np.arange(PERIODS)
 for sink in sinks:
     print ''
-    print stock + ':'
+    print sink.name + ':'
     print sink.inventory
     fig = plt.figure(figureNumber)
     figureNumber +=1
@@ -249,10 +249,10 @@ for sink in sinks:
 
     for row in sinkInv:
         plt.plot(xRange, row, color = '0.5', lw = 1)
-        #plt.show()
+    plt.show()
 
     sinkMeans = []
     for row in sink.inventory.transpose():
         sinkMeans.append(np.mean(row))
     plt.plot(xRange, sinkMeans, color = 'red', linewidth=2)
-    #plt.show()
+    plt.show()
