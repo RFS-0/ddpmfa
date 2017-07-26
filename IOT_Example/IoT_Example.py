@@ -75,12 +75,14 @@ IotModel = model.Model("IoT Model")
 # creation of the flow compartments
 FirstStageFlowCompartment = cp.FlowCompartment(name="First Stage Flow Compartment ()", logInflows = True, logOutflows = True)
 SecondStageFlowCompartment = cp.FlowCompartment(name="Second Stage Flow Compartment ()", logInflows = True, logOutflows = True)
+ThirdStageFlowCompartment = cp.FlowCompartment(name="Third Stage Flow Compartment ()", logInflows = True, logOutflows = True)
 
 # creation of the stock
 FirstStageUseCompartment = cp.Stock(name="First Stage Use ()", logInflows = True, logOutflows = True)
 FirstStageRecyclingCompartment = cp.Stock(name="First Stage Recycling ()", logInflows = True, logOutflows = True)
+
 SecondStageUseCompartment = cp.Stock(name="Second Stage Use ()", logInflows = True, logOutflows = True)
-SecondStageRecyclingCompartment = cp.Stock(name="Second Stage Recycling ()", logInflows = True, logOutflows = True)
+
 ThirdStageUseCompartment = cp.Stock(name="Third Stage Use ()", logInflows = True)
 
 # creation of the sinks
@@ -92,17 +94,17 @@ ThirdStageExportCompartment = cp.Sink(name="Third Stage Use ()", logInflows = Tr
 # creation of the external inflows to the system
 # These Inflows can be used in ExternalListInflow
 
-FixedValueInflows1 = [
-    cp.FixedValueInflow(10),
-    cp.FixedValueInflow(20),
-    cp.FixedValueInflow(10),
-    cp.FixedValueInflow(20),
-    cp.FixedValueInflow(10),
-    cp.FixedValueInflow(10),
+AdImportInflows = [
+    cp.FixedValueInflow(100),
+    cp.FixedValueInflow(200),
+    cp.FixedValueInflow(100),
+    cp.FixedValueInflow(200),
+    cp.FixedValueInflow(100),
+    cp.FixedValueInflow(100),
     cp.RandomChoiceInflow([0, 10, 100, 1000, 1000])
 ]
 
-StochasticInflows1 = [
+SenDInflows = [
     cp.StochasticFunctionInflow(nr.normal, [1000, 250]),
     cp.StochasticFunctionInflow(nr.normal, [1200, 250]),
     cp.StochasticFunctionInflow(nr.normal, [1400, 250]),
@@ -118,33 +120,81 @@ def expInflowFunction(base, period):
 def squareInflowfunction(base, period):
     return base * period ** 2
 
-ImportOfAdInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=FixedValueInflows1)
-ImportOfSendInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=StochasticInflows1)
+def  linearReleaseFunction(period):
+    return period * 1/5
+
+ImportOfAdInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=AdImportInflows)
+ImportOfSendInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=SenDInflows)
 ImportOfStdInflow = cp.ExternalFunctionInflow(
     target=FirstStageUseCompartment, 
     basicInflow=cp.FixedValueInflow(10),
     inflowFunction=expInflowFunction,
     derivationDistribution=nr.normal,
     derivationParameters=[1000, 250],
-    startDelay=3
+    startDelay=2
 )
 
-# release strategy, defining the delay time and the release rates based on material transferred to First Stage Use
-FirstStageUseCompartment.localRelease = cp.ListRelease([0.5, 0.5], delay = 2)
+# release strategy, defining the delay time and the release rates based on material transferred to First Stage Flow Compartment
+FirstStageUseCompartment.localRelease = cp.ListRelease(releaseRatesList=[0.5, 0.5], delay = 2)
+
+# release strategy, defining the delay time and the release rates based on material transferred to Second Stage Flow Compartment
+FirstStageRecyclingCompartment.localRelease = cp.FunctionRelease(releaseFunction=linearReleaseFunction, delay = 3)
+
+# release strategy, defining the delay time and the release rates based on material transferred to Second Stage Flow Compartment
+SecondStageUseCompartment.localRelease = cp.FixedRateRelease(releaseRate=0.2, delay = 5)
+
+# release strategy, defining the delay time and the release rates based on material transferred to Second Stage Flow Compartment
+ThirdStageUseCompartment.localRelease = cp.FunctionRelease(releaseFunction=linearReleaseFunction, delay = 1)
 
 
 # material transfer from flow compartment First Stage Flow Compartment to First Stage Disposal
 FirstStageFlowCompartment.transfers = [
-    cp.StochasticTransfer(fucntion=nr.triangular, parameters=[0.5, 0.7, 0.9], target=SecondStageUseCompartment, priority = 3),
+    cp.StochasticTransfer(function=nr.triangular, parameters=[0.5, 0.7, 0.9], target=SecondStageUseCompartment, priority = 3),
     cp.RandomChoiceTransfer(sample=[0.3, 0.4, 0.5], target=FirstStageRecyclingCompartment, priority=2),
     cp.ConstTransfer(value=1, target=FirstStageDisposalCompartment, priority = 1)
 ]
+# material transfer from flow compartment First Stage Flow Compartment to First Stage Disposal
+SecondStageFlowCompartment.transfers = [
+    cp.StochasticTransfer(function=nr.triangular, parameters=[0.5, 0.7, 0.9], target=ThirdStageUseCompartment, priority = 2),
+    cp.ConstTransfer(value=1, target=SecondStageDisposalCompartment, priority = 1)
+]
+
+# material transfer from flow compartment First Stage Flow Compartment to First Stage Disposal
+ThirdStageFlowCompartment.transfers = [
+    cp.StochasticTransfer(function=nr.triangular, parameters=[0.5, 0.7, 0.9], target=ThirdStageExportCompartment, priority = 2),
+    cp.ConstTransfer(value=1, target=ThirdStageDisposalCompartment, priority = 1)
+]
+
+# total release from First Stage Use Compartment in transferred to First Stage Flow Compartment
+FirstStageUseCompartment.transfers =[cp.ConstTransfer(1, FirstStageFlowCompartment)]
+
+# total release from First Stage Use Compartment in transferred to First Stage Flow Compartment
+FirstStageRecyclingCompartment.transfers =[cp.ConstTransfer(1, SecondStageFlowCompartment)]
+
+# total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
+SecondStageUseCompartment.transfers =[cp.ConstTransfer(1, SecondStageFlowCompartment)]
+
+# total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
+ThirdStageUseCompartment.transfers =[cp.ConstTransfer(1, ThirdStageFlowCompartment)]
 
 # add compartments and inflow to the model
-IotModel.setCompartments([FirstStageUseCompartment])
-IotModel.setInflows([ImportOfAdInflow, 
-                         ImportOfSendInflow, 
-                         ImportOfStdInflow])
+IotModel.setCompartments([ 
+                            FirstStageFlowCompartment,
+                            SecondStageFlowCompartment,
+                            ThirdStageFlowCompartment,
+                            FirstStageUseCompartment,
+                            FirstStageRecyclingCompartment,
+                            SecondStageUseCompartment,
+                            ThirdStageUseCompartment,
+                            FirstStageDisposalCompartment,
+                            SecondStageDisposalCompartment,
+                            ThirdStageDisposalCompartment,
+                            ThirdStageExportCompartment
+                          ])
+
+IotModel.setInflows([ ImportOfAdInflow, 
+                      ImportOfSendInflow, 
+                      ImportOfStdInflow])
 
 # check validity of the model
 IotModel.checkModelValidity()
