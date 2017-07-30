@@ -1,9 +1,8 @@
-from django.shortcuts import render
 from django.http import HttpResponse
-
+from django.http import Http404
 from django.shortcuts import render
 
-from .models import *
+from .models import Model
 
 def home(request):
     return HttpResponse("You are at the home page. This is site provides information about the WebApp.")
@@ -15,8 +14,14 @@ def project_overview(request, project_name):
     return HttpResponse("You are at the project overview site of project: %s" % project_name)
 
 def model_overview(request, project_name):
-    latest_model_list = Model.objects.order_by('-evt_created')[:5]
-    context = {
+    try:
+        model = Model.objects.get(pk=project_name)
+        latest_model_list = Model.objects.order_by('-evt_created')[:5]
+        context = {
         'latest_model_list': latest_model_list,
         }
+    
+    except Model.DoesNotExist:
+        raise Http404("Model does not exist")
+    
     return render(request, 'dpmfa/index.html', context)
