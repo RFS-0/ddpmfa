@@ -1,7 +1,7 @@
 {% if latest_model_list %} 
 	<ul>
 		{% for model in latest_model_list %}
-		<li><a href="/dpmfa/{{ model.name }}/">{{model.name}}</a>
+		<li><a href="{% url 'dpmfa:model_overview' model.name %}">{{model.name}}</a>
 		{% endfor %}
 	</ul> 
 {% else %} 

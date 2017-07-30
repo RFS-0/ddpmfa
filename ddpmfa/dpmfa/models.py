@@ -152,12 +152,11 @@ class RandomChoiceInflow(SinglePeriodInflow):
                 
 class Model(models.Model):
     compartment = models.ForeignKey(to=Compartment, on_delete=models.CASCADE)
-    
-    name = models.CharField(name='name of the model', max_length=250)
     inflow = models.ForeignKey(to=ExternalInflow, on_delete=models.CASCADE)
     
+    name = models.CharField(verbose_name='name of the model', primary_key=True, max_length=250)
+    description = models.TextField(verbose_name='description of this model')
     evt_created = models.DateTimeField('Date created', auto_now_add=True)
     
     def __str__(self):
-        return self.name.verbose_name + self.pk
-    
+        return self.name + " " + str(self.evt_created)    
