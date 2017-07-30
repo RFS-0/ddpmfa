@@ -1,0 +1,9 @@
+{% if latest_model_list %} 
+	<ul>
+		{% for model in latest_model_list %}
+		<li><a href="/dpmfa/{{ model.name }}/">{{model.name}}</a>
+		{% endfor %}
+	</ul> 
+{% else %} 
+	<p>No models are available.</p> 
+{% endif %}
