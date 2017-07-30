@@ -1,9 +1,17 @@
-{% if latest_model_list %} 
-	<ul>
-		{% for model in latest_model_list %}
-		<li><a href="{% url 'dpmfa:model_overview' model.name %}">{{model.name}}</a>
+{% if primary_key %}
+<h1> {{primary_key}}</h1>
+	<h2> These are the attributes of this model</h2> 
+	<table>
+		{% for key, value in model_attributes.items %}
+	  		<tr>
+    		
+    		<th>{{key}}</th>
+    		<td>{{value}}</td>
+			
+	  		</tr>
 		{% endfor %}
-	</ul> 
+</table>
+
 {% else %} 
 	<p>No models are available.</p> 
 {% endif %}
