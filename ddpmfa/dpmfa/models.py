@@ -5,7 +5,7 @@ from django.utils import timezone
 
 class Compartment(models.Model):
     name = models.CharField(verbose_name='compartment: ', default='compartment', max_length=250)
-    created_date = models.DateTimeField(verbose_name='time of creation of the compartment', auto_now_add=True)
+    evt_created = models.DateTimeField(verbose_name='time of creation of the compartment', auto_now_add=True)
     compNumber = models.BigIntegerField(verbose_name='number of the compartment')
     logInflows = models.BooleanField(verbose_name='log inflows to this compartment', default=True)
     category = models.CharField(verbose_name='category of the compartment', max_length=250)
@@ -156,7 +156,7 @@ class Model(models.Model):
     name = models.CharField(name='name of the model', max_length=250)
     inflow = models.ForeignKey(to=ExternalInflow, on_delete=models.CASCADE)
     
-    created_date = models.DateTimeField('Date created', auto_now_add=True)
+    evt_created = models.DateTimeField('Date created', auto_now_add=True)
     
     def __str__(self):
         return self.name.verbose_name + self.pk
