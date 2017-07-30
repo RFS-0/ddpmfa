@@ -1,9 +1,7 @@
 from django.db import models
-
-from django.core.validators import int_list_validator
-from django.db import models
 from django.db.models.fields import CharField
-
+from django.core.validators import int_list_validator
+from django.utils import timezone
 
 class Compartment(models.Model):
     name = models.CharField(verbose_name='compartment: ', default='compartment', max_length=250)
@@ -154,9 +152,11 @@ class RandomChoiceInflow(SinglePeriodInflow):
                 
 class Model(models.Model):
     compartment = models.ForeignKey(to=Compartment, on_delete=models.CASCADE)
-
+    
     name = models.CharField(name='name of the model', max_length=250)
     inflow = models.ForeignKey(to=ExternalInflow, on_delete=models.CASCADE)
+    
+    created_date = models.DateTimeField('Date created', auto_now_add=True)
     
     def __str__(self):
         return self.name.verbose_name + self.pk
