@@ -7,6 +7,76 @@ from .models import *
 def home(request):
     return HttpResponse("You are at the home page. This is site provides information about the WebApp.")
 
+def projects(request):
+    return HttpResponse("Projects")
+
+def project(request, project_pk):
+    return HttpResponse("Project " + project_pk)
+
+def new_project(request):
+    return HttpResponse("New project")
+
+def delete_project(request, project_pk):
+    return HttpResponse("Delete project " + project_pk)
+
+def new_model(request, project_pk):
+    return HttpResponse("New model for project " + project_pk)
+
+def model(request, model_pk):
+    return HttpResponse("Model (overview) " + model_pk)
+
+def delete_model(request, model_pk):
+    return HttpResponse("Delete model " + model_pk)
+
+def designer(request, model_pk):
+    return HttpResponse("Designer " + model_pk)
+
+def save_designer(request, model_pk):
+    return HttpResponse("Save designer " + model_pk)
+
+def update_designer(request, model_pk):
+    return HttpResponse("Update designer " + model_pk)
+
+def parameters(request, model_pk):
+    return HttpResponse("Parameters for model " + model_pk)
+
+def flow_compartment(request, flow_compartment_pk):
+    return HttpResponse("Flow  " + flow_compartment_pk)
+
+def sink(request, sink_pk):
+    return HttpResponse("Sink " + sink_pk)
+
+def stock(request, stock_pk):
+    return HttpResponse("Stock " + stock_pk)
+
+def list_inflow(request, inflow_pk):
+    return HttpResponse("external_list_inflow: " + inflow_pk)
+
+def function_inflow(request, inflow_pk):
+    return HttpResponse("external_function_inflow: " + inflow_pk)
+
+def constant_transfer(request, transfer_pk):
+    return HttpResponse("constant_transfer: " + transfer_pk)
+
+def random_choice_transfer(request, transfer_pk):
+    return HttpResponse("random_choice_transfer: " + transfer_pk)
+
+def aggregated_transfer(request, transfer_pk):
+    return HttpResponse("aggregated_transfer: " + transfer_pk)
+
+def stochastic_transfer(request, transfer_pk):
+    return HttpResponse("stochastic_transfer: " + transfer_pk)
+
+def simulation(request, model_pk):
+    return HttpResponse("Simulation for model " + model_pk)
+
+def run_simulation(request, model_pk):
+    return HttpResponse("Run simulation for model " + model_pk)
+
+def results(request, model_pk):
+    return HttpResponse("Results for model " + model_pk)
+
+"""
 def project_administration(request):
     return HttpResponse("You are at the project administration site. Here you can add and edit projects.")
 
@@ -25,6 +95,7 @@ def model_overview(request, model_name):
     }
     
     return render(request, 'dpmfa/model_overview.html', context)
+"""
 
 """def model_configuratio(request, model_name):
     try:
