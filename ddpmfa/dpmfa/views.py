@@ -14,7 +14,9 @@ def projects(request):
     return render(request, 'dpmfa/projects.html', context)
 
 def project(request, project_pk):
-    return HttpResponse("Project " + project_pk)
+    context = {}
+    context['project'] = get_object_or_404(models.project, pk=project_pk)
+    return render(request, 'dpmfa/project.html', context)
 
 def new_project(request):
     return HttpResponse("New project")
