@@ -2,161 +2,187 @@ from django.db import models
 from django.db.models.fields import CharField
 from django.core.validators import int_list_validator
 from django.utils import timezone
+from .validators.validator import alpha_numeric_list_validator
+
+class model(models.Model):
+    project = models.ForeignKey(to='project', related_name='models', verbose_name='project', null=True)
+    
+    name = models.CharField(verbose_name='Name', primary_key=True, max_length=250)
+    description = models.TextField(verbose_name='Description')
+    seed = models.FloatField(verbose_name='Seed')
+    evt_created = models.DateTimeField('Date created', auto_now_add=True)
+    evt_changed = models.DateTimeField(verbose_name='Time of last change', auto_now=True)
+    
+    def __str__(self):
+        return self.name + ' (' + self.pk + ')'
 
 class compartment(models.Model):
-    name = models.CharField(verbose_name='compartment: ', default='compartment', max_length=250)
-    evt_created = models.DateTimeField(verbose_name='time of creation of the compartment', auto_now_add=True)
-    compNumber = models.BigIntegerField(verbose_name='number of the compartment')
-    logInflows = models.BooleanField(verbose_name='log inflows to this compartment', default=True)
-    category = models.CharField(verbose_name='category of the compartment', max_length=250)
+    model = models.ForeignKey(to='model', related_name='compartments', null=True, on_delete=models.CASCADE)
+    
+    name = models.CharField(verbose_name='Compartment', max_length=250)
+    description = models.TextField(verbose_name='description of this model')
+    evt_created = models.DateTimeField(verbose_name='Time of creation', auto_now_add=True)
+    evt_changed = models.DateTimeField(verbose_name='Time of last change', auto_now=True)
+    log_inflows = models.BooleanField(verbose_name='Log inflows', default=True)
+    categories = models.CharField(verbose_name='Categories', validators=[alpha_numeric_list_validator], max_length=250)
     
     def __str__(self):
-        return self.name + " " + str(self.pk)
+        return self.name + ' (' + self.pk + ')'
     
 class flow_compartment(compartment):
-    name_of_flow_compartment = models.CharField('flow compartment', default='flow compartment', max_length=250)
-    adjustOutgoingTCs = models.BooleanField(verbose_name='adjust outgoing TCs of this compartment', default=True)
-    logOutflows = models.BooleanField(verbose_name='log outflows from this compartment', default=True)
-    immediateReleaseRate = models.FloatField(verbose_name='the immediate release rate of this compartment', default=0.0)
+    adjust_outgoing_tcs = models.BooleanField(verbose_name='Adjust outgoing TCs', default=True)
+    log_outflows = models.BooleanField(verbose_name='Log outflows', default=True)
     
-    def __str__(self):
-        return self.name + " " + str(self.pk)
-    
-class stock(flow_compartment):
-    name_of_stock = models.CharField(verbose_name='stock', default='stock', max_length=250)
-    
-    def __str__(self):
-        return self.name_of_stock.verbose_name + self.pk
     
 class local_release(models.Model):
-    # TODO [rse]: should be FK field
-    name = CharField(verbose_name='local release: ', default='local release', max_length=250)
-    releaseList = CharField(verbose_name='a list of with a release for each period', validators=[int_list_validator()], max_length=250)
-    
-    class Meta:
-        abstract = True
-        
+    name = CharField(verbose_name='Local release', default='local release', max_length=250)
+    delay = models.SmallIntegerField(verbose_name='Delay', null=True)
+       
     def __str__(self):
-        return self.name.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
+
+class stock(flow_compartment):
+    local_release = models.OneToOneField(local_release, related_name='stock')
     
 class fixed_rate_release(local_release):
-    delay = models.SmallIntegerField(verbose_name='delay time in periods before release starts')
-    releaseRate = models.FloatField(verbose_name='periodic release rate')
-    
-    
+    release_rate = models.FloatField(verbose_name='Release rate', null=True)
+      
 class list_release(local_release):
-    delay = models.SmallIntegerField(verbose_name='delay time in periods before release starts')
     # TODO [all]: we will have to implement a float list validator
-    releaseRateList = models.CharField(verbose_name='list of release rates of a stored material in future periods', validators=[int_list_validator()], max_length=250)
+    release_rate_list = models.CharField(verbose_name='Release rate list', validators=[int_list_validator()], max_length=250)
     
 class function_release(local_release):
-    delay = models.SmallIntegerField(verbose_name='delay time in periods before release starts')
-    # TODO [all]: we will have to implement a function field to store functions
-    releaseFunction = models.CharField(verbose_name='probability density function probability distribution function (e.g. from scipy.stats) to sample random values for the transfer coefficient', max_length=250)
+    release_function = models.CharField(verbose_name='Release function', max_length=250)
     
     
 class transfer(models.Model):
-    target=models.ForeignKey(to=compartment, on_delete=models.CASCADE)
+    target=models.ForeignKey(to='compartment', on_delete=models.CASCADE, related_name='transfers')
+    belongs_to_aggregated_transfer = models.ForeignKey(to='aggregated_transfer', related_name='transfers', verbose_name='Aggregated transfer', on_delete=models.CASCADE, max_length=250)  
     
-    name = models.CharField(verbose_name='transfer: ', default='transfer', max_length=250)
-    priority = models.SmallIntegerField(verbose_name='priority of the transfer')
-    currentTC = models.FloatField(verbose_name='current transfer coefficient')   
+    name = models.CharField(verbose_name='Name', max_length=250)
+    priority = models.SmallIntegerField(verbose_name='Priority')
+    current_tc = models.FloatField(verbose_name='Current transfer coefficient')
+    weight = models.FloatField(verbose_name='Weight')   
     
     def __str__(self):
-        return self.name.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 class constant_transfer(transfer):
-    name_of_constant_transfer = models.CharField(verbose_name='constant transfer: ', default='constant transfer', max_length=250)
-    value = models.FloatField(verbose_name='deterministic value for the transfer coefficient')
+    value = models.FloatField(verbose_name='Value')
     
     def __str__(self):
-        return self.name_of_constant_transfer.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 class random_choice_transfer(transfer):
-    name_of_random_choice_transfer = models.CharField(verbose_name='random choice transfer: ', default='random choice transfer', max_length=250)
     # TODO [all]: we will have to implement a float list validator 
-    sample = models.CharField(verbose_name='a given sample of values from which is randomly drawn', validators=[int_list_validator()], max_length=250)
+    sample = models.CharField(verbose_name='Sample', validators=[int_list_validator()], max_length=250)
     
     def __str__(self):
-        return self.name_of_random_choice_transfer.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 class stochastic_transfer(transfer):
-    name_of_stochastic_transfer = models.CharField(verbose_name='stochastic transfer: ', default='stochastic transfer', max_length=250)
-    parameters = models.CharField(verbose_name='parameter list of the probability distribution function', validators=[int_list_validator()], max_length=250)
+    parameters = models.CharField(verbose_name='Parameters', validators=[int_list_validator()], max_length=250)
     # TODO [all]: we will have to implement a function field to store functions
-    fucntion = models.CharField(verbose_name='probability density function probability distribution function (e.g. from scipy.stats) to sample random values for the transfer coefficient', max_length=250)
+    function = models.CharField(verbose_name='Function', max_length=250)
     
     def __str__(self):
-        return self.name_of_stochastic_transfer.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 class aggregated_transfer(transfer):
-    singleTransfers = models.ForeignKey(to=transfer, related_name='transfer', verbose_name='a list of SochasticTransfers and/or RandomChoiceTransfers to be considered in the combined distribution', on_delete=models.CASCADE, max_length=250)  
-    
-    name_of_aggregated_transfer = models.CharField(verbose_name='aggregated transfer: ', default='aggregated transfer', max_length=250)
-    # TODO [all]: we will have to implement a float list validator
-    weights = models.CharField(verbose_name='a given sample of values from which is randomly drawn', validators=[int_list_validator()], max_length=250)
-    
+        
     def __str__(self):
-        return self.name_of_aggregated_transfer.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 class external_inflow(models.Model):
-    target=models.ForeignKey(to=compartment, on_delete=models.CASCADE)
+    target = models.ForeignKey(to='compartment', related_name='external_inflows', on_delete=models.CASCADE)
     
-    name = models.CharField(verbose_name=' external inflow: ', default='External Inflow', max_length=250)
-    startDelay = models.SmallIntegerField(verbose_name='delay time in periods before release starts')
+    name = models.CharField(verbose_name='Name', max_length=250)
+    start_delay = models.SmallIntegerField(verbose_name='Start delay')
     # TODO [all]: we will have to implement a function field to store functions
-    derivationDistribution = models.CharField(verbose_name='probability density function probability distribution function (e.g. from scipy.stats) to sample random values for the transfer coefficient', max_length=250)
-    derivationParameters = models.CharField(verbose_name='parameter list of the probability distribution function', validators=[int_list_validator()], max_length=250)
-    derivationFactor = models.FloatField(verbose_name='deterministic value for the transfer coefficient')
+    derivation_distribution = models.CharField(verbose_name='Probability density function', max_length=250)
+    derivation_parameters = models.CharField(verbose_name='Parameter list of the probability distribution function', validators=[int_list_validator()], max_length=250)
+    derivation_factor = models.FloatField(verbose_name='Derivation factor')
     
     def __str__(self):
-        return self.name.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
         
 class external_list_inflow(external_inflow):
-    valueList = models.ForeignKey(to='single_period_inflow', verbose_name='name of the single period inflow') 
-    
-    name_of_external_list_inflow = models.CharField(verbose_name='name of the external list inflow', default='external list inflow', max_length=250)
     
     def __str__(self):
-        return self.name_of_external_list_inflow.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 class external_function_inflow(external_inflow):
-    name_of_external_function_inflow = models.CharField(verbose_name='name of external function inflow', default='external function inflow', max_length=250)
     # TODO [all]: we will have to implement a function field to store functions
-    inflowFunction = models.CharField(verbose_name='probability density function probability distribution function (e.g. from scipy.stats) to sample random values for the transfer coefficient', max_length=250)
-    basicInflow = models.ForeignKey(to='single_period_inflow', verbose_name='name of the single period inflow')
+    inflow_function = models.CharField(verbose_name='Inflow function', max_length=250)
+    basic_inflow = models.ForeignKey(to='single_period_inflow', verbose_name='name of the single period inflow')
     
     def __str__(self):
-        return self.name_of_external_function_inflow.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 
-class single_period_inflow(external_list_inflow):
-    currentValue = models.BigIntegerField(verbose_name='current inflow value')
+class single_period_inflow(models.Model):
+    current_value = models.BigIntegerField(verbose_name='current inflow value')
+    
+    period = models.IntegerField(verbose_name='Period')
+    external_list_inflow = models.ForeignKey(to='external_list_inflow', related_name='single_period_inflows', verbose_name='External list inflow', null=True) 
     
 class fixed_value_inflow(single_period_inflow):
     value = models.FloatField(verbose_name='the inflow value')
     
 class stochastic_inflow(single_period_inflow):
-    name_of_stochastic_inflow = models.CharField(verbose_name='stochastic inflow', default='stochastic inflow', max_length=250)
+    # TODO [all]: we will have to implement a function field to store functions
+    pdf = models.CharField(verbose_name='Pdf', max_length=250)
+    parameter_values = models.CharField(verbose_name='Pdf parameter values', max_length=250) 
     
     def __str__(self):
-        return self.name.verbose_name + self.pk
+        return self.name + ' (' + self.pk + ')'
     
 class random_choice_inflow(single_period_inflow):
-    name_of_random_choice_inflow = models.CharField(verbose_name='random choice inflow', default='random choice inflow', max_length=250)
     # TODO [all]: we will have to implement a float list validator
-    sample = models.CharField(verbose_name='a given sample of values from which is randomly drawn', validators=[int_list_validator()], max_length=250)
+    sample = models.CharField(verbose_name='Sample', max_length=250)
                 
     def __str__(self):
-        return self.name_of_random_choice_inflow.verbose_name + self.pk
-                
-class model(models.Model):
-    compartment = models.ForeignKey(to=compartment, on_delete=models.CASCADE)
-    inflow = models.ForeignKey(to=external_inflow, on_delete=models.CASCADE)
+        return self.name + ' (' + self.pk + ')'
+
+
+class project(models.Model):
+    name = models.CharField(verbose_name='Name', max_length=250)
+    description = models.TextField(verbose_name='Description')
+
+class simulation(models.Model):
+    model = models.ForeignKey(to='model', related_name='simulation', verbose_name='model')
     
-    name = models.CharField(verbose_name='name of the model', primary_key=True, max_length=250)
-    description = models.TextField(verbose_name='description of this model')
+    runs = models.IntegerField(verbose_name='Runs')
+    periods = models.IntegerField(verbose_name='Periods')
     evt_created = models.DateTimeField('Date created', auto_now_add=True)
+    evt_changed = models.DateTimeField(verbose_name='Time of last change', auto_now=True)
+
+class flow_compartment_outflow_record(models.Model):
+    flow_compartment = models.ForeignKey(to='flow_compartment', related_name='flow_compartment_outflow_records', verbose_name='Flow compartment', null=True)
     
-    def __str__(self):
-        return self.name + " " + str(self.evt_created)    
+    run = models.IntegerField(verbose_name="Run", null=True)
+    period = models.IntegerField(verbose_name="Period", null=True)
+    amount = models.FloatField(verbose_name="Amount", null=True)
+
+class compartment_inflow_record(models.Model):
+    compartment = models.ForeignKey(to='compartment', related_name='compartment_inflow_records', verbose_name='Compartment', null=True)
+    
+    run = models.IntegerField(verbose_name="Run", null=True)
+    period = models.IntegerField(verbose_name="Period", null=True)
+    amount = models.FloatField(verbose_name="Amount", null=True)
+    
+    
+class compartment_inventory_record(models.Model):
+    compartment = models.ForeignKey(to='compartment', related_name='compartment_inventory_records', verbose_name='Compartment', null=True)
+    
+    run = models.IntegerField(verbose_name="Run", null=True)
+    period = models.IntegerField(verbose_name="Period", null=True)
+    amount = models.FloatField(verbose_name="Amount", null=True)
+
+
+class stock_immediate_flow_record(models.Model):
+    stock = models.ForeignKey(to='stock', related_name='stock_immediate_flow_records', verbose_name='Stock', null=True)
+    
+    run = models.IntegerField(verbose_name="Run", null=True)
+    period = models.IntegerField(verbose_name="Period", null=True)
+    amount = models.FloatField(verbose_name="Amount", null=True)
