@@ -5,7 +5,8 @@ from django.shortcuts import get_object_or_404, render
 from .models import *
 
 def home(request):
-    return HttpResponse("You are at the home page. This is site provides information about the WebApp.")
+    context = {}
+    return render(request, 'dpmfa/home.html', context)
 
 def projects(request):
     return HttpResponse("Projects")
