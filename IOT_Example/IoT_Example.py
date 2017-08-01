@@ -74,23 +74,57 @@ import matplotlib.pyplot as plt
 IotModel = model.Model("IoT Model")
 
 # creation of the flow compartments
-FirstStageFlowCompartment = cp.FlowCompartment(name="First Stage Flow Compartment ()", logInflows = True, logOutflows = True)
-SecondStageFlowCompartment = cp.FlowCompartment(name="Second Stage Flow Compartment ()", logInflows = True, logOutflows = True)
-ThirdStageFlowCompartment = cp.FlowCompartment(name="Third Stage Flow Compartment ()", logInflows = True, logOutflows = True)
+FirstStageFlowCompartment = cp.FlowCompartment(
+    name="First Stage Flow Compartment", 
+    logInflows = True, 
+    logOutflows = True)
+
+SecondStageFlowCompartment = cp.FlowCompartment(
+    name="Second Stage Flow Compartment", 
+    logInflows = True, 
+    logOutflows = True)
+
+ThirdStageFlowCompartment = cp.FlowCompartment(
+    name="Third Stage Flow Compartment", 
+    logInflows = True, 
+    logOutflows = True)
 
 # creation of the stock
-FirstStageUseCompartment = cp.Stock(name="First Stage Use ()", logInflows = True, logOutflows = True)
-FirstStageRecyclingCompartment = cp.Stock(name="First Stage Recycling ()", logInflows = True, logOutflows = True)
+FirstStageUseCompartment = cp.Stock(
+    name="First Stage Use", 
+    logInflows = True, 
+    logOutflows = True)
 
-SecondStageUseCompartment = cp.Stock(name="Second Stage Use ()", logInflows = True, logOutflows = True)
+FirstStageRecyclingCompartment = cp.Stock(
+    name="First Stage Recycling", 
+    logInflows = True, 
+    logOutflows = True)
 
-ThirdStageUseCompartment = cp.Stock(name="Third Stage Use ()", logInflows = True)
+SecondStageUseCompartment = cp.Stock(
+    name="Second Stage Use", 
+    logInflows = True, 
+    logOutflows = True)
+
+ThirdStageUseCompartment = cp.Stock(
+    name="Third Stage Use", 
+    logInflows = True)
 
 # creation of the sinks
-FirstStageDisposalCompartment = cp.Sink(name="First Stage Disposal ()", logInflows = True)
-SecondStageDisposalCompartment = cp.Sink(name="Second Stage Disposal ()", logInflows = True)
-ThirdStageDisposalCompartment = cp.Sink(name="Third Stage Use ()", logInflows = True)
-ThirdStageExportCompartment = cp.Sink(name="Third Stage Use ()", logInflows = True)
+FirstStageDisposalCompartment = cp.Sink(
+    name="First Stage Disposal", 
+    logInflows = True)
+
+SecondStageDisposalCompartment = cp.Sink(
+    name="Second Stage Disposal", 
+    logInflows = True)
+
+ThirdStageDisposalCompartment = cp.Sink(
+    name="Third Stage Use", 
+    logInflows = True)
+
+ThirdStageExportCompartment = cp.Sink(
+    name="Third Stage Use", 
+    logInflows = True)
 
 # creation of the external inflows to the system
 # These Inflows can be used in ExternalListInflow
@@ -124,8 +158,14 @@ def squareInflowfunction(base, period):
 def  linearReleaseFunction(period):
     return period * 1/5
 
-ImportOfAdInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=AdImportInflows)
-ImportOfSendInflow = cp.ExternalListInflow(target=FirstStageUseCompartment, inflowList=SenDInflows)
+ImportOfAdInflow = cp.ExternalListInflow(
+    target=FirstStageUseCompartment, 
+    inflowList=AdImportInflows)
+
+ImportOfSendInflow = cp.ExternalListInflow(
+    target=FirstStageUseCompartment, 
+    inflowList=SenDInflows)
+
 ImportOfStdInflow = cp.ExternalFunctionInflow(
     target=FirstStageUseCompartment, 
     basicInflow=cp.FixedValueInflow(10),
@@ -154,7 +194,7 @@ FirstStageFlowCompartment.transfers = [
     cp.RandomChoiceTransfer(sample=[0.3, 0.4, 0.5], target=FirstStageRecyclingCompartment, priority=2),
     cp.ConstTransfer(value=1, target=FirstStageDisposalCompartment, priority = 1)
 ]
-# material transfer from flow compartment First Stage Flow Compartment to First Stage Disposal
+# material transfer from flow compartment Second Stage Flow Compartment to Third Stage Use Compartment
 SecondStageFlowCompartment.transfers = [
     cp.StochasticTransfer(function=nr.triangular, parameters=[0.5, 0.7, 0.9], target=ThirdStageUseCompartment, priority = 2),
     cp.ConstTransfer(value=1, target=SecondStageDisposalCompartment, priority = 1)
@@ -169,13 +209,13 @@ ThirdStageFlowCompartment.transfers = [
 # total release from First Stage Use Compartment in transferred to First Stage Flow Compartment
 FirstStageUseCompartment.transfers =[cp.ConstTransfer(1, FirstStageFlowCompartment)]
 
-# total release from First Stage Use Compartment in transferred to First Stage Flow Compartment
+# total release from First Stage Recycling Compartment in transferred to First Stage Flow Compartment
 FirstStageRecyclingCompartment.transfers =[cp.ConstTransfer(1, SecondStageFlowCompartment)]
 
 # total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
 SecondStageUseCompartment.transfers =[cp.ConstTransfer(1, SecondStageFlowCompartment)]
 
-# total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
+# total release from Third Stage Use Compartment in transferred to Second Stage Flow Compartment
 ThirdStageUseCompartment.transfers =[cp.ConstTransfer(1, ThirdStageFlowCompartment)]
 
 # add compartments and inflow to the model

@@ -15,3 +15,4 @@ class Command(BaseCommand):
         
         # delete the project
         iot_project.delete()
+        self.stdout.write("Delete IoT project from the db", ending='')
