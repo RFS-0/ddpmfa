@@ -16,13 +16,18 @@ def projects(request):
 def project(request, project_pk):
     context = {}
     context['project'] = get_object_or_404(models.project, pk=project_pk)
+    #context['message'] = models.project.objects.all().count()
     return render(request, 'dpmfa/project.html', context)
 
 def new_project(request):
-    return HttpResponse("New project")
+    context = {}
+    return render(request, 'dpmfa/new_project.html', context)
 
 def delete_project(request, project_pk):
-    return HttpResponse("Delete project " + project_pk)
+    context = {}
+    context['project'] = get_object_or_404(models.project, pk=project_pk)
+    context['project'].delete()
+    return render(request, 'dpmfa/delete_project.html', context)
 
 def new_model(request, project_pk):
     return HttpResponse("New model for project " + project_pk)
