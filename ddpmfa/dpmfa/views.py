@@ -2,14 +2,16 @@ from django.http import HttpResponse
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 
-from .models import *
+import dpmfa.models as models
 
 def home(request):
     context = {}
     return render(request, 'dpmfa/home.html', context)
 
 def projects(request):
-    return HttpResponse("Projects")
+    context = {}
+    context['projects'] = models.project.objects.all()
+    return render(request, 'dpmfa/projects.html', context)
 
 def project(request, project_pk):
     return HttpResponse("Project " + project_pk)

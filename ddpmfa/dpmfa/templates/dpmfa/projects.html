@@ -1,0 +1,13 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %}Projects{% endblock %}
+
+{% block body %}
+
+
+{% for project in projects %}
+Cool project: {{project.name}}
+{% endfor %}
+
+{% endblock %}
