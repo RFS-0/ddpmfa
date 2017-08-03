@@ -1,8 +1,9 @@
 from django.http import HttpResponse
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
 import dpmfa.models as models
+import dpmfa.forms as forms
 
 def home(request):
     context = {}
@@ -21,6 +22,26 @@ def project(request, project_pk):
 
 def new_project(request):
     context = {}
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = forms.project_form(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            project = models.project(name=form.cleaned_data['name'], description=form.cleaned_data['description'])
+            project.save()
+            return HttpResponseRedirect('/dpmfa/projects/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = forms.project_form()
+
+    context['form'] = form
+
     return render(request, 'dpmfa/new_project.html', context)
 
 def delete_project(request, project_pk):
