@@ -1,9 +1,10 @@
+from django.contrib import messages
 from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 
-import dpmfa.models as models
 import dpmfa.forms as forms
+import dpmfa.models as models
 
 def home(request):
     context = {}
@@ -34,6 +35,13 @@ def new_project(request):
             # redirect to a new URL:
             project = models.project(name=form.cleaned_data['name'], description=form.cleaned_data['description'])
             project.save()
+
+            messages.success(request, 'New project "%s" was created.' % project.name)
+#            messages.error(request, 'This would be an error message')
+#            messages.debug(request, 'This would be a debug message')
+#            messages.info(request, 'This would be an info message')
+#            messages.warning(request, 'This would be a warning message')
+
             return HttpResponseRedirect('/dpmfa/projects/')
 
     # if a GET (or any other method) we'll create a blank form

@@ -5,9 +5,44 @@
 
 {% block body %}
 
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <h1>Projects</h1>
 
-{% for project in projects %}
-Cool project: {{project.name}}
-{% endfor %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == "success" or message.tags == "warning" %}{{ message.tags }}{% elif message.tags == "error" %}danger{% else %}info{% endif %}">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
+    <div class="row">
+        <div class="col-xs-12 col-sm-9">
+            <h2>My Projects</h2>
+        </div>
+        <div class="col-xs-12 col-sm-3 text-right">
+            <a href="{% url "dpmfa:new_project" %}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                New Project
+            </a>
+        </div>
+    </div>
+
+    {% for project in projects %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-4">
+            <a href="{% url "dpmfa:project" project.pk %}">{{project.name}}</a>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+           {{project.description}}
+        </div>
+        <div class="col-xs-12 col-sm-2 text-right">
+            <a href="{% url "dpmfa:delete_project" project.pk %}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                Delete
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
 {% endblock %}
