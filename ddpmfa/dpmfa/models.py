@@ -4,8 +4,30 @@ from django.db.models.fields import CharField
 from django.core.validators import int_list_validator
 from django.utils import timezone
 from .validators.validator import alpha_numeric_list_validator
+# install this with: pip install jsonfield
+from jsonfield import JSONField
 
 from django.urls import reverse
+
+#==============================================================================
+#  Project
+#==============================================================================
+
+class project(models.Model):
+    name = models.CharField(
+        verbose_name='Name', 
+        max_length=250, 
+        null=True)
+    description = models.TextField(
+        verbose_name='Description', 
+        null=True)
+    
+    def __str__(self):
+        return self.name + ' (' + str(self.pk) + ')'
+    
+#==============================================================================
+#  Model
+#==============================================================================
 
 class model(models.Model):
     project = models.ForeignKey(
@@ -31,11 +53,70 @@ class model(models.Model):
         verbose_name='Time of last change',
          auto_now=True)
     
+#==============================================================================
+#  Model Designer
+#==============================================================================
+    
+class model_designer(models.Model):
+    model = models.OneToOneField(
+        to=model, 
+        related_name='model_desinger', 
+        on_delete=models.CASCADE,
+        null=True)
+    
+    designer_configuration = JSONField()
+    evt_created = models.DateTimeField(
+        'Date created', 
+        auto_now_add=True)
+    evt_changed = models.DateTimeField(
+        verbose_name='Time of last change',
+         auto_now=True)
+    
+    
     def __str__(self):
         return self.name + ' (' + str(str(self.pk)) + ')'
     
     def get_absolute_url(self):
         return reverse('model', kwargs={'pk': self.pk})
+    
+#==============================================================================
+#  Model Parameters
+#==============================================================================
+
+class model_parameters(models.Model):
+    NOT_DEFINED =  'ND'
+    NEW = 'NW'
+    TO_BE_CONFIGURED = 'TC'
+    VALID = 'VA'
+    
+    STATUS_VARIABLES = (
+        (NOT_DEFINED, 'Not defined yet'),
+        (NEW, 'New'),
+        (TO_BE_CONFIGURED, 'To be configured'),
+        (VALID, 'Valid'),
+    )
+    
+    model = models.OneToOneField(
+        to=model, 
+        related_name='model_parameters', 
+        on_delete=models.CASCADE,
+        null=True)
+    
+    status = models.CharField(
+        max_length=2,
+        choices=STATUS_VARIABLES,
+        default=NOT_DEFINED
+        )
+    evt_created = models.DateTimeField(
+        'Date created', 
+        auto_now_add=True)
+    evt_changed = models.DateTimeField(
+        verbose_name='Time of last change',
+         auto_now=True)
+    
+#==============================================================================
+#  Compartment
+#==============================================================================
 
 class compartment(models.Model):
     model = models.ForeignKey(
@@ -69,6 +150,10 @@ class compartment(models.Model):
     def __str__(self):
         return self.name + ' (' + str(str(self.pk)) + ')'
     
+#==============================================================================
+#  Flow Compartment
+#==============================================================================
+    
 class flow_compartment(compartment):
     adjust_outgoing_tcs = models.BooleanField(
         verbose_name='Adjust outgoing TCs', 
@@ -77,7 +162,30 @@ class flow_compartment(compartment):
         verbose_name='Log outflows', 
         default=True)
     
+#==============================================================================
+#  Stock
+#==============================================================================
+
+class stock(flow_compartment):
+    local_release = models.OneToOneField(
+        to='local_release', 
+        related_name='stock', 
+        on_delete=models.CASCADE,
+        null=True)
     
+#==============================================================================
+#  Sink
+#==============================================================================
+    
+class sink(compartment):
+    
+    def __str__(self):
+        return self.name + ' (' + str(self.pk) + ')'
+    
+#==============================================================================
+#  Releases
+#==============================================================================
+
 class local_release(models.Model):
     stock_of_local_release = models.ForeignKey(
         to='stock', 
@@ -95,19 +203,6 @@ class local_release(models.Model):
        
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
-
-class stock(flow_compartment):
-    local_release = models.OneToOneField(
-        local_release, 
-        related_name='stock', 
-        on_delete=models.CASCADE,
-        null=True)
-    
-class sink(compartment):
-    
-    def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
-    
     
 class fixed_rate_release(local_release):
     release_rate = models.FloatField(
@@ -126,6 +221,10 @@ class function_release(local_release):
         verbose_name='Release function', 
         max_length=250, 
         null=True)
+    
+#==============================================================================
+#  Transfers
+#==============================================================================
     
     
 class transfer(models.Model):
@@ -195,6 +294,10 @@ class aggregated_transfer(transfer):
         
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
+
+#==============================================================================
+#  External Inflow
+#==============================================================================
     
 class external_inflow(models.Model):
     target = models.ForeignKey(
@@ -246,6 +349,9 @@ class external_function_inflow(external_inflow):
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
     
+#==============================================================================
+#  Single Period Inflow
+#==============================================================================  
 
 class single_period_inflow(models.Model):
     external_list_inflow = models.ForeignKey(
@@ -286,19 +392,10 @@ class random_choice_inflow(single_period_inflow):
         verbose_name='Sample', 
         max_length=250, 
         null=True)
-
-class project(models.Model):
-    name = models.CharField(
-        verbose_name='Name', 
-        max_length=250, 
-        null=True)
-    description = models.TextField(
-        verbose_name='Description', 
-        null=True)
     
-    def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
-    
+#==============================================================================
+#  Simulation
+#==============================================================================
 
 class simulation(models.Model):
     model = models.ForeignKey(
@@ -324,6 +421,10 @@ class simulation(models.Model):
     
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
+    
+#==============================================================================
+#  Flow Compartment Records
+#==============================================================================
 
 class flow_compartment_outflow_record(models.Model):
     flow_compartment = models.ForeignKey(
@@ -388,7 +489,10 @@ class compartment_inventory_record(models.Model):
     
     def __str__(self):
         return 'primary key: ' + ' (' + str(self.pk) + ')'
-
+    
+#==============================================================================
+#  Stock Records
+#==============================================================================
 
 class stock_immediate_flow_record(models.Model):
     stock = models.ForeignKey(
@@ -410,3 +514,9 @@ class stock_immediate_flow_record(models.Model):
     
     def __str__(self):
         return 'primary key: ' + ' (' + str(self.pk) + ')'
+    
+#==============================================================================
+#  Stock Records
+#==============================================================================
+
+# Implement when needed

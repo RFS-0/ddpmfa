@@ -3,59 +3,71 @@ from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
-from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView
-from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 
 import dpmfa.forms as forms
 import dpmfa.models as models
 
 
-class HomeView(TemplateView):
+#==============================================================================
+#  Home
+#==============================================================================
+
+class HomeTemplateView(generic.TemplateView):
     template_name = 'dpmfa/home.html'
+    
+#==============================================================================
+#  Project
+#==============================================================================
 
-
-class ProjectsView(ListView):
+class ProjectsListView(generic.ListView):
     model = models.project
     context_object_name = 'projects'
     template_name = 'dpmfa/projects.html'
 
 
-class ProjectView(DetailView):
+class ProjectDetailView(generic.DetailView):
     model = models.project
     context_object_name = 'project'
     template_name = 'dpmfa/project.html'
 
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(generic.CreateView):
     model = models.project
     fields = ['name', 'description']
     template_name = 'dpmfa/new_project.html'
     success_url = reverse_lazy('dpmfa:projects')
 
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(generic.UpdateView):
     model = models.project
     fields = ['name', 'description']
     template_name = 'dpmfa/update_project.html'
     success_url = reverse_lazy('dpmfa:projects')
 
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(generic.DeleteView):
     model = models.project
     success_url = reverse_lazy('dpmfa:projects')
+    
+#==============================================================================
+#  Model
+#==============================================================================
 
+class ModelListView(generic.ListView):
+    model = models.model
+    template_name = 'dpmfa/model.html'
 
-class ModelView(DetailView):
+class ModelDetailView(generic.DetailView):
     model = models.model
     template_name = 'dpmfa/model.html'
 
 
-class ModelCreateView(CreateView):
+class ModelCreateView(generic.CreateView):
     model = models.model
     template_name = 'dpmfa/new_model.html'
     fields = ['name', 'description']
-
+    
     # Change!
     # success_url = reverse_lazy('dpmfa:project', model.project_id)
 
@@ -66,38 +78,316 @@ class ModelCreateView(CreateView):
         model = form.save(commit=False)
         model.project_id = self.kwargs['project_pk']
         return super(ModelCreateView, self).form_valid(form)
+    
+class ModelUpdateView(generic.UpdateView):
+    model = models.model
+    template_name = 'dpmfa/model.html'
+    
+class ModelDeleteView(generic.DeleteView):
+    model = models.model
+    template_name = 'dpmfa/model.html'
 
+#==============================================================================
+#  Model Designer
+#==============================================================================
 
-def delete_model(request, model_pk):
-    return HttpResponse("Delete model " + model_pk)
+class ModelDesingerDetailView(generic.DetailView):
+    model = models.model_designer
 
-def designer(request, model_pk):
-    return HttpResponse("Designer " + model_pk)
+class ModelDesingerCreateView(generic.CreateView):
+    model = models.model
+    
+class ModelDesingerUpdateView(generic.UpdateView):
+    model = models.model
 
-def save_designer(request, model_pk):
-    return HttpResponse("Save designer " + model_pk)
+class ModelDesingerDeleteView(generic.UpdateView):
+    model = models.model
 
-def update_designer(request, model_pk):
-    return HttpResponse("Update designer " + model_pk)
+#==============================================================================
+#  Model Parameters
+#==============================================================================
 
-def parameters(request, model_pk):
-    return HttpResponse("Parameters for model " + model_pk)
+class ParametersDetailView(generic.DetailView):
+    model = models.model_parameters
+    
+    fields = [
+        'model',
+        'status'
+        ]
 
-def flow_compartment(request, flow_compartment_pk):
-    return HttpResponse("Flow  " + flow_compartment_pk)
+class ParameterRedirectView(generic.RedirectView):
+    model = models.model_parameters
+    
+    fields = [
+        'model',
+        'status'
+        ]
+    
+#==============================================================================
+#  Compartment
+#==============================================================================
 
-def sink(request, sink_pk):
-    return HttpResponse("Sink " + sink_pk)
+class CompartmentDetailView(generic.DetailView):
+    model = models.compartment
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'log_inflows',
+        'categories'
+        ]
+    
+class CompartmentCreateView(generic.CreateView):
+    model = models.compartment
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'log_inflows',
+        'categories'
+        ]
+    
+class CompartmentUpdateView(generic.UpdateView):
+    model = models.compartment
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'log_inflows',
+        'categories'
+        ]
+    
+class CompartmentDeleteView(generic.DeleteView):
+    model = models.compartment
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'log_inflows',
+        'categories'
+        ]
+    
+#==============================================================================
+#  Flow Compartment
+#==============================================================================
 
-def stock(request, stock_pk):
-    return HttpResponse("Stock " + stock_pk)
+class FlowCompartmentDetailView(generic.DetailView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+    
+class FlowCompartmentDetailView(generic.CreateView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+    
+class FlowCompartmentUpdateView(generic.UpdateView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
 
-def list_inflow(request, inflow_pk):
-    return HttpResponse("external_list_inflow: " + inflow_pk)
+class FlowCompartmentDeleteView(generic.DeleteView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+    
+#==============================================================================
+#  Stock
+#==============================================================================
 
-def function_inflow(request, inflow_pk):
-    return HttpResponse("external_function_inflow: " + inflow_pk)
+class StockDetailView(generic.DetailView):
+    model = models.stock
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'local_release',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
 
+class StockUpdateView(generic.UpdateView):
+    model = models.stock
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'local_release',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+    
+class StockDeleteView(generic.DeleteView):
+    model = models.stock
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'local_release',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+
+#==============================================================================
+#  Sink
+#==============================================================================
+
+class SinkDetailView(generic.DetailView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+    
+class SinkUpdateView(generic.UpdateView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+
+class SinkDeleteView(generic.DeleteView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+    
+#==============================================================================
+#  Releases
+#==============================================================================
+
+# Local Release
+
+class LocalReleaseDetailView(generic.DetailView):
+    model = models.local_release
+    
+    fields = [
+        'stock_of_local_release',
+        'name',
+        'delay'
+        ]
+    
+# Fixed Rate Release
+
+class FixedRateReleaseDetailView(generic.DetailView):
+    model = models.fixed_rate_release
+    
+    fields = [
+        'stock_of_local_release',
+        'name',
+        'delay',
+        'fixed_rate_release'
+        ]
+    
+# List Release
+
+class FixedRateReleaseDetailView(generic.DetailView):
+    model = models.fixed_rate_release
+    
+    fields = [
+        'stock_of_local_release',
+        'name',
+        'delay',
+        'fixed_rate_release'
+        ]
+    
+# Function Release
+
+class FunctionReleaseDetailView(generic.DetailView):
+    model = models.function_release
+    
+    fields = [
+        'stock_of_local_release',
+        'name',
+        'delay',
+        'fixed_rate_release',
+        'function_release'
+        ]
+    
 #==============================================================================
 #  Transfers
 #==============================================================================
@@ -318,7 +608,212 @@ class StochasticTransferDeleteView(generic.DeleteView):
         'function'
         ]    
     
+#==============================================================================
+#  External Inflows
+#==============================================================================
 
+# External Inflow
+
+class ExternalInflowDetailView(generic.DetailView):
+    model = models.external_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+
+class ExternalInflowCreateView(generic.CreateView):
+    model = models.external_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+    
+class ExternalInflowUpdateView(generic.UpdateView):
+    model = models.external_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+    
+class ExternalInflowDeleteView(generic.DeleteView):
+    model = models.external_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+    
+# External List Inflow
+
+class ExternalListInflowDetailView(generic.DetailView):
+    model = models.external_list_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+
+class ExternalListInflowCreateView(generic.CreateView):
+    model = models.external_list_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+    
+class ExternalListInflowUpdateView(generic.UpdateView):
+    model = models.external_list_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+    
+class ExternalListInflowDeleteView(generic.DeleteView):
+    model = models.external_list_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor'
+        ]
+
+# External Function Inflow
+
+class ExternalFunctionInflowDetailView(generic.DetailView):
+    model = models.external_function_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor',
+        'inflow_function',
+        'basic_inflow'
+        ]
+
+class ExternalFunctionInflowCreateView(generic.CreateView):
+    model = models.external_list_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor',
+        'inflow_function',
+        'basic_inflow'
+        ]
+    
+class ExternalFunctionInflowUpdateView(generic.UpdateView):
+    model = models.external_list_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor',
+        'inflow_function',
+        'basic_inflow'
+        ]
+
+class ExternalFunctionInflowDeleteView(generic.DeleteView):
+    model = models.external_list_inflow
+    
+    fields = [
+        'target',
+        'name',
+        'start_delay',
+        'derivation_distribution',
+        'derivation_parameters',
+        'derivation_factor',
+        'inflow_function',
+        'basic_inflow'
+        ]
+    
+#==============================================================================
+#  Single Period Inflow
+#==============================================================================
+
+class SinglePeriodInflowDetailView(generic.DetailView):
+    model = models.single_period_inflow
+    
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period'
+        ]
+    
+class FixedValueInflowDetailView(generic.DetailView):
+    model = models.single_period_inflow
+    
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period',
+        'value'
+        ]
+    
+class StochasticInflowDetailView(generic.DetailView):
+    model = models.stochastic_inflow
+    
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period',
+        'pdf',
+        'parameter_values'
+        ]
+
+class RandomChoiceInflowDetailView(generic.DetailView):
+    model = models.random_choice_inflow
+    
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period',
+        'sample'
+        ]
+    
 #==============================================================================
 #  Simulation
 #==============================================================================
@@ -358,6 +853,18 @@ class SimulationDeleteView(generic.DeleteView):
         'runs',
         'periods',
         ]
+    
+#==============================================================================
+#  Flow Compartment Records
+#==============================================================================
+
+# Implement when needed
+
+#==============================================================================
+#  Stock Records
+#==============================================================================
+
+# Implement when needed
     
 #==============================================================================
 #  Results
