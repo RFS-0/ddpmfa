@@ -6,18 +6,20 @@ urlpatterns = [
     # ex: /home/
     url(r'(?:^$)|(?:^home/$)', views.HomeView.as_view(), name='home'),
     # ex: /project/
-    url(r'^projects/$', views.ProjectsView.as_view(), name='project_list'),
+    url(r'^projects/$', views.ProjectsView.as_view(), name='projects'),
     # ex: /project/123
     url(r'^project/(?P<pk>[0-9]+)/$', views.ProjectView.as_view(), name='project'),
     # ex: /project/new
-    url(r'^project/new/$', views.new_project, name='new_project'),
+    url(r'^project/new/$', views.ProjectCreateView.as_view(), name='new_project'),
+    # ex: /project/update
+    url(r'^project/(?P<pk>[0-9]+)/edit/$', views.ProjectUpdateView.as_view(), name='update_project'),
     # ex: /project/123/delete
-    url(r'^project/(?P<project_pk>[0-9]+)/delete/$', views.delete_project, name='delete_project'),
+    url(r'^project/(?P<pk>[0-9]+)/delete/$', views.ProjectDeleteView.as_view(), name='delete_project'),
     # ex: /project/123/model/new
-    url(r'^project/(?P<project_pk>[0-9]+)/model/new/$', views.new_model, name='new_model'),
+    url(r'^project/(?P<project_pk>[0-9]+)/model/new/$', views.ModelCreateView.as_view(), name='new_model'),
 
     # ex: /model/123
-    url(r'^model/(?P<pk>[0-9]+)/$', views.ModelUpdateView.as_view(), name='model'),
+    url(r'^model/(?P<pk>[0-9]+)/$', views.ModelView.as_view(), name='model'),
     # ex: /model/123/delete
     url(r'^model/(?P<model_pk>[0-9]+)/delete/$', views.delete_model, name='delete_model'),
     # ex: /model/123/designer
