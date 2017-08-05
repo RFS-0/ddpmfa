@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 class Command(BaseCommand):
     
     def handle(self, *args, **options):
-        iot_project = project.objects.filter(name='IoT project')
         iot_user = User.objects.filter(username='admin')
         
         if len(iot_user) < 1:
@@ -16,17 +15,11 @@ class Command(BaseCommand):
             
             admin.save()
         
-        if len(iot_project) >= 1:
-            self.stdout.write("The IoT project already exists\n", ending='')
-            self.stdout.write("Exiting without any changes to db\n", ending='')
-            self.stdout.write("Bye", ending='')
-            return
-        
         # creation of the project
         iot_project = project(
             name = 'IoT project',
             description = 'This is the description of the IoT project. It is great. Very great.')
-        
+            
         iot_project.save()
         
         # creation of the model
