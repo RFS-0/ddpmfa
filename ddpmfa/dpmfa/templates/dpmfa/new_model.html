@@ -12,27 +12,6 @@
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
-
-    <h2>Limited Control over Form Rendering</h2>
-
-    <div class="alert alert-danger">
-        Form below looks nicer, but does not work.
-        For nice Bootstrap forms we could use
-        <a href="https://github.com/django-crispy-forms/django-crispy-forms">Crispy Forms</a>
-        (didn't try). Could also just style the Django forms.
-    </div>
-
-    <form>
-        <div class="form-group">
-            <label for="model-name">Name</label>
-            <input type="text" class="form-control" id="model-name" />
-        </div>
-        <div class="form-group">
-            <label for="model-description">Description</label>
-            <textarea class="form-control" id="model-description"></textarea>
-        </div>
-        <button type="submit" class="btn btn-default">Create</button>
-    </form>
 </div>
 
 {% endblock %}

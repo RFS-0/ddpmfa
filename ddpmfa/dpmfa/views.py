@@ -2,7 +2,9 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 import dpmfa.forms as forms
 import dpmfa.models as models
@@ -24,91 +26,49 @@ class ProjectView(DetailView):
     template_name = 'dpmfa/project.html'
 
 
-#def projects(request):
-#    context = {}
-#    context['projects'] = models.project.objects.all()
-#    return render(request, 'dpmfa/projects.html', context)
+class ProjectCreateView(CreateView):
+    model = models.project
+    fields = ['name', 'description']
+    template_name = 'dpmfa/new_project.html'
+    success_url = reverse_lazy('dpmfa:projects')
 
-#def project(request, project_pk):
-#    context = {}
-#    context['project'] = get_object_or_404(models.project, pk=project_pk)
-#    #context['message'] = models.project.objects.all().count()
-#    return render(request, 'dpmfa/project.html', context)
 
-def new_project(request):
-    context = {}
+class ProjectUpdateView(UpdateView):
+    model = models.project
+    fields = ['name', 'description']
+    template_name = 'dpmfa/update_project.html'
+    success_url = reverse_lazy('dpmfa:projects')
 
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = forms.project_form(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            project = models.project(name=form.cleaned_data['name'], description=form.cleaned_data['description'])
-            project.save()
 
-            messages.success(request, 'New project "%s" was created.' % project.name)
-#            messages.error(request, 'This would be an error message')
-#            messages.debug(request, 'This would be a debug message')
-#            messages.info(request, 'This would be an info message')
-#            messages.warning(request, 'This would be a warning message')
+class ProjectDeleteView(DeleteView):
+    model = models.project
+    success_url = reverse_lazy('dpmfa:projects')
 
-            return HttpResponseRedirect('/dpmfa/projects/')
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = forms.project_form()
+class ModelView(DetailView):
+    model = models.model
+    template_name = 'dpmfa/model.html'
 
-    context['form'] = form
 
-    return render(request, 'dpmfa/new_project.html', context)
+class ModelCreateView(CreateView):
+    model = models.model
+    template_name = 'dpmfa/new_model.html'
+    fields = ['name', 'description']
 
-def delete_project(request, project_pk):
-    project = get_object_or_404(models.project, pk=project_pk)
-    project_name = project.name
-    project.delete()
-    messages.success(request, 'New project "%s" was deleted.' % project_name)
-    return HttpResponseRedirect('/dpmfa/projects/')
+    # Change!
+    # success_url = reverse_lazy('dpmfa:project', model.project_id)
 
-def new_model(request, project_pk):
-    context = {}
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:project', kwargs={'pk': self.kwargs['project_pk']})
+    
+    def form_valid(self, form):
+        model = form.save(commit = False)
+        model.project_id = self.kwargs['project_pk']
+        return super(ModelCreateView, self).form_valid(form)
 
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = forms.model_form(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            model = models.model(name=form.cleaned_data['name'], description=form.cleaned_data['description'])
-            model.save()
 
-            messages.success(request, 'New model "%s" was created.' % model.name)
-#            messages.error(request, 'This would be an error message')
-#            messages.debug(request, 'This would be a debug message')
-#            messages.info(request, 'This would be an info message')
-#            messages.warning(request, 'This would be a warning message')
 
-            return HttpResponseRedirect('/dpmfa/project/'+project_pk)
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = forms.model_form()
-
-    context['form'] = form
-
-    return render(request, 'dpmfa/new_model.html', context)
-
-def model(request, model_pk):
-    context = {}
-    context['model'] = get_object_or_404(models.model, pk=model_pk)
-    #context['message'] = models.project.objects.all().count()
-    return render(request, 'dpmfa/model.html', context)
 
 def delete_model(request, model_pk):
     return HttpResponse("Delete model " + model_pk)

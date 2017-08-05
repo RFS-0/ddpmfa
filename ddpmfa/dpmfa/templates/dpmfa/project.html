@@ -5,6 +5,60 @@
 
 {% block body %}
 
-Cool project: {{project.name}}
+<div class="container" xmlns="http://www.w3.org/1999/html">
+    <h1>Project {{ project.name }}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == "success" or message.tags == "warning" %}{{ message.tags }}{% elif message.tags == "error" %}danger{% else %}info{% endif %}">{{ message }}</div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-xs-12 dpfma-pre-wrap">{{ project.description }}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-9"><h2>Models</h2></div>
+        <div class="col-xs-12 col-sm-3 text-right">
+            <a href="{% url "dpmfa:new_model" project.pk %}" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                New Model
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            {% if project.models.all %}
+                <table class="table table-stiped table-hover table-responsive">
+                   <thead class="thead-inverse">
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                   </thead>
+                   <tbody>
+                    {% for  model in project.models.all %}
+                        <tr>
+                            <td><a href="{% url 'dpmfa:model' model.pk %}">{{ model.name }}</a></td>
+                            <td class="dpfma-pre-wrap">{{ model.description }}</td>
+                            <td>
+                                 <a href="{% url "dpmfa:model" model.pk %}" class="btn btn-default" data-toggle="tooltip" title="Show">
+                                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                   </tbody>
+               </table>
+            {% else %}
+                <div class="alert alert-info">There are no models</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
