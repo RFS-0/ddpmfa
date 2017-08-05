@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^project/(?P<project_pk>[0-9]+)/model/new/$', views.new_model, name='new_model'),
 
     # ex: /model/123
-    url(r'^model/(?P<model_pk>[0-9]+)/$', views.model, name='model'),
+    url(r'^model/(?P<pk>[0-9]+)/$', views.ModelUpdateView.as_view()),
     # ex: /model/123/delete
     url(r'^model/(?P<model_pk>[0-9]+)/delete/$', views.delete_model, name='delete_model'),
     # ex: /model/123/designer
@@ -42,21 +42,89 @@ urlpatterns = [
     # ex: /function_inflow/123
     url(r'^function_inflow/(?P<inflow_pk>[0-9]+)/$', views.function_inflow, name='function_inflow'),
 
-    # ex: /constant_transfer/123
-    url(r'^constant_transfer/(?P<transfer_pk>[0-9]+)/$', views.constant_transfer, name='constant_transfer'),
-    # ex: /random_choice_transfer/123
-    url(r'^random_choice_transfer/(?P<transfer_pk>[0-9]+)/$', views.random_choice_transfer, name='random_choice_transfer'),
-    # ex: /aggregated_transfer/123
-    url(r'^aggregated_transfer/(?P<transfer_pk>[0-9]+)/$', views.aggregated_transfer, name='aggregated_transfer'),
-    # ex: /stochastic_transfer/123
-    url(r'^stochastic_transfer/(?P<transfer_pk>[0-9]+)/$', views.stochastic_transfer, name='stochastic_transfer'),
+#==============================================================================
+#  Transfers
+#==============================================================================
 
-    # ex: /model/123/simulation
-    url(r'^model/(?P<model_pk>[0-9]+)/simulation/$', views.simulation, name='simulation'),
-    # ex: /model/123/simulation/run
-    url(r'^model/(?P<model_pk>[0-9]+)/simulation/run/$', views.run_simulation, name='run_simulation'),
+# Constant 
+
+    # ex: /constant_transfer/123/detail
+    url(r'^constant_transfer/(?P<pk>[0-9]+)/detail$', views.ConstantTransferDetailView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /constant_transfer/123/create
+    url(r'^constant_transfer/(?P<pk>[0-9]+)/create$', views.ConstantTransferCreateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /constant_transfer/123/update
+    url(r'^constant_transfer/(?P<pk>[0-9]+)/update$', views.ConstantTransferUpdateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /constant_transfer/123/delete
+    url(r'^constant_transfer/(?P<pk>[0-9]+)/delete$', views.ConstantTransferDeleteView.as_view(), name='constant-transfer-detail'),
+    
+    
+    
+# Random Choice
+   
+    # ex: /random_choice_transfer/123/detail
+    url(r'^random_choice_transfer/(?P<pk>[0-9]+)/detail$', views.RandomChoiceTransferDetailView.as_view(), name='random-choice-transfer-detail'),
+    
+    # ex: /random_choice_transfer/123/create
+    url(r'^random_choice_transfer/(?P<pk>[0-9]+)/create$', views.RandomChoiceTransferCreateView.as_view(), name='random-choice-transfer-create'),
+    
+    # ex: /random_choice_transfer/123/update
+    url(r'^random_choice_transfer/(?P<pk>[0-9]+)/update$', views.RandomChoiceTransferUpdateView.as_view(), name='random-choice-transfer-update'),
+    
+    # ex: /random_choice_transfer/123/delete
+    url(r'^random_choice_transfer/(?P<pk>[0-9]+)/delete$', views.RandomChoiceTransferDeleteView.as_view(), name='random-choice-transfer-delete'),
+    
+# Aggregated
+    
+    # ex: /aggregated_transfer/123/detail
+    url(r'^aggregated_transfer/(?P<pk>[0-9]+)/detail$', views.AggregatedTransferDetailView.as_view(), name='aggregated-transfer-detail'),
+   
+    # ex: /aggregated_transfer/123/create
+    url(r'^aggregated_transfer/(?P<pk>[0-9]+)/create$', views.AggregatedTransferCreateView.as_view(), name='aggregated-transfer-create'),
+   
+    # ex: /aggregated_transfer/123/update
+    url(r'^aggregated_transfer/(?P<pk>[0-9]+)/update$', views.AggregatedTransferUpdateView.as_view(), name='aggregated-transfer-update'),
+   
+    # ex: /aggregated_transfer/123/delete
+    url(r'^aggregated_transfer/(?P<pk>[0-9]+)/delete$', views.AggregatedTransferDeleteView.as_view(), name='aggregated-transfer-delete'),
+   
+# Stochastic 
+    
+    # ex: /stochastic_transfer/123/detail
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/detail$', views.StochasticTransferDetailView.as_view(), name='stochastic-transfer'),
+    
+    # ex: /stochastic_transfer/123/create
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/create$', views.StochasticTransferCreateView.as_view(), name='stochastic-transfer'),
+    
+    # ex: /stochastic_transfer/123/update
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/update$', views.StochasticTransferUpdateView.as_view(), name='stochastic-transfer'),
+    
+    # ex: /stochastic_transfer/123/delete
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/delete$', views.StochasticTransferDeleteView.as_view(), name='stochastic-transfer'),
+
+#==============================================================================
+#  Simulation
+#==============================================================================
+
+    # ex: /simulation/12/detail
+    url(r'^simulation/(?P<pk>[0-9]+)/detail', views.SimulationDetailView.as_view(), name='simulation'),
+    
+    # ex: /simulation/12/create
+    url(r'^simulation/(?P<pk>[0-9]+)/create$', views.SimulationCreateView.as_view(), name='simulation'),
+    
+    # ex: /simulation/12/update
+    url(r'^simulation/(?P<pk>[0-9]+)/update', views.SimulationUpdateView.as_view(), name='simulation'),
+    
+    # ex: /simulation/12/delete
+    url(r'^simulation/(?P<pk>[0-9]+)/update$', views.SimulationDeleteView.as_view(), name='simulation'),
+
+#==============================================================================
+#  Results
+#==============================================================================
 
     # ex: /model/123/results
-    url(r'^model/(?P<model_pk>[0-9]+)/results/$', views.results, name='results'),
+    url(r'^model/(?P<pk>[0-9]+)/results/$', views.ResultsDetailView.as_view(), name='results'),
 
 ]

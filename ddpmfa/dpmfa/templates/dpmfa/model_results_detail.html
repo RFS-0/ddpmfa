@@ -1,0 +1,11 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block body %} 
+
+<h1>Results of model {{ model.name }}</h1>
+
+<p> This beautiful model has been created on {{model.evt_created}}</p>
+<p> It belongs to {{ model.project }}
+
+{% endblock %}

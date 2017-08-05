@@ -2,23 +2,23 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views import generic
 
 import dpmfa.forms as forms
 import dpmfa.models as models
 
 
-class HomeView(TemplateView):
+class HomeView(generic.TemplateView):
     template_name = 'dpmfa/home.html'
 
 
-class ProjectsView(ListView):
+class ProjectsView(generic.ListView):
     model = models.project
     context_object_name = 'projects'
     template_name = 'dpmfa/projects.html'
 
 
-class ProjectView(DetailView):
+class ProjectView(generic.DetailView):
     model = models.project
     context_object_name = 'project'
     template_name = 'dpmfa/project.html'
@@ -104,11 +104,14 @@ def new_model(request, project_pk):
 
     return render(request, 'dpmfa/new_model.html', context)
 
-def model(request, model_pk):
-    context = {}
-    context['model'] = get_object_or_404(models.model, pk=model_pk)
-    #context['message'] = models.project.objects.all().count()
-    return render(request, 'dpmfa/model.html', context)
+class ModelUpdateView(generic.UpdateView):
+    model = models.model
+    
+    fields = ['project', 
+              'name',
+              'description',
+              'seed'
+             ]
 
 def delete_model(request, model_pk):
     return HttpResponse("Delete model " + model_pk)
@@ -140,69 +143,271 @@ def list_inflow(request, inflow_pk):
 def function_inflow(request, inflow_pk):
     return HttpResponse("external_function_inflow: " + inflow_pk)
 
-def constant_transfer(request, transfer_pk):
-    return HttpResponse("constant_transfer: " + transfer_pk)
+#==============================================================================
+#  Transfers
+#==============================================================================
 
-def random_choice_transfer(request, transfer_pk):
-    return HttpResponse("random_choice_transfer: " + transfer_pk)
+# Constant
 
-def aggregated_transfer(request, transfer_pk):
-    return HttpResponse("aggregated_transfer: " + transfer_pk)
-
-def stochastic_transfer(request, transfer_pk):
-    return HttpResponse("stochastic_transfer: " + transfer_pk)
-
-def simulation(request, model_pk):
-    return HttpResponse("Simulation for model " + model_pk)
-
-def run_simulation(request, model_pk):
-    return HttpResponse("Run simulation for model " + model_pk)
-
-def results(request, model_pk):
-    return HttpResponse("Results for model " + model_pk)
-
-"""
-def project_administration(request):
-    return HttpResponse("You are at the project administration site. Here you can add and edit projects.")
-
-def project_overview(request, project_name):
-    return HttpResponse("You are at the project overview site of project: %s" % project_name)
-
-def model_overview(request, model_name):
-    primary_key = model_name
-    model = get_object_or_404(Model, pk=primary_key)
-    model_attributes = {} 
-    model_attributes['Name of the model: '] = model.name
-    model_attributes['Description of the model: '] = model.description
-    context = {
-    'primary_key': primary_key,
-    'model_attributes': model_attributes,
-    }
+class ConstantTransferDetailView(generic.DetailView):
+    model = models.constant_transfer
     
-    return render(request, 'dpmfa/model_overview.html', context)
-"""
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'value'
+        ]
 
-"""def model_configuratio(request, model_name):
-    try:
-<<<<<<< HEAD
-        model = model.objects.get(pk=project_name)
-        latest_model_list = model.objects.order_by('-evt_created')[:5]
-=======
-        model = Model.objects.get(pk=model_name)
->>>>>>> refs/heads/master
-        context = {
-<<<<<<< HEAD
-        'latest_model_list': latest_model_list,
-        }
+class ConstantTransferCreateView(generic.CreateView):
+    model = models.constant_transfer
     
-    except model.DoesNotExist:
-        raise Http404("Model does not exist")
-=======
-        'model_attributes': model_attributes,
-            }
-          
-    except Model.DoesNotExist:
-        raise Http404("This model does not exist.")
->>>>>>> refs/heads/master
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'value'
+        ]
     
-    return render(request, )"""
+class ConstantTransferUpdateView(generic.UpdateView):
+    model = models.constant_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'value'
+        ]
+    
+class ConstantTransferDeleteView(generic.DeleteView):
+    model = models.constant_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'value'
+        ]
+    
+# Random Choice
+
+class RandomChoiceTransferDetailView(generic.DetailView):
+    model = models.random_choice_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'sample'
+        ]
+
+class RandomChoiceTransferCreateView(generic.CreateView):
+    model = models.random_choice_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'sample'
+        ]
+
+class RandomChoiceTransferUpdateView(generic.UpdateView):
+    model = models.random_choice_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'sample'
+        ]
+
+class RandomChoiceTransferDeleteView(generic.UpdateView):
+    model = models.random_choice_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'sample'
+        ]
+
+# Aggregated
+
+class AggregatedTransferDetailView(generic.DetailView):
+    model = models.aggregated_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight'
+        ]
+    
+class AggregatedTransferCreateView(generic.CreateView):
+    model = models.aggregated_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight'
+        ]
+
+class AggregatedTransferUpdateView(generic.UpdateView):
+    model = models.aggregated_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight'
+        ]
+    
+class AggregatedTransferDeleteView(generic.DeleteView):
+    model = models.aggregated_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight'
+        ]
+
+# Stochastic
+
+class StochasticTransferDetailView(generic.DetailView):
+    model = models.stochastic_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'parameters',
+        'function'
+        ]
+
+class StochasticTransferCreateView(generic.CreateView):
+    model = models.stochastic_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'parameters',
+        'function'
+        ]    
+    
+class StochasticTransferUpdateView(generic.UpdateView):
+    model = models.stochastic_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'parameters',
+        'function'
+        ]    
+    
+class StochasticTransferDeleteView(generic.DeleteView):
+    model = models.stochastic_transfer
+    
+    fields = [
+        'target',
+        'belongs_to_aggregated_transfer',
+        'name',
+        'priority',
+        'current_tc',
+        'weight',
+        'parameters',
+        'function'
+        ]    
+    
+
+#==============================================================================
+#  Simulation
+#==============================================================================
+    
+class SimulationDetailView(generic.DetailView):
+    model = models.simulation
+    
+    fields = [
+        'model',
+        'runs',
+        'periods',
+        ]
+    
+class SimulationCreateView(generic.CreateView):
+    model = models.simulation
+    
+    fields = [
+        'model',
+        'runs',
+        'periods',
+        ]
+    
+class SimulationUpdateView(generic.UpdateView):
+    model = models.simulation
+    
+    fields = [
+        'model',
+        'runs',
+        'periods',
+        ]
+    
+class SimulationDeleteView(generic.DeleteView):
+    model = models.simulation
+    
+    fields = [
+        'model',
+        'runs',
+        'periods',
+        ]
+    
+#==============================================================================
+#  Results
+#==============================================================================
+
+class ResultsDetailView(generic.DetailView):
+    model = models.model
+    template_name = 'dpmfa/model_results_detail.html'

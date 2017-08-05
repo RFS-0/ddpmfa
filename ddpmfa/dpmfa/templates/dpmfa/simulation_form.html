@@ -1,0 +1,11 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %}Simulation of model {{simulation.name}}{% endblock %}
+
+{% block body %}
+
+<p>This is the simulation of model {{ simulation.model.name }} in {{ simulation.model.project.name }} </p>
+<p>This it has {{ simulation.runs }} runs </p>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %} Constant transfer {{constant_transfer.name}} {% endblock %}
+
+{% block body %}
+
+<h1>Constant transfer {{ constant_transfer.name }}</h1>
+
+<p>This constant transfer belongs to model: {{ constant_transfer.target.model }} </p>
+
+{% endblock %}

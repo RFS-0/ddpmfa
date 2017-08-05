@@ -1,8 +1,11 @@
 from django.db import models
 from django.db.models.fields import CharField
+
 from django.core.validators import int_list_validator
 from django.utils import timezone
 from .validators.validator import alpha_numeric_list_validator
+
+from django.urls import reverse
 
 class model(models.Model):
     project = models.ForeignKey(
@@ -30,6 +33,9 @@ class model(models.Model):
     
     def __str__(self):
         return self.name + ' (' + str(str(self.pk)) + ')'
+    
+    def get_absolute_url(self):
+        return reverse('model', kwargs={'pk': self.pk})
 
 class compartment(models.Model):
     model = models.ForeignKey(
