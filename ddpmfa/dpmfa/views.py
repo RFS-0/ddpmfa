@@ -53,10 +53,11 @@ def new_project(request):
     return render(request, 'dpmfa/new_project.html', context)
 
 def delete_project(request, project_pk):
-    context = {}
-    context['project'] = get_object_or_404(models.project, pk=project_pk)
-    context['project'].delete()
-    return render(request, 'dpmfa/delete_project.html', context)
+    project = get_object_or_404(models.project, pk=project_pk)
+    project_name = project.name
+    project.delete()
+    messages.success(request, 'New project "%s" was deleted.' % project_name)
+    return HttpResponseRedirect('/dpmfa/projects/')
 
 def new_model(request, project_pk):
     return HttpResponse("New model for project " + project_pk)
