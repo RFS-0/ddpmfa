@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 
 import dpmfa.forms as forms
 import dpmfa.models as models

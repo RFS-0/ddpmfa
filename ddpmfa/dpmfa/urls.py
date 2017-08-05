@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^project/(?P<project_pk>[0-9]+)/model/new/$', views.new_model, name='new_model'),
 
     # ex: /model/123
-    url(r'^model/(?P<pk>[0-9]+)/$', views.ModelUpdateView.as_view()),
+    url(r'^model/(?P<pk>[0-9]+)/$', views.ModelView.as_view(), name='model'),
     # ex: /model/123/delete
     url(r'^model/(?P<model_pk>[0-9]+)/delete/$', views.delete_model, name='delete_model'),
     # ex: /model/123/designer

@@ -1,0 +1,17 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %}Model{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h1>Delete Project?</h1>
+
+    <form action="" method="post">{% csrf_token %}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input type="submit" value="Confirm" class="btn btn-default" />
+    </form>
+</div>
+
+{% endblock %}
