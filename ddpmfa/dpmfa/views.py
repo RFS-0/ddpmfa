@@ -2,24 +2,38 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.views.generic import TemplateView, ListView, DetailView
 
 import dpmfa.forms as forms
 import dpmfa.models as models
 
-def home(request):
-    context = {}
-    return render(request, 'dpmfa/home.html', context)
 
-def projects(request):
-    context = {}
-    context['projects'] = models.project.objects.all()
-    return render(request, 'dpmfa/projects.html', context)
+class HomeView(TemplateView):
+    template_name = 'dpmfa/home.html'
 
-def project(request, project_pk):
-    context = {}
-    context['project'] = get_object_or_404(models.project, pk=project_pk)
-    #context['message'] = models.project.objects.all().count()
-    return render(request, 'dpmfa/project.html', context)
+
+class ProjectsView(ListView):
+    model = models.project
+    context_object_name = 'projects'
+    template_name = 'dpmfa/projects.html'
+
+
+class ProjectView(DetailView):
+    model = models.project
+    context_object_name = 'project'
+    template_name = 'dpmfa/project.html'
+
+
+#def projects(request):
+#    context = {}
+#    context['projects'] = models.project.objects.all()
+#    return render(request, 'dpmfa/projects.html', context)
+
+#def project(request, project_pk):
+#    context = {}
+#    context['project'] = get_object_or_404(models.project, pk=project_pk)
+#    #context['message'] = models.project.objects.all().count()
+#    return render(request, 'dpmfa/project.html', context)
 
 def new_project(request):
     context = {}

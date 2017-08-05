@@ -4,11 +4,11 @@ from . import views
 app_name = 'dpmfa'
 urlpatterns = [
     # ex: /home/
-    url(r'(?:^$)|(?:^home/$)', views.home, name='home'),
+    url(r'(?:^$)|(?:^home/$)', views.HomeView.as_view(), name='home'),
     # ex: /project/
-    url(r'^projects/$', views.projects, name='projects'),
+    url(r'^projects/$', views.ProjectsView.as_view(), name='project_list'),
     # ex: /project/123
-    url(r'^project/(?P<project_pk>[0-9]+)/$', views.project, name='project'),
+    url(r'^project/(?P<pk>[0-9]+)/$', views.ProjectView.as_view(), name='project'),
     # ex: /project/new
     url(r'^project/new/$', views.new_project, name='new_project'),
     # ex: /project/123/delete
