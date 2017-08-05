@@ -9,8 +9,7 @@ class model(models.Model):
         to='project', 
         related_name='models', 
         verbose_name='project', 
-        on_delete=models.CASCADE,
-        null=True)
+        on_delete=models.CASCADE)
     
     name = models.CharField(
         verbose_name='Name',
@@ -30,7 +29,7 @@ class model(models.Model):
          auto_now=True)
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(str(self.pk)) + ')'
 
 class compartment(models.Model):
     model = models.ForeignKey(
@@ -62,7 +61,7 @@ class compartment(models.Model):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(str(self.pk)) + ')'
     
 class flow_compartment(compartment):
     adjust_outgoing_tcs = models.BooleanField(
@@ -74,6 +73,12 @@ class flow_compartment(compartment):
     
     
 class local_release(models.Model):
+    stock_of_local_release = models.ForeignKey(
+        to='stock', 
+        related_name='local_release_transfer', 
+        null=True, 
+        on_delete=models.CASCADE)
+    
     name = CharField(
         verbose_name='Local release', 
         default='local release', 
@@ -83,7 +88,7 @@ class local_release(models.Model):
         null=True)
        
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
 
 class stock(flow_compartment):
     local_release = models.OneToOneField(
@@ -95,7 +100,7 @@ class stock(flow_compartment):
 class sink(compartment):
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
     
 class fixed_rate_release(local_release):
@@ -146,7 +151,7 @@ class transfer(models.Model):
         null=True)   
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 class constant_transfer(transfer):
     value = models.FloatField(
@@ -154,7 +159,7 @@ class constant_transfer(transfer):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 class random_choice_transfer(transfer):
     # TODO [all]: we will have to implement a float list validator 
@@ -164,7 +169,7 @@ class random_choice_transfer(transfer):
         max_length=250, null=True)
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 class stochastic_transfer(transfer):
     parameters = models.CharField(
@@ -178,12 +183,12 @@ class stochastic_transfer(transfer):
         max_length=250)
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 class aggregated_transfer(transfer):
         
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 class external_inflow(models.Model):
     target = models.ForeignKey(
@@ -214,12 +219,12 @@ class external_inflow(models.Model):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
         
 class external_list_inflow(external_inflow):
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 class external_function_inflow(external_inflow):
     # TODO [all]: we will have to implement a function field to store functions
@@ -233,7 +238,7 @@ class external_function_inflow(external_inflow):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 
 class single_period_inflow(models.Model):
@@ -251,6 +256,9 @@ class single_period_inflow(models.Model):
         verbose_name='Period', 
         null=True)
     
+    def __str__(self):
+        return 'primary key: ' + ' (' + str(self.pk) + ')'
+    
 class fixed_value_inflow(single_period_inflow):
     value = models.FloatField(
         verbose_name='the inflow value', 
@@ -266,19 +274,12 @@ class stochastic_inflow(single_period_inflow):
         verbose_name='Pdf parameter values', 
         max_length=250, null=True) 
     
-    def __str__(self):
-        return self.name + ' (' + self.pk + ')'
-    
 class random_choice_inflow(single_period_inflow):
     # TODO [all]: we will have to implement a float list validator
     sample = models.CharField(
         verbose_name='Sample', 
         max_length=250, 
         null=True)
-                
-    def __str__(self):
-        return self.name + ' (' + self.pk + ')'
-
 
 class project(models.Model):
     name = models.CharField(
@@ -288,6 +289,10 @@ class project(models.Model):
     description = models.TextField(
         verbose_name='Description', 
         null=True)
+    
+    def __str__(self):
+        return self.name + ' (' + str(self.pk) + ')'
+    
 
 class simulation(models.Model):
     model = models.ForeignKey(
@@ -310,6 +315,9 @@ class simulation(models.Model):
         verbose_name='Time of last change', 
         auto_now=True, 
         null=True)
+    
+    def __str__(self):
+        return self.name + ' (' + str(self.pk) + ')'
 
 class flow_compartment_outflow_record(models.Model):
     flow_compartment = models.ForeignKey(
@@ -328,6 +336,9 @@ class flow_compartment_outflow_record(models.Model):
     amount = models.FloatField(
         verbose_name="Amount", 
         null=True)
+    
+    def __str__(self):
+        return 'primary key: ' + ' (' + str(self.pk) + ')'
 
 class compartment_inflow_record(models.Model):
     compartment = models.ForeignKey(
@@ -347,6 +358,9 @@ class compartment_inflow_record(models.Model):
         verbose_name="Amount", 
         null=True)
     
+    def __str__(self):
+        return 'primary key: ' + ' (' + str(self.pk) + ')'
+    
     
 class compartment_inventory_record(models.Model):
     compartment = models.ForeignKey(
@@ -365,6 +379,9 @@ class compartment_inventory_record(models.Model):
     amount = models.FloatField(
         verbose_name="Amount", 
         null=True)
+    
+    def __str__(self):
+        return 'primary key: ' + ' (' + str(self.pk) + ')'
 
 
 class stock_immediate_flow_record(models.Model):
@@ -384,3 +401,6 @@ class stock_immediate_flow_record(models.Model):
     amount = models.FloatField(
         verbose_name="Amount", 
         null=True)
+    
+    def __str__(self):
+        return 'primary key: ' + ' (' + str(self.pk) + ')'
