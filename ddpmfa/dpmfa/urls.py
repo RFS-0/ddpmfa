@@ -66,79 +66,89 @@ urlpatterns = [
     url(r'^designer/(?P<pk>[0-9]+)/delete$', views.ModelDesingerDeleteView.as_view(), name='designer-update'),
     
 #==============================================================================
-#  Parameters
+#  Model Parameters
 #==============================================================================
 
     # ex: /model/123/parameters
     url(r'^model/(?P<model_pk>[0-9]+)/parameters/$', views.ParametersDetailView.as_view(), name='parameters'),
 
 #==============================================================================
+#  Compartment
+#==============================================================================
+
+    # ex: /compartment/12/detail
+    url(r'^compartment/(?P<model_pk>[0-9]+)/detail$', views.CompartmentDetailView.as_view(), name='compartment-detail'),
+
+    # ex: /compartment/create
+    url(r'^compartment/create$', views.CompartmentCreateView.as_view(), name='compartment-detail'),
+
+    # ex: /compartment/12/update
+    url(r'^compartment/(?P<model_pk>[0-9]+)/update', views.CompartmentUpdateView.as_view(), name='compartment-detail'),
+
+    # ex: /compartment/12/delete
+    url(r'^compartment/(?P<model_pk>[0-9]+)/delete', views.CompartmentDeleteView.as_view(), name='compartment-detail'),
+
+
+#==============================================================================
 #  Flow Compartment
 #==============================================================================
 
-    # ex: /flow_compartment/123
-    url(r'^flow_compartment/(?P<flow_compartment_pk>[0-9]+)/$', views.FlowCompartmentDetailView.as_view(), name='flow_compartment'),
+    # ex: /flow_compartment/123/detail
+    url(r'^flow_compartment/(?P<flow_compartment_pk>[0-9]+)/detail$', views.FlowCompartmentDetailView.as_view(), name='flow-compartment-detail'),
  
-#==============================================================================
-#  Sink
-#==============================================================================
-
-    # ex: /sink/123
-    url(r'^sink/(?P<sink_pk>[0-9]+)/$', views.SinkDetailView.as_view(), name='sink'),
+    # ex: /flow_compartment/create
+    url(r'^flow_compartment/create$', views.FlowCompartmentCreateView.as_view(), name='flow-compartment-create'),
+ 
+    # ex: /flow_compartment/123/update
+    url(r'^flow_compartment/update$', views.FlowCompartmentUpdateView.as_view(), name='flow-compartment-update'),
+ 
+    # ex: /flow_compartment/123/delete
+    url(r'^flow_compartment/delete$', views.FlowCompartmentDeleteView.as_view(), name='flow-compartment-delete'),
     
 #==============================================================================
 #  Stock
 #==============================================================================
 
-    # ex: /stock/123
-    url(r'^stock/(?P<stock_pk>[0-9]+)/$', views.StockDetailView.as_view(), name='stock'),
+    # ex: /stock/123/detail
+    url(r'^stock/(?P<stock_pk>[0-9]+)/detail$', views.StockDetailView.as_view(), name='stock-detail'),
+ 
+    # ex: /stock/create
+    url(r'^stock/create$', views.StockCreateView.as_view(), name='stock-create'),
+    
+    # ex: /stock/123/update
+    url(r'^stock/(?P<stock_pk>[0-9]+)/update', views.StockUpdateView.as_view(), name='stock-update'),
+ 
+    # ex: /stock/123/delete
+    url(r'^stock/(?P<stock_pk>[0-9]+)/delete', views.StockDeleteView.as_view(), name='stock-delete'),
+ 
+#==============================================================================
+#  Sink
+#==============================================================================
+
+    # ex: /sink/123/detail
+    url(r'^sink/(?P<sink_pk>[0-9]+)/detail$', views.SinkDetailView.as_view(), name='sink-detail'),
+
+    # ex: /sink/create
+    url(r'^sink/(?P<sink_pk>[0-9]+)/$', views.SinkCreateView.as_view(), name='sink-create'),
+    
+    # ex: /sink/123/update
+    url(r'^sink/(?P<sink_pk>[0-9]+)/$', views.SinkUpdateView.as_view(), name='sink-update'),
+
+    # ex: /sink/123
+    url(r'^sink/(?P<sink_pk>[0-9]+)/$', views.SinkDetailView.as_view(), name='sink-delete'),
 
 #==============================================================================
-#  External Inflows
+#  Releases
 #==============================================================================
 
-# External Inflow
+    # ex: /local_release/123/detail
+    url(r'^local_release/(?P<sink_pk>[0-9]+)/detail$', views.LocalReleaseDetailView.as_view(), name='sink-detail'),
 
-    # ex: /external_inflow/123/detail
-    url(r'^external_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalInflowDetailView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_inflow/123/create
-    url(r'^external_inflow/(?P<pk>[0-9]+)/create$', views.ExternalInflowCreateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_inflow/123/update
-    url(r'^external_inflow/(?P<pk>[0-9]+)/update$', views.ExternalInflowUpdateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_inflow/123/delete
-    url(r'^external_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalInflowDeleteView.as_view(), name='constant-transfer-detail'),
-    
-# External List Inflow
+    # ex: /fixed_rate_release/123/detail
+    url(r'^fixed_rate_release/(?P<sink_pk>[0-9]+)/detail$', views.FixedRateReleaseDetailView.as_view(), name='sink-detail'),
 
-    # ex: /external_list_inflow/123/detail
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalListInflowDetailView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_list_inflow/123/create
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/create$', views.ExternalListInflowCreateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_list_inflow/123/update
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalListInflowUpdateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_list_inflow/123/delete
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalListInflowDeleteView.as_view(), name='constant-transfer-detail'),
-
-# External Function Inflow
-
-    # ex: /external_function_inflow/123/detail
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalFunctionInflowDetailView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_function_inflow/123/create
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/create$', views.ExternalFunctionInflowCreateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_function_inflow/123/update
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalFunctionInflowUpdateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_function_inflow/123/delete
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalFunctionInflowDeleteView.as_view(), name='constant-transfer-detail'),
-
+    # ex: /function_release/123/detail
+    url(r'^function_release/(?P<sink_pk>[0-9]+)/detail$', views.FunctionReleaseDetailView.as_view(), name='sink-detail'),
 
 #==============================================================================
 #  Transfers
@@ -203,14 +213,76 @@ urlpatterns = [
     url(r'^stochastic_transfer/(?P<pk>[0-9]+)/delete$', views.StochasticTransferDeleteView.as_view(), name='stochastic-transfer'),
 
 #==============================================================================
+#  External Inflows
+#==============================================================================
+
+# External Inflow
+
+    # ex: /external_inflow/123/detail
+    url(r'^external_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalInflowDetailView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_inflow/123/create
+    url(r'^external_inflow/(?P<pk>[0-9]+)/create$', views.ExternalInflowCreateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_inflow/123/update
+    url(r'^external_inflow/(?P<pk>[0-9]+)/update$', views.ExternalInflowUpdateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_inflow/123/delete
+    url(r'^external_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalInflowDeleteView.as_view(), name='constant-transfer-detail'),
+    
+# External List Inflow
+
+    # ex: /external_list_inflow/123/detail
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalListInflowDetailView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_list_inflow/123/create
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/create$', views.ExternalListInflowCreateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_list_inflow/123/update
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalListInflowUpdateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_list_inflow/123/delete
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalListInflowDeleteView.as_view(), name='constant-transfer-detail'),
+
+# External Function Inflow
+
+    # ex: /external_function_inflow/123/detail
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalFunctionInflowDetailView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_function_inflow/123/create
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/create$', views.ExternalFunctionInflowCreateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_function_inflow/123/update
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalFunctionInflowUpdateView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /external_function_inflow/123/delete
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalFunctionInflowDeleteView.as_view(), name='constant-transfer-detail'),
+
+#==============================================================================
+#  Single Period Inflow
+#==============================================================================
+
+    # ex: /single_period_inflow/123/detail
+    url(r'^single_period_inflow/(?P<pk>[0-9]+)/detail$', views.SinglePeriodInflowDetailView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /fixed_value_inflow/123/detail
+    url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/detail$', views.FixedValueInflowDetailView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /stochastic_inflow/123/detail
+    url(r'^stochastic_inflow/(?P<pk>[0-9]+)/detail$', views.StochasticInflowDetailView.as_view(), name='constant-transfer-detail'),
+    
+    # ex: /random_choice_inflow/123/detail
+    url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='constant-transfer-detail'),
+
+#==============================================================================
 #  Simulation
 #==============================================================================
 
     # ex: /simulation/12/detail
     url(r'^simulation/(?P<pk>[0-9]+)/detail', views.SimulationDetailView.as_view(), name='simulation'),
     
-    # ex: /simulation/12/create
-    url(r'^simulation/(?P<pk>[0-9]+)/create$', views.SimulationCreateView.as_view(), name='simulation'),
+    # ex: /simulation/create
+    url(r'^simulation/create$', views.SimulationCreateView.as_view(), name='simulation'),
     
     # ex: /simulation/12/update
     url(r'^simulation/(?P<pk>[0-9]+)/update', views.SimulationUpdateView.as_view(), name='simulation'),

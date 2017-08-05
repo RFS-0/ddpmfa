@@ -176,7 +176,7 @@ class CompartmentDeleteView(generic.DeleteView):
 #==============================================================================
 
 class FlowCompartmentDetailView(generic.DetailView):
-    model = models.sink
+    model = models.flow_compartment
     
     fields = [
         'model',
@@ -190,8 +190,8 @@ class FlowCompartmentDetailView(generic.DetailView):
         'log_outflows',
         ]
     
-class FlowCompartmentDetailView(generic.CreateView):
-    model = models.sink
+class FlowCompartmentCreateView(generic.CreateView):
+    model = models.flow_compartment
     
     fields = [
         'model',
@@ -206,7 +206,7 @@ class FlowCompartmentDetailView(generic.CreateView):
         ]
     
 class FlowCompartmentUpdateView(generic.UpdateView):
-    model = models.sink
+    model = models.flow_compartment
     
     fields = [
         'model',
@@ -221,7 +221,7 @@ class FlowCompartmentUpdateView(generic.UpdateView):
         ]
 
 class FlowCompartmentDeleteView(generic.DeleteView):
-    model = models.sink
+    model = models.flow_compartment
     
     fields = [
         'model',
@@ -240,6 +240,22 @@ class FlowCompartmentDeleteView(generic.DeleteView):
 #==============================================================================
 
 class StockDetailView(generic.DetailView):
+    model = models.stock
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'local_release',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+
+class StockCreateView(generic.CreateView):
     model = models.stock
     
     fields = [
@@ -292,6 +308,21 @@ class StockDeleteView(generic.DeleteView):
 #==============================================================================
 
 class SinkDetailView(generic.DetailView):
+    model = models.sink
+    
+    fields = [
+        'model',
+        'name',
+        'description',
+        'evt_created',
+        'evt_changed',
+        'log_inflows',
+        'categories',
+        'adjust_outgoing_tcs',
+        'log_outflows',
+        ]
+
+class SinkCreateView(generic.CreateView):
     model = models.sink
     
     fields = [
