@@ -16,7 +16,7 @@ urlpatterns = [
 #==============================================================================
 
     # ex: /projects/list
-    url(r'^projects/list$', views.ProjectsListView.as_view(), name='projects'),
+    url(r'^projects/list$', views.ProjectsListView.as_view(), name='projects-list'),
     
     # ex: /project/123/detail
     url(r'^project/(?P<pk>[0-9]+)/detail$', views.ProjectDetailView.as_view(), name='project-detail'),
@@ -38,16 +38,16 @@ urlpatterns = [
     url(r'^model/list$', views.ModelListView.as_view(), name='model'),
     
     # ex: /model/123/detail
-    url(r'^model/(?P<pk>[0-9]+)/detail$', views.ModelCreateView.as_view(), name='model'),
+    url(r'^model/(?P<pk>[0-9]+)/detail$', views.ModelCreateView.as_view(), name='model-detail'),
     
     # ex: /model/create
-    url(r'^model/create$', views.ModelDetailView.as_view(), name='model'),
+    url(r'^model/create$', views.ModelDetailView.as_view(), name='model-create'),
     
     # ex: /model/update
-    url(r'^model/(?P<model_pk>[0-9]+)/update', views.ModelUpdateView.as_view(), name='model'),
+    url(r'^model/(?P<model_pk>[0-9]+)/update', views.ModelUpdateView.as_view(), name='model-update'),
     
     # ex: /model/123/delete
-    url(r'^model/(?P<model_pk>[0-9]+)/delete$', views.ModelDeleteView.as_view(), name='delete_model'),
+    url(r'^model/(?P<model_pk>[0-9]+)/delete$', views.ModelDeleteView.as_view(), name='model-delete'),
     
 #==============================================================================
 #  Model Designer
