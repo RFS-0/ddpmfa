@@ -60,10 +60,41 @@ def delete_project(request, project_pk):
     return HttpResponseRedirect('/dpmfa/projects/')
 
 def new_model(request, project_pk):
-    return HttpResponse("New model for project " + project_pk)
+    context = {}
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = forms.model_form(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            model = models.model(name=form.cleaned_data['name'], description=form.cleaned_data['description'])
+            model.save()
+
+            messages.success(request, 'New model "%s" was created.' % model.name)
+#            messages.error(request, 'This would be an error message')
+#            messages.debug(request, 'This would be a debug message')
+#            messages.info(request, 'This would be an info message')
+#            messages.warning(request, 'This would be a warning message')
+
+            return HttpResponseRedirect('/dpmfa/project/'+project_pk)
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = forms.model_form()
+
+    context['form'] = form
+
+    return render(request, 'dpmfa/new_model.html', context)
 
 def model(request, model_pk):
-    return HttpResponse("Model (overview) " + model_pk)
+    context = {}
+    context['model'] = get_object_or_404(models.model, pk=model_pk)
+    #context['message'] = models.project.objects.all().count()
+    return render(request, 'dpmfa/model.html', context)
 
 def delete_model(request, model_pk):
     return HttpResponse("Delete model " + model_pk)
