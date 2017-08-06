@@ -187,7 +187,7 @@ class sink(compartment):
 #==============================================================================
 
 class local_release(models.Model):
-    stock_of_local_release = models.ForeignKey(
+    stock_of_local_release = models.OneToOneField(
         to='stock', 
         related_name='local_release_transfer', 
         null=True, 
@@ -291,6 +291,12 @@ class stochastic_transfer(transfer):
         return self.name + ' (' + str(self.pk) + ')'
     
 class aggregated_transfer(transfer):
+    
+    # TODO: implement a float list validator
+    weights = models.CharField(
+        verbose_name='Sample', 
+        validators=[int_list_validator()], 
+        max_length=250, null=True)
         
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
