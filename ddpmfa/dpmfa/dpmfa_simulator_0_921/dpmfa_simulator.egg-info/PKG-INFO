@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: dpmfa-simulator
+Version: 0.921
+Summary: A framework for dynamic probabilistic material flow analysis
+Home-page: UNKNOWN
+Author: Nikolaus Bornhoeft
+Author-email: Nikolaus.Bornhoeft@empa.ch
+License: Apache License Version 2.0
+Description: UNKNOWN
+Keywords: Bayesian modeling, material flow modeling, environmental modeling, exposure assessment modeling
+Platform: UNKNOWN
