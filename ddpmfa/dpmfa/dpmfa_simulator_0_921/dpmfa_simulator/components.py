@@ -57,7 +57,7 @@ class FlowCompartment(Compartment):
     ----------------
     name: string 
         compartment name
-    transfers: list<components.compartment>
+    transfers: list<components.transfer>
         all outgoing transfers from the Flow Compartment
     logInflows: Boolean
         defines if incoming flows are logged for later evaluation
