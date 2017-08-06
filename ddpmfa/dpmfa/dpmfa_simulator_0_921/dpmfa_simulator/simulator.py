@@ -11,7 +11,7 @@ Dynamic Probabilistic Material Flow Model.
 
 import numpy as np
 import numpy.linalg as la
-import components as cp
+import dpmfa.dpmfa_simulator_0_921.dpmfa_simulator.components as cp
 import math
 
 
@@ -136,13 +136,13 @@ class Simulator(object):
                     i.storeMaterial(run, period, solutionVector[i.compNumber])
 
             if run == currentStepRun:
-                print str(currentStep)+', ',
+                print(str(currentStep)+', ')
                 currentStepRun += stepSize
                 currentStep +=1
 
 
 
-        print ''
+        print('')
         print('Simulation complete')
         print('')
 
@@ -291,7 +291,7 @@ class Simulator(object):
                 if combinedOutflow.has_key(name):
                     combinedOutflow[name] = combinedOutflow[name]+comp.outflowRecord[name]
                 else:
-                    print name
+                    print(name)
                     combinedOutflow[name]= comp.outflowRecord[name]
 
         return combinedOutflow
