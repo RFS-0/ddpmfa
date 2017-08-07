@@ -3,6 +3,10 @@ from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_co
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model as package_model
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import simulator as package_simulator
 
+#==============================================================================
+#  DPMFA Components Converters
+#==============================================================================
+
 class CompartmentConverter(object):
     
     def __init__(self, db_compartment=django_models.compartment):
@@ -20,7 +24,7 @@ class CompartmentConverter(object):
                 )
                 
         except:
-            print("Could not convert from db to dpmfa compartment")
+            print("Could not convert from DB to dpmfa compartment")
             
     def getCompartment(self):
         return self.compartment_dpmfa
@@ -47,7 +51,7 @@ class FlowCompartmentConverter(CompartmentConverter):
                 )
         
         except:
-            print("Could not convert from db to dpmfa flow compartment")
+            print("Could not convert from DB to dpmfa flow compartment")
      
         
     def getFlowCompartment(self):
@@ -66,7 +70,7 @@ class SinkConverter(CompartmentConverter):
             )
 
         except:
-            print("Could not convert from to dpmfa sink")
+            print("Could not convert from DB to dpmfa sink")
             
     def getSink(self):
         return self.sink_dpmfa
@@ -108,7 +112,7 @@ class LocalReleaseConverter(object):
             self.local_release_dpmfa = package_components.LocalRelease()
         
         except:
-             print("Could not convert from to dpmfa local release")
+             print("Could not convert from DB to dpmfa local release")
         
     def getLocalRelease(self):
         return self.local_release_dpmfa
@@ -127,7 +131,7 @@ class FixedRateReleaseConverter(LocalReleaseConverter):
                 )
             
         except:
-             print("Could not convert from to dpmfa fixed rate release")
+             print("Could not convert from DB to dpmfa fixed rate release")
              
 class ListReleaseConverter(LocalReleaseConverter):
     
@@ -143,7 +147,7 @@ class ListReleaseConverter(LocalReleaseConverter):
                 )
         
         except:
-             print("Could not convert from to dpmfa list release")
+             print("Could not convert from DB to dpmfa list release")
              
 class FunctionReleaseConverter(LocalReleaseConverter):
     
@@ -153,13 +157,13 @@ class FunctionReleaseConverter(LocalReleaseConverter):
         self.releaseFunction = db_list_release.release_function
         
         try:
-            self.function_release_dpmfa = package_components.ListRelease(
-                self.releaseRatesList,
+            self.function_release_dpmfa = package_components.FunctionRelease(
+                releaseFunction = self.releaseFunction,
                 delay = self.delay
                 )
         
         except:
-             print("Could not convert from to dpmfa list release")
+             print("Could not convert from DB to dpmfa FunctionRelease")
              
 class TransferConverter(object):
     
@@ -178,7 +182,7 @@ class TransferConverter(object):
                 )
         
         except:
-            print("Could not convert from to dpmfa transfer")
+            print("Could not convert from DB to dpmfa Transfer")
             
     def getTransfer(self):
         return self.transfer_dpmfa
@@ -199,7 +203,7 @@ class ConstTransferConverter(TransferConverter):
                 )
             
         except:
-            print("Could not convert from to dpmfa const transfer")
+            print("Could not convert from DB to dpmfa ConstTransfer")
 
     
     def getConstTransferConverter(self):
@@ -222,7 +226,7 @@ class StochasticTransferConverter(TransferConverter):
                 )
             
         except:
-            print("Could not convert from to dpmfa const transfer")
+            print("Could not convert from to DB dpmfa StochasticTransfer")
             
 class RandomChoiceTransferConverter(TransferConverter):
     
@@ -239,7 +243,7 @@ class RandomChoiceTransferConverter(TransferConverter):
                 )
             
         except:
-            print("Could not convert from to dpmfa random choice transfer")
+            print("Could not convert from to DB dpmfa RandomChoiceTransfer")
     
     def getRandomChoiceTransferConverter(self):
         return self.random_choice_transfer
@@ -262,7 +266,7 @@ class AggregatedTransferConverter(TransferConverter):
                 )
         
         except:
-            print("Could not convert from to dpmfa aggregated transfer")
+            print("Could not convert from to DB dpmfa AggregatedTransfer")
 
 class SinglePeriodInflowConverter(object):
     
@@ -278,10 +282,169 @@ class SinglePeriodInflowConverter(object):
             self.single_period_inflow_dpmfa = package_components.SinglePeriodInflow()
         
         except:
-            print("Could not convert from to dpmfa single period inflow")
+            print("Could not convert from to DB dpmfa SinglePeriodInflow")
         
     def getSinglePeriodInflowConverter(self):
         return self.single_period_inflow_dpmfa
+    
+class StochasticFunctionInflowConverter(SinglePeriodInflowConverter):
+    
+    def __init__(self, db_stochastic_function_inflow=django_models.stochastic_function_inflow):
+        super(StochasticFunctionInflowConverter, self).__init__(db_stochastic_function_inflow)
+        
+        self.probabilityDistribution = db_stochastic_function_inflow.pdf
+        self.parameters = db_stochastic_function_inflow.parameter_values
+        
+        try:
+            self.stochastic_function_inflow_dpmfa = package_components.StochasticFunctionInflow(
+                probabilityDistribution = self.probabilityDistribution, 
+                parameters = self.parameters
+                )
+        
+        except:
+            print("Could not convert from DB to dpmfa StochasticFunctionInflow")
+            
+    def getStochasticFunctionInflowConverter(self):
+        return self.stochastic_function_inflow_dpmfa
+            
+class RandomChoiceInflowConverter(SinglePeriodInflowConverter):
+    
+    def __init__(self, db_random_choice_inflow=django_models.random_choice_inflow):
+        super(StochasticFunctionInflowConverter, self).__init__(db_random_choice_inflow)
+        
+        self.sample = db_random_choice_inflow.sample
+        
+        try:
+            self.random_choice_inflow_dpmfa = package_components.RandomChoiceInflow(
+                sample = self.sample
+                )
+            
+        except:
+            print("Could not convert from DB to dpmfa RandomChoiceInflow")
+            
+    def getRandomChoiceInflowConverter(self):
+        return self.random_choice_inflow_dpmfa
+            
+class FixedValueInflowConverter(SinglePeriodInflowConverter):
+    
+    def __init__(self, db_fixed_value_inflow=django_models.fixed_value_inflow):
+        super(FixedValueInflowConverter, self).__init__(db_fixed_value_inflow)
+        
+        self.currentValue = db_fixed_value_inflow.value
+        
+        try:
+            self.fixed_value_inflow_dpmfa = package_components.FixedValueInflow(
+                value = self.currentValue
+                )
+            
+        except:
+            print("Could not convert from DB to dpmfa FixedValueInflow")
+            
+    def getFixedValueInflowConverter(self):
+        return self.fixed_value_inflow_dpmfa
+
+class ExternalInflowConverter(object):
+    
+    def __init__(self, db_external_inflow=django_models.external_inflow):
+        self.db_entity = db_external_inflow
+        self.name = db_external_inflow.name
+        # Convert the the target to actual dpmfa target
+        self.target = db_external_inflow.target
+        self.startDelay = db_external_inflow.start_delay
+        self.derivationDistribution = db_external_inflow.derivation_distribution
+        self.derivationParameters = db_external_inflow.derivation_parameters
+        self.derivationFactor = db_external_inflow.derivation_factor
+        
+        try:
+            self.external_inflow_dpmfa = package_components.ExternalInflow(
+            target = self.target,
+            startDelay = self.startDelay,
+            derivationDistribution = self.derivationDistribution,
+            derivationParameters = self.derivationParameters,
+            derivationFactor = self.derivationFactor
+            )
+        
+        except:
+            print("Could not convert from DB to dpmfa ExternalInflow")
+            
+    def getExternalInflowConverter(self):
+        return self.external_inflow_dpmfa
+            
+class ExternalListInflowConverter(ExternalInflowConverter):
+    
+    def __init__(self, db_external_list_inflow=django_models.external_list_inflow):
+        super(ExternalListInflowConverter, self).__init__(db_external_list_inflow)
+        
+        try:
+            self.external_list_inflow_dpmfa = package_components.ExternalListInflow(
+                target = self.target,
+                inflowList = self.inflowList,
+                derivationDistribution = self.derivationDistribution, 
+                derivationParameters = self.derivationParameters,
+                startDelay = self.startDelay
+                )
+            
+        except:
+            print("Could not convert from DB to dpmfa ExternalListInflow")
+            
+    def getExternalListInflowConverter(self):
+        return self.external_inflow_dpmfa
+            
+class ExternalFunctionInflowConverter(ExternalInflowConverter):
+    
+    def __init__(self, db_external_function_inflow=django_models.external_function_inflow):
+        super(ExternalFunctionInflowConverter, self).__init__(db_external_function_inflow)
+        
+        self.inflowFunction = db_external_function_inflow.inflow_function
+        self.basicInflow = db_external_function_inflow.basic_inflow
+    
+        
+        try:
+            self.external_function_inflow_dpmfa = package_components.ExternalFunctionInflow(
+                target = self.target,
+                basicInflow = self.basicInflow,
+                inflowFunction = self.inflowFunction,
+                defaultInflowFunction = 0, 
+                derivationDistribution = self.derivationDistribution,
+                derivationParameters = self.derivationParameters
+                )
+        
+        except:
+            print("Could not convert from DB to dpmfa ExternalFunctionInflow")
+            
+    def getExternalFunctionInflowConverter(self):
+        return self.external_function_inflow_dpmfa
+
+#==============================================================================
+#  DPMFA Model Converters
+#==============================================================================
+        
+#==============================================================================
+#  DPMFA Simulator Converters
+#==============================================================================
+        
+            
+        
+        
+            
+            
+        
+        
+        
+        
+        
+        
+ 
+        
+            
+        
+            
+            
+        
+    
+    
+    
+    
         
         
         
