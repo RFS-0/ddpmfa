@@ -4,19 +4,20 @@ from . import views
 app_name = 'dpmfa'
 urlpatterns = [
     
-#==============================================================================
-#  Home
-#==============================================================================
+    # ==============================================================================
+    # Home
+    # ==============================================================================
 
     # ex: /home/
-    url(r'(?:^$)|(?:^home$)', views.HomeTemplateView.as_view(), name='home'),
-    
-#==============================================================================
-#  Project
-#==============================================================================
+    url(r'^$', views.HomeTemplateView.as_view(), name='default'),
+    url(r'^home/$', views.HomeTemplateView.as_view(), name='home'),
+
+    # ==============================================================================
+    # Project
+    # ==============================================================================
 
     # ex: /projects/list
-    url(r'^projects/list$', views.ProjectsListView.as_view(), name='projects-list'),
+    url(r'^project/list$', views.ProjectListView.as_view(), name='project-list'),
     
     # ex: /project/123/detail
     url(r'^project/(?P<pk>[0-9]+)/detail$', views.ProjectDetailView.as_view(), name='project-detail'),
@@ -30,24 +31,24 @@ urlpatterns = [
     # ex: /project/123/delete
     url(r'^project/(?P<pk>[0-9]+)/delete$', views.ProjectDeleteView.as_view(), name='project-delete'),
 
-#==============================================================================
-#  Model
-#==============================================================================
+    # ==============================================================================
+    # Model
+    # ==============================================================================
 
-    # ex: /models/list
-    url(r'^model/list$', views.ModelListView.as_view(), name='model'),
+    # # ex: /models/list
+    # url(r'^model/list$', views.ModelListView.as_view(), name='model'),
     
     # ex: /model/123/detail
-    url(r'^model/(?P<pk>[0-9]+)/detail$', views.ModelCreateView.as_view(), name='model-detail'),
+    url(r'^model/(?P<pk>[0-9]+)/detail$', views.ModelDetailView.as_view(), name='model-detail'),
     
     # ex: /model/create
-    url(r'^model/create$', views.ModelDetailView.as_view(), name='model-create'),
+    url(r'^model/create/(?P<project_pk>[0-9]+)$', views.ModelCreateView.as_view(), name='model-create'),
     
     # ex: /model/update
-    url(r'^model/(?P<model_pk>[0-9]+)/update', views.ModelUpdateView.as_view(), name='model-update'),
+    url(r'^model/(?P<pk>[0-9]+)/update', views.ModelUpdateView.as_view(), name='model-update'),
     
     # ex: /model/123/delete
-    url(r'^model/(?P<model_pk>[0-9]+)/delete$', views.ModelDeleteView.as_view(), name='model-delete'),
+    url(r'^model/(?P<pk>[0-9]+)/delete$', views.ModelDeleteView.as_view(), name='model-delete'),
     
 #==============================================================================
 #  Model Designer

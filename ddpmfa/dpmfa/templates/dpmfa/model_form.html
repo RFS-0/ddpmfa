@@ -1,10 +1,80 @@
 {% extends "dpmfa/page.html" %}
 {% load static %}
 
-{% block title %} Project: {{project.name}}{% endblock %}
+{% block title %}
+    {% if model.name %}
+        Edit Model &quot;{{model.name}}&quot;
+    {% else %}
+        New Model
+    {% endif %}
+{% endblock %}
 
 {% block body %}
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <span class="navbar-brand" href="#">
+            {% if project.name %}
+                Edit Model &quot;{{project.name}}&quot;
+            {% else %}
+                New Model
+            {% endif %}
+          </span>
+        </div>
+        <ul class="nav navbar-nav">
+          <li>
+              {% if view.kwargs.project_pk %}
+                <a href="{% url 'dpmfa:project-detail' view.kwargs.project_pk %}" data-toggle="tooltip" title="Cancel">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                    Cancel: Back to Project
+                </a>
+              {% else %}
+                <a href="{% url 'dpmfa:project-detail' model.project.pk %}" data-toggle="tooltip" title="Cancel">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                    Cancel: Back to Project
+                </a>
+              {% endif %}
+          </li>
+        </ul>
+      </div>
+    </nav>
+</header>
 
-Model: {{model.name}}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' project.pk %}">{{ project.name }}</a></li>
+
+                {% if model.name %}
+                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.pk %}">{{ model.name }}</a></li>
+                    <li class="breadcrumb-item active">Edit Model &quot;{{model.name}}&quot;</li>
+                {% else %}
+                <li class="breadcrumb-item active">New Model</li>
+                {% endif %}
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>
+                {% if model.name %}
+                    Edit Model &quot;{{model.name}}&quot;
+                {% else %}
+                    New Model
+                {% endif %}
+            </h1>
+
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-default">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

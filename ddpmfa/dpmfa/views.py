@@ -9,87 +9,127 @@ import dpmfa.forms as forms
 import dpmfa.models as models
 
 
-#==============================================================================
+# ==============================================================================
 #  Home
-#==============================================================================
+# ==============================================================================
+
 
 class HomeTemplateView(generic.TemplateView):
     template_name = 'dpmfa/home.html'
-    
-#==============================================================================
-#  Project
-#==============================================================================
 
-class ProjectsListView(generic.ListView):
+
+# ==============================================================================
+#  Project
+# ==============================================================================
+
+
+class ProjectListView(generic.ListView):
     model = models.project
     context_object_name = 'projects'
-    template_name = 'dpmfa/projects.html'
+    # template_name = 'dpmfa/project_list.html'
 
 
 class ProjectDetailView(generic.DetailView):
     model = models.project
     context_object_name = 'project'
-    template_name = 'dpmfa/project.html'
+    # template_name = 'dpmfa/project_detail.html'
 
 
 class ProjectCreateView(generic.CreateView):
     model = models.project
     fields = ['name', 'description']
-    template_name = 'dpmfa/new_project.html'
-    success_url = reverse_lazy('dpmfa:projects')
+    # template_name = 'dpmfa/project_form.html'
+    success_url = reverse_lazy('dpmfa:project-list')
 
 
 class ProjectUpdateView(generic.UpdateView):
     model = models.project
     fields = ['name', 'description']
-    template_name = 'dpmfa/update_project.html'
-    success_url = reverse_lazy('dpmfa:projects')
+    # template_name = 'dpmfa/project_form.html'
+    success_url = reverse_lazy('dpmfa:project-list')
 
 
 class ProjectDeleteView(generic.DeleteView):
     model = models.project
-    success_url = reverse_lazy('dpmfa:projects')
-    
-#==============================================================================
-#  Model
-#==============================================================================
+    success_url = reverse_lazy('dpmfa:project-list')
 
-class ModelListView(generic.ListView):
-    model = models.model
-    template_name = 'dpmfa/model.html'
+
+# ==============================================================================
+#  Model
+# ==============================================================================
+
+
+# class ModelListView(generic.ListView):
+#     model = models.model
+#     template_name = 'dpmfa/model_list.html'
+
 
 class ModelDetailView(generic.DetailView):
     model = models.model
-    template_name = 'dpmfa/model.html'
+    # template_name = 'dpmfa/model_detail.html'
+
+    def find_external_inflows_by_model(self, model_pk):
+        return models.external_inflow.objects.filter(target__model=model_pk)
+
+    def find_local_releases_by_model(self, model_pk):
+        return models.local_release.objects.filter(stock__model=model_pk)
+
+    def find_transfers_by_model(self, model_pk):
+        return models.transfer.objects.filter(target__model=model_pk)
+
+    def get_context_data(self, **kwargs):
+        context = super(ModelDetailView, self).get_context_data(**kwargs)
+        context['external_inflows'] = self.find_external_inflows_by_model(self.object.pk)
+        context['local_releases'] = self.find_local_releases_by_model(self.object.pk)
+        context['transfers'] = self.find_transfers_by_model(self.object.pk)
+        return context
 
 
 class ModelCreateView(generic.CreateView):
     model = models.model
-    template_name = 'dpmfa/new_model.html'
+    # template_name = 'dpmfa/model_form.html'
     fields = ['name', 'description']
-    
-    # Change!
-    # success_url = reverse_lazy('dpmfa:project', model.project_id)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:project', kwargs={'pk': self.kwargs['project_pk']})
+        return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.kwargs['project_pk']})
 
     def form_valid(self, form):
         model = form.save(commit=False)
         model.project_id = self.kwargs['project_pk']
         return super(ModelCreateView, self).form_valid(form)
-    
+
+    def get_context_data(self, **kwargs):
+        context = super(ModelCreateView, self).get_context_data(**kwargs)
+        context['project'] = models.project.objects.get(pk=self.kwargs['project_pk'])
+        return context
+
+
 class ModelUpdateView(generic.UpdateView):
     model = models.model
-    template_name = 'dpmfa/model.html'
-    
+    # template_name = 'dpmfa/model_form.html'
+    fields = ['name', 'description']
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk })
+
+    def get_context_data(self, **kwargs):
+        context = super(ModelUpdateView, self).get_context_data(**kwargs)
+        context['project'] = self.object.project
+        return context
+
+
 class ModelDeleteView(generic.DeleteView):
     model = models.model
-    template_name = 'dpmfa/model.html'
 
-#==============================================================================
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk})
+
+
+
+
+# ==============================================================================
 #  Model Designer
-#==============================================================================
+# ==============================================================================
 
 class ModelDesingerDetailView(generic.DetailView):
     model = models.model_designer

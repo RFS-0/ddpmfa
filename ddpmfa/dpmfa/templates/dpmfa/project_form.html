@@ -1,7 +1,13 @@
 {% extends "dpmfa/page.html" %}
 {% load static %}
 
-{% block title %}Delete Project &quot;{{project.name}}&quot;?{% endblock %}
+{% block title %}
+    {% if project.name %}
+        Edit Project &quot;{{project.name}}&quot;
+    {% else %}
+        New Project
+    {% endif %}
+{% endblock %}
 
 {% block body %}
 
@@ -10,12 +16,16 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <span class="navbar-brand" href="#">
-            Delete Project &quot;{{project.name}}&quot;?
+            {% if project.name %}
+                Edit Project &quot;{{project.name}}&quot;
+            {% else %}
+                New Project
+            {% endif %}
           </span>
         </div>
         <ul class="nav navbar-nav">
           <li>
-              <a href="{% url "dpmfa:project-list" %}" data-toggle="tooltip" title="Cancel">
+              <a href="{% url 'dpmfa:project-list' %}" data-toggle="tooltip" title="Cancel">
                 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                 Cancel: Back to Project List
             </a>
@@ -32,7 +42,11 @@
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
               <li class="breadcrumb-item active">
-                    Delete Project &quot;{{project.name}}&quot;?
+                {% if project.name %}
+                    {{project.name}}
+                {% else %}
+                    New Project
+                {% endif %}
               </li>
             </ol>
         </div>
@@ -40,18 +54,20 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <h1>Delete Project &quot;{{project.name}}&quot;?</h1>
-        </div>
-    </div>
+            <h1>
+                {% if project.name %}
+                    Edit Project &quot;{{project.name}}&quot;
+                {% else %}
+                    New Project
+                {% endif %}
+            </h1>
 
-    <div class="row">
-        <div class="col-xs-12">
-            <form action="" method="post">{% csrf_token %}
-                <p>Are you sure you want to delete the project &quot;{{project.name}}&quot;?</p>
-                <input type="submit" value="Confirm" class="btn btn-default" />
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-default">Save</button>
             </form>
         </div>
-    </div>
+     </div>
 </div>
 
 {% endblock %}

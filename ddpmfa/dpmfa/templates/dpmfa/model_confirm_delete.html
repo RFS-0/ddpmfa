@@ -1,7 +1,7 @@
 {% extends "dpmfa/page.html" %}
 {% load static %}
 
-{% block title %}Delete Project &quot;{{project.name}}&quot;?{% endblock %}
+{% block title %}Delete Model &quot;{{model.name}}&quot;?{% endblock %}
 
 {% block body %}
 
@@ -10,14 +10,14 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <span class="navbar-brand" href="#">
-            Delete Project &quot;{{project.name}}&quot;?
+            Delete Model &quot;{{model.name}}&quot;?
           </span>
         </div>
         <ul class="nav navbar-nav">
           <li>
-              <a href="{% url "dpmfa:project-list" %}" data-toggle="tooltip" title="Cancel">
+              <a href="{% url 'dpmfa:project-detail' model.project.pk %}" data-toggle="tooltip" title="Cancel">
                 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                Cancel: Back to Project List
+                Cancel: Back to Project
             </a>
           </li>
         </ul>
@@ -31,8 +31,11 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
-              <li class="breadcrumb-item active">
-                    Delete Project &quot;{{project.name}}&quot;?
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' model.project.pk %}">{{ model.project.name }}</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.pk %}">{{ model.name }}</a></li>
+
+                <li class="breadcrumb-item active">
+                    Delete Model &quot;{{model.name}}&quot;?
               </li>
             </ol>
         </div>
@@ -40,14 +43,14 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <h1>Delete Project &quot;{{project.name}}&quot;?</h1>
+            <h1>Delete Model &quot;{{model.name}}&quot;?</h1>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12">
             <form action="" method="post">{% csrf_token %}
-                <p>Are you sure you want to delete the project &quot;{{project.name}}&quot;?</p>
+                <p>Are you sure you want to delete the model &quot;{{model.name}}&quot;?</p>
                 <input type="submit" value="Confirm" class="btn btn-default" />
             </form>
         </div>
