@@ -382,7 +382,7 @@ class fixed_value_inflow(single_period_inflow):
         verbose_name='the inflow value', 
         null=True)
     
-class stochastic_inflow(single_period_inflow):
+class stochastic_function_inflow(single_period_inflow):
     # TODO [all]: we will have to implement a function field to store functions
     pdf = models.CharField(
         verbose_name='Pdf', 
