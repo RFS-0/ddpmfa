@@ -865,7 +865,7 @@ class FixedValueInflowDetailView(generic.DetailView):
         ]
     
 class StochasticInflowDetailView(generic.DetailView):
-    model = models.stochastic_inflow
+    model = models.stochastic_function_inflow
     
     fields = [
         'external_list_inflow',

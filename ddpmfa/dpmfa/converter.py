@@ -418,11 +418,15 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
 #==============================================================================
 #  DPMFA Model Converters
 #==============================================================================
+
+# Instantiate the model of the ModelConverter in such a way that it is directly runnable
         
 #==============================================================================
 #  DPMFA Simulator Converters
 #==============================================================================
-        
+
+# Instantiate the simulator of the SimulatorConverter in such a way that it is directly runnable
+
             
         
         
