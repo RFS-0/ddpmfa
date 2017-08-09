@@ -244,7 +244,7 @@ class Command(BaseCommand):
         import_of_send_inflow.save()
         
         # fixed stochastic inflows representing the inflows of StD (devices) into the first stage use compartment
-        si_1 = stochastic_inflow(
+        si_1 = stochastic_function_inflow(
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 1,
@@ -253,7 +253,7 @@ class Command(BaseCommand):
         
         si_1.save()
         
-        si_2 = stochastic_inflow(
+        si_2 = stochastic_function_inflow(
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 2,
@@ -262,7 +262,7 @@ class Command(BaseCommand):
         
         si_2.save()
         
-        si_3 = stochastic_inflow(
+        si_3 = stochastic_function_inflow(
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 3,
@@ -271,7 +271,7 @@ class Command(BaseCommand):
         
         si_3.save()
         
-        si_4 = stochastic_inflow(
+        si_4 = stochastic_function_inflow(
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 4,
@@ -280,7 +280,7 @@ class Command(BaseCommand):
         
         si_4.save()
         
-        si_5 = stochastic_inflow(
+        si_5 = stochastic_function_inflow(
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 5,
@@ -289,7 +289,7 @@ class Command(BaseCommand):
         
         si_5.save()
         
-        si_6 = stochastic_inflow(
+        si_6 = stochastic_function_inflow(
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 6,
@@ -298,7 +298,7 @@ class Command(BaseCommand):
         
         si_6.save()
         
-        si_7 = stochastic_inflow(
+        si_7 = stochastic_function_inflow(
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 7,
