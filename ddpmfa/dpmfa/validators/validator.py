@@ -2,6 +2,7 @@
 
 from django.core.validators import _lazy_re_compile
 from django.core.validators import RegexValidator
+import re
 
 def alpha_numeric_list_validator(sep=',', message=None, code='invalid'):
     regexp = _lazy_re_compile(r'^[A-Za-z0-9_]+(?:%(sep)s[A-Za-z0-9_]+)*\Z' % {

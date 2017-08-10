@@ -51,7 +51,7 @@
                 {% endfor %}
             {% endif %}
 
-            <div class="dpfma-pre-wrap">{{ project.description }}</div>
+            <div class="dpmfa-pre-wrap">{{ project.description }}</div>
 
             <h2>Models</h2>
 
@@ -68,7 +68,7 @@
                     {% for  model in project.models.all %}
                         <tr>
                             <td><a href="{% url 'dpmfa:model-detail' model.pk %}">{{ model.name }}</a></td>
-                            <td class="dpfma-pre-wrap">{{ model.description }}</td>
+                            <td class="dpmfa-pre-wrap">{{ model.description }}</td>
                             <td>
                                  <a href="{% url "dpmfa:model-detail" model.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to model">
                                     <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>

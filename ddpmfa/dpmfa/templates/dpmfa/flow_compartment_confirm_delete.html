@@ -1,0 +1,52 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %}
+    Delete Flow Compartment: &quot;{{flow_compartment.name}}&quot;?
+{% endblock %}
+
+{% block body %}
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <span class="navbar-brand" href="#">
+                Delete Flow Compartment: &quot;{{flow_compartment.name}}&quot;?
+          </span>
+        </div>
+        <ul class="nav navbar-nav">
+        </ul>
+      </div>
+    </nav>
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' flow_compartment.model.project.pk %}">{{ flow_compartment.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' flow_compartment.model.pk %}">{{ flow_compartment.model.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:flow-compartment-detail' flow_compartment.pk %}">{{ flow_compartment.name }}</a></li>
+                <li class="breadcrumb-item active">Delete?</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>
+               Delete Flow Compartment: &quot;{{flow_compartment.name}}&quot;?
+            </h1>
+
+            <form action="" method="post">{% csrf_token %}
+                <p>Are you sure you want to delete the flow compartment &quot;{{flow_compartment.name}}&quot;?</p>
+                <input type="submit" value="Confirm" class="btn btn-default" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

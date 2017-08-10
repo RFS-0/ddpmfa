@@ -1,11 +1,10 @@
-.dpfma-pre-wrap {
+.dpmfa-pre-wrap {
     white-space: pre-wrap;
 }
 
 .dpmfa-model-designer {
     position: relative;
     padding: 20px;
-    width:80%;
     height: 550px;
     border: 1px solid gray;
     overflow: hidden;

@@ -77,17 +77,17 @@ urlpatterns = [
 #  Compartment
 #==============================================================================
 
-    # ex: /compartment/12/detail
-    url(r'^compartment/(?P<model_pk>[0-9]+)/detail$', views.CompartmentDetailView.as_view(), name='compartment-detail'),
+    # # ex: /compartment/12/detail
+    # url(r'^compartment/(?P<model_pk>[0-9]+)/detail$', views.CompartmentDetailView.as_view(), name='compartment-detail'),
 
-    # ex: /compartment/create
-    url(r'^compartment/create$', views.CompartmentCreateView.as_view(), name='compartment-detail'),
+    # # ex: /compartment/create
+    # url(r'^compartment/create$', views.CompartmentCreateView.as_view(), name='compartment-detail'),
 
-    # ex: /compartment/12/update
-    url(r'^compartment/(?P<model_pk>[0-9]+)/update', views.CompartmentUpdateView.as_view(), name='compartment-detail'),
+    # # ex: /compartment/12/update
+    # url(r'^compartment/(?P<model_pk>[0-9]+)/update', views.CompartmentUpdateView.as_view(), name='compartment-detail'),
 
-    # ex: /compartment/12/delete
-    url(r'^compartment/(?P<model_pk>[0-9]+)/delete', views.CompartmentDeleteView.as_view(), name='compartment-detail'),
+    # # ex: /compartment/12/delete
+    # url(r'^compartment/(?P<model_pk>[0-9]+)/delete', views.CompartmentDeleteView.as_view(), name='compartment-detail'),
 
 
 #==============================================================================
@@ -95,16 +95,16 @@ urlpatterns = [
 #==============================================================================
 
     # ex: /flow_compartment/123/detail
-    url(r'^flow_compartment/(?P<flow_compartment_pk>[0-9]+)/detail$', views.FlowCompartmentDetailView.as_view(), name='flow-compartment-detail'),
+    url(r'^flow_compartment/(?P<pk>[0-9]+)/detail$', views.FlowCompartmentDetailView.as_view(), name='flow-compartment-detail'),
  
     # ex: /flow_compartment/create
     url(r'^flow_compartment/create$', views.FlowCompartmentCreateView.as_view(), name='flow-compartment-create'),
  
     # ex: /flow_compartment/123/update
-    url(r'^flow_compartment/update$', views.FlowCompartmentUpdateView.as_view(), name='flow-compartment-update'),
+    url(r'^flow_compartment/(?P<pk>[0-9]+)/update$', views.FlowCompartmentUpdateView.as_view(), name='flow-compartment-update'),
  
     # ex: /flow_compartment/123/delete
-    url(r'^flow_compartment/delete$', views.FlowCompartmentDeleteView.as_view(), name='flow-compartment-delete'),
+    url(r'^flow_compartment/(?P<pk>[0-9]+)/delete$', views.FlowCompartmentDeleteView.as_view(), name='flow-compartment-delete'),
     
 #==============================================================================
 #  Stock
@@ -155,23 +155,23 @@ urlpatterns = [
 #  Transfers
 #==============================================================================
 
-# Constant 
+    # Constant
 
     # ex: /constant_transfer/123/detail
     url(r'^constant_transfer/(?P<pk>[0-9]+)/detail$', views.ConstantTransferDetailView.as_view(), name='constant-transfer-detail'),
     
     # ex: /constant_transfer/123/create
-    url(r'^constant_transfer/(?P<pk>[0-9]+)/create$', views.ConstantTransferCreateView.as_view(), name='constant-transfer-detail'),
+    url(r'^constant_transfer/(?P<pk>[0-9]+)/create$', views.ConstantTransferCreateView.as_view(), name='constant-transfer-create'),
     
     # ex: /constant_transfer/123/update
-    url(r'^constant_transfer/(?P<pk>[0-9]+)/update$', views.ConstantTransferUpdateView.as_view(), name='constant-transfer-detail'),
+    url(r'^constant_transfer/(?P<pk>[0-9]+)/update$', views.ConstantTransferUpdateView.as_view(), name='constant-transfer-update'),
     
     # ex: /constant_transfer/123/delete
-    url(r'^constant_transfer/(?P<pk>[0-9]+)/delete$', views.ConstantTransferDeleteView.as_view(), name='constant-transfer-detail'),
+    url(r'^constant_transfer/(?P<pk>[0-9]+)/delete$', views.ConstantTransferDeleteView.as_view(), name='constant-transfer-delete'),
     
     
     
-# Random Choice
+    # Random Choice
    
     # ex: /random_choice_transfer/123/detail
     url(r'^random_choice_transfer/(?P<pk>[0-9]+)/detail$', views.RandomChoiceTransferDetailView.as_view(), name='random-choice-transfer-detail'),
@@ -185,7 +185,7 @@ urlpatterns = [
     # ex: /random_choice_transfer/123/delete
     url(r'^random_choice_transfer/(?P<pk>[0-9]+)/delete$', views.RandomChoiceTransferDeleteView.as_view(), name='random-choice-transfer-delete'),
     
-# Aggregated
+    # Aggregated
     
     # ex: /aggregated_transfer/123/detail
     url(r'^aggregated_transfer/(?P<pk>[0-9]+)/detail$', views.AggregatedTransferDetailView.as_view(), name='aggregated-transfer-detail'),
@@ -199,81 +199,81 @@ urlpatterns = [
     # ex: /aggregated_transfer/123/delete
     url(r'^aggregated_transfer/(?P<pk>[0-9]+)/delete$', views.AggregatedTransferDeleteView.as_view(), name='aggregated-transfer-delete'),
    
-# Stochastic 
+    # Stochastic
     
     # ex: /stochastic_transfer/123/detail
-    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/detail$', views.StochasticTransferDetailView.as_view(), name='stochastic-transfer'),
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/detail$', views.StochasticTransferDetailView.as_view(), name='stochastic-transfer-detail'),
     
     # ex: /stochastic_transfer/123/create
-    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/create$', views.StochasticTransferCreateView.as_view(), name='stochastic-transfer'),
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/create$', views.StochasticTransferCreateView.as_view(), name='stochastic-transfer-create'),
     
     # ex: /stochastic_transfer/123/update
-    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/update$', views.StochasticTransferUpdateView.as_view(), name='stochastic-transfer'),
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/update$', views.StochasticTransferUpdateView.as_view(), name='stochastic-transfer-update'),
     
     # ex: /stochastic_transfer/123/delete
-    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/delete$', views.StochasticTransferDeleteView.as_view(), name='stochastic-transfer'),
+    url(r'^stochastic_transfer/(?P<pk>[0-9]+)/delete$', views.StochasticTransferDeleteView.as_view(), name='stochastic-transfer-delete'),
 
 #==============================================================================
 #  External Inflows
 #==============================================================================
 
-# External Inflow
+    # External Inflow
 
-    # ex: /external_inflow/123/detail
-    url(r'^external_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalInflowDetailView.as_view(), name='constant-transfer-detail'),
+    # # ex: /external_inflow/123/detail
+    # url(r'^external_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalInflowDetailView.as_view(), name='constant-transfer-detail'),
+
+    # # ex: /external_inflow/123/create
+    # url(r'^external_inflow/(?P<pk>[0-9]+)/create$', views.ExternalInflowCreateView.as_view(), name='constant-transfer-detail'),
+
+    # # ex: /external_inflow/123/update
+    # url(r'^external_inflow/(?P<pk>[0-9]+)/update$', views.ExternalInflowUpdateView.as_view(), name='constant-transfer-detail'),
+
+    # # ex: /external_inflow/123/delete
+    # url(r'^external_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalInflowDeleteView.as_view(), name='constant-transfer-detail'),
     
-    # ex: /external_inflow/123/create
-    url(r'^external_inflow/(?P<pk>[0-9]+)/create$', views.ExternalInflowCreateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_inflow/123/update
-    url(r'^external_inflow/(?P<pk>[0-9]+)/update$', views.ExternalInflowUpdateView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /external_inflow/123/delete
-    url(r'^external_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalInflowDeleteView.as_view(), name='constant-transfer-detail'),
-    
-# External List Inflow
+    # External List Inflow
 
     # ex: /external_list_inflow/123/detail
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalListInflowDetailView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalListInflowDetailView.as_view(), name='external-list-inflow-detail'),
     
     # ex: /external_list_inflow/123/create
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/create$', views.ExternalListInflowCreateView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/create$', views.ExternalListInflowCreateView.as_view(), name='external-list-inflow-create'),
     
     # ex: /external_list_inflow/123/update
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalListInflowUpdateView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalListInflowUpdateView.as_view(), name='external-list-inflow-update'),
     
     # ex: /external_list_inflow/123/delete
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalListInflowDeleteView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalListInflowDeleteView.as_view(), name='external-list-inflow-delete'),
 
-# External Function Inflow
+    # External Function Inflow
 
     # ex: /external_function_inflow/123/detail
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalFunctionInflowDetailView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalFunctionInflowDetailView.as_view(), name='external-function-inflow-detail'),
     
     # ex: /external_function_inflow/123/create
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/create$', views.ExternalFunctionInflowCreateView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/create$', views.ExternalFunctionInflowCreateView.as_view(), name='external-function-inflow-create'),
     
     # ex: /external_function_inflow/123/update
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalFunctionInflowUpdateView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalFunctionInflowUpdateView.as_view(), name='external-function-inflow-update'),
     
     # ex: /external_function_inflow/123/delete
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalFunctionInflowDeleteView.as_view(), name='constant-transfer-detail'),
+    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalFunctionInflowDeleteView.as_view(), name='external-function-inflow-delete'),
 
 #==============================================================================
 #  Single Period Inflow
 #==============================================================================
 
-    # ex: /single_period_inflow/123/detail
-    url(r'^single_period_inflow/(?P<pk>[0-9]+)/detail$', views.SinglePeriodInflowDetailView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /fixed_value_inflow/123/detail
-    url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/detail$', views.FixedValueInflowDetailView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /stochastic_inflow/123/detail
-    url(r'^stochastic_inflow/(?P<pk>[0-9]+)/detail$', views.StochasticInflowDetailView.as_view(), name='constant-transfer-detail'),
-    
-    # ex: /random_choice_inflow/123/detail
-    url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='constant-transfer-detail'),
+    # # ex: /single_period_inflow/123/detail
+    # url(r'^single_period_inflow/(?P<pk>[0-9]+)/detail$', views.SinglePeriodInflowDetailView.as_view(), name='constant-transfer-detail'),
+
+    # # ex: /fixed_value_inflow/123/detail
+    # url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/detail$', views.FixedValueInflowDetailView.as_view(), name='constant-transfer-detail'),
+
+    # # ex: /stochastic_inflow/123/detail
+    # url(r'^stochastic_inflow/(?P<pk>[0-9]+)/detail$', views.StochasticInflowDetailView.as_view(), name='constant-transfer-detail'),
+
+    # # ex: /random_choice_inflow/123/detail
+    # url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='constant-transfer-detail'),
 
 #==============================================================================
 #  Simulation

@@ -68,20 +68,52 @@ class ModelDetailView(generic.DetailView):
     model = models.model
     # template_name = 'dpmfa/model_detail.html'
 
-    def find_external_inflows_by_model(self, model_pk):
-        return models.external_inflow.objects.filter(target__model=model_pk)
+    def find_external_list_inflows_by_model(self, model_pk):
+        return models.external_list_inflow.objects.filter(target__model=model_pk)
 
-    def find_local_releases_by_model(self, model_pk):
-        return models.local_release.objects.filter(stock__model=model_pk)
+    def find_external_function_inflows_by_model(self, model_pk):
+        return models.external_function_inflow.objects.filter(target__model=model_pk)
 
-    def find_transfers_by_model(self, model_pk):
-        return models.transfer.objects.filter(target__model=model_pk)
+    def find_constant_transfers_by_model(self, model_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.constant_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.constant_transfer.objects.filter(target__model=model_pk)
+
+    def find_random_choice_transfers_by_model(self, model_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.random_choice_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.random_choice_transfer.objects.filter(target__model=model_pk)
+
+    def find_stochastic_transfers_by_model(self, model_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.stochastic_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.stochastic_transfer.objects.filter(target__model=model_pk)
+
+    def find_aggregated_transfers_by_model(self, model_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.aggregated_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.aggregated_transfer.objects.filter(target__model=model_pk)
+
+    def find_flow_compartments_by_model(self, model_pk):
+        return models.flow_compartment.objects.filter(model=model_pk)
 
     def get_context_data(self, **kwargs):
         context = super(ModelDetailView, self).get_context_data(**kwargs)
-        context['external_inflows'] = self.find_external_inflows_by_model(self.object.pk)
-        context['local_releases'] = self.find_local_releases_by_model(self.object.pk)
-        context['transfers'] = self.find_transfers_by_model(self.object.pk)
+
+        context['external_list_inflows'] = self.find_external_list_inflows_by_model(self.object.pk)
+        context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
+
+        context['constant_transfers'] = self.find_constant_transfers_by_model(self.object.pk, False)
+        context['random_choice_transfers'] = self.find_random_choice_transfers_by_model(self.object.pk, False)
+        context['stochastic_transfers'] = self.find_stochastic_transfers_by_model(self.object.pk, False)
+        context['aggregated_transfers'] = self.find_aggregated_transfers_by_model(self.object.pk, False)
+
+        context['flow_compartments'] = self.find_flow_compartments_by_model(self.object.pk)
+
         return context
 
 
@@ -167,49 +199,49 @@ class ParameterRedirectView(generic.RedirectView):
 #  Compartment
 #==============================================================================
 
-class CompartmentDetailView(generic.DetailView):
-    model = models.compartment
+# class CompartmentDetailView(generic.DetailView):
+#    model = models.compartment
+#
+#    fields = [
+#        'model',
+#        'name',
+#        'description',
+#        'log_inflows',
+#        'categories'
+#        ]
     
-    fields = [
-        'model',
-        'name',
-        'description',
-        'log_inflows',
-        'categories'
-        ]
+# class CompartmentCreateView(generic.CreateView):
+#    model = models.compartment
+#
+#    fields = [
+#        'model',
+#        'name',
+#        'description',
+#        'log_inflows',
+#        'categories'
+#        ]
     
-class CompartmentCreateView(generic.CreateView):
-    model = models.compartment
+#class CompartmentUpdateView(generic.UpdateView):
+#    model = models.compartment
+#
+#    fields = [
+#        'model',
+#        'name',
+#        'description',
+#        'log_inflows',
+#        'categories'
+#        ]
     
-    fields = [
-        'model',
-        'name',
-        'description',
-        'log_inflows',
-        'categories'
-        ]
-    
-class CompartmentUpdateView(generic.UpdateView):
-    model = models.compartment
-    
-    fields = [
-        'model',
-        'name',
-        'description',
-        'log_inflows',
-        'categories'
-        ]
-    
-class CompartmentDeleteView(generic.DeleteView):
-    model = models.compartment
-    
-    fields = [
-        'model',
-        'name',
-        'description',
-        'log_inflows',
-        'categories'
-        ]
+#class CompartmentDeleteView(generic.DeleteView):
+#    model = models.compartment
+#
+#    fields = [
+#        'model',
+#        'name',
+#        'description',
+#        'log_inflows',
+#        'categories'
+#        ]
     
 #==============================================================================
 #  Flow Compartment
@@ -217,18 +249,7 @@ class CompartmentDeleteView(generic.DeleteView):
 
 class FlowCompartmentDetailView(generic.DetailView):
     model = models.flow_compartment
-    
-    fields = [
-        'model',
-        'name',
-        'description',
-        'evt_created',
-        'evt_changed',
-        'log_inflows',
-        'categories',
-        'adjust_outgoing_tcs',
-        'log_outflows',
-        ]
+    # template_name = 'dpmfa/flow_compartment_detail.html'
     
 class FlowCompartmentCreateView(generic.CreateView):
     model = models.flow_compartment
@@ -237,8 +258,6 @@ class FlowCompartmentCreateView(generic.CreateView):
         'model',
         'name',
         'description',
-        'evt_created',
-        'evt_changed',
         'log_inflows',
         'categories',
         'adjust_outgoing_tcs',
@@ -249,16 +268,16 @@ class FlowCompartmentUpdateView(generic.UpdateView):
     model = models.flow_compartment
     
     fields = [
-        'model',
         'name',
         'description',
-        'evt_created',
-        'evt_changed',
-        'log_inflows',
         'categories',
         'adjust_outgoing_tcs',
+        'log_inflows',
         'log_outflows',
         ]
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:flow-compartment-detail', kwargs={'pk': self.object.pk})
 
 class FlowCompartmentDeleteView(generic.DeleteView):
     model = models.flow_compartment
@@ -274,6 +293,9 @@ class FlowCompartmentDeleteView(generic.DeleteView):
         'adjust_outgoing_tcs',
         'log_outflows',
         ]
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
     
 #==============================================================================
 #  Stock
