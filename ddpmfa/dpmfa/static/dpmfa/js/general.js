@@ -15,7 +15,11 @@ jsPlumb.ready(function() {
                 isSource:true,
                 isTarget:true,
                 connector: ['Straight'],
-                maxConnections: -1
+                maxConnections: -1,
+                connectorOverlays:[
+                    [ "Arrow", { width:10, length:30, location:1, id:"arrow" } ],
+                    [ "Label", { label:"A new transfer", id:"label" } ]
+                ]
             };
 
             var comp1 = jQuery('<div class="compartment">A compartment</div>')
@@ -43,18 +47,24 @@ jsPlumb.ready(function() {
             jsPlumb.addEndpoint(comp3, { anchor:'Right' }, endpointConfig);
 
 
-            jsPlumb.connect({
+            var connection1 = jsPlumb.connect({
                 connector: ["Straight"],
                 source:comp1,
                 target: comp2,
                 anchor: ["Left", "Right"],
                 endpoint:"Dot",
                 overlays:[
-                    ["Arrow", { width:12, length:12, location:0.67 }]
+                    ["Arrow", { width:12, length:12, location:0.67,
+                        events: {
+                            click: function() {
+                                alert('Hello. Who clicked me?');
+                            }
+                        }
+                     }]
                 ]
             });
 
-            jsPlumb.connect({
+            var connection2 = jsPlumb.connect({
                 connector: ["Straight"],
                 source:comp2,
                 target: comp3,
@@ -63,6 +73,10 @@ jsPlumb.ready(function() {
                 overlays:[
                     ["Arrow", { width:12, length:12, location:0.67 }]
                 ]
+            });
+
+            connection1.bind('click', function() {
+                alert('connection was clicked');
             });
         });
     });
