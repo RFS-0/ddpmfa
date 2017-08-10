@@ -111,16 +111,16 @@ urlpatterns = [
 #==============================================================================
 
     # ex: /stock/123/detail
-    url(r'^stock/(?P<stock_pk>[0-9]+)/detail$', views.StockDetailView.as_view(), name='stock-detail'),
+    url(r'^stock/(?P<pk>[0-9]+)/detail$', views.StockDetailView.as_view(), name='stock-detail'),
  
     # ex: /stock/create
     url(r'^stock/create$', views.StockCreateView.as_view(), name='stock-create'),
     
     # ex: /stock/123/update
-    url(r'^stock/(?P<stock_pk>[0-9]+)/update', views.StockUpdateView.as_view(), name='stock-update'),
+    url(r'^stock/(?P<pk>[0-9]+)/update', views.StockUpdateView.as_view(), name='stock-update'),
  
     # ex: /stock/123/delete
-    url(r'^stock/(?P<stock_pk>[0-9]+)/delete', views.StockDeleteView.as_view(), name='stock-delete'),
+    url(r'^stock/(?P<pk>[0-9]+)/delete', views.StockDeleteView.as_view(), name='stock-delete'),
  
 #==============================================================================
 #  Sink

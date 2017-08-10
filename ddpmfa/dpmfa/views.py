@@ -101,6 +101,9 @@ class ModelDetailView(generic.DetailView):
     def find_flow_compartments_by_model(self, model_pk):
         return models.flow_compartment.objects.filter(model=model_pk)
 
+    def find_stocks_by_model(self, model_pk):
+        return models.stock.objects.filter(model=model_pk)
+
     def get_context_data(self, **kwargs):
         context = super(ModelDetailView, self).get_context_data(**kwargs)
 
@@ -113,6 +116,7 @@ class ModelDetailView(generic.DetailView):
         context['aggregated_transfers'] = self.find_aggregated_transfers_by_model(self.object.pk, False)
 
         context['flow_compartments'] = self.find_flow_compartments_by_model(self.object.pk)
+        context['stocks'] = self.find_stocks_by_model(self.object.pk)
 
         return context
 
@@ -249,7 +253,6 @@ class ParameterRedirectView(generic.RedirectView):
 
 class FlowCompartmentDetailView(generic.DetailView):
     model = models.flow_compartment
-    # template_name = 'dpmfa/flow_compartment_detail.html'
     
 class FlowCompartmentCreateView(generic.CreateView):
     model = models.flow_compartment
@@ -337,33 +340,22 @@ class StockUpdateView(generic.UpdateView):
     model = models.stock
     
     fields = [
-        'model',
         'name',
         'description',
-        'evt_created',
-        'evt_changed',
-        'log_inflows',
         'categories',
-        'local_release',
         'adjust_outgoing_tcs',
+        'log_inflows',
         'log_outflows',
         ]
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:stock-detail', kwargs={'pk': self.object.pk})
     
 class StockDeleteView(generic.DeleteView):
     model = models.stock
-    
-    fields = [
-        'model',
-        'name',
-        'description',
-        'evt_created',
-        'evt_changed',
-        'log_inflows',
-        'categories',
-        'local_release',
-        'adjust_outgoing_tcs',
-        'log_outflows',
-        ]
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
 
 #==============================================================================
 #  Sink

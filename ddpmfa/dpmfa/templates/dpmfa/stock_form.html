@@ -1,10 +1,10 @@
 {% extends "dpmfa/page.html" %}
 
 {% block title %}
-    {% if flow_compartment.pk %}
-        Edit Flow Compartment &quot;{{flow_compartment.name}}&quot;
+    {% if stock.pk %}
+        Edit Stock &quot;{{stock.name}}&quot;
     {% else %}
-        New Flow Compartment
+        New Stock
     {% endif %}
 {% endblock %}
 
@@ -14,22 +14,22 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <span class="navbar-brand" href="#">
-                {% if flow_compartment.pk %}
-                    Edit Flow Compartment &quot;{{flow_compartment.name}}&quot;
+                {% if stock.pk %}
+                    Edit Stock &quot;{{stock.name}}&quot;
                 {% else %}
-                    New Flow Compartment
+                    New Stock
                 {% endif %}
           </span>
         </div>
         <ul class="nav navbar-nav">
             <li>
-                <a href="{% url 'dpmfa:flow-compartment-update' flow_compartment.pk %}" data-toggle="tooltip" title="Edit">
+                <a href="{% url 'dpmfa:stock-update' stock.pk %}" data-toggle="tooltip" title="Edit">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     Edit
                 </a>
             </li>
             <li>
-                 <a href="{% url 'dpmfa:flow-compartment-delete' flow_compartment.pk %}" data-toggle="tooltip" title="Delete">
+                 <a href="{% url 'dpmfa:stock-delete' stock.pk %}" data-toggle="tooltip" title="Delete">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     Delete
                 </a>
@@ -46,13 +46,13 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' flow_compartment.model.project.pk %}">{{ flow_compartment.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' flow_compartment.model.pk %}">{{ flow_compartment.model.name }}</a></li>
-                {% if flow_compartment.pk %}
-                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:flow-compartment-detail' flow_compartment.pk %}">{{ flow_compartment.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' stock.model.project.pk %}">{{ stock.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' stock.model.pk %}">{{ stock.model.name }}</a></li>
+                {% if stock.pk %}
+                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:stock-detail' stock.pk %}">{{ stock.name }}</a></li>
                     <li class="breadcrumb-item active">Edit</li>
                 {% else %}
-                    <li class="breadcrumb-item active">New Flow Compartment</li>
+                    <li class="breadcrumb-item active">New Stock</li>
                 {% endif %}
             </ol>
         </div>
@@ -61,10 +61,10 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                {% if flow_compartment.pk %}
-                    Edit Flow Compartment &quot;{{flow_compartment.name}}&quot;
+                {% if stock.pk %}
+                    Edit Stock &quot;{{stock.name}}&quot;
                 {% else %}
-                    New Flow Compartment
+                    New Stock
                 {% endif %}
             </h1>
 

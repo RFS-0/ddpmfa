@@ -1,6 +1,6 @@
 {% extends "dpmfa/page.html" %}
 
-{% block title %}Flow Compartment &quot;{{flow_compartment.name}}&quot;{% endblock %}
+{% block title %}Stock &quot;{{stock.name}}&quot;{% endblock %}
 
 {% block body %}
 <header>
@@ -8,18 +8,18 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <span class="navbar-brand" href="#">
-                Flow Compartment &quot;{{flow_compartment.name}}&quot;
+                Stock &quot;{{stock.name}}&quot;
           </span>
         </div>
         <ul class="nav navbar-nav">
             <li>
-                <a href="{% url 'dpmfa:flow-compartment-update' flow_compartment.pk %}" data-toggle="tooltip" title="Edit">
+                <a href="{% url 'dpmfa:stock-update' stock.pk %}" data-toggle="tooltip" title="Edit">
                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                     Edit
                 </a>
             </li>
             <li>
-                 <a href="{% url 'dpmfa:flow-compartment-delete' flow_compartment.pk %}" data-toggle="tooltip" title="Delete">
+                 <a href="{% url 'dpmfa:stock-delete' stock.pk %}" data-toggle="tooltip" title="Delete">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                     Delete
                 </a>
@@ -36,20 +36,20 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' flow_compartment.model.project.pk %}">{{ flow_compartment.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' flow_compartment.model.pk %}">{{ flow_compartment.model.name }}</a></li>
-              <li class="breadcrumb-item active">{{flow_compartment.name}}</li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' stock.model.project.pk %}">{{ stock.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' stock.model.pk %}">{{ stock.model.name }}</a></li>
+              <li class="breadcrumb-item active">{{stock.name}}</li>
             </ol>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-12">
-            <h1>Flow Compartment &quot;{{ flow_compartment.name }}&quot;</h1>
+            <h1>Stock &quot;{{ stock.name }}&quot;</h1>
 
-            {% if flow_compartment.description %}
+            {% if stock.description %}
                 <h2>Description</h2>
-                <div class="dpmfa-pre-wrap">{{ flow_compartment.description }}</div>
+                <div class="dpmfa-pre-wrap">{{ stock.description }}</div>
             {% endif %}
 
             <h2>Properties</h2>
@@ -57,27 +57,27 @@
             <table class="table table-striped table-hover table-responsive">
                 <tr>
                     <th>Created at</th>
-                    <td>{{ flow_compartment.evt_created }}</td>
+                    <td>{{ stock.evt_created }}</td>
                 </tr>
                 <tr>
                     <th>Changed at</th>
-                    <td>{{ flow_compartment.evt_changed }}</td>
+                    <td>{{ stock.evt_changed }}</td>
                 </tr>
                 <tr>
                     <th>Categories</th>
-                    <td>{{ flow_compartment.categories }}</td>
+                    <td>{{ stock.categories }}</td>
                 </tr>
                 <tr>
                     <th>Adjust Outgoing TCs</th>
-                    <td>{% if flow_compartment.adjust_outgoing_tcs %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if stock.adjust_outgoing_tcs %}Yes{% else %}No{% endif %}</td>
                 </tr>
                 <tr>
                     <th>Log inflows</th>
-                    <td>{% if flow_compartment.log_inflows %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if stock.log_inflows %}Yes{% else %}No{% endif %}</td>
                 </tr>
                 <tr>
                     <th>Log outflows</th>
-                    <td>{% if flow_compartment.log_outflows %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if stock.log_outflows %}Yes{% else %}No{% endif %}</td>
                 </tr>
             </table>
         </div>
