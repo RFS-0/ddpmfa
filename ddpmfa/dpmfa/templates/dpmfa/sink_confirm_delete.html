@@ -1,0 +1,51 @@
+{% extends "dpmfa/page.html" %}
+
+{% block title %}
+    Delete Sink: &quot;{{sink.name}}&quot;?
+{% endblock %}
+
+{% block body %}
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <span class="navbar-brand" href="#">
+                Delete Sink: &quot;{{sink.name}}&quot;?
+          </span>
+        </div>
+        <ul class="nav navbar-nav">
+        </ul>
+      </div>
+    </nav>
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' sink.model.project.pk %}">{{ sink.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' sink.model.pk %}">{{ sink.model.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:sink-detail' sink.pk %}">{{ sink.name }}</a></li>
+                <li class="breadcrumb-item active">Delete?</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>
+               Delete Sink: &quot;{{sink.name}}&quot;?
+            </h1>
+
+            <form action="" method="post">{% csrf_token %}
+                <p>Are you sure you want to delete the sink &quot;{{sink.name}}&quot;?</p>
+                <input type="submit" value="Confirm" class="btn btn-default" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

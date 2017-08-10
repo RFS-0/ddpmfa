@@ -127,29 +127,29 @@ urlpatterns = [
 #==============================================================================
 
     # ex: /sink/123/detail
-    url(r'^sink/(?P<sink_pk>[0-9]+)/detail$', views.SinkDetailView.as_view(), name='sink-detail'),
+    url(r'^sink/(?P<pk>[0-9]+)/detail$', views.SinkDetailView.as_view(), name='sink-detail'),
 
     # ex: /sink/create
-    url(r'^sink/(?P<sink_pk>[0-9]+)/$', views.SinkCreateView.as_view(), name='sink-create'),
+    url(r'^sink/create$', views.SinkCreateView.as_view(), name='sink-create'),
     
     # ex: /sink/123/update
-    url(r'^sink/(?P<sink_pk>[0-9]+)/$', views.SinkUpdateView.as_view(), name='sink-update'),
+    url(r'^sink/(?P<pk>[0-9]+)/update$', views.SinkUpdateView.as_view(), name='sink-update'),
 
     # ex: /sink/123
-    url(r'^sink/(?P<sink_pk>[0-9]+)/$', views.SinkDetailView.as_view(), name='sink-delete'),
+    url(r'^sink/(?P<pk>[0-9]+)/delete$', views.SinkDeleteView.as_view(), name='sink-delete'),
 
 #==============================================================================
 #  Releases
 #==============================================================================
 
     # ex: /local_release/123/detail
-    url(r'^local_release/(?P<sink_pk>[0-9]+)/detail$', views.LocalReleaseDetailView.as_view(), name='sink-detail'),
+    url(r'^local_release/(?P<sink_pk>[0-9]+)/detail$', views.LocalReleaseDetailView.as_view(), name='function-release-detail'),
 
     # ex: /fixed_rate_release/123/detail
-    url(r'^fixed_rate_release/(?P<sink_pk>[0-9]+)/detail$', views.FixedRateReleaseDetailView.as_view(), name='sink-detail'),
+    url(r'^fixed_rate_release/(?P<sink_pk>[0-9]+)/detail$', views.FixedRateReleaseDetailView.as_view(), name='function-release-detail'),
 
     # ex: /function_release/123/detail
-    url(r'^function_release/(?P<sink_pk>[0-9]+)/detail$', views.FunctionReleaseDetailView.as_view(), name='sink-detail'),
+    url(r'^function_release/(?P<sink_pk>[0-9]+)/detail$', views.FunctionReleaseDetailView.as_view(), name='function-release-detail'),
 
 #==============================================================================
 #  Transfers
