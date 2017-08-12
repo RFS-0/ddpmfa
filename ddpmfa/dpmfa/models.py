@@ -53,6 +53,9 @@ class model(models.Model):
         verbose_name='Time of last change',
          auto_now=True)
     
+    def __str__(self):
+        return self.name + ' (' + str(self.pk) + ')'
+    
 #==============================================================================
 #  Model Designer
 #==============================================================================
@@ -74,7 +77,7 @@ class model_designer(models.Model):
     
     
     def __str__(self):
-        return self.name + ' (' + str(str(self.pk)) + ')'
+        return self.name + ' (' + self.pk + ')'
     
     def get_absolute_url(self):
         return reverse('model', kwargs={'pk': self.pk})
@@ -114,6 +117,9 @@ class model_parameters(models.Model):
         verbose_name='Time of last change',
          auto_now=True)
     
+    def __str__(self):
+        return self.name + ' (' + self.pk + ')'
+    
 #==============================================================================
 #  Compartment
 #==============================================================================
@@ -148,7 +154,7 @@ class compartment(models.Model):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(str(self.pk)) + ')'
+        return self.name + ' (' + str(self.pk) + ')'
     
 #==============================================================================
 #  Flow Compartment
