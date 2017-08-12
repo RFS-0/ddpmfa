@@ -310,7 +310,7 @@ class Command(BaseCommand):
         
         # fixed value inflow
         fvif_for_efi = fixed_value_inflow(
-            external_list_inflow = import_of_ad_inflow,
+            external_list_inflow = None,
             current_value = 0,
             period = 1,
             value = 100)
