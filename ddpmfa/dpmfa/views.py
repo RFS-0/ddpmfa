@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404, render
 from django.views import generic
 from django.urls import reverse_lazy
 
+from itertools import chain
+
 import dpmfa.forms as forms
 import dpmfa.models as models
 
@@ -704,71 +706,85 @@ class StochasticTransferDeleteView(generic.DeleteView):
 
 # External Inflow
 
-class ExternalInflowDetailView(generic.DetailView):
-    model = models.external_inflow
-    
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
+# class ExternalInflowDetailView(generic.DetailView):
+#    model = models.external_inflow
+#
+#    fields = [
+#        'target',
+#        'name',
+#        'start_delay',
+#        'derivation_distribution',
+#        'derivation_parameters',
+#        'derivation_factor'
+#        ]
 
-class ExternalInflowCreateView(generic.CreateView):
-    model = models.external_inflow
+#class ExternalInflowCreateView(generic.CreateView):
+#    model = models.external_inflow
+#
+#    fields = [
+#        'target',
+#        'name',
+#        'start_delay',
+#        'derivation_distribution',
+#        'derivation_parameters',
+#        'derivation_factor'
+#        ]
+
+#class ExternalInflowUpdateView(generic.UpdateView):
+#    model = models.external_inflow
+#
+#    fields = [
+#        'target',
+#        'name',
+#        'start_delay',
+#        'derivation_distribution',
+#        'derivation_parameters',
+#        'derivation_factor'
+#        ]
     
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
-    
-class ExternalInflowUpdateView(generic.UpdateView):
-    model = models.external_inflow
-    
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
-    
-class ExternalInflowDeleteView(generic.DeleteView):
-    model = models.external_inflow
-    
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
+#class ExternalInflowDeleteView(generic.DeleteView):
+#    model = models.external_inflow
+#
+#    fields = [
+#        'target',
+#        'name',
+#        'start_delay',
+#        'derivation_distribution',
+#        'derivation_parameters',
+#        'derivation_factor'
+#        ]
     
 # External List Inflow
 
 class ExternalListInflowDetailView(generic.DetailView):
     model = models.external_list_inflow
-    
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
+
+    def find_fixed_value_inflows_by_external_list_inflow(self, ext_list_pk):
+        return models.fixed_value_inflow.objects.filter(external_list_inflow__pk=ext_list_pk).order_by('period')
+
+    def find_stochastic_function_inflows_by_external_list_inflow(self, ext_list_pk):
+        return models.stochastic_function_inflow.objects.filter(external_list_inflow=ext_list_pk).order_by('period')
+
+    def find_random_choice_inflows_by_external_list_inflow(self, ext_list_pk):
+        return models.random_choice_inflow.objects.filter(external_list_inflow=ext_list_pk).order_by('period')
+
+    def get_context_data(self, **kwargs):
+        context = super(ExternalListInflowDetailView, self).get_context_data(**kwargs)
+
+        fixed_value_inflows = self.find_fixed_value_inflows_by_external_list_inflow(self.object.pk)
+        stochastic_function_inflows = self.find_stochastic_function_inflows_by_external_list_inflow(self.object.pk)
+        random_choice_inflows = self.find_random_choice_inflows_by_external_list_inflow(self.object.pk)
+
+        single_period_inflows = chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows)
+
+
+        context['single_period_inflows'] = single_period_inflows
+        return context
+
 
 class ExternalListInflowCreateView(generic.CreateView):
     model = models.external_list_inflow
-    
+
     fields = [
         'target',
         'name',
@@ -861,31 +877,31 @@ class ExternalFunctionInflowDeleteView(generic.DeleteView):
         ]
     
 #==============================================================================
-#  Single Period Inflow
+#  Fixed Value Inflow
 #==============================================================================
 
-class SinglePeriodInflowDetailView(generic.DetailView):
+class FixedValueInflowDetailView(generic.DetailView):
     model = models.single_period_inflow
-    
+
     fields = [
         'external_list_inflow',
         'current_value',
         'period'
         ]
-    
-class FixedValueInflowDetailView(generic.DetailView):
+
+class FixedValueInflowUpdateView(generic.DetailView):
     model = models.single_period_inflow
-    
+
     fields = [
         'external_list_inflow',
         'current_value',
         'period',
         'value'
         ]
-    
-class StochasticInflowDetailView(generic.DetailView):
+
+class FixedValueInflowDeleteView(generic.DetailView):
     model = models.stochastic_function_inflow
-    
+
     fields = [
         'external_list_inflow',
         'current_value',
@@ -894,7 +910,7 @@ class StochasticInflowDetailView(generic.DetailView):
         'parameter_values'
         ]
 
-class RandomChoiceInflowDetailView(generic.DetailView):
+class FixedValueInflowCreateView(generic.DetailView):
     model = models.random_choice_inflow
     
     fields = [
@@ -903,6 +919,54 @@ class RandomChoiceInflowDetailView(generic.DetailView):
         'period',
         'sample'
         ]
+
+
+# ==============================================================================
+#  Random Choice Inflow
+# ==============================================================================
+
+class RandomChoiceInflowDetailView(generic.DetailView):
+    model = models.single_period_inflow
+
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period'
+    ]
+
+
+class RandomChoiceInflowUpdateView(generic.DetailView):
+    model = models.single_period_inflow
+
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period',
+        'value'
+    ]
+
+
+class RandomChoiceInflowDeleteView(generic.DetailView):
+    model = models.stochastic_function_inflow
+
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period',
+        'pdf',
+        'parameter_values'
+    ]
+
+
+class RandomChoiceInflowCreateView(generic.DetailView):
+    model = models.random_choice_inflow
+
+    fields = [
+        'external_list_inflow',
+        'current_value',
+        'period',
+        'sample'
+    ]
     
 #==============================================================================
 #  Simulation

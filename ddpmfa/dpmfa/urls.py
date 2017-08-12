@@ -276,6 +276,31 @@ urlpatterns = [
     # url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='constant-transfer-detail'),
 
 #==============================================================================
+#  Fixed Value Inflow
+#==============================================================================
+
+    url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/detail$', views.FixedValueInflowDetailView.as_view(), name='fixed-value-inflow-detail'),
+
+    url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/update', views.FixedValueInflowUpdateView.as_view(), name='fixed-value-inflow-update'),
+
+    url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/delete', views.FixedValueInflowDeleteView.as_view(), name='fixed-value-inflow-delete'),
+
+    url(r'^fixed_value_inflow/create$', views.FixedValueInflowCreateView.as_view(), name='fixed-value-inflow-create'),
+
+#==============================================================================
+#  Random Choice Inflow
+#==============================================================================
+
+    url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='random-choice-inflow-detail'),
+
+    url(r'^random_choice_inflow/(?P<pk>[0-9]+)/update', views.RandomChoiceInflowUpdateView.as_view(), name='random-choice-inflow-update'),
+
+    url(r'^random_choice_inflow/(?P<pk>[0-9]+)/delete', views.RandomChoiceInflowDeleteView.as_view(), name='random-choice-inflow-delete'),
+
+    url(r'^random_choice_inflow/create$', views.RandomChoiceInflowCreateView.as_view(), name='random-choice-inflow-create'),
+
+
+#==============================================================================
 #  Simulation
 #==============================================================================
 
