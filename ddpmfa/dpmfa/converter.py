@@ -26,7 +26,7 @@ class CompartmentConverter(object):
         except:
             print("Could not convert from DB to dpmfa compartment")
             
-    def getCompartment(self):
+    def getDpmfaEntity(self):
         return self.compartment_dpmfa
     
 class FlowCompartmentConverter(CompartmentConverter):
@@ -54,7 +54,7 @@ class FlowCompartmentConverter(CompartmentConverter):
             print("Could not convert from DB to dpmfa flow compartment")
      
         
-    def getFlowCompartment(self):
+    def getDpmfaEntity(self):
         return self.flow_compartment_dpmfa
     
 class SinkConverter(CompartmentConverter):
@@ -72,7 +72,7 @@ class SinkConverter(CompartmentConverter):
         except:
             print("Could not convert from DB to dpmfa sink")
             
-    def getSink(self):
+    def getDpmfaEntity(self):
         return self.sink_dpmfa
             
 class StockConverter(FlowCompartmentConverter):
@@ -81,23 +81,28 @@ class StockConverter(FlowCompartmentConverter):
         super(FlowCompartmentConverter, self).__init__(db_stock)
         
     # TODO: convert local release here 
-    """
+    
         self.db_local_release = db_stock.local_release
         
         self.stock_dpmfa = package_components.Stock(
-            name=,
-            transfers=[], 
-            localRelease = 0, 
-            logInflows = False, 
-            logOutflows = False, 
-            logImmediateFlows = False, 
-            categories = []
+            name = self.name,
+            transfers = [], 
+            localRelease = [], 
+            logInflows = self.logInflows, 
+            logOutflows = [], 
+            logImmediateFlows = [],
+            categories = self.categories
             )
         
         
-        def getStock(self):
-            return self.stock_dpmfa
-        """
+    def getDpmfaEntity(self):
+        return self.stock_dpmfa
+
+#==============================================================================
+#  Releases
+#==============================================================================
+
+# Local Release
 
 class LocalReleaseConverter(object):
     
@@ -114,13 +119,15 @@ class LocalReleaseConverter(object):
         except:
              print("Could not convert from DB to dpmfa local release")
         
-    def getLocalRelease(self):
+    def getDpmfaEntity(self):
         return self.local_release_dpmfa
     
+# Fixed Rate Release
+
 class FixedRateReleaseConverter(LocalReleaseConverter):
     
     def __init__(self, db_fixed_rate_release=django_models.fixed_rate_release):
-        super(FixedRateRelease, self).__init__(db_fixed_rate_release)
+        super(FixedRateReleaseConverter, self).__init__(db_fixed_rate_release)
         
         self.releaseRate = db_fixed_rate_release.release_rate
         
@@ -132,7 +139,10 @@ class FixedRateReleaseConverter(LocalReleaseConverter):
             
         except:
              print("Could not convert from DB to dpmfa fixed rate release")
-             
+    
+    def getDpmfaEntity(self):
+        return self.fixed_rate_release_dpmfa
+            
 class ListReleaseConverter(LocalReleaseConverter):
     
     def __init__(self, db_list_release=django_models.list_release):
@@ -142,19 +152,25 @@ class ListReleaseConverter(LocalReleaseConverter):
             
         try:
             self.list_release_dpmfa = package_components.ListRelease(
-                releaseRatesList = self.releaseRatesList,
+                releaseRatesList = [],
                 delay = self.delay
                 )
         
         except:
              print("Could not convert from DB to dpmfa list release")
+     
+    def getDpmfaEntity(self):
+        return self.list_release_dpmfa
              
 class FunctionReleaseConverter(LocalReleaseConverter):
     
+     def expInflowFunction(base, period):
+         return base ** period
+     
      def __init__(self, db_function_release=django_models.function_release):
-        super(ListReleaseConverter, self).__init__(db_function_release)
+        super(FunctionReleaseConverter, self).__init__(db_function_release)
         
-        self.releaseFunction = db_list_release.release_function
+        self.releaseFunction = self.expInflowFunction
         
         try:
             self.function_release_dpmfa = package_components.FunctionRelease(
@@ -165,6 +181,10 @@ class FunctionReleaseConverter(LocalReleaseConverter):
         except:
              print("Could not convert from DB to dpmfa FunctionRelease")
              
+             
+        def getDpmfaEntity(self):
+            return self.function_release_dpmfa
+
 class TransferConverter(object):
     
     def __init__(self, db_transfer=django_models.transfer):
@@ -184,7 +204,7 @@ class TransferConverter(object):
         except:
             print("Could not convert from DB to dpmfa Transfer")
             
-    def getTransfer(self):
+    def getDpmfaEntity(self):
         return self.transfer_dpmfa
     
             
@@ -206,7 +226,7 @@ class ConstTransferConverter(TransferConverter):
             print("Could not convert from DB to dpmfa ConstTransfer")
 
     
-    def getConstTransferConverter(self):
+    def getDpmfaEntity(self):
         return self.const_transfer_dpmfa
 
 class StochasticTransferConverter(TransferConverter):
@@ -245,7 +265,7 @@ class RandomChoiceTransferConverter(TransferConverter):
         except:
             print("Could not convert from to DB dpmfa RandomChoiceTransfer")
     
-    def getRandomChoiceTransferConverter(self):
+    def getDpmfaEntity(self):
         return self.random_choice_transfer
     
 class AggregatedTransferConverter(TransferConverter):
@@ -284,7 +304,7 @@ class SinglePeriodInflowConverter(object):
         except:
             print("Could not convert from to DB dpmfa SinglePeriodInflow")
         
-    def getSinglePeriodInflowConverter(self):
+    def getDpmfaEntity(self):
         return self.single_period_inflow_dpmfa
     
 class StochasticFunctionInflowConverter(SinglePeriodInflowConverter):
@@ -304,7 +324,7 @@ class StochasticFunctionInflowConverter(SinglePeriodInflowConverter):
         except:
             print("Could not convert from DB to dpmfa StochasticFunctionInflow")
             
-    def getStochasticFunctionInflowConverter(self):
+    def getDpmfaEntity(self):
         return self.stochastic_function_inflow_dpmfa
             
 class RandomChoiceInflowConverter(SinglePeriodInflowConverter):
@@ -322,7 +342,7 @@ class RandomChoiceInflowConverter(SinglePeriodInflowConverter):
         except:
             print("Could not convert from DB to dpmfa RandomChoiceInflow")
             
-    def getRandomChoiceInflowConverter(self):
+    def getDpmfaEntity(self):
         return self.random_choice_inflow_dpmfa
             
 class FixedValueInflowConverter(SinglePeriodInflowConverter):
@@ -340,7 +360,7 @@ class FixedValueInflowConverter(SinglePeriodInflowConverter):
         except:
             print("Could not convert from DB to dpmfa FixedValueInflow")
             
-    def getFixedValueInflowConverter(self):
+    def getDpmfaEntity(self):
         return self.fixed_value_inflow_dpmfa
 
 class ExternalInflowConverter(object):
@@ -367,7 +387,7 @@ class ExternalInflowConverter(object):
         except:
             print("Could not convert from DB to dpmfa ExternalInflow")
             
-    def getExternalInflowConverter(self):
+    def getDpmfaEntity(self):
         return self.external_inflow_dpmfa
             
 class ExternalListInflowConverter(ExternalInflowConverter):
@@ -387,7 +407,7 @@ class ExternalListInflowConverter(ExternalInflowConverter):
         except:
             print("Could not convert from DB to dpmfa ExternalListInflow")
             
-    def getExternalListInflowConverter(self):
+    def getDpmfaEntity(self):
         return self.external_inflow_dpmfa
             
 class ExternalFunctionInflowConverter(ExternalInflowConverter):
@@ -412,7 +432,7 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
         except:
             print("Could not convert from DB to dpmfa ExternalFunctionInflow")
             
-    def getExternalFunctionInflowConverter(self):
+    def getDpmfaEntity(self):
         return self.external_function_inflow_dpmfa
 
 #==============================================================================
