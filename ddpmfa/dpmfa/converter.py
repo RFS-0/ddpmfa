@@ -34,32 +34,44 @@ class FlowCompartmentConverter(CompartmentConverter):
     def __init__(self, db_flow_compartment=django_models.flow_compartment):
         super(FlowCompartmentConverter, self).__init__(db_flow_compartment)
         
-        
         # set the transfers
-        
-        django_models.transfer.objects.filter()
-        
-        if len(transfer.objects.filter(pk=db_flow_compartment.id)) > 0:
-            self.qs_transfers = db_transfers.objects.filter(pk=db_flow_compartment.id)
+        self.transfers = [] 
+        for transfer in self.db_entity.outgoing_transfers.all():
+            if len(django_models.constant_transfer.objects.filter(pk=self.db_entity.id)) > 0:
+                qs_constant_transfer = django_models.constant_transfer.objects.filter(pk=self.db_entity.id)
+                db_constant_transfer = qs_constant_transfer[0]
+                self.transfers.append(ConstTransferConverter(db_constant_transfer))
+            elif len(django_models.random_choice_transfer.objects.filter(pk=self.db_entity.id)) > 0:
+                qs_random_choice_transfer = django_models.random_choice_transfer.objects.filter(pk=self.db_entity.id)
+                db_random_choice_transfer = qs_random_choice_transfer[0]
+                self.transfers.append(RandomChoiceTransferConverter(db_random_choice_transfer))
+            elif len(django_models.stochastic_transfer.objects.filter(pk=self.db_entity.id)) > 0:
+                qs_stochastic_transfer = django_models.stochastic_transfer.objects.filter(pk=self.db_entity.id)
+                db_stochastic_transfer = qs_stochastic_transfer[0]
+                self.transfers.append(StochasticTransferConverter(db_stochastic_transfer))
+            elif len(django_models.aggregated_transfer.objects.filter(pk=self.db_entity.id)) > 0:
+                qs_aggregated_transfer = django_models.aggregated_transfer.objects.filter(pk=self.db_entity.id)
+                db_aggregated_transfer = qs_aggregated_transfer[0]
+                self.transfers.append(AggregatedTransferConverter(db_aggregated_transfer))
+            else:
+                print("Could not retrieve a transfer for flow compartment: %s (%i)" %(db_entity.name, db_entity.id))
  
-        # TODO: Transfers be queried and instantiated here      
-        self.transfers = []        
-        self.adjustOutTCs = db_flow_compartment.adjust_outgoing_tcs
+        self.adjustOutgoingTCs = db_flow_compartment.adjust_outgoing_tcs
         self.logOutflows = db_flow_compartment.log_outflows
         self.immediateReleaseRate = 1
             
-        try:
-            self.flow_compartment_dpmfa = package_components.FlowCompartment(
-                self.name, 
-                self.transfers, 
-                self.logInflows, 
-                self.logOutflows, 
-                self.adjustOutTCs, 
-                self.categories
-                )
+        #try:
+        self.flow_compartment_dpmfa = package_components.FlowCompartment(
+            name = self.name, 
+            transfers = self.transfers, 
+            logInflows = self.logInflows, 
+            logOutflows = self.logOutflows, 
+            adjustOutgoingTCs = self.adjustOutgoingTCs,
+            categories = self.categories 
+            )
         
-        except:
-            print("Could not convert from DB to dpmfa flow compartment")
+        #except:
+        #    print("Could not convert from DB to dpmfa flow compartment")
      
         
     def getDpmfaEntity(self):
@@ -428,6 +440,23 @@ class ExternalListInflowConverter(ExternalInflowConverter):
     
     def __init__(self, db_external_list_inflow=django_models.external_list_inflow):
         super(ExternalListInflowConverter, self).__init__(db_external_list_inflow)
+        
+        self.inflowList = []
+        for inflow in self.db_entity.single_period_inflows.all():
+            if len(django_models.fixed_value_inflow.objects.filter(pk=self.db_entity.id)) > 0:
+                qs_fixed_value_inflow = django_models.fixed_value_inflow.objects.filter(pk=self.db_entity.id)
+                db_fixed_value_inflow = qs_fixed_value_inflow[0]
+                self.inflowList.append(FixedValueInflowConverter(db_fixed_value_inflow))
+            elif len(django_models.stochastic_function_inflow.objects.filter(pk=self.db_entity.id)) > 0:
+                qs_stochastic_function_inflow = django_models.stochastic_function_inflow.objects.filter(pk=self.db_entity.id)
+                db_stochastic_function_inflow = qs_stochastic_function_inflow[0]
+                self.inflowList.append(StochasticFunctionInflowConverter(db_stochastic_function_inflow))
+            elif len(django_models.random_choice_inflow.objects.filter(pk=self.db_entity.id)) > 0:
+                qs_random_choice_inflow = django_models.random_choice_inflow.objects.filter(pk=self.db_entity.id)
+                db_random_choice_inflow = qs_stochastic_function_inflow[0]
+                self.inflowList.append(RandomChoiceInflowConverter(db_random_choice_inflow))
+            else:
+                print("Could not retrieve a inflow for single period inflow: %s (%i)" %(db_entity.name, db_entity.id))
         
         try:
             self.external_list_inflow_dpmfa = package_components.ExternalListInflow(

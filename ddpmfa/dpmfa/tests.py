@@ -34,7 +34,7 @@ class CompartmentConverterTest(TestCase):
 #  Flow Compartment
 #==============================================================================
         
-class FlowCompartmentConverter(TestCase):
+class FlowCompartmentConverterTest(TestCase):
     
     def test_flow_compartment_converter(self):
         # entity specific stuff
@@ -58,7 +58,7 @@ class FlowCompartmentConverter(TestCase):
 #  Sink
 #==============================================================================
  
-class SinkConverterConverter(TestCase):
+class SinkConverterConverterTest(TestCase):
     
     def test_sink_converter(self):
         # entity specific stuff
@@ -428,7 +428,7 @@ class ExternalInflowConverterTest(TestCase):
         
 # External List Inflow
 
-class ExternalListInflowConverter(TestCase):
+class ExternalListInflowConverterTest(TestCase):
     
     def test_external_list_inflow_converter(self):
         # entity specific stuff
@@ -450,7 +450,7 @@ class ExternalListInflowConverter(TestCase):
         
 # External Function Inflow
 
-class ExternalFunctionInflowConverter(TestCase):
+class ExternalFunctionInflowConverterTest(TestCase):
     
     def test_external_function_inflow_converter(self):
         # entity specific stuff
