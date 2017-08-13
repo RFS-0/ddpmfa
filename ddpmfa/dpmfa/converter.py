@@ -1,4 +1,5 @@
 import dpmfa.models as django_models
+import dpmfa.functions as fs
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_components
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model as package_model
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import simulator as package_simulator
@@ -198,20 +199,24 @@ class ListReleaseConverter(LocalReleaseConverter):
      
     def getDpmfaEntity(self):
         return self.list_release_dpmfa
-             
-
-
-def expInflowFunction(currentPeriod):
-    return currentPeriod * 1000
 
 class FunctionReleaseConverter(LocalReleaseConverter):
      
      def __init__(self, db_function_release=django_models.function_release):
         super(FunctionReleaseConverter, self).__init__(db_function_release)
-        
-        self.releaseFunction = expInflowFunction
-        
+
+        release_function_name = db_function_release.release_function
+        function_parameters = [float(x.strip()) for x in db_function_release.function_parameters.split(',')]
+
+        self.releaseFunction = fs.function_by_name(release_function_name, function_parameters)
+
         try:
+            # [x.strip() for x in my_string.split(',')]
+
+            function_parameters = [float(x.strip()) for x in db_function_release.function_parameters.split(',')]
+
+
+
             self.function_release_dpmfa = package_components.FunctionRelease(
             releaseFunction = self.releaseFunction,
             delay = self.delay
