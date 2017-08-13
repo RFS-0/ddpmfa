@@ -703,7 +703,7 @@ class ExternalFunctionInflow(ExternalInflow):
         else:
             self.inflowFunction = inflowFunction
         
-        if isinstance(basicInflow, (int, long, float, list)):        
+        if isinstance(basicInflow, (int, float, list)):        
             self.basicInflow = SinglePeriodInflow(basicInflow)
         else:
             self.basicInflow = basicInflow

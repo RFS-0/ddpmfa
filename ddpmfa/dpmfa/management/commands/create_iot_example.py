@@ -446,3 +446,38 @@ class Command(BaseCommand):
             value=1)
         
         transfer_for_first_third_use_compartment.save()
+        
+#==============================================================================
+#  Entities only for test purposes
+#==============================================================================  
+
+# Aggregated Transfer
+
+        aggregated_transfer_for_conversion = aggregated_transfer(
+            target=third_stage_disposal_compartment,
+            name='Aggregated Transfer for Conversion Test',
+            priority=1,
+            current_tc=1,
+            weight=1,
+            weights='0.3, 0.4, 0.3'
+            )
+        
+        aggregated_transfer_for_conversion.save()
+        
+        transfer_for_aggregated_transfer = constant_transfer(
+            target=third_stage_disposal_compartment,
+            belongs_to_aggregated_transfer=aggregated_transfer_for_conversion,  
+            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            priority=1, 
+            current_tc=0, 
+            weight=0, 
+            value=1)
+        
+        transfer_for_aggregated_transfer.save()
+
+
+
+        
+        
+
+        

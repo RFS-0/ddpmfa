@@ -309,7 +309,7 @@ class AggregatedTransferConverterTest(TestCase):
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
 
 #==============================================================================
-#  Single Period Inflow
+#  Single Period Inflow                                                                    
 #==============================================================================  
 
 # Single Period Inflow
@@ -382,7 +382,7 @@ class RandomChoiceInflowConverterTest(TestCase):
 
 class FixedValueInflowConverterTest(TestCase):
     
-    def test_random_choice_inflow_converter(self):
+    def test_fixed_value_inflow_converter(self):
         # entity specific stuff
         db_model = dpmfa_models.fixed_value_inflow
         converter = converters.FixedValueInflowConverter
@@ -430,7 +430,7 @@ class ExternalInflowConverterTest(TestCase):
 
 class ExternalListInflowConverter(TestCase):
     
-    def test_external_inflow_converter(self):
+    def test_external_list_inflow_converter(self):
         # entity specific stuff
         db_model = dpmfa_models.external_inflow
         converter = converters.ExternalInflowConverter
@@ -452,7 +452,7 @@ class ExternalListInflowConverter(TestCase):
 
 class ExternalFunctionInflowConverter(TestCase):
     
-    def test_external_inflow_converter(self):
+    def test_external_function_inflow_converter(self):
         # entity specific stuff
         db_model = dpmfa_models.external_function_inflow
         converter = converters.ExternalFunctionInflowConverter
