@@ -775,10 +775,16 @@ class ExternalListInflowDetailView(generic.DetailView):
         stochastic_function_inflows = self.find_stochastic_function_inflows_by_external_list_inflow(self.object.pk)
         random_choice_inflows = self.find_random_choice_inflows_by_external_list_inflow(self.object.pk)
 
-        single_period_inflows = chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows)
+        single_period_inflows = list(chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows))
+        single_period_inflows.sort(key=lambda x: x.period)
 
+        if len(single_period_inflows) == 0:
+            context['last_period'] = 0
+        else:
+            context['last_period'] = single_period_inflows[-1].period
 
         context['single_period_inflows'] = single_period_inflows
+
         return context
 
 
@@ -881,93 +887,197 @@ class ExternalFunctionInflowDeleteView(generic.DeleteView):
 #==============================================================================
 
 class FixedValueInflowDetailView(generic.DetailView):
-    model = models.single_period_inflow
+    model = models.fixed_value_inflow
 
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period'
-        ]
+    def get_context_data(self, **kwargs):
+        context = super(FixedValueInflowDetailView, self).get_context_data(**kwargs)
 
-class FixedValueInflowUpdateView(generic.DetailView):
-    model = models.single_period_inflow
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
 
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period',
-        'value'
-        ]
+        return context
 
-class FixedValueInflowDeleteView(generic.DetailView):
-    model = models.stochastic_function_inflow
+class FixedValueInflowUpdateView(generic.UpdateView):
+    model = models.fixed_value_inflow
 
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period',
-        'pdf',
-        'parameter_values'
-        ]
+    fields = ['value']
 
-class FixedValueInflowCreateView(generic.DetailView):
-    model = models.random_choice_inflow
+    def get_context_data(self, **kwargs):
+        context = super(FixedValueInflowUpdateView, self).get_context_data(**kwargs)
+
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
+
+        return context
+
+    def get_success_url(self, **kwargs):
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk})
+
+class FixedValueInflowDeleteView(generic.DeleteView):
+    model = models.fixed_value_inflow
+
+    fields = ['value']
+
+class FixedValueInflowCreateView(generic.CreateView):
+    model = models.fixed_value_inflow
     
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period',
-        'sample'
-        ]
+    fields = ['value']
 
+    def get_context_data(self, **kwargs):
+        context = super(FixedValueInflowCreateView, self).get_context_data(**kwargs)
+
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=self.kwargs['external_list_inflow_pk'])
+
+        return context
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+
+        external_list_inflow_pk = self.kwargs['external_list_inflow_pk']
+        period = int(self.kwargs['previous_period']) + 1
+
+        model.external_list_inflow_id = external_list_inflow_pk
+        model.period = period
+
+        following_single_period_inflows = models.single_period_inflow.objects.filter(external_list_inflow_id=external_list_inflow_pk, period__gte=period)
+        for following_single_period_inflow in following_single_period_inflows:
+            following_single_period_inflow.period = following_single_period_inflow.period + 1
+            following_single_period_inflow.save()
+
+        return super(FixedValueInflowCreateView, self).form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
 
 # ==============================================================================
 #  Random Choice Inflow
 # ==============================================================================
 
 class RandomChoiceInflowDetailView(generic.DetailView):
-    model = models.single_period_inflow
+    model = models.random_choice_inflow
 
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period'
-    ]
+    fields = ['sample']
 
 
-class RandomChoiceInflowUpdateView(generic.DetailView):
-    model = models.single_period_inflow
+class RandomChoiceInflowUpdateView(generic.UpdateView):
+    model = models.random_choice_inflow
 
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period',
-        'value'
-    ]
+    fields = ['sample']
+
+    def get_context_data(self, **kwargs):
+        context = super(RandomChoiceInflowUpdateView, self).get_context_data(**kwargs)
+
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
+
+        return context
+
+    def get_success_url(self, **kwargs):
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk})
 
 
 class RandomChoiceInflowDeleteView(generic.DetailView):
     model = models.stochastic_function_inflow
 
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period',
-        'pdf',
-        'parameter_values'
-    ]
 
-
-class RandomChoiceInflowCreateView(generic.DetailView):
+class RandomChoiceInflowCreateView(generic.CreateView):
     model = models.random_choice_inflow
 
-    fields = [
-        'external_list_inflow',
-        'current_value',
-        'period',
-        'sample'
-    ]
-    
+    fields = ['sample']
+
+    def get_context_data(self, **kwargs):
+        context = super(RandomChoiceInflowCreateView, self).get_context_data(**kwargs)
+
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=self.kwargs['external_list_inflow_pk'])
+
+        return context
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+
+        external_list_inflow_pk = self.kwargs['external_list_inflow_pk']
+        period = int(self.kwargs['previous_period']) + 1
+
+        model.external_list_inflow_id = external_list_inflow_pk
+        model.period = period
+
+        following_single_period_inflows = models.single_period_inflow.objects.filter(
+            external_list_inflow_id=external_list_inflow_pk, period__gte=period)
+        for following_single_period_inflow in following_single_period_inflows:
+            following_single_period_inflow.period = following_single_period_inflow.period + 1
+            following_single_period_inflow.save()
+
+        return super(RandomChoiceInflowCreateView, self).form_valid(form)
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
+
+
+# ==============================================================================
+#  Stochastic Function Inflow
+# ==============================================================================
+
+class StochasticFunctionInflowDetailView(generic.DetailView):
+    model = models.single_period_inflow
+
+class StochasticFunctionInflowUpdateView(generic.UpdateView):
+    model = models.stochastic_function_inflow
+
+    fields = ['pdf', 'parameter_values']
+
+    def get_context_data(self, **kwargs):
+        context = super(StochasticFunctionInflowUpdateView, self).get_context_data(**kwargs)
+
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
+
+        return context
+
+    def get_success_url(self, **kwargs):
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk})
+
+
+class StochasticFunctionInflowDeleteView(generic.UpdateView):
+    model = models.stochastic_function_inflow
+
+class StochasticFunctionInflowCreateView(generic.CreateView):
+    model = models.stochastic_function_inflow
+
+    fields = ['pdf', 'parameter_values']
+
+    def get_context_data(self, **kwargs):
+        context = super(StochasticFunctionInflowCreateView, self).get_context_data(**kwargs)
+
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=self.kwargs['external_list_inflow_pk'])
+
+        return context
+
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+
+        external_list_inflow_pk = self.kwargs['external_list_inflow_pk']
+        period = int(self.kwargs['previous_period']) + 1
+
+        model.external_list_inflow_id = external_list_inflow_pk
+        model.period = period
+
+        following_single_period_inflows = models.single_period_inflow.objects.filter(
+            external_list_inflow_id=external_list_inflow_pk, period__gte=period)
+        for following_single_period_inflow in following_single_period_inflows:
+            following_single_period_inflow.period = following_single_period_inflow.period + 1
+            following_single_period_inflow.save()
+
+        return super(StochasticFunctionInflowCreateView, self).form_valid(form)
+
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
+
+
 #==============================================================================
 #  Simulation
 #==============================================================================
