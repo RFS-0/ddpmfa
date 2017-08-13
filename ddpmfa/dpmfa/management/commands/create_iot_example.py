@@ -84,7 +84,8 @@ class Command(BaseCommand):
         function_release_for_first_stage_recycling_compartment = function_release(
             name='Fucntion release for first stage use compartment', 
             delay=0, 
-            release_function='Some function')
+            release_function='LI',
+            function_parameters='-3.7543, .67')
         
         function_release_for_first_stage_recycling_compartment.save()
 
@@ -101,7 +102,8 @@ class Command(BaseCommand):
         function_release_for_third_stage_use_compartment = function_release(
             name='Function release for second state flow compartment', 
             delay = 0,
-            release_function='Some function')
+            release_function='EX',
+            function_parameters='-.524, -592.541')
         
         function_release_for_third_stage_use_compartment.save()
         
