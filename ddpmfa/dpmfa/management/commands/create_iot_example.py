@@ -14,6 +14,10 @@ class Command(BaseCommand):
             admin.is_staff = True
             
             admin.save()
+            
+#==============================================================================
+#  Project
+#==============================================================================
         
         # creation of the project
         iot_project = project(
@@ -21,6 +25,10 @@ class Command(BaseCommand):
             description = 'This is the description of the IoT project. It is great. Very great.')
             
         iot_project.save()
+        
+#==============================================================================
+#  Model
+#==============================================================================
         
         # creation of the model
         iot_model = model(
@@ -30,6 +38,10 @@ class Command(BaseCommand):
             project = iot_project)
         
         iot_model.save()
+        
+#==============================================================================
+#  Flow Compartments
+#==============================================================================
         
         # creation of the flow compartments
         first_stage_flow_compartment = flow_compartment(
@@ -55,6 +67,10 @@ class Command(BaseCommand):
             log_outflows = True)
         
         third_stage_flow_compartment.save()
+        
+#==============================================================================
+#  Releases
+#==============================================================================
         
         # release strategy, defining the delay time and the release rates based on material transferred to first stage use compartment
         list_release_for_first_stage_use_compartment = list_release(
@@ -88,6 +104,10 @@ class Command(BaseCommand):
             release_function='Some function')
         
         function_release_for_third_stage_use_compartment.save()
+        
+#==============================================================================
+#  Stock
+#==============================================================================
         
         # creation of the stock
         first_stage_use_compartment = stock(
@@ -126,6 +146,10 @@ class Command(BaseCommand):
         
         third_stage_use_compartment.save()
         
+#==============================================================================
+#  Sink
+#==============================================================================
+        
         # creation of the sinks
         first_stage_disposal_compartment = sink(
             model=iot_model,
@@ -155,7 +179,7 @@ class Command(BaseCommand):
         
         third_stage_export_compartment.save()
         
-        # definition of the fucntions used in  the model
+        # definition of the functions used in  the model
         
         def expInflowFunction(base, period):
             return base ** period
@@ -165,6 +189,10 @@ class Command(BaseCommand):
 
         def  linearReleaseFunction(period):
             return period * 1/5
+        
+#==============================================================================
+#  External Inflows
+#==============================================================================
         
         # creation of the external list inflow for AD into fist stage use compartment
         import_of_ad_inflow = external_list_inflow(
@@ -329,20 +357,26 @@ class Command(BaseCommand):
             derivation_parameters='[1000, 250]')
         
         import_of_std_inflow.save()
+        
+#==============================================================================
+#  Transfers
+#==============================================================================
 
         # material transfer from first stage flow compartment to frist stage disposal, first stage recycling and second stage use
         stochastic_transfer_for_first_stage_flow_compartment = stochastic_transfer(
-            target=second_stage_use_compartment, 
-            name='Stochastic transfer from first stage flow compartment to second stage use compartment', 
-            priority=3, 
-            current_tc=0, 
-            weight=0, 
-            parameters='[0.5, 0.7, 0.9]')
+            target = second_stage_use_compartment,
+            source_flow_compartment = first_stage_flow_compartment,
+            name = 'Stochastic transfer from first stage flow compartment to second stage use compartment', 
+            priority = 3, 
+            current_tc = 0, 
+            weight = 0, 
+            parameters = '[0.5, 0.7, 0.9]')
         
         stochastic_transfer_for_first_stage_flow_compartment.save()
         
         random_choice_transfer_for_first_stage_flow_compartment = random_choice_transfer(
             target=first_stage_recycling_compartment, 
+            source_flow_compartment = first_stage_flow_compartment,
             name='Random choice transfer from first stage flow compartment to first stage recycling compartment',
             priority=2, 
             current_tc=0, 
@@ -353,6 +387,7 @@ class Command(BaseCommand):
         
         const_transfer_for_first_stage_flow_compartment = constant_transfer(
             target=second_stage_use_compartment, 
+            source_flow_compartment = first_stage_flow_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
             current_tc=0, 
@@ -363,7 +398,8 @@ class Command(BaseCommand):
         
         # material transfer from second stage flow compartment to second stage disposal and third stage use
         stochastic_transfer_for_second_stage_flow_compartment = stochastic_transfer(
-            target=third_stage_use_compartment, 
+            target=third_stage_use_compartment,
+            source_flow_compartment = second_stage_flow_compartment,
             name='Stochastic transfer from second stage flow compartment to third stage use compartment', 
             priority=2, 
             current_tc=0, 
@@ -373,7 +409,8 @@ class Command(BaseCommand):
         stochastic_transfer_for_second_stage_flow_compartment.save()
         
         const_transfer_for_second_stage_flow_compartment = constant_transfer(
-            target=second_stage_disposal_compartment, 
+            target=second_stage_disposal_compartment,
+            source_flow_compartment = second_stage_flow_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
             current_tc=0, 
@@ -385,6 +422,7 @@ class Command(BaseCommand):
         # material transfer from third stage flow compartment to third stage disposal and export
         stochastic_transfer_for_third_stage_flow_compartment = stochastic_transfer(
             target=third_stage_export_compartment, 
+            source_flow_compartment = third_stage_flow_compartment,
             name='Stochastic transfer from third stage flow compartment to third export compartment', 
             priority=2, 
             current_tc=0, 
@@ -395,6 +433,7 @@ class Command(BaseCommand):
         
         const_transfer_for_third_stage_flow_compartment = constant_transfer(
             target=third_stage_disposal_compartment, 
+            source_flow_compartment = third_stage_flow_compartment,
             name='Stochastic transfer from third stage flow compartment to third stage disposal compartment', 
             priority=1, 
             current_tc=0, 
@@ -405,7 +444,8 @@ class Command(BaseCommand):
         
         # total release from First Stage Use Compartment in transferred to First Stage Flow Compartment
         transfer_for_first_stage_use_compartment = constant_transfer(
-            target=first_stage_flow_compartment, 
+            target=first_stage_flow_compartment,
+            source_flow_compartment = first_stage_use_compartment, 
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
             current_tc=0, 
@@ -417,6 +457,7 @@ class Command(BaseCommand):
         # total release from First Recycling Use Compartment in transferred to First Stage Flow Compartment
         transfer_for_first_stage_use_recycling = constant_transfer(
             target=second_stage_flow_compartment, 
+            source_flow_compartment = first_stage_recycling_compartment, 
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
             current_tc=0, 
@@ -428,6 +469,7 @@ class Command(BaseCommand):
         # total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
         transfer_for_second_stage_use_compartment = constant_transfer(
             target=second_stage_flow_compartment, 
+            source_flow_compartment = second_stage_use_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
             current_tc=0, 
@@ -439,6 +481,7 @@ class Command(BaseCommand):
         # total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
         transfer_for_first_third_use_compartment = constant_transfer(
             target=third_stage_flow_compartment, 
+            source_flow_compartment = second_stage_use_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
             current_tc=0, 
