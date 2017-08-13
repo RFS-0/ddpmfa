@@ -1,0 +1,1 @@
+# Functions available as input for dpmfa classes
