@@ -285,7 +285,7 @@ urlpatterns = [
 
     url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/delete', views.FixedValueInflowDeleteView.as_view(), name='fixed-value-inflow-delete'),
 
-    url(r'^fixed_value_inflow/create$', views.FixedValueInflowCreateView.as_view(), name='fixed-value-inflow-create'),
+    url(r'^fixed_value_inflow/(?P<external_list_inflow_pk>[0-9]+)/(?P<previous_period>[0-9]+)/create$', views.FixedValueInflowCreateView.as_view(), name='fixed-value-inflow-create'),
 
 #==============================================================================
 #  Random Choice Inflow
@@ -297,8 +297,19 @@ urlpatterns = [
 
     url(r'^random_choice_inflow/(?P<pk>[0-9]+)/delete', views.RandomChoiceInflowDeleteView.as_view(), name='random-choice-inflow-delete'),
 
-    url(r'^random_choice_inflow/create$', views.RandomChoiceInflowCreateView.as_view(), name='random-choice-inflow-create'),
+    url(r'^random_choice_inflow/(?P<external_list_inflow_pk>[0-9]+)/(?P<previous_period>[0-9]+)/create$', views.RandomChoiceInflowCreateView.as_view(), name='random-choice-inflow-create'),
 
+#==============================================================================
+#  Stochastic Function Inflow
+#==============================================================================
+
+    url(r'^stochastic_function_inflow/(?P<pk>[0-9]+)/detail$', views.StochasticFunctionInflowDetailView.as_view(), name='stochastic-function-inflow-detail'),
+
+    url(r'^stochastic_function_inflow/(?P<pk>[0-9]+)/update', views.StochasticFunctionInflowUpdateView.as_view(), name='stochastic-function-inflow-update'),
+
+    url(r'^stochastic_function_inflow/(?P<pk>[0-9]+)/delete', views.StochasticFunctionInflowDeleteView.as_view(), name='stochastic-function-inflow-delete'),
+
+    url(r'^stochastic_function_inflow/(?P<external_list_inflow_pk>[0-9]+)/(?P<previous_period>[0-9]+)/create$', views.StochasticFunctionInflowCreateView.as_view(), name='stochastic-function-inflow-create'),
 
 #==============================================================================
 #  Simulation
