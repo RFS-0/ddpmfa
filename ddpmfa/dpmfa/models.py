@@ -3,7 +3,7 @@ from django.db.models.fields import CharField
 
 from django.core.validators import int_list_validator
 from django.utils import timezone
-from .validators.validator import alpha_numeric_list_validator
+from .validators.validator import *
 # install this with: pip install jsonfield
 from jsonfield import JSONField
 
@@ -254,11 +254,37 @@ class list_release(local_release):
     
 class function_release(local_release):
     
+    LINEAR = 'LI'
+    POLYNOMIAL = 'PO'
+    EXPONENTIAL = 'EX'
+    LOGARITHMIC = 'LG'
+    SINE = 'SI'
+    COSINE = 'CO'
+
+    FUNCTION_TYPES = (
+    (LINEAR, 'Linear function'),
+    (POLYNOMIAL, 'Polynomial function'),
+    (EXPONENTIAL, 'Exponential function'),
+    (LOGARITHMIC, 'Logarithmic function'),
+    (SINE, 'Sine'),
+    (COSINE, 'Cosine')
+    )
+    
+    
+
+
     release_function = models.CharField(
-        verbose_name='Release function', 
+        verbose_name='Release function type', 
+        choices = FUNCTION_TYPES,
         max_length=250, 
         null=True)
-    
+
+    function_parameters = models.CharField(
+        verbose_name='Release function parameters',
+        validators=[float_list_validator],
+        max_length = 250,
+        null = True)
+
 #==============================================================================
 #  Transfers
 #==============================================================================
