@@ -5,6 +5,10 @@ components.py
 	- Description of the AggregatedTransfer (line 498): weightingFactors: partialDistributions: list<Transfer> a list of SochasticTransfers and/or RandomChoiceTransfers to be considered in the combined distribution --> there is no such field defined in this class. There is however e field called "singleTransfers" which fits the description.
 	- Description of the FlowCompatment (line 60): transfers: list<components.compartments> --> should be list<components.transfer>
 	
+	
+	- Constructor of FunctionRelease (line 375): Why is there a limit for max period of 500 in function the function release?
+	- Constructor of ExternalListInflow (line 617): Why is there a type check for the elements in the inflowList?	
+
 	- APP = dpmfa
 	- Project = ddpmfa
 	
