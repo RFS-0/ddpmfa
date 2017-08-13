@@ -34,6 +34,14 @@ class FlowCompartmentConverter(CompartmentConverter):
     def __init__(self, db_flow_compartment=django_models.flow_compartment):
         super(FlowCompartmentConverter, self).__init__(db_flow_compartment)
         
+        
+        # set the transfers
+        
+        django_models.transfer.objects.filter()
+        
+        if len(transfer.objects.filter(pk=db_flow_compartment.id)) > 0:
+            self.qs_transfers = db_transfers.objects.filter(pk=db_flow_compartment.id)
+ 
         # TODO: Transfers be queried and instantiated here      
         self.transfers = []        
         self.adjustOutTCs = db_flow_compartment.adjust_outgoing_tcs
@@ -79,15 +87,32 @@ class StockConverter(FlowCompartmentConverter):
     
     def __init__(self, db_stock=django_models.stock):
         super(FlowCompartmentConverter, self).__init__(db_stock)
-        
-    # TODO: convert local release here 
     
         self.db_local_release = db_stock.local_release
+        
+        
+        # set the localRelease
+        if len(django_models.fixed_rate_release.objects.filter(pk=self.db_local_release.id)) > 0:
+            self.qs_fixed_rate_release = django_models.fixed_rate_release.objects.filter(pk=self.db_local_release.id)
+            db_fixed_rate_release = self.qs_fixed_rate_release[0]
+            self.localRelease = FixedRateReleaseConverter(db_fixed_rate_release)
+        elif len(django_models.list_release.objects.filter(pk=self.db_local_release.id)) > 0:
+            self.qs_list_release = django_models.list_release.objects.filter(pk=self.db_local_release.id)
+            db_list_release = self.qs_list_release[0]
+            self.localRelease = ListReleaseConverter(db_list_release)
+        elif len(django_models.function_release.objects.filter(pk=self.db_local_release.id)) > 0:
+            self.qs_function_release = django_models.function_release.objects.filter(pk=self.db_local_release.id)
+            db_function_release = self.qs_function_release[0]
+            self.localRelease = FunctionReleaseConverter(db_function_release)
+        else:
+            print("Could not retrieve a local release for stock: %s (%i)" %(db_stock.name, db_stock.id))
+            
+        self.localRelease
         
         self.stock_dpmfa = package_components.Stock(
             name = self.name,
             transfers = [], 
-            localRelease = [], 
+            localRelease = self.localRelease, 
             logInflows = self.logInflows, 
             logOutflows = [], 
             logImmediateFlows = [],
