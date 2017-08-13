@@ -40,7 +40,7 @@
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' external_list_inflow.target.model.pk %}">{{ external_list_inflow.target.model.name }}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:external-list-inflow-detail' external_list_inflow.pk %}">{{ external_list_inflow.name }}</a></li>
                 {% if fixed_value_inflow.pk %}
-                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:fixed-value-inflow-detail' fixed_value_inflow.pk %}">{{ fixed_value_inflow.name }}</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:fixed-value-inflow-detail' fixed_value_inflow.pk %}">Fixed Value Inflow for Period {{ fixed_value_inflow.period }}</a></li>
                     <li class="breadcrumb-item active">Edit</li>
                 {% else %}
                     <li class="breadcrumb-item active">New Fixed Value Inflow</li>

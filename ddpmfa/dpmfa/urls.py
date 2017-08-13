@@ -248,16 +248,16 @@ urlpatterns = [
     # External Function Inflow
 
     # ex: /external_function_inflow/123/detail
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalFunctionInflowDetailView.as_view(), name='external-function-inflow-detail'),
+    url(r'^external_function_inflow/(?P<pk>[0-9]+)/detail$', views.ExternalFunctionInflowDetailView.as_view(), name='external-function-inflow-detail'),
     
     # ex: /external_function_inflow/123/create
-    url(r'^external_list_inflow/create$', views.ExternalFunctionInflowCreateView.as_view(), name='external-function-inflow-create'),
+    url(r'^external_function_inflow/create$', views.ExternalFunctionInflowCreateView.as_view(), name='external-function-inflow-create'),
     
     # ex: /external_function_inflow/123/update
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/update$', views.ExternalFunctionInflowUpdateView.as_view(), name='external-function-inflow-update'),
+    url(r'^external_function_inflow/(?P<pk>[0-9]+)/update$', views.ExternalFunctionInflowUpdateView.as_view(), name='external-function-inflow-update'),
     
     # ex: /external_function_inflow/123/delete
-    url(r'^external_list_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalFunctionInflowDeleteView.as_view(), name='external-function-inflow-delete'),
+    url(r'^external_function_inflow/(?P<pk>[0-9]+)/delete$', views.ExternalFunctionInflowDeleteView.as_view(), name='external-function-inflow-delete'),
 
 #==============================================================================
 #  Single Period Inflow

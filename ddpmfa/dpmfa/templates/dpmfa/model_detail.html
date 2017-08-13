@@ -196,6 +196,12 @@
                                     <a href="{% url 'dpmfa:external-list-inflow-detail' external_list_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to external list inflow">
                                         <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                     </a>
+                                    <a href="{% url 'dpmfa:external-list-inflow-update' external_list_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit own properies">
+                                        <span class="glyphicon glyphicon-eye-pencil" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="{% url 'dpmfa:external-list-inflow-delete' external_list_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+                                        <span class="glyphicon glyphicon-eye-trash" aria-hidden="true"></span>
+                                    </a>
                                </td>
                            </tr>
                         {% endfor %}

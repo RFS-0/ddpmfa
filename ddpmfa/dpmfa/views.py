@@ -828,17 +828,6 @@ class ExternalListInflowDeleteView(generic.DeleteView):
 
 class ExternalFunctionInflowDetailView(generic.DetailView):
     model = models.external_function_inflow
-    
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor',
-        'inflow_function',
-        'basic_inflow'
-        ]
 
 class ExternalFunctionInflowCreateView(generic.CreateView):
     model = models.external_list_inflow
@@ -858,14 +847,11 @@ class ExternalFunctionInflowUpdateView(generic.UpdateView):
     model = models.external_list_inflow
     
     fields = [
-        'target',
         'name',
         'start_delay',
         'derivation_distribution',
         'derivation_parameters',
-        'derivation_factor',
-        'inflow_function',
-        'basic_inflow'
+        'derivation_factor'
         ]
 
 class ExternalFunctionInflowDeleteView(generic.DeleteView):
@@ -917,7 +903,26 @@ class FixedValueInflowUpdateView(generic.UpdateView):
 class FixedValueInflowDeleteView(generic.DeleteView):
     model = models.fixed_value_inflow
 
-    fields = ['value']
+    def get_context_data(self, **kwargs):
+        context = super(FixedValueInflowDeleteView, self).get_context_data(**kwargs)
+
+        context['external_list_inflow'] = self.object.external_list_inflow
+
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        following_single_period_inflows = models.single_period_inflow.objects.filter(external_list_inflow=self.object.external_list_inflow,period__gt=self.object.period)
+        for following_single_period_inflow in following_single_period_inflows:
+            following_single_period_inflow.period = following_single_period_inflow.period - 1
+            following_single_period_inflow.save()
+
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 class FixedValueInflowCreateView(generic.CreateView):
     model = models.fixed_value_inflow
@@ -959,6 +964,14 @@ class RandomChoiceInflowDetailView(generic.DetailView):
 
     fields = ['sample']
 
+    def get_context_data(self, **kwargs):
+        context = super(RandomChoiceInflowDetailView, self).get_context_data(**kwargs)
+
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
+
+        return context
+
 
 class RandomChoiceInflowUpdateView(generic.UpdateView):
     model = models.random_choice_inflow
@@ -978,8 +991,29 @@ class RandomChoiceInflowUpdateView(generic.UpdateView):
         return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk})
 
 
-class RandomChoiceInflowDeleteView(generic.DetailView):
-    model = models.stochastic_function_inflow
+class RandomChoiceInflowDeleteView(generic.DeleteView):
+    model = models.random_choice_inflow
+
+    def get_context_data(self, **kwargs):
+        context = super(RandomChoiceInflowDeleteView, self).get_context_data(**kwargs)
+
+        context['external_list_inflow'] = self.object.external_list_inflow
+
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        following_single_period_inflows = models.single_period_inflow.objects.filter(external_list_inflow=self.object.external_list_inflow,period__gt=self.object.period)
+        for following_single_period_inflow in following_single_period_inflows:
+            following_single_period_inflow.period = following_single_period_inflow.period - 1
+            following_single_period_inflow.save()
+
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class RandomChoiceInflowCreateView(generic.CreateView):
@@ -1020,7 +1054,15 @@ class RandomChoiceInflowCreateView(generic.CreateView):
 # ==============================================================================
 
 class StochasticFunctionInflowDetailView(generic.DetailView):
-    model = models.single_period_inflow
+    model = models.stochastic_function_inflow
+
+    def get_context_data(self, **kwargs):
+        context = super(StochasticFunctionInflowDetailView, self).get_context_data(**kwargs)
+
+        external_list_inflow_pk = self.object.external_list_inflow.pk
+        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
+
+        return context
 
 class StochasticFunctionInflowUpdateView(generic.UpdateView):
     model = models.stochastic_function_inflow
@@ -1037,11 +1079,32 @@ class StochasticFunctionInflowUpdateView(generic.UpdateView):
 
     def get_success_url(self, **kwargs):
         external_list_inflow_pk = self.object.external_list_inflow.pk
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk})
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk })
 
 
-class StochasticFunctionInflowDeleteView(generic.UpdateView):
+class StochasticFunctionInflowDeleteView(generic.DeleteView):
     model = models.stochastic_function_inflow
+
+    def get_context_data(self, **kwargs):
+        context = super(StochasticFunctionInflowDeleteView, self).get_context_data(**kwargs)
+
+        context['external_list_inflow'] = self.object.external_list_inflow
+
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        following_single_period_inflows = models.single_period_inflow.objects.filter(external_list_inflow=self.object.external_list_inflow,period__gt=self.object.period)
+        for following_single_period_inflow in following_single_period_inflows:
+            following_single_period_inflow.period = following_single_period_inflow.period - 1
+            following_single_period_inflow.save()
+
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 class StochasticFunctionInflowCreateView(generic.CreateView):
     model = models.stochastic_function_inflow
