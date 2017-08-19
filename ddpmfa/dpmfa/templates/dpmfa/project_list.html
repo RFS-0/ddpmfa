@@ -6,21 +6,6 @@
 {% block body %}
 
 <header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">Projects</span>
-        </div>
-        <ul class="nav navbar-nav">
-          <li>
-              <a href="{% url "dpmfa:project-create" %}">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                New Project
-            </a>
-          </li>
-        </ul>
-      </div>
-</nav>
 </header>
 
 <div class="container">
@@ -32,6 +17,12 @@
             </ol>
 
             <h1>Projects</h1>
+            
+             <a class="btn btn-default" href="{% url 'dpmfa:project-create' %}">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                New Project
+            </a>
+            
 
             {% if messages %}
                 {% for message in messages %}

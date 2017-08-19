@@ -8,9 +8,20 @@ urlpatterns = [
     # Home
     # ==============================================================================
 
-    # ex: /home/
+    # ex: /dpmfa
+    # ex: dpmfa/home/
     url(r'^$', views.HomeTemplateView.as_view(), name='default'),
     url(r'^home/$', views.HomeTemplateView.as_view(), name='home'),
+    
+    # ex: dpmfa/example
+    url(r'^example/$', views.ExampleTemplateView.as_view(), name='example'),
+    
+    # ex: dpmfa/quick_reference
+    url(r'^quick_reference/$', views.QuickReferenceTemplateView.as_view(), name='quick-reference'),
+    
+    # ex: dpmfa/documentation
+    url(r'^documentation/$', views.DocumentationTemplateView.as_view(), name='documentation'),
+    
 
     # ==============================================================================
     # Project

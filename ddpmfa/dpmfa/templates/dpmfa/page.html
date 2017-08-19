@@ -16,6 +16,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
-{% block body %}{% endblock %}
+<!-- Navigation -->
+<header>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'dpmfa:home' %}">DPMFA</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li {% if view.context_object_name == 'home' %} class="active" {% endif %}><a href="{% url 'dpmfa:home' %}">Home</a></li>
+          <li {% if view.context_object_name == 'projects' %} class="active" {% endif %}><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+          <li {% if view.context_object_name == 'example' %} class="active" {% endif %}><a href="{% url 'dpmfa:example' %}">Example</a></li>
+          <li {% if view.context_object_name == 'quick-reference' %} class="active" {% endif %}> <a href="{% url 'dpmfa:quick-reference' %}">Quick Reference</a></li>
+          <li {% if view.context_object_name == 'documentation' %} class="active" {% endif %}><a href="{% url 'dpmfa:documentation' %}">Documentation</a></li>
+        </ul>
+      </div>
+</nav>
+</header>
+
+{% block body %}
+{% endblock %}
+
 </body>
 </html>

@@ -18,7 +18,20 @@ import dpmfa.models as models
 
 class HomeTemplateView(generic.TemplateView):
     template_name = 'dpmfa/home.html'
+    context_object_name = 'home'
+    
+class ExampleTemplateView(generic.TemplateView):
+    template_name = 'dpmfa/example.html'
+    context_object_name = 'example'
 
+class QuickReferenceTemplateView(generic.TemplateView):
+    template_name = 'dpmfa/quick_reference.html'
+    context_object_name = 'quick-reference'
+    
+class DocumentationTemplateView(generic.TemplateView):
+    template_name = 'dpmfa/documentation.html'
+    context_object_name = 'documentation'
+    
 
 # ==============================================================================
 #  Project
