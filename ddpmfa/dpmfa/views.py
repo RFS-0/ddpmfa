@@ -46,6 +46,7 @@ class ProjectListView(generic.ListView):
 
 class ProjectDetailView(generic.DetailView):
     model = models.project
+    form_class = forms.ProjectForm
     context_object_name = 'project'
     template_name = 'dpmfa/project/project_detail.html'
 
@@ -59,11 +60,10 @@ class ProjectCreateView(generic.CreateView):
 
 class ProjectUpdateView(generic.UpdateView):
     model = models.project
-    fields = ['name', 'description']
+    form_class = forms.ProjectForm
     template_name = 'dpmfa/project/project_form.html'
     success_url = reverse_lazy('dpmfa:project-list')
-
-
+    
 class ProjectDeleteView(generic.DeleteView):
     model = models.project
     template_name = 'dpmfa/project/project_confirm_delete.html'

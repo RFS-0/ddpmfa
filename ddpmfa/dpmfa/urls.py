@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^model/(?P<pk>[0-9]+)/detail$', views.ModelDetailView.as_view(), name='model-detail'),
     
     # ex: /model/create
-    #url(r'^model/create/(?P<project_pk>[0-9]+)$', views.ModelCreateView.as_view(), name='model-create'),
+    url(r'^model/create/(?P<project_pk>[0-9]+)$', views.ModelCreateView.as_view(), name='model-create'),
     
     # ex: /model/update
     url(r'^model/(?P<pk>[0-9]+)/update', views.ModelUpdateView.as_view(), name='model-update'),
