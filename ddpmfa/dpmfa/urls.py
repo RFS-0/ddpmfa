@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^model/(?P<pk>[0-9]+)/detail$', views.ModelDetailView.as_view(), name='model-detail'),
     
     # ex: /model/create
-    url(r'^model/create/(?P<project_pk>[0-9]+)$', views.ModelCreateView.as_view(), name='model-create'),
+    #url(r'^model/create/(?P<project_pk>[0-9]+)$', views.ModelCreateView.as_view(), name='model-create'),
     
     # ex: /model/update
     url(r'^model/(?P<pk>[0-9]+)/update', views.ModelUpdateView.as_view(), name='model-update'),
@@ -109,7 +109,7 @@ urlpatterns = [
     url(r'^flow_compartment/(?P<pk>[0-9]+)/detail$', views.FlowCompartmentDetailView.as_view(), name='flow-compartment-detail'),
  
     # ex: /flow_compartment/create
-    url(r'^flow_compartment/create$', views.FlowCompartmentCreateView.as_view(), name='flow-compartment-create'),
+    #url(r'^flow_compartment/create$', views.FlowCompartmentCreateView.as_view(), name='flow-compartment-create'),
  
     # ex: /flow_compartment/123/update
     url(r'^flow_compartment/(?P<pk>[0-9]+)/update$', views.FlowCompartmentUpdateView.as_view(), name='flow-compartment-update'),
@@ -125,7 +125,7 @@ urlpatterns = [
     url(r'^stock/(?P<pk>[0-9]+)/detail$', views.StockDetailView.as_view(), name='stock-detail'),
  
     # ex: /stock/create
-    url(r'^stock/create$', views.StockCreateView.as_view(), name='stock-create'),
+    #url(r'^stock/create$', views.StockCreateView.as_view(), name='stock-create'),
     
     # ex: /stock/123/update
     url(r'^stock/(?P<pk>[0-9]+)/update', views.StockUpdateView.as_view(), name='stock-update'),
@@ -141,7 +141,7 @@ urlpatterns = [
     url(r'^sink/(?P<pk>[0-9]+)/detail$', views.SinkDetailView.as_view(), name='sink-detail'),
 
     # ex: /sink/create
-    url(r'^sink/create$', views.SinkCreateView.as_view(), name='sink-create'),
+    #url(r'^sink/create$', views.SinkCreateView.as_view(), name='sink-create'),
     
     # ex: /sink/123/update
     url(r'^sink/(?P<pk>[0-9]+)/update$', views.SinkUpdateView.as_view(), name='sink-update'),
@@ -172,7 +172,7 @@ urlpatterns = [
     url(r'^constant_transfer/(?P<pk>[0-9]+)/detail$', views.ConstantTransferDetailView.as_view(), name='constant-transfer-detail'),
     
     # ex: /constant_transfer/123/create
-    url(r'^constant_transfer/(?P<pk>[0-9]+)/create$', views.ConstantTransferCreateView.as_view(), name='constant-transfer-create'),
+    #url(r'^constant_transfer/(?P<pk>[0-9]+)/create$', views.ConstantTransferCreateView.as_view(), name='constant-transfer-create'),
     
     # ex: /constant_transfer/123/update
     url(r'^constant_transfer/(?P<pk>[0-9]+)/update$', views.ConstantTransferUpdateView.as_view(), name='constant-transfer-update'),

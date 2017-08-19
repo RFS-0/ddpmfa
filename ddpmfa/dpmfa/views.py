@@ -17,19 +17,19 @@ import dpmfa.models as models
 
 
 class HomeTemplateView(generic.TemplateView):
-    template_name = 'dpmfa/home.html'
+    template_name = 'dpmfa/home/home.html'
     context_object_name = 'home'
     
 class ExampleTemplateView(generic.TemplateView):
-    template_name = 'dpmfa/example.html'
+    template_name = 'dpmfa/home/example.html'
     context_object_name = 'example'
 
 class QuickReferenceTemplateView(generic.TemplateView):
-    template_name = 'dpmfa/quick_reference.html'
+    template_name = 'dpmfa/home/quick_reference.html'
     context_object_name = 'quick-reference'
     
 class DocumentationTemplateView(generic.TemplateView):
-    template_name = 'dpmfa/documentation.html'
+    template_name = 'dpmfa/home/documentation.html'
     context_object_name = 'documentation'
     
 
@@ -41,31 +41,32 @@ class DocumentationTemplateView(generic.TemplateView):
 class ProjectListView(generic.ListView):
     model = models.project
     context_object_name = 'projects'
-    # template_name = 'dpmfa/project_list.html'
+    template_name = 'dpmfa/project/project_list.html'
 
 
 class ProjectDetailView(generic.DetailView):
     model = models.project
     context_object_name = 'project'
-    # template_name = 'dpmfa/project_detail.html'
+    template_name = 'dpmfa/project/project_detail.html'
 
 
 class ProjectCreateView(generic.CreateView):
     model = models.project
     fields = ['name', 'description']
-    # template_name = 'dpmfa/project_form.html'
+    template_name = 'dpmfa/project/project_form.html'
     success_url = reverse_lazy('dpmfa:project-list')
 
 
 class ProjectUpdateView(generic.UpdateView):
     model = models.project
     fields = ['name', 'description']
-    # template_name = 'dpmfa/project_form.html'
+    template_name = 'dpmfa/project/project_form.html'
     success_url = reverse_lazy('dpmfa:project-list')
 
 
 class ProjectDeleteView(generic.DeleteView):
     model = models.project
+    template_name = 'dpmfa/project/project_confirm_delete.html'
     success_url = reverse_lazy('dpmfa:project-list')
 
 
@@ -81,7 +82,7 @@ class ProjectDeleteView(generic.DeleteView):
 
 class ModelDetailView(generic.DetailView):
     model = models.model
-    # template_name = 'dpmfa/model_detail.html'
+    template_name = 'dpmfa/model/model_detail.html'
 
     def find_external_list_inflows_by_model(self, model_pk):
         return models.external_list_inflow.objects.filter(target__model=model_pk)
@@ -142,7 +143,7 @@ class ModelDetailView(generic.DetailView):
 
 class ModelCreateView(generic.CreateView):
     model = models.model
-    # template_name = 'dpmfa/model_form.html'
+    template_name = 'dpmfa/model/model_form.html'
     fields = ['name', 'description']
 
     def get_success_url(self, **kwargs):
@@ -161,7 +162,7 @@ class ModelCreateView(generic.CreateView):
 
 class ModelUpdateView(generic.UpdateView):
     model = models.model
-    # template_name = 'dpmfa/model_form.html'
+    template_name = 'dpmfa/model/model_form.html'
     fields = ['name', 'description']
 
     def get_success_url(self, **kwargs):
@@ -175,11 +176,10 @@ class ModelUpdateView(generic.UpdateView):
 
 class ModelDeleteView(generic.DeleteView):
     model = models.model
+    template_name = 'dpmfa/model/model_confirm_delete.html'
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk})
-
-
 
 
 # ==============================================================================
@@ -272,22 +272,11 @@ class ParameterRedirectView(generic.RedirectView):
 
 class FlowCompartmentDetailView(generic.DetailView):
     model = models.flow_compartment
-    
-class FlowCompartmentCreateView(generic.CreateView):
-    model = models.flow_compartment
-    
-    fields = [
-        'model',
-        'name',
-        'description',
-        'log_inflows',
-        'categories',
-        'adjust_outgoing_tcs',
-        'log_outflows',
-        ]
+    template_name = 'dpmfa/compartments/flow_compartment_detail.html'
     
 class FlowCompartmentUpdateView(generic.UpdateView):
     model = models.flow_compartment
+    template_name = 'dpmfa/compartments/flow_compartment_form.html'
     
     fields = [
         'name',
@@ -303,6 +292,7 @@ class FlowCompartmentUpdateView(generic.UpdateView):
 
 class FlowCompartmentDeleteView(generic.DeleteView):
     model = models.flow_compartment
+    template_name = 'dpmfa/compartments/flow_compartment_confirm_delete.html'
     
     fields = [
         'model',
@@ -325,6 +315,7 @@ class FlowCompartmentDeleteView(generic.DeleteView):
 
 class StockDetailView(generic.DetailView):
     model = models.stock
+    template_name = 'dpmfa/compartments/stock_detail.html'
     
     fields = [
         'model',
@@ -339,24 +330,25 @@ class StockDetailView(generic.DetailView):
         'log_outflows',
         ]
 
-class StockCreateView(generic.CreateView):
-    model = models.stock
-    
-    fields = [
-        'model',
-        'name',
-        'description',
-        'evt_created',
-        'evt_changed',
-        'log_inflows',
-        'categories',
-        'local_release',
-        'adjust_outgoing_tcs',
-        'log_outflows',
-        ]
+# class StockCreateView(generic.CreateView):
+#     model = models.stock
+#     
+#     fields = [
+#         'model',
+#         'name',
+#         'description',
+#         'evt_created',
+#         'evt_changed',
+#         'log_inflows',
+#         'categories',
+#         'local_release',
+#         'adjust_outgoing_tcs',
+#         'log_outflows',
+#         ]
 
 class StockUpdateView(generic.UpdateView):
     model = models.stock
+    template_name = 'dpmfa/compartments/stock_form.html'
     
     fields = [
         'name',
@@ -372,6 +364,7 @@ class StockUpdateView(generic.UpdateView):
     
 class StockDeleteView(generic.DeleteView):
     model = models.stock
+    template_name = 'dpmfa/compartments/stock_confirm_delete.html'
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
@@ -382,6 +375,8 @@ class StockDeleteView(generic.DeleteView):
 
 class SinkDetailView(generic.DetailView):
     model = models.sink
+    template_name = 'dpmfa/compartments/sink_detail.html'
+    
     
     fields = [
         'model',
@@ -395,23 +390,24 @@ class SinkDetailView(generic.DetailView):
         'log_outflows',
         ]
 
-class SinkCreateView(generic.CreateView):
-    model = models.sink
-    
-    fields = [
-        'model',
-        'name',
-        'description',
-        'evt_created',
-        'evt_changed',
-        'log_inflows',
-        'categories',
-        'adjust_outgoing_tcs',
-        'log_outflows',
-        ]
+# class SinkCreateView(generic.CreateView):
+#     model = models.sink
+#     
+#     fields = [
+#         'model',
+#         'name',
+#         'description',
+#         'evt_created',
+#         'evt_changed',
+#         'log_inflows',
+#         'categories',
+#         'adjust_outgoing_tcs',
+#         'log_outflows',
+#         ]
     
 class SinkUpdateView(generic.UpdateView):
     model = models.sink
+    template_name = 'dpmfa/compartments/sink_form.html'
     
     fields = [
         'name',
@@ -425,6 +421,7 @@ class SinkUpdateView(generic.UpdateView):
 
 class SinkDeleteView(generic.DeleteView):
     model = models.sink
+    template_name = 'dpmfa/compartments/sink_confirm_delete.html'
     
     fields = [
         'model',
@@ -501,6 +498,7 @@ class FunctionReleaseDetailView(generic.DetailView):
 
 class ConstantTransferDetailView(generic.DetailView):
     model = models.constant_transfer
+    template_name = 'dpmfa/transfers/constant_transfer_detail.html'
     
     fields = [
         'target',
@@ -512,21 +510,22 @@ class ConstantTransferDetailView(generic.DetailView):
         'value'
         ]
 
-class ConstantTransferCreateView(generic.CreateView):
-    model = models.constant_transfer
-    
-    fields = [
-        'target',
-        'belongs_to_aggregated_transfer',
-        'name',
-        'priority',
-        'current_tc',
-        'weight',
-        'value'
-        ]
+# class ConstantTransferCreateView(generic.CreateView):
+#     model = models.constant_transfer
+#     
+#     fields = [
+#         'target',
+#         'belongs_to_aggregated_transfer',
+#         'name',
+#         'priority',
+#         'current_tc',
+#         'weight',
+#         'value'
+#         ]
     
 class ConstantTransferUpdateView(generic.UpdateView):
     model = models.constant_transfer
+    template_name = 'dpmfa/transfers/constant_transfer_form.html'
     
     fields = [
         'target',
@@ -540,6 +539,7 @@ class ConstantTransferUpdateView(generic.UpdateView):
     
 class ConstantTransferDeleteView(generic.DeleteView):
     model = models.constant_transfer
+    template_name = 'dpmfa/transfers/constant_transfer_confirm_delete.html'
     
     fields = [
         'target',
