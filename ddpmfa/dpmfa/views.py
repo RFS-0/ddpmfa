@@ -272,11 +272,11 @@ class ParameterRedirectView(generic.RedirectView):
 
 class FlowCompartmentDetailView(generic.DetailView):
     model = models.flow_compartment
-    template_name = 'dpmfa/compartments/flow_compartment_detail.html'
+    template_name = 'dpmfa/compartment/flow_compartment_detail.html'
     
 class FlowCompartmentUpdateView(generic.UpdateView):
     model = models.flow_compartment
-    template_name = 'dpmfa/compartments/flow_compartment_form.html'
+    template_name = 'dpmfa/compartment/flow_compartment_form.html'
     
     fields = [
         'name',
@@ -292,7 +292,7 @@ class FlowCompartmentUpdateView(generic.UpdateView):
 
 class FlowCompartmentDeleteView(generic.DeleteView):
     model = models.flow_compartment
-    template_name = 'dpmfa/compartments/flow_compartment_confirm_delete.html'
+    template_name = 'dpmfa/compartmentflow_compartment_confirm_delete.html'
     
     fields = [
         'model',
