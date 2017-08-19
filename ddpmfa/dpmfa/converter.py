@@ -211,12 +211,8 @@ class FunctionReleaseConverter(LocalReleaseConverter):
         self.releaseFunction = fs.function_by_name(release_function_name, function_parameters)
 
         try:
-            # [x.strip() for x in my_string.split(',')]
-
             function_parameters = [float(x.strip()) for x in db_function_release.function_parameters.split(',')]
-
-
-
+            
             self.function_release_dpmfa = package_components.FunctionRelease(
             releaseFunction = self.releaseFunction,
             delay = self.delay
