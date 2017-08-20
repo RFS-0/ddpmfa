@@ -1,5 +1,6 @@
 import dpmfa.models as django_models
 import dpmfa.functions as fs
+import numpy.random as nr
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_components
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model as package_model
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import simulator as package_simulator
@@ -420,6 +421,7 @@ class ExternalInflowConverter(object):
         self.target = []
         self.startDelay = db_external_inflow.start_delay
         self.derivationDistribution = db_external_inflow.derivation_distribution
+        
         self.derivationParameters = db_external_inflow.derivation_parameters
         self.derivationFactor = db_external_inflow.derivation_factor
         
@@ -478,10 +480,34 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
     
     def __init__(self, db_external_function_inflow=django_models.external_function_inflow):
         super(ExternalFunctionInflowConverter, self).__init__(db_external_function_inflow)
-        
-        self.inflowFunction = db_external_function_inflow.inflow_function
+    
         self.basicInflow = db_external_function_inflow.basic_inflow
     
+        self.derivationParameters = [float(x.strip()) for x in db_external_function_inflow.function_parameters.split(',')]
+        
+        self.inflow_function = db_external_function_inflow.inflow_function
+        
+        
+        if self.inflow_function == 'NORM':
+            self.inflowFunction = nr.normal
+        elif self.inflow_function == 'GEO':
+            self.inflowFunction = nr.geometric
+        elif self.inflow_function == 'BINOM':
+            self.inflowFunction = nr.binomial
+        elif self.inflow_function == 'EXPO':
+            self.inflowFunction = nr.exponential
+        elif self.inflow_function == 'TRI':
+            self.inflowFunction = nr.triangular
+        elif self.inflow_function == 'UNI':
+            self.inflowFunction = nr.uniform
+        elif self.inflow_function == 'GAM':
+            self.inflowFunction = nr.gamma
+        elif self.inflow_function == 'PAR':
+            self.inflowFunction = nr.pareto
+        elif self.inflow_function == 'POI':
+            self.inflowFunction = nr.poisson
+        elif self.inflow_function == 'CHI':
+            self.inflowFunction = nr.chisquare  
         
         #try:
         self.external_function_inflow_dpmfa = package_components.ExternalFunctionInflow(
