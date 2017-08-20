@@ -872,14 +872,16 @@ class ExternalListInflowUpdateView(generic.UpdateView):
 class ExternalListInflowDeleteView(generic.DeleteView):
     model = models.external_list_inflow
     
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+    
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        check_for_last_inflow = models.external_inflow.objects.filter(target__model = self.object.target.model).count()
+        if check_for_last_inflow > 2:
+            self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 # External Function Inflow
 
