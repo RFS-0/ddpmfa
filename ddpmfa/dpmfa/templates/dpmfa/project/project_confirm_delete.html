@@ -6,28 +6,11 @@
 {% block body %}
 
 <header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-            Delete Project &quot;{{project.name}}&quot;?
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-          <li>
-              <a href="{% url "dpmfa:project-list" %}" data-toggle="tooltip" title="Cancel">
-                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                Cancel: Back to Project List
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
 </header>
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
@@ -48,7 +31,7 @@
         <div class="col-xs-12">
             <form action="" method="post">{% csrf_token %}
                 <p>Are you sure you want to delete the project &quot;{{project.name}}&quot;?</p>
-                <input type="submit" value="Confirm" class="btn btn-default" />
+                <input type="submit" value="Confirm" class="btn btn-primary" />
             </form>
         </div>
     </div>

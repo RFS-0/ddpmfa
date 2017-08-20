@@ -1,10 +1,15 @@
 from django import forms
 
-from .models import *
+import dpmfa.models as django_models
+
+
+# ==============================================================================
+#  Project
+# ==============================================================================
 
 class ProjectForm(forms.ModelForm):
     class Meta:
-        model = project
+        model = django_models.project
         fields = ('name', 'description')
         widgets = {
             'name': forms.widgets.TextInput(attrs={'type': 'text',
@@ -17,3 +22,22 @@ class ProjectForm(forms.ModelForm):
                                                    'placeholder' : 'Enter a project description'}),
             }
 
+# ==============================================================================
+#  Model
+# ==============================================================================
+
+class ModelForm(forms.ModelForm):
+    class Meta:
+        model = django_models.model
+        fields = ('name', 'description')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'type': 'text',
+                                                   'class': 'form-control',
+                                                   'id': 'modelName',
+                                                   'placeholder' : 'Enter a model name'}),
+            'description': forms.widgets.Textarea(attrs={'type': 'text',
+                                                   'class': 'form-control',
+                                                   'id':'modelDescription',
+                                                   'placeholder' : 'Enter a model description'}),
+            }

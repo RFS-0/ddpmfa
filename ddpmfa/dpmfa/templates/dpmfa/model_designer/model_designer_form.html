@@ -1,0 +1,17 @@
+{% extends "dpmfa/page.html" %}
+
+{% block title %}
+    {% if model.name %}
+        Edit diagram for model &quot;{{model.name}}&quot;
+    {% else %}
+        New diagram for model &quot;{{model.name}}&quot;
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+<h1>Model Designer</h1>
+<div class="rgm-modes-container"></div>
+
+<h2>Instructions</h2>
+{% endblock %}

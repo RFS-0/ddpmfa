@@ -1,0 +1,194 @@
+.rgm-modes-container {
+	height: 400px;
+	border: 1px solid #cccccc;
+	overflow: hidden;
+	position: relative;
+}
+
+.rgm-modes-inner-container {
+	width: 9000px;
+	height: 9000px;
+	position: relative;
+}
+
+.rgm-modes-subform-container {}
+.rgm-modes-subform-title {}
+.rgm-modes-subform-content {}
+.rgm-modes-subform-move-btns { width: 100%; margin-bottom: 2rem; }
+.rgm-modes-subform-move-btn {}
+.rgm-modes-subform-up-btn {}
+.rgm-modes-subform-down-btn {}
+.rgm-modes-subform-fields {}
+.rgm-modes-forms-field-container {}
+.rgm-modes-forms-field-title {}
+.rgm-modes-forms-field-content {}
+.rgm-modes-forms-field-add-buttons { width: 100%; margin-bottom: 2rem; }
+.rgm-modes-forms-field-add-button {}
+.rgm-modes-forms-field-forms {}
+
+.rgm-modes-node-container { 
+	position: absolute;
+	padding: 10px 50px 10px 40px;
+	width: 250px;
+	height: 85px;
+	overflow: hidden;
+	border: 1px solid #333333;
+	background-color: #DDDDDD;
+	border-radius: 5px;
+	cursor: move;
+	background-repeat: no-repeat;
+	background-position: 10px 10px;
+	background-size: 20px 20px;
+	box-shadow: 2px 2px 3px rgba(100, 100, 100, 0.8);
+}
+
+.rgm-modes-node-container.inflow {}
+
+.rgm-modes-node-container.external-list-inflow {
+	background-image: url('external_list_inflow.png');
+	background-color: #99CCEE;
+	border-color: #000099;
+}
+
+.rgm-modes-node-container.flow-compartment {
+	background-image: url('flow_compartment.png');
+	background-color: #CCEE88;
+	border-color: #005500;
+}
+
+.rgm-modes-node-title {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.rgm-modes-node-configure-button {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-image: url('cog_24.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 20px 20px;
+	border: 1px solid #0088aa;
+	border-radius: 2px;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	background-color: #88ddee;
+}
+
+
+
+.rgm-modes-node-source-endpoint-constantTransfer {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-image: url('constant_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 20px 20px;
+	border: 1px solid #0088aa;
+	border-radius: 2px;
+	top: 45px;
+	right: 10px;
+	cursor: move;
+	background-color: #88ddee;
+}
+
+.rgm-modes-node-source-endpoint-randomChoiceTransfer {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-image: url('random_choice_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 20px 20px;
+	border: 1px solid #0088aa;
+	border-radius: 2px;
+	top: 45px;
+	right: 45px;
+	cursor: move;
+	background-color: #88ddee;
+}
+
+.rgm-modes-node-source-endpoint-aggregatedTransfer{
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-image: url('aggregated_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 20px 20px;
+	border: 1px solid #0088aa;
+	border-radius: 2px;
+	top: 45px;
+	right: 80px;
+	cursor: move;
+	background-color: #88ddee;
+}
+
+.rgm-modes-node-source-endpoint-stochasticTransfer {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	background-image: url('stochastic_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 20px 20px;
+	border: 1px solid #0088aa;
+	border-radius: 2px;
+	top: 45px;
+	right: 115px;
+	cursor: move;
+	background-color: #88ddee;
+}
+
+
+
+
+
+
+
+.rmg-modes-connection-overlay-constantTransfer {
+	width: 20px;
+	height: 20px;
+	background-image: url('constant_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+
+.rmg-modes-connection-overlay-randomChoiceTransfer {
+	width: 20px;
+	height: 20px;
+	background-image: url('random_choice_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+
+.rmg-modes-connection-overlay-aggregatedTransfer {
+	width: 20px;
+	height: 20px;
+	background-image: url('aggregated_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+
+.rmg-modes-connection-overlay-stochasticTransfer {
+	width: 20px;
+	height: 20px;
+	background-image: url('stochastic_transfer.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+}
+
+
+

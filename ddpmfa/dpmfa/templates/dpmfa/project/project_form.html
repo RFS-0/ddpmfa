@@ -41,7 +41,15 @@
                 {% endif %}
             </h1>
             <form method="POST" class="post-form">{% csrf_token %}
-				{{ form.as_p }}
+				<div class="form-group">
+					<label class="form-control-label" for="projectName">Name</label>
+					{{ form.name }}
+				</div>
+				<div class="form-group">
+					<label class="form-control-label" for="projectDescription">Description</label>
+					{{ form.description }}
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
      </div>

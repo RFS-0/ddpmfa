@@ -1,9 +1,9 @@
 from django.contrib import messages
 from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from itertools import chain
 
@@ -53,7 +53,7 @@ class ProjectDetailView(generic.DetailView):
 
 class ProjectCreateView(generic.CreateView):
     model = models.project
-    fields = ['name', 'description']
+    form_class = forms.ProjectForm
     template_name = 'dpmfa/project/project_form.html'
     success_url = reverse_lazy('dpmfa:project-list')
 
@@ -66,6 +66,7 @@ class ProjectUpdateView(generic.UpdateView):
     
 class ProjectDeleteView(generic.DeleteView):
     model = models.project
+    form_class = forms.ProjectForm
     template_name = 'dpmfa/project/project_confirm_delete.html'
     success_url = reverse_lazy('dpmfa:project-list')
 
@@ -143,8 +144,8 @@ class ModelDetailView(generic.DetailView):
 
 class ModelCreateView(generic.CreateView):
     model = models.model
+    form_class = forms.ModelForm
     template_name = 'dpmfa/model/model_form.html'
-    fields = ['name', 'description']
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.kwargs['project_pk']})
@@ -162,8 +163,8 @@ class ModelCreateView(generic.CreateView):
 
 class ModelUpdateView(generic.UpdateView):
     model = models.model
+    form_class = forms.ModelForm
     template_name = 'dpmfa/model/model_form.html'
-    fields = ['name', 'description']
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk })
@@ -186,17 +187,60 @@ class ModelDeleteView(generic.DeleteView):
 #  Model Designer
 # ==============================================================================
 
-class ModelDesingerDetailView(generic.DetailView):
-    model = models.model_designer
+# class ModelDesingerDetailView(generic.DetailView):
+#     model = models.model_designer
 
 class ModelDesingerCreateView(generic.CreateView):
-    model = models.model
+    model = models.model_designer
+    template_name = 'dpmfa/model_designer/model_designer_form.html'
+    
+    fields = [
+        'designer_configuration',
+        ]
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model_designer.model})
+
+    def form_valid(self, form):
+        model = form.save(commit=False)
+        model.model_id = self.kwargs['model_pk']
+        return super(ModelDesingerCreateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(ModelDesingerCreateView, self).get_context_data(**kwargs)
+        context['model'] = models.model.objects.get(pk=self.kwargs['model_pk'])
+        return context
     
 class ModelDesingerUpdateView(generic.UpdateView):
-    model = models.model
+    model = models.model_designer
+    template_name = 'dpmfa/model_designer/model_designer_form.html'
+    
+    fields = [
+        'designer_configuration',
+        ]
+
+    def get_context_data(self, **kwargs):
+        context = super(ModelDesingerUpdateView, self).get_context_data(**kwargs)
+        context['model'] = models.model_designer.objects.get(pk=self.kwargs['pk']).model
+        return context
 
 class ModelDesingerDeleteView(generic.UpdateView):
     model = models.model
+    
+class ModelDesignerRedirectView(generic.RedirectView):
+    permanent = False
+    query_string = False
+    
+    def get_redirect_url(self, *args, **kwargs):
+        try:
+            print("trying to get designer")
+            designer = models.model_designer.objects.get(model_id=self.kwargs['model_pk'])
+            print("got designer")
+            print("not yet redirected")
+            return designer.get_absolute_url()
+            print("redirected")
+        except:
+            return reverse_lazy('dpmfa:designer-create', kwargs={'model_pk': self.kwargs['model_pk']})
 
 #==============================================================================
 #  Model Parameters
@@ -272,11 +316,11 @@ class ParameterRedirectView(generic.RedirectView):
 
 class FlowCompartmentDetailView(generic.DetailView):
     model = models.flow_compartment
-    template_name = 'dpmfa/compartment/flow_compartment_detail.html'
+    template_name = 'dpmfa/compartments/flow_compartment_detail.html'
     
 class FlowCompartmentUpdateView(generic.UpdateView):
     model = models.flow_compartment
-    template_name = 'dpmfa/compartment/flow_compartment_form.html'
+    template_name = 'dpmfa/compartments/flow_compartment_form.html'
     
     fields = [
         'name',
@@ -292,7 +336,7 @@ class FlowCompartmentUpdateView(generic.UpdateView):
 
 class FlowCompartmentDeleteView(generic.DeleteView):
     model = models.flow_compartment
-    template_name = 'dpmfa/compartmentflow_compartment_confirm_delete.html'
+    template_name = 'dpmfa/compartments/flow_compartment_confirm_delete.html'
     
     fields = [
         'model',

@@ -4,9 +4,9 @@ from . import views
 app_name = 'dpmfa'
 urlpatterns = [
     
-    # ==============================================================================
-    # Home
-    # ==============================================================================
+# ==============================================================================
+# Home
+# ==============================================================================
 
     # ex: /dpmfa
     # ex: dpmfa/home/
@@ -23,9 +23,9 @@ urlpatterns = [
     url(r'^documentation/$', views.DocumentationTemplateView.as_view(), name='documentation'),
     
 
-    # ==============================================================================
-    # Project
-    # ==============================================================================
+# ==============================================================================
+# Project
+# ==============================================================================
 
     # ex: /projects/list
     url(r'^project/list$', views.ProjectListView.as_view(), name='project-list'),
@@ -42,9 +42,9 @@ urlpatterns = [
     # ex: /project/123/delete
     url(r'^project/(?P<pk>[0-9]+)/delete$', views.ProjectDeleteView.as_view(), name='project-delete'),
 
-    # ==============================================================================
-    # Model
-    # ==============================================================================
+# ==============================================================================
+# Model
+# ==============================================================================
 
     # # ex: /models/list
     # url(r'^model/list$', views.ModelListView.as_view(), name='model'),
@@ -66,16 +66,19 @@ urlpatterns = [
 #==============================================================================
 
     # ex: /designer/123/detail
-    url(r'^designer/(?P<pk>[0-9]+)/detail$', views.ModelDesingerDetailView.as_view(), name='designer-detail'),
+    #url(r'^designer/(?P<pk>[0-9]+)/detail$', views.ModelDesingerDetailView.as_view(), name='designer-detail'),
     
     # ex: /designer/create
-    url(r'^designer/create$', views.ModelDesingerCreateView.as_view(), name='designer-create'),
+    url(r'^designer/create/(?P<model_pk>[0-9]+)$', views.ModelDesingerCreateView.as_view(), name='designer-create'),
     
     # ex: /designer/123/update
     url(r'^designer/(?P<pk>[0-9]+)/update$', views.ModelDesingerUpdateView.as_view(), name='designer-update'),
 
     # ex: /designer/123/delete
-    url(r'^designer/(?P<pk>[0-9]+)/delete$', views.ModelDesingerDeleteView.as_view(), name='designer-update'),
+    url(r'^designer/(?P<pk>[0-9]+)/delete$', views.ModelDesingerDeleteView.as_view(), name='designer-delete'),
+    
+    # only for redirection
+    url(r'designer/(?P<model_pk>[0-9]+)/redirect$', views.ModelDesignerRedirectView.as_view(), name='designer-redirect'),
     
 #==============================================================================
 #  Model Parameters

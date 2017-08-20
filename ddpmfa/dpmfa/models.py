@@ -91,7 +91,7 @@ class model_designer(models.Model):
         return self.name + ' (' + self.pk + ')'
     
     def get_absolute_url(self):
-        return reverse('model', kwargs={'pk': self.pk})
+        return reverse('dpmfa:designer-update', args=[self.id])
     
 #==============================================================================
 #  Model Parameters

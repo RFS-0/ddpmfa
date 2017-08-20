@@ -10,39 +10,11 @@
 
 {% block body %}
 <header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-            {% if project.name %}
-                Edit Model &quot;{{project.name}}&quot;
-            {% else %}
-                New Model
-            {% endif %}
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-          <li>
-              {% if view.kwargs.project_pk %}
-                <a href="{% url 'dpmfa:project-detail' view.kwargs.project_pk %}" data-toggle="tooltip" title="Cancel">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                    Cancel: Back to Project
-                </a>
-              {% else %}
-                <a href="{% url 'dpmfa:project-detail' model.project.pk %}" data-toggle="tooltip" title="Cancel">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                    Cancel: Back to Project
-                </a>
-              {% endif %}
-          </li>
-        </ul>
-      </div>
-    </nav>
 </header>
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
@@ -59,7 +31,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
             <h1>
                 {% if model.name %}
                     Edit Model &quot;{{model.name}}&quot;
@@ -70,7 +42,7 @@
 
             <form method="POST" class="post-form">{% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="save btn btn-default">Save</button>
+                <button type="submit" class="save btn btn-primary">Save</button>
             </form>
         </div>
     </div>
