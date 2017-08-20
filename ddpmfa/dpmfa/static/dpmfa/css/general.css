@@ -1,22 +1,111 @@
+/* wrapping */
+
 .dpmfa-pre-wrap {
     white-space: pre-wrap;
 }
 
-.dpmfa-model-designer {
-    position: relative;
-    padding: 20px;
-    height: 550px;
-    border: 1px solid gray;
-    overflow: hidden;
+.dpmfa-no-wrap {
+	white-space: no-wrap;
 }
 
-.dpmfa-model-designer .compartment{
-    min-height:40px;
-    width: 200px;
-    border: 1px solid blue;
-    position: absolute;
-    cursor: move;
-    background-color: lightblue;
-    padding: 10px;
-    border-radius: 5px;
+/* table */
+
+.dpmfa-td-5-top {
+	width: 5%;
+	vertical-align: top;
+}
+
+.dpmfa-td-10-top {
+	width: 10%;
+	vertical-align: top;
+}
+
+.dpmfa-td-20-top {
+	width: 20%;
+	vertical-align: top;
+}
+
+.dpmfa-td-30-top {
+	width: 30%;
+	vertical-align: top;
+}
+
+.dpmfa-td-40-top {
+	width: 40%;
+	vertical-align: top;
+}
+
+.dpmfa-td-50-top {
+	width: 50%;
+	vertical-align: top;
+}
+
+.dpmfa-td-60-top {
+	width: 60%;
+	vertical-align: top;
+}
+
+.dpmfa-td-70-top {
+	width: 70%;
+	vertical-align: top;
+}
+
+.dpmfa-td-80-top {
+	width: 80%;
+	vertical-align: top;
+}
+
+.dpmfa-td-90-top {
+	width: 90%;
+	vertical-align: top;
+}
+
+.dpmfa-td-5-middle {
+	width: 5%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-10-middle {
+	width: 10%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-20-middle {
+	width: 20%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-30-middle {
+	width: 30%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-40-middle {
+	width: 40%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-50-middle {
+	width: 50%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-60-middle {
+	width: 60%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-70-middle {
+	width: 70%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-80-middle {
+	width: 80%;
+	vertical-align: middle;
+}
+
+.dpmfa-td-90-middle {
+	width: 90%;
+	vertical-align: middle;
 }
