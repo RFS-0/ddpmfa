@@ -354,9 +354,10 @@ class Command(BaseCommand):
             name='External list inflow of SenD to first stage use compartment', 
             start_delay=0, derivation_distribution='Some Pdf', 
             derivation_factor=1.0, 
-            inflow_function='Some inflow function', 
+            inflow_function='NORM', 
             basic_inflow=fvif_for_efi, 
-            derivation_parameters='[1000, 250]')
+            derivation_parameters='[1000, 250]',
+            function_parameters = '1000, 250')
         
         import_of_std_inflow.save()
         

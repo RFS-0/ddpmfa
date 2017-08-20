@@ -428,12 +428,43 @@ class external_list_inflow(external_inflow):
     
 class external_function_inflow(external_inflow):
     
-    # TODO [all]: we will have to implement a function field to store functions
+    NORMAL = 'NORM'
+    GEOMETRIC = 'GEO'
+    BINOMIAL = 'BINOM'
+    EXPONENTIAL = 'EXPO'
+    TRIANGULAR = 'TRI'
+    UNIFORM = 'UNI'
+    GAMMA = 'GAM'
+    PARETO = 'PAR'
+    POISSON = 'POI'
+    CHISQUARE = 'CHI'
+
+    DISTRIBUTION_TYPES = (
+    (NORMAL, 'Normal distribution'),
+    (GEOMETRIC, 'Geometric distribution'),
+    (BINOMIAL, 'Binomial distribution'),
+    (EXPONENTIAL, 'Exponential distribution'),
+    (TRIANGULAR, 'Triangular distribution'),
+    (UNIFORM, 'Uniform distribution'),
+    (GAMMA, 'Gamma distribution'),
+    (PARETO, 'Pareto distribution'),
+    (POISSON, 'Poisson distribution'),
+    (CHISQUARE, 'Chisquare distribution'),    
+    )
+    
     inflow_function = models.CharField(
         verbose_name='Inflow function', 
+        choices = DISTRIBUTION_TYPES,
         max_length=250, 
         null=True)
+
+    function_parameters = models.CharField(
+        verbose_name='Release function parameters',
+        validators=[float_list_validator],
+        max_length = 250,
+        null = True)
     
+      
     basic_inflow = models.OneToOneField(
         to='single_period_inflow', 
         verbose_name='name of the single period inflow', 

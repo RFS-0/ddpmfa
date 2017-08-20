@@ -890,6 +890,7 @@ class ExternalListInflowDeleteView(generic.DeleteView):
 
 class ExternalFunctionInflowDetailView(generic.DetailView):
     model = models.external_function_inflow
+    template_name = 'dpmfa/external_inflow/external_function_inflow_detail.html'
 
 class ExternalFunctionInflowCreateView(generic.CreateView):
     model = models.external_list_inflow
@@ -918,17 +919,18 @@ class ExternalFunctionInflowUpdateView(generic.UpdateView):
 
 class ExternalFunctionInflowDeleteView(generic.DeleteView):
     model = models.external_list_inflow
+    template_name = 'dpmfa/external_inflow/external_function_inflow_confirm_delete.html'
     
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor',
-        'inflow_function',
-        'basic_inflow'
-        ]
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+    
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        
+        check_for_last_inflow = models.external_inflow.objects.filter(target__model = self.object.target.model).count()
+        if check_for_last_inflow > 1:
+            self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
     
 #==============================================================================
 #  Fixed Value Inflow
