@@ -1,14 +1,19 @@
-.rgm-modes-container {
+.rgm-modes-container { }
+
+.rgm-modes-viewport {
 	height: 400px;
-	border: 1px solid #cccccc;
+	border: 1px solid #CCCCCC;
 	overflow: hidden;
 	position: relative;
 }
 
-.rgm-modes-inner-container {
-	width: 9000px;
-	height: 9000px;
-	position: relative;
+/* TODO: Initially center inner container? */
+.rgm-modes-drawing-container {
+	width: 2000px;
+	height: 2000px;
+	position: absolute;
+	background-color: pink;
+	border: 2px dashed red;
 }
 
 .rgm-modes-subform-container {}
@@ -41,6 +46,16 @@
 	background-size: 20px 20px;
 	box-shadow: 2px 2px 3px rgba(100, 100, 100, 0.8);
 }
+
+.rgm-modes-controls-container {}
+
+.rgm-modes-zoom-controls { background-color: orange; }
+
+.rgm-modes-zoom-in-btn {}
+
+.rgm-modes-zoom-out-btn {}
+
+.rgm-modes-zoom-reset-btn {}
 
 .rgm-modes-node-container.inflow {}
 
