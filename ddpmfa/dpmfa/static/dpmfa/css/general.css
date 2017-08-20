@@ -20,6 +20,11 @@
 	vertical-align: top;
 }
 
+.dpmfa-td-11-top {
+	width: 11%;
+	vertical-align: top;
+}
+
 .dpmfa-td-20-top {
 	width: 20%;
 	vertical-align: top;
@@ -40,13 +45,33 @@
 	vertical-align: top;
 }
 
+.dpmfa-td-55-top {
+	width: 55%;
+	vertical-align: top;
+}
+
 .dpmfa-td-60-top {
 	width: 60%;
 	vertical-align: top;
 }
 
+.dpmfa-td-59-top {
+	width: 59	%;
+	vertical-align: top;
+}
+
+.dpmfa-td-60-top {
+	width: 65%;
+	vertical-align: top;
+}
+
 .dpmfa-td-70-top {
 	width: 70%;
+	vertical-align: top;
+}
+
+.dpmfa-td-75-top {
+	width: 75%;
 	vertical-align: top;
 }
 

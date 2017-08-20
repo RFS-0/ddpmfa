@@ -1,4 +1,5 @@
 {% extends "dpmfa/page.html" %}
+{% load class_tag %}
 {% load static %}
 
 {% block title %}Model: &quot;{{model.name}}&quot;{% endblock %}
@@ -54,29 +55,33 @@
 				                    		<thead class="thead-default">
 				                        		<tr>
 				                            		<th scope="row">Name</th>
-				                            		<th scope="row">Description</th>
-				                            		<th scope="row">Adjust outgoing TC's</th> 
+				                            		<th scope="row">Categories</th>
+				                            		<th scope="row">Log inflows</th>
 				                            		<th scope="row">Log outflows</th> 
+				                            		<th scope="row">Adjust outgoing TC's</th> 
 				                            		<th scope="row">Actions</th>
 				                        		</tr>
 				                    		</thead>
 					                    	<tbody>
 					 							{% for flow_compartment in flow_compartments %}
 					                        		<tr>
-					                               		<td class="dpmfa-td-30-top">
+					                               		<td class="dpmfa-td-20-top">
 					                               			<a href="{% url 'dpmfa:flow-compartment-detail' flow_compartment.pk %}">
 					                               			{{ flow_compartment.name }}</a>
 					                               		</td>
-					                               		<td class="dpmfa-td-20-top">
-					                               			{{ flow_compartment.description }}
+					                               		<td class="dpmfa-td-10-top">
+					                               			{{ flow_compartment.categories }}
 					                               		</td>
-					                               		<td class="dpmfa-td-20-top">
+					                               		<td class="dpmfa-td-5-top">
+					                               			{{ flow_compartment.log_inflows }}
+					                               		</td>
+					                               		<td class="dpmfa-td-5-top">
+					                               			{{ flow_compartment.log_outflows }}
+					                               		</td>
+					                               		<td class="dpmfa-td-50-top">
 					                               			{{ flow_compartment.adjust_outgoing_tcs }}
 					                               		</td>
-					                               		<td class="dpmfa-td-20-top">
-					                               			{{ flow_compartment.log_outflows }}
-					                               		</td class="dpmfa-td-10-top">
-					                               		<td>
+					                               		<td class="dpmfa-td-10-top">
 					                                    	<a href="{% url 'dpmfa:flow-compartment-update' flow_compartment.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    	</a>
@@ -107,29 +112,45 @@
 					                <table class="table table-striped table-hover table-responsive">
 					                    <thead>
 					                        <tr>
-					                            <th>Name</th>
-					                            <th>Description</th>
-					                            <th>Actions</th>
+					                            <th scope="row">Name</th>
+					                            <th scope="row">Categories</th>
+					                            <th scope="row">Log inflows</th>
+			                            		<th scope="row">Log outflows</th> 
+			                            		<th scope="row">Adjust outgoing TC's</th> 
+					                            <th scope="row">Local release</th>
+					                            <th scope="row">Actions</th>
 					                        </tr>
 					                    </thead>
 					                    <tbody>
 					                   		{% for stock in stocks %}
 					                        	<tr>
-					                            	<td>
-					                               		<a href="{% url 'dpmfa:stock-detail' stock.pk %}">{{ stock.name }}</a>
+					                            	<td class="dpmfa-td-20-top">
+					                               		<a href="{% url 'dpmfa:stock-detail' stock.pk %}">
+					                               		{{ stock.name }}</a>
 					                           		</td>
-					                               	<td class="dpmfa-pre-wrap">{{ stock.description }}</td>
-					                               	<td>
-					                           			<a href="{% url 'dpmfa:stock-detail' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to stock">
-					                                    	<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-					                                    </a>
+					                               	<td class="dpmfa-td-10-top"">
+					                               		{{ stock.categories }}
+					                               	</td>
+					                               	<td class="dpmfa-td-5-top">
+					                               		{{ stock.log_inflows }}
+					                               	</td>
+				                               		<td class="dpmfa-td-5-top">
+				                               			{{ stock.log_outflows }}
+				                               		</td>
+					                               	<td class="dpmfa-td-10-top">
+				                               			{{ stock.adjust_outgoing_tcs }}
+				                               		</td>
+				                               		<td class="dpmfa-td-40-top">
+				                               			{{ stock.local_release }}
+				                               		</td>
+					                               	<td class="dpmfa-td-10-top">
 					                                    <a href="{% url 'dpmfa:stock-update' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
 					                                    <a href="{% url 'dpmfa:stock-delete' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
 					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					                                    </a>
-					                               </td>
+					                               	</td>
 					                           	</tr>
 					                        {% endfor %}
 					                    </tbody>
@@ -153,24 +174,33 @@
 						        	<table class="table table-striped table-hover table-responsive">
 					                	<thead>
 					                        <tr>
-					                            <th>Name</th>
-					                            <th>Description</th>
-					                            <th>Actions</th>
+					                            <th scope="row">Name</th>
+					                            <th scope="row">Categories</th>
+			                            		<th scope="row">Log inflows</th> 
+					                            <th scope="row">Actions</th>
 					                        </tr>
 					                    </thead>
 						             	<tbody>
 						                	{% for sink in sinks %}
 						                    	<tr>
-						                        	<td><a href="{% url 'dpmfa:sink-detail' sink.pk %}">{{ sink.name }}</a></td>
-						                            <td class="dpmfa-pre-wrap">{{ sink.description }}</td>
-						                            <td>
-						                            	<a href="{% url 'dpmfa:sink-detail' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to sink">
-						                            	<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
-						                                <a href="{% url 'dpmfa:sink-update' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
-						                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-						                                <a href="{% url 'dpmfa:sink-delete' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-						                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>
-						                         	</td>
+					                               	<td class="dpmfa-td-20-top"">
+					                               		<a href="{% url 'dpmfa:sink-detail' sink.pk %}">
+					                               		{{ sink.name }}</a>
+					                               	</td>
+					                               	<td class="dpmfa-td-10-top">
+					                               		{{ sink.categories }}
+					                               	</td>
+					                               	<td class="dpmfa-td-59-top">
+					                               		{{ sink.log_inflows }}
+					                               	</td>
+					                               	<td class="dpmfa-td-10-top">
+					                                    <a href="{% url 'dpmfa:sink-update' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					                                    </a>
+					                                    <a href="{% url 'dpmfa:sink-delete' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					                                    </a>
+					                               	</td>
 						                   		</tr>
 						               		{% endfor %}
 						          		</tbody>
@@ -198,38 +228,38 @@
 							                <table class="table table-striped">
 							                    <thead>
 							                        <tr>
-							                            <th>Name</th>
-							                            <th>Target</th>
-							                            <th>Start delay</th>
-							                            <th>Derivation distribution</th>
-							                            <th>Derivation parameters</th>
-							                            <th>Derivation factor</th>
-							                            <th>Actions</th>
+							                            <th scope="row">Name</th>
+							                            <th scope="row">Target</th>
+							                            <th scope="row">Start delay</th>
+							                            <th scope="row">Derivation distribution</th>
+							                            <th scope="row">Derivation parameters</th>
+							                            <th scope="row">Derivation factor</th>
+							                            <th scope="row">Actions</th>
 							                        </tr>
 							                    </thead>
 							                    <tbody>
 							                        {% for external_list_inflow in external_list_inflows %}
 							                           <tr>
-							                               	<td class="dpmfa-td-30-top">
+							                               	<td class="dpmfa-td-20-top">
 							                               		<a href="{% url 'dpmfa:external-list-inflow-detail' external_list_inflow.pk %}">
 							                               		{{ external_list_inflow.name }}</a>
 							                               	</td>
-							                               	<td class="dpmfa-td-20-top">
+							                               	<td class="dpmfa-td-10-top">
 							                               		{{ external_list_inflow.target }}
 							                               	</td>
-							                               	<td class="dpmfa-td-10-top">
+							                               	<td class="dpmfa-td-5-top">
 							                               		{{ external_list_inflow.start_delay}}
-							                               	</td class="dpmfa-td-10-top">
+							                               	</td>
 							                               	<td class="dpmfa-td-10-top">
 							                               		{{ external_list_inflow.derivation_distribution}}
 							                               	</td> 
 							                               	<td class="dpmfa-td-10-top">
 							                               		{{ external_list_inflow.derivation_parameters}}
 							                               	</td>
-							                               	<td class="dpmfa-td-10-top">
+							                               	<td class="dpmfa-td-20-top">
 							                               		{{ external_list_inflow.derivation_factor}}
 							                               	</td>
-							                             	<td>
+							                             	<td class="dpmfa-td-10-top">
 							                             		<a href="{% url 'dpmfa:external-list-inflow-update' external_list_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 							                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 							                                    </a>
@@ -250,83 +280,65 @@
 			              <div class="panel panel-default">
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
-			                    <a data-toggle="collapse" href="#stockAccordion">
+			                    <a data-toggle="collapse" href="#externalFunctionInflowAccordion">
 			                    External Function Inflows</a>
 			                  </h4>
 			                </div>
-			                <div id="stockAccordion" class="panel-collapse collapse">
+			                <div id="externalFunctionInflowAccordion" class="panel-collapse collapse">
 			                  <div class="panel-body">
-			                  	{% if stocks %}
-					                <table class="table table-striped table-hover table-responsive">
-					                    <thead>
-					                        <tr>
-					                            <th>Name</th>
-					                            <th>Description</th>
-					                            <th>Actions</th>
-					                        </tr>
-					                    </thead>
-					                    <tbody>
-					                   		{% for stock in stocks %}
-					                        	<tr>
-					                            	<td>
-					                               		<a href="{% url 'dpmfa:stock-detail' stock.pk %}">{{ stock.name }}</a>
-					                           		</td>
-					                               	<td class="dpmfa-pre-wrap">{{ stock.description }}</td>
-					                               	<td>
-					                           			<a href="{% url 'dpmfa:stock-detail' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to stock">
-					                                    	<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-					                                    </a>
-					                                    <a href="{% url 'dpmfa:stock-update' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
-					                                    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-					                                    </a>
-					                                    <a href="{% url 'dpmfa:stock-delete' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-					                                    </a>
-					                               </td>
-					                           	</tr>
-					                        {% endfor %}
-					                    </tbody>
-					                </table>
-			            		{% else %}
-			                		<div class="alert alert-info">There are no stocks.</div>
-			            		{% endif %}
-			                  </div>
-			                </div>
-			              </div>
-			              
-	            </div>
-		            
-		            
-		            
-		            
-		            
-		            
-		            
-		            
-		            
-		            	<h4>External List Inflows</h4>
-		
-		            	<h4>External Function Inflows</h4>
-		
-				            {% if external_function_inflows %}
+			                  					            {% if external_function_inflows %}
 				                <table class="table table-striped table-hover table-responsive">
 				                    <thead>
 				                        <tr>
-				                            <th>Name</th>
-				                            <th>Description</th>
-				                            <th>Actions</th>
+				                            <th scope="row">Name</th>
+				                            <th scope="row">Target</th>
+				                            <th scope="row">Start delay</th>
+				                            <th scope="row">Derivation distribution</th>
+				                            <th scope="row">Derivation parameters</th>
+							                <th scope="row">Derivation factor</th>
+				                            <th scope="row">Basic inflow</th>
+				                            <th scope="row">Inflow function</th>
+				                            <th scope="row">Actions</th>
 				                        </tr>
 				                    </thead>
 				                    <tbody>
-				                        {% for external_function_inflow in external_function_inflows %}
-				                           <tr>
-				                               <td><a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}">{{ external_function_inflow.name }}</a></td>
-				                               <td class="dpmfa-pre-wrap">{{ external_function_inflow.description }}</td>
-				                               <td>
-				                                    <a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to external function inflow">
-				                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+				                   		{% for external_function_inflow in external_function_inflows %}
+				                       		<tr>
+				                           		<td class="dpmfa-td-20-top">
+				                           			<a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}">
+			                               			{{ external_function_inflow.name }}</a>
+			                               		</td>
+				                               	<td class="dpmfa-td-10-top">
+				                               		{{ external_function_inflow.target }}
+				                               	</td>
+				                               	<td class="dpmfa-td-5-top">
+				                               		{{ external_function_inflow.start_delay}}
+				                               	</td>
+				                               	<td class="dpmfa-td-10-top">
+				                               		{{ external_function_inflow.derivation_distribution}}
+				                               	</td> 
+				                               	<td class="dpmfa-td-5-top">
+				                               		{{ external_function_inflow.derivation_parameters}}
+				                               	</td>
+				                               	<td class="dpmfa-td-5-top">
+				                               		{{ external_function_inflow.derivation_factor}}
+				                               	</td>
+				                               	<td class="dpmfa-td-10-top">
+				                               		<a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}">
+				                               		{{ external_function_inflow.basic_inflow.period}}</a>
+				                               	</td>
+				                               	<td class="dpmfa-td-10-top">
+				                               		{{ external_function_inflow.inflow_function}}
+				                               	</td>
+				                               	<td class="dpmfa-td-10-top">
+				                             		<a href="{% url 'dpmfa:external-function-inflow-update' external_function_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+				                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				                                    </a>
-				                               </td>
+				                                    <a href="{% url 'dpmfa:external-function-inflow-delete' external_function_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+				                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+				                                    </a>
+				                               	</td>
+				                         
 				                           </tr>
 				                        {% endfor %}
 				                    </tbody>
@@ -334,53 +346,78 @@
 				            {% else %}
 				                <div class="alert alert-info">There are no external function inflows.</div>
 				            {% endif %}
-				</div>
+				            
+			                  </div>
+			                </div>
+			              </div>
 		            <h3>Transfers</h3>
+		            	<div class="panel panel-default">
+			                <div class="panel-heading">
+			                  <h4 class="panel-title">
+			                    <a data-toggle="collapse" href="#constantTransferwAccordion">
+			                    Constant Transfers</a>
+			                  </h4>
+			                </div>
+			                <div id="constantTransferwAccordion" class="panel-collapse collapse">
+			                  <div class="panel-body">
+					       		{% if constant_transfers %}
+					                <table class="table table-striped">
+					                    <thead>
+					                        <tr>
+					                            <th scope="row">Name</th>
+					                            <th scope="row">Priority</th>
+					                            <th scope="row">Weight</th>
+					                            <th scope="row">Source</th>
+					                            <th scope="row">Target</th>
+					                            <th scope="row">Aggregated transfer</th>
+					                            <th scope="row">Value</th>
+					                            <th scope="row">Actions</th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        {% for constant_transfer in constant_transfers %}
+					                           <tr>
+					                               <td class="dpmfa-td-20-top">
+					                               		<a href="{% url 'dpmfa:constant-transfer-detail' constant_transfer.pk %}">
+					                               		{{ constant_transfer.name }}</a>
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ constant_transfer.priority}} 
+					                               <td>
+					                                    <a href="{% url 'dpmfa:constant-transfer-detail' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to constant transfer">
+					                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+					                                    </a>
+					                                    <a href="{% url 'dpmfa:constant-transfer-update' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					                                    </a>
+					                                    <a href="{% url 'dpmfa:constant-transfer-delete' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					                                    </a>
+					                               </td>
+					                           </tr>
+					                        {% endfor %}
+					                    </tbody>
+					                </table>
+					            {% else %}
+					                <div class="alert alert-info">There are no constant transfers.</div>
+					            {% endif %}
+					                    </tbody>
+					                </table>
+			                  </div>
+			                </div>
+			              </div>
+		            
 		
 		            	<h4>Constant Transfers</h4>
-		
-				            {% if constant_transfers %}
-				                <table class="table table-striped table-hover table-responsive">
-				                    <thead>
-				                        <tr>
-				                            <th>Name</th>
-				                            <th>Description</th>
-				                            <th>Actions</th>
-				                        </tr>
-				                    </thead>
-				                    <tbody>
-				                        {% for constant_transfer in constant_transfers %}
-				                           <tr>
-				                               <td><a href="{% url 'dpmfa:constant-transfer-detail' constant_transfer.pk %}">{{ constant_transfer.name }}</a></td>
-				                               <td class="dpmfa-pre-wrap">{{ constant_transfer.description }}</td>
-				                               <td>
-				                                    <a href="{% url 'dpmfa:constant-transfer-detail' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to constant transfer">
-				                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-				                                    </a>
-				                                    <a href="{% url 'dpmfa:constant-transfer-update' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
-				                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-				                                    </a>
-				                                    <a href="{% url 'dpmfa:constant-transfer-delete' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-				                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				                                    </a>
-				                               </td>
-				                           </tr>
-				                        {% endfor %}
-				                    </tbody>
-				                </table>
-				            {% else %}
-				                <div class="alert alert-info">There are no constant transfers.</div>
-				            {% endif %}
-		
 		            	<h4>Random Choice Transfers</h4>
 		
 				            {% if random_choice_transfers %}
 				                <table class="table table-striped table-hover table-responsive">
 				                    <thead>
 				                        <tr>
-				                            <th>Name</th>
-				                            <th>Description</th>
-				                            <th>Actions</th>
+				                            <th scope="row">Name</th>
+				                            <th scope="row">Description</th>
+				                            <th scope="row">Actions</th>
 				                        </tr>
 				                    </thead>
 				                    <tbody>
@@ -413,9 +450,9 @@
 				                <table class="table table-striped table-hover table-responsive">
 				                    <thead>
 				                        <tr>
-				                            <th>Name</th>
-				                            <th>Description</th>
-				                            <th>Actions</th>
+				                            <th scope="row">Name</th>
+				                            <th scope="row">Description</th>
+				                            <th scope="row">Actions</th>
 				                        </tr>
 				                    </thead>
 				                    <tbody>
@@ -449,9 +486,9 @@
 				                <table class="table table-striped table-hover table-responsive">
 				                    <thead>
 				                        <tr>
-				                            <th>Name</th>
-				                            <th>Description</th>
-				                            <th>Actions</th>
+				                            <th scope="row">Name</th>
+				                            <th scope="row">Description</th>
+				                            <th scope="row">Actions</th>
 				                        </tr>
 				                    </thead>
 				                    <tbody>

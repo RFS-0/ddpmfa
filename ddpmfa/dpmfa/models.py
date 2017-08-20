@@ -434,9 +434,10 @@ class external_function_inflow(external_inflow):
         max_length=250, 
         null=True)
     
-    basic_inflow = models.ForeignKey(
+    basic_inflow = models.OneToOneField(
         to='single_period_inflow', 
         verbose_name='name of the single period inflow', 
+        on_delete=models.CASCADE, 
         null=True)
     
     def __str__(self):
