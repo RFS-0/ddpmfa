@@ -45,10 +45,11 @@
 			                	<div class="panel-heading">
 			                  		<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#flowCompartments">
+			                    	<i class="glyphicon glyphicon-list-alt"></i>
 			                    	Flow Compartments</a>
 			                  		</h4>
 			                	</div>
-			                	<div id="flowCompartments" class="panel-collapse collapse in">
+			                	<div id="flowCompartments" class="panel-collapse collapse">
 			                  		<div class="panel-body">
 			                  		{% if flow_compartments %}
 				                		<table class="table table-striped">
@@ -103,6 +104,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#stockAccordion">
+			                    <i class="glyphicon glyphicon-list-alt"></i>
 			                    Stocks</a>
 			                  </h4>
 			                </div>
@@ -165,6 +167,7 @@
 			              	<div class="panel-heading">
 			                	<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#sinkAccordion">
+			                    	<i class="glyphicon glyphicon-list-alt"></i>
 			                    	Sinks</a>
 			                  	</h4>
 			                </div>
@@ -219,10 +222,11 @@
 			                	<div class="panel-heading">
 			                  		<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#externalListInflow">
+			                    	<i class="glyphicon glyphicon-list-alt"></i>
 			                    	External List Inflows</a>
 			                  		</h4>
 			                	</div>
-			                	<div id="externalListInflow" class="panel-collapse collapse in">
+			                	<div id="externalListInflow" class="panel-collapse collapse">
 			                  		<div class="panel-body">
 						              	{% if external_list_inflows %}
 							                <table class="table table-striped">
@@ -281,6 +285,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#externalFunctionInflowAccordion">
+			                    <i class="glyphicon glyphicon-list-alt"></i>
 			                    External Function Inflows</a>
 			                  </h4>
 			                </div>
@@ -355,6 +360,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#constantTransferwAccordion">
+			                    <i class="glyphicon glyphicon-list-alt"></i>
 			                    Constant Transfers</a>
 			                  </h4>
 			                </div>
@@ -383,10 +389,23 @@
 					                               </td>
 					                               <td class="dpmfa-td-5-top">
 					                               		{{ constant_transfer.priority}} 
-					                               <td>
-					                                    <a href="{% url 'dpmfa:constant-transfer-detail' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to constant transfer">
-					                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-					                                    </a>
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ constant_transfer.weight}} 
+					                               </td>
+					                               <td class="dpmfa-td-20-top">
+					                               		{{ constant_transfer.source_flow_compartment }} 
+					                               </td>
+					                               <td class="dpmfa-td-20-top">
+					                               		{{ constant_transfer.target }} 
+					                               </td>
+					                               <td class="dpmfa-td-10-top">
+					                               		{{ constant_transfer.belongs_to_aggregated_transfer }} 
+					                               </td>
+					                               <td class="dpmfa-td-9-top">
+					                               		{{ constant_transfer.value }} 
+					                               </td>
+					                               <td class="dmpfa-td-10-top">
 					                                    <a href="{% url 'dpmfa:constant-transfer-update' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
@@ -406,117 +425,299 @@
 			                  </div>
 			                </div>
 			              </div>
-		            
-		
-		            	<h4>Constant Transfers</h4>
-		            	<h4>Random Choice Transfers</h4>
-		
-				            {% if random_choice_transfers %}
-				                <table class="table table-striped table-hover table-responsive">
-				                    <thead>
-				                        <tr>
-				                            <th scope="row">Name</th>
-				                            <th scope="row">Description</th>
-				                            <th scope="row">Actions</th>
-				                        </tr>
-				                    </thead>
-				                    <tbody>
-				                        {% for random_choice_transfer in random_choice_transfers %}
-				                           <tr>
-				                               <td><a href="{% url 'dpmfa:random-choice-transfer-detail' random_choice_transfer.pk %}">{{ random_choice_transfer.name }}</a></td>
-				                               <td class="dpmfa-pre-wrap">{{ random_choice_transfer.description }}</td>
-				                               <td>
-				                                    <a href="{% url 'dpmfa:random-choice-transfer-detail' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to random choice transfer">
-				                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-				                                    </a>
-				                                    <a href="{% url 'dpmfa:random-choice-transfer-update' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
-				                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-				                                    </a>
-				                                    <a href="{% url 'dpmfa:random-choice-transfer-delete' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-				                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				                                    </a>
-				                               </td>
-				                           </tr>
-				                        {% endfor %}
-				                    </tbody>
-				                </table>
-				            {% else %}
-				                <div class="alert alert-info">There are no random choice transfers.</div>
-				            {% endif %}
-		
-		            	<h4>Stochastic Transfers</h4>
-		
-				            {% if stochastic_transfers %}
-				                <table class="table table-striped table-hover table-responsive">
-				                    <thead>
-				                        <tr>
-				                            <th scope="row">Name</th>
-				                            <th scope="row">Description</th>
-				                            <th scope="row">Actions</th>
-				                        </tr>
-				                    </thead>
-				                    <tbody>
-				                        {% for stochastic_transfer in stochastic_transfers %}
-				                           <tr>
-				                               <td><a href="{% url 'dpmfa:stochastic-transfer-detail' stochastic_transfer.pk %}">{{ stochastic_transfer.name }}</a></td>
-				                               <td class="dpmfa-pre-wrap">{{ stochastic_transfer.description }}</td>
-				                               <td>
-				                                    <a href="{% url 'dpmfa:stochastic-transfer-detail' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to stochastic transfer">
-				                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-				                                    </a>
-				                                    <a href="{% url 'dpmfa:stochastic-transfer-update' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
-				                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-				                                    </a>
-				                                    <a href="{% url 'dpmfa:stochastic-transfer-delete' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-				                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				                                    </a>
-				                               </td>
-				                           </tr>
-				                        {% endfor %}
-				                    </tbody>
-				                </table>
-				            {% else %}
-				                <div class="alert alert-info">There are no stochastic transfers.</div>
-				            {% endif %}
-		
-		
-		            	<h4>Aggregated Transfers</h4>
-		
-				            {% if aggregated_transfers %}
-				                <table class="table table-striped table-hover table-responsive">
-				                    <thead>
-				                        <tr>
-				                            <th scope="row">Name</th>
-				                            <th scope="row">Description</th>
-				                            <th scope="row">Actions</th>
-				                        </tr>
-				                    </thead>
-				                    <tbody>
-				                        {% for aggregated_transfer in aggregated_transfers %}
-				                           <tr>
-				                               <td><a href="{% url 'dpmfa:aggregated-transfer-detail' aggregated_transfer.pk %}">{{ aggregated_transfer.name }}</a></td>
-				                               <td class="dpmfa-pre-wrap">{{ aggregated_transfer.description }}</td>
-				                               <td>
-				                                    <a href="{% url 'dpmfa:aggregated-transfer-detail' aggregated_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Go to aggregated transfer">
-				                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-				                                    </a>
-				                                    <a href="{% url 'dpmfa:aggregated-transfer-update' aggregated_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+			              <div class="panel panel-default">
+			                <div class="panel-heading">
+			                  <h4 class="panel-title">
+			                    <a data-toggle="collapse" href="#randomChoiceTransferwAccordion">
+			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    Random Choice Transfers</a>
+			                  </h4>
+			                </div>
+			                <div id="randomChoiceTransferwAccordion" class="panel-collapse collapse">
+			                  <div class="panel-body">
+					       		{% if random_choice_transfers %}
+					                <table class="table table-striped">
+					                    <thead>
+					                        <tr>
+					                            <th scope="row">Name</th>
+					                            <th scope="row">Priority</th>
+					                            <th scope="row">Weight</th>
+					                            <th scope="row">Source</th>
+					                            <th scope="row">Target</th>
+					                            <th scope="row">Aggregated transfer</th>
+					                            <th scope="row">Sample</th>
+					                            <th scope="row">Actions</th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        {% for random_choice_transfer in random_choice_transfers %}
+					                           <tr>
+					                               <td class="dpmfa-td-20-top">
+					                               		<a href="{% url 'dpmfa:random-choice-transfer-detail' random_choice_transfer.pk %}">
+					                               		{{ random_choice_transfer.name }}</a>
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ random_choice_transfer.priority}} 
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ random_choice_transfer.weight}} 
+					                               </td>
+					                               <td class="dpmfa-td-20-top 	">
+					                               		{{ random_choice_transfer.source_flow_compartment }} 
+					                               </td>
+					                               <td class="dpmfa-td-20-top">
+					                               		{{ random_choice_transfer.target }} 
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ random_choice_transfer.belongs_to_aggregated_transfer }} 
+					                               </td>
+					                               <td class="dpmfa-td-10-top">
+					                               		{{ random_choice_transfer.sample }} 
+					                               </td>
+					                               <td class="dmpfa-td-10-top">
+					                                    <a href="{% url 'dpmfa:random-choice-transfer-update' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					                                    </a>
+					                                    <a href="{% url 'dpmfa:random-choice-transfer-delete' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					                                    </a>
+					                               </td>
+					                           </tr>
+					                        {% endfor %}
+					                    </tbody>
+					                </table>
+					            {% else %}
+					                <div class="alert alert-info">There are no random choice transfers.</div>
+					            {% endif %}
+					                    </tbody>
+					                </table>
+			                  </div>
+			                </div>
+			              </div>
+			              <div class="panel panel-default">
+			                <div class="panel-heading">
+			                  <h4 class="panel-title">
+			                    <a data-toggle="collapse" href="#stochasticTransferwAccordion">
+			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    Stochastic Transfers</a>
+			                  </h4>
+			                </div>
+			                <div id="stochasticTransferwAccordion" class="panel-collapse collapse">
+			                  <div class="panel-body">
+					       		{% if random_choice_transfers %}
+					                <table class="table table-striped">
+					                    <thead>
+					                        <tr>
+					                            <th scope="row">Name</th>
+					                            <th scope="row">Priority</th>
+					                            <th scope="row">Weight</th>
+					                            <th scope="row">Source</th>
+					                            <th scope="row">Target</th>
+					                            <th scope="row">Aggregated transfer</th>
+					                            <th scope="row">Parameter</th>
+					                            <th scope="row">Function</th>
+					                            <th scope="row">Actions</th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        {% for stochastic_transfer in stochastic_transfers %}
+					                           <tr>
+					                               <td class="dpmfa-td-20-top">
+					                               		<a href="{% url 'dpmfa:stochastic-transfer-detail' stochastic_transfer.pk %}">
+					                               		{{ stochastic_transfer.name }}</a>
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ stochastic_transfer.priority}} 
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ stochastic_transfer.weight}} 
+					                               </td>
+					                               <td class="dpmfa-td-20-top 	">
+					                               		{{ stochastic_transfer.source_flow_compartment }} 
+					                               </td>
+					                               <td class="dpmfa-td-15-top">
+					                               		{{ stochastic_transfer.target }} 
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ stochastic_transfer.belongs_to_aggregated_transfer }} 
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ stochastic_transfer.parameters }} 
+					                               </td>
+					                               <td class="dpmfa-td-5-top">
+					                               		{{ stochastic_transfer.function }} 
+					                               </td>
+					                               <td class="dmpfa-td-10-top">
+					                                    <a href="{% url 'dpmfa:stochastic-transfer-update' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+					                                    </a>
+					                                    <a href="{% url 'dpmfa:stochastic-transfer-delete' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+					                                    </a>
+					                               </td>
+					                           </tr>
+					                        {% endfor %}
+					                    </tbody>
+					                </table>
+					            {% else %}
+					                <div class="alert alert-info">There are no random choice transfers.</div>
+					            {% endif %}
+					                    </tbody>
+					                </table>
+			                  </div>
+			                </div>
+			              </div>
+			              <div class="panel panel-default">
+			                <div class="panel-heading">
+			                  <h4 class="panel-title">
+			                    <a data-toggle="collapse" href="#aggregatedTransferwAccordion">
+			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    Aggregated Transfers</a>
+			                  </h4>
+			                </div>
+			                <div id="aggregatedTransferwAccordion" class="panel-collapse collapse">
+			                  <div class="panel-body">
+					       		{% if aggregated_transfers %}
+					                <table class="table table-striped">
+					                    <thead>
+					                        <tr>
+					                            <th scope="row">Name</th>
+					                            <th scope="row">Priority</th>
+					                            <th scope="row">Weight</th>
+					                            <th scope="row">Source</th>
+					                            <th scope="row">Target</th>
+					                            <th scope="row">Weights</th>
+					                            <th scope="row">Actions</th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        {% for aggregated_transfer in aggregated_transfers %}
+					                           	<tr>
+					                               	<td class="dpmfa-td-20-top">
+					                               		<a href="{% url 'dpmfa:aggregated-transfer-detail' aggregated_transfer.pk %}">
+					                               		{{ aggregated_transfer.name }}</a>
+					                               	</td>
+					                               	<td class="dpmfa-td-5-top">
+					                               		{{ aggregated_transfer.priority}} 
+					                               	</td>
+					                               	<td class="dpmfa-td-5-top">
+					                               		{{ aggregated_transfer.weight}} 
+					                               	</td>
+					                               	<td class="dpmfa-td-20-top 	">
+					                               		{{ aggregated_transfer.source_flow_compartment }} 
+					                               	</td>
+					                               	<td class="dpmfa-td-15-top">
+					                               		{{ aggregated_transfer.target }} 
+					                               	</td>
+					                               	<td class="dpmfa-td-25-top">
+					                               		{{ aggregated_transfer.weights }} 
+					                               	</td>
+					                               	<td class="dmpfa-td-10-top">
+					                               		<a href="{% url 'dpmfa:aggregated-transfer-update' aggregated_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 				                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				                                    </a>
 				                                    <a href="{% url 'dpmfa:aggregated-transfer-delete' aggregated_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
 				                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				                                    </a>
-				                               </td>
-				                           </tr>
-				                        {% endfor %}
-				                    </tbody>
-				                </table>
-				            {% else %}
-				                <div class="alert alert-info">There are no aggregated transfers.</div>
-				            {% endif %}
+					                               </td>
+					                           </tr>
+					                        {% endfor %}
+					                    </tbody>
+					                </table>
+					            {% else %}
+					                <div class="alert alert-info">There are no random choice transfers.</div>
+					            {% endif %}
+					                    </tbody>
+					                </table>
+			                  </div>
+			                </div>
+			              </div>
 				<h2>3) Simulation</h2>
-		
-				<h2>4) Results</h2>
+					{% if simulation %}
+						<table class="table table-striped">
+		                    <thead>
+		                        <tr>
+		                            <th scope="row">Model</th>
+		                            <th scope="row">Runs</th>
+		                            <th scope="row">Periods</th>
+		                            <th scope="row">Created</th>
+		                            <th scope="row">Changed</th>
+		                            <th scope="row">Actions</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                       	<tr>
+		                           	<td class="dpmfa-td-20-top">
+		                           		<a href="{% url 'dpmfa:model-detail' model.pk %}">
+		                           		{{ simulation.model }}</a>
+		                           	</td>
+		                           	<td class="dpmfa-td-20-top">
+		                           		{{ simulation.runs}} 
+		                           	</td>
+		                           	<td class="dpmfa-td-10-top">
+		                           		{{ simulation.periods}} 
+		                           	</td>
+		                           	<td class="dpmfa-td-20-top 	">
+		                           		{{ simulation.evt_created }} 
+		                           	</td>
+		                           	<td class="dpmfa-td-20-top">
+		                           		{{ simulation.evt_changed }} 
+		                           	</td>
+		                           	<td class="dmpfa-td-10-top">
+		                           		<a href="{% url 'dpmfa:simulation-update' simulation.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+		                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+		                               </a>
+		                               <a href="{% url 'dpmfa:simulation-delete' simulation.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+		                                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		                               </a>
+		                        	</td>
+		                       	</tr>
+		                    </tbody>
+		                </table>
+		            {% else %}
+		            	<p><a class="btn btn-primary btn-lg" href="{% url 'dpmfa:simulation-create' model.pk %}" role="button">Configure simulation</a></p>    
+		       		{% endif %}
+			<h2>4) Results</h2>
+				{% if results %}
+					<table class="table table-striped">
+		                    <thead>
+		                        <tr>
+		                            <th scope="row">Model</th>
+		                            <th scope="row">CSV</th>
+		                            <th scope="row">Created</th>
+		                            <th scope="row">Actions</th>
+		                        </tr>
+		                    </thead>
+		                    <tbody>
+		                    {% for result in results %}
+		                       	<tr>
+		                           	<td class="dpmfa-td-40-top">
+		                           		<a href="{% url 'dpmfa:model-detail' result.model.pk %}">
+		                           		{{ result.model }}</a>
+		                           	</td>
+		                           	<td class="dpmfa-td-30-top">
+		                           		{{ result.result}} 
+		                           	</td>
+		                           	<td class="dpmfa-td-15-top 	">
+		                           		{{ result.evt_created }} 
+		                           	</td>
+		                           	<td class="dmpfa-td-10-top">
+		                               <a href="{% url 'dpmfa:result-delete' result.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
+		                                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		                               </a>
+		                               <a href="#" class="btn btn-primary data-toggle="tooltip" title="Download">
+		                               <span class="glyphicon glyphicon-download-alt"></span>
+		                               </a>
+		                        	</td>
+		                       	</tr>
+		                    {% endfor %}
+		                    </tbody>
+		                </table>
+		                <p><a class="btn btn-primary btn-lg" href="{% url 'dpmfa:simulation-run' model.pk %}" role="button">Run new simulation</a></p>
+		         	{% else %}
+		         		<p>{{ model.pk }}</p>
+		         		<p><a class="btn btn-primary btn-lg" href="{% url 'dpmfa:simulation-run' model.pk %}" role="button">Run simulation</a></p>
+		         	{% endif %}
     	</div>
 	</div>
 </div>

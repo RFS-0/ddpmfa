@@ -76,7 +76,7 @@ class Command(BaseCommand):
         list_release_for_first_stage_use_compartment = list_release(
             name='List release for first stage use compartment', 
             delay=0, 
-            release_rate_list='[0.5, 0.5]')
+            release_rate_list='0.5, 0.5')
         
         list_release_for_first_stage_use_compartment.save()
         
@@ -259,7 +259,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_ad_inflow,
             current_value = 0,
             period = 7,
-            sample = '[0, 10, 100, 1000, 1000]')
+            sample = '0, 10, 100, 1000, 1000')
         
         rcif_7.save()
         
@@ -279,7 +279,7 @@ class Command(BaseCommand):
             current_value = 0,
             period = 1,
             pdf = 'Some Pdf',
-            parameter_values = '[1000, 250]')
+            parameter_values = '1000, 250')
         
         si_1.save()
         
@@ -288,7 +288,7 @@ class Command(BaseCommand):
             current_value = 0,
             period = 2,
             pdf = 'Some Pdf',
-            parameter_values = '[1000, 250]')
+            parameter_values = '1000, 250')
         
         si_2.save()
         
@@ -297,7 +297,7 @@ class Command(BaseCommand):
             current_value = 0,
             period = 3,
             pdf = 'Some Pdf',
-            parameter_values = '[1000, 250]')
+            parameter_values = '1000, 250')
         
         si_3.save()
         
@@ -306,7 +306,7 @@ class Command(BaseCommand):
             current_value = 0,
             period = 4,
             pdf = 'Some Pdf',
-            parameter_values = '[1000, 250]')
+            parameter_values = '1000, 250')
         
         si_4.save()
         
@@ -315,7 +315,7 @@ class Command(BaseCommand):
             current_value = 0,
             period = 5,
             pdf = 'Some Pdf',
-            parameter_values = '[1000, 250]')
+            parameter_values = '1000, 250')
         
         si_5.save()
         
@@ -324,7 +324,7 @@ class Command(BaseCommand):
             current_value = 0,
             period = 6,
             pdf = 'Some Pdf',
-            parameter_values = '[1000, 250]')
+            parameter_values = '1000, 250')
         
         si_6.save()
         
@@ -333,7 +333,7 @@ class Command(BaseCommand):
             current_value = 0,
             period = 7,
             pdf = 'Some Pdf',
-            parameter_values = '[1000, 250]')
+            parameter_values = '1000, 250')
         
         si_7.save()
         
@@ -356,7 +356,7 @@ class Command(BaseCommand):
             derivation_factor=1.0, 
             inflow_function='NORM', 
             basic_inflow=fvif_for_efi, 
-            derivation_parameters='[1000, 250]',
+            derivation_parameters='1000, 250',
             function_parameters = '1000, 250')
         
         import_of_std_inflow.save()
@@ -373,7 +373,8 @@ class Command(BaseCommand):
             priority = 3, 
             current_tc = 0, 
             weight = 0, 
-            parameters = '[0.5, 0.7, 0.9]')
+            parameters = '0.5, 0.7, 0.9',
+            function='LI')
         
         stochastic_transfer_for_first_stage_flow_compartment.save()
         
@@ -384,7 +385,7 @@ class Command(BaseCommand):
             priority=2, 
             current_tc=0, 
             weight=0, 
-            sample='[0.3, 0.4, 0.5]')
+            sample='0.3, 0.4, 0.5')
         
         random_choice_transfer_for_first_stage_flow_compartment.save()
         
@@ -407,7 +408,8 @@ class Command(BaseCommand):
             priority=2, 
             current_tc=0, 
             weight=0, 
-            parameters='[0.5, 0.7, 0.9]')
+            parameters = '0.5, 0.7, 0.9',
+            function='LI')
         
         stochastic_transfer_for_second_stage_flow_compartment.save()
         
@@ -430,7 +432,8 @@ class Command(BaseCommand):
             priority=2, 
             current_tc=0, 
             weight=0, 
-            parameters='[0.5, 0.7, 0.9]')
+            parameters = '0.5, 0.7, 0.9',
+            function='LI')
         
         stochastic_transfer_for_third_stage_flow_compartment.save()
         
@@ -492,6 +495,29 @@ class Command(BaseCommand):
             value=1)
         
         transfer_for_first_third_use_compartment.save()
+
+#==============================================================================
+#  Simulation
+#==============================================================================
+        
+        iot_simulation = simulation(
+            model = iot_model, 
+            runs = 100,
+            periods = 7,
+            )
+        
+        iot_simulation.save()
+        
+#==============================================================================
+#  Results
+#==============================================================================
+        
+        iot_result = result(
+            model = iot_model, 
+            result = 'A CSV file'
+            )
+        
+        iot_result.save()
         
 #==============================================================================
 #  Entities only for test purposes

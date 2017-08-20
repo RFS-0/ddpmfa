@@ -555,7 +555,7 @@ class simulation(models.Model):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return str(self.pk)
     
 #==============================================================================
 #  Flow Compartment Records
@@ -665,4 +665,31 @@ class stock_immediate_flow_record(models.Model):
     
     def __str__(self):
         return 'primary key: ' + ' (' + str(self.pk) + ')'
+    
+#==============================================================================
+# Result
+#==============================================================================
 
+class result(models.Model):
+    
+    model = models.ForeignKey(
+        to = 'model',
+        related_name = 'results',
+        verbose_name = 'Results',
+        on_delete = models.CASCADE,
+        null = True
+        )
+    
+    evt_created = models.DateTimeField(
+        'Date created', 
+        auto_now_add=True, 
+        null=True)
+    
+    result = models.CharField(
+        verbose_name='Result', 
+        max_length=250, 
+        null=True)
+    
+    
+    
+    

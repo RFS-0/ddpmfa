@@ -330,22 +330,27 @@ urlpatterns = [
 #==============================================================================
 
     # ex: /simulation/12/detail
-    url(r'^simulation/(?P<pk>[0-9]+)/detail', views.SimulationDetailView.as_view(), name='simulation'),
+    url(r'^simulation/(?P<pk>[0-9]+)/detail', views.SimulationDetailView.as_view(), name='simulation-detail'),
     
     # ex: /simulation/create
-    url(r'^simulation/create$', views.SimulationCreateView.as_view(), name='simulation'),
+    url(r'^simulation/create/(?P<model_pk>[0-9]+)$', views.SimulationCreateView.as_view(), name='simulation-create'),
     
     # ex: /simulation/12/update
-    url(r'^simulation/(?P<pk>[0-9]+)/update', views.SimulationUpdateView.as_view(), name='simulation'),
+    url(r'^simulation/(?P<pk>[0-9]+)/update', views.SimulationUpdateView.as_view(), name='simulation-update'),
     
     # ex: /simulation/12/delete
-    url(r'^simulation/(?P<pk>[0-9]+)/update$', views.SimulationDeleteView.as_view(), name='simulation'),
+    url(r'^simulation/(?P<pk>[0-9]+)/delete$', views.SimulationDeleteView.as_view(), name='simulation-delete'),
+    
+    # ex: /simulation/12/run
+    url(r'^simulation/(?P<model_pk>[0-9]+)/run$', views.SimulationRunView.as_view(), name='simulation-run'),
 
 #==============================================================================
 #  Results
 #==============================================================================
 
-    # ex: /model/123/results
-    url(r'^model/(?P<pk>[0-9]+)/results/$', views.ResultsDetailView.as_view(), name='results'),
+    # ex: /result/123
+    url(r'^result/(?P<pk>[0-9]+)/$', views.ResultsDetailView.as_view(), name='result-detail'),
 
+    # ex: /result/123/delete
+    url(r'^result/(?P<pk>[0-9]+)/delete$', views.ResultsDeleteView.as_view(), name='result-delete'),
 ]

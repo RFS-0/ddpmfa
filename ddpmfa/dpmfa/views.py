@@ -123,6 +123,12 @@ class ModelDetailView(generic.DetailView):
 
     def find_sinks_by_model(self, model_pk):
         return models.sink.objects.filter(model=model_pk)
+    
+    def find_simulation_by_model(self, model_pk):
+        return models.simulation.objects.get(model=model_pk)
+    
+    def find_result_by_model(self, model_pk):
+        return models.result.objects.filter(model=model_pk)
 
     def get_context_data(self, **kwargs):
         context = super(ModelDetailView, self).get_context_data(**kwargs)
@@ -138,6 +144,8 @@ class ModelDetailView(generic.DetailView):
         context['flow_compartments'] = self.find_flow_compartments_by_model(self.object.pk)
         context['stocks'] = self.find_stocks_by_model(self.object.pk)
         context['sinks'] = self.find_sinks_by_model(self.object.pk)
+        context['simulation'] = self.find_simulation_by_model(self.object.pk)
+        context['results'] = self.find_result_by_model(self.object.pk)
 
         return context
 
@@ -1216,6 +1224,8 @@ class SimulationDetailView(generic.DetailView):
         'model',
         'runs',
         'periods',
+        'evt_created',
+        'evt_changed'
         ]
     
 class SimulationCreateView(generic.CreateView):
@@ -1245,6 +1255,17 @@ class SimulationDeleteView(generic.DeleteView):
         'periods',
         ]
     
+class SimulationRunView(generic.DetailView):
+    model = models.simulation
+    
+    fields = [
+        'model',
+        'runs',
+        'periods',
+        'evt_created',
+        'evt_changed',
+        ]
+    
 #==============================================================================
 #  Flow Compartment Records
 #==============================================================================
@@ -1262,5 +1283,7 @@ class SimulationDeleteView(generic.DeleteView):
 #==============================================================================
 
 class ResultsDetailView(generic.DetailView):
-    model = models.model
-    template_name = 'dpmfa/model_results_detail.html'
+    model = models.result
+
+class ResultsDeleteView(generic.DeleteView):
+    model = models.result

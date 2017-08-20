@@ -15,6 +15,21 @@
 	vertical-align: top;
 }
 
+.dpmfa-td-7-top {
+	width: 7%;
+	vertical-align: top;
+}
+
+.dpmfa-td-8-top {
+	width: 8%;
+	vertical-align: top;
+}
+
+.dpmfa-td-9-top {
+	width: 9%;
+	vertical-align: top;
+}
+
 .dpmfa-td-10-top {
 	width: 10%;
 	vertical-align: top;
@@ -27,6 +42,11 @@
 
 .dpmfa-td-20-top {
 	width: 20%;
+	vertical-align: top;
+}
+
+.dpmfa-td-25-top {
+	width: 25%;
 	vertical-align: top;
 }
 

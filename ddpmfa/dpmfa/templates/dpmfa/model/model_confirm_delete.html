@@ -5,23 +5,6 @@
 {% block body %}
 
 <header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-            Delete Model &quot;{{model.name}}&quot;?
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-          <li>
-              <a href="{% url 'dpmfa:project-detail' model.project.pk %}" data-toggle="tooltip" title="Cancel">
-                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-                Cancel: Back to Project
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
 </header>
 
 <div class="container">
