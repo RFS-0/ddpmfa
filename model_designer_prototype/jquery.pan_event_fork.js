@@ -1,3 +1,7 @@
+// !!! THIS FILE WAS MODIFIED TO ALLOW TO PREVENT EDGE MODE PANNING BY INTRODUCING THE
+// !!! EVENT 'beforeEdgeMove'. Modifications are marked with comments: search
+// !!! "EVENT FORK"
+
 (function( $ ){
 
     var getSize = function($element) {
@@ -105,8 +109,16 @@
         }
 
         var updateEdge = function() {
-
             if(!mouseOver) return false;
+            
+            // EVENT FORK INSERT (START)
+            if (typeof settings['beforeEdgeMove'] == 'function')  {
+            	var allow = settings.beforeEdgeMove.apply(container, [dragging]) !== false;
+            	if (!allow) {
+            		return false;
+            	}
+            }
+            // EVENT FORK INSERT (END)
 
             //The user's possibly maybe mouse-navigating,
             //so we'll find out what direction in case we need

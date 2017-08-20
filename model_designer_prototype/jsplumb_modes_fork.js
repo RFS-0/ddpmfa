@@ -1,4 +1,7 @@
-// !!! MODIFICATIONS: SERACH "MODES FORK"
+// !!! THIS FILE WAS MODIFIED TO WORK WITH THE MODEL DESIGNER. The modifications were
+// !!! necessary to make jsPlumb cooperate with jQuery.pan. Unfortunately the community
+// !!! edition of jsPlumb provides neither panning nor zooming. The modifications made to
+// !!! this file are enclosed in comments: search "MODES FORK".
 
 /**
  * jsBezier
@@ -1490,8 +1493,8 @@
             ghostProxy = function(el) { return el.cloneNode(true); };
 		
 		// MODES FORK: INSERTED (START)
-		var innerQ = jQuery('.rgm-modes-inner-container');
-        var downAt2 = [innerQ.position().left, innerQ.position().top];
+		var drawingQ = jQuery(dragEl).parents('.rgm-modes-drawing-container');
+        var downAt2 = [drawingQ.position().left, drawingQ.position().top];
         var moveEventCounter = 0;
 		// MODES FORK: INSERTED (END)
 		
@@ -1647,7 +1650,7 @@
                     downAt = _pl(e);
                     
                     // MODES FORK: INSERTED (START)
-					downAt2 = [innerQ.position().left, innerQ.position().top];
+					downAt2 = [drawingQ.position().left, drawingQ.position().top];
 					// MODES FORK: INSERTED (END)
                     
                     //
@@ -1687,10 +1690,16 @@
                         z = this.params.ignoreZoom ? 1 : k.getZoom();
                     
                     // MODES FORK: INSERTED (START)
-					var dx2 = downAt2[0] - innerQ.position().left;
-                    var dy2 = downAt2[1] - innerQ.position().top;
+                    var drawingQTransform = drawingQ.css('transform');
+					var drawingQZoom = drawingQTransform == 'none' ? 1 : parseFloat((new RegExp('\\d(\\.\\d*)?')).exec(drawingQTransform)[0]);
+                    
+					var dx2 = downAt2[0] - drawingQ.position().left;
+                    var dy2 = downAt2[1] - drawingQ.position().top;
                     dx += dx2;
                     dy += dy2;
+                    
+                    dx /= drawingQZoom;
+                    dy /= drawingQZoom;
 					// MODES FORK: INSERTED (END)    
                     
                     dx /= z;
@@ -1706,7 +1715,7 @@
                     	if (moveEventCounter == refMoveEventCounter && typeof originalObject['moveListener'] == 'function') {
                     		originalObject.moveListener(e);
                     	}
-                    }, 400);
+                    }, 50);
 					// MODES FORK: INSERTED (END)
                 }
             }
