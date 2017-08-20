@@ -815,7 +815,8 @@ class StochasticTransferDeleteView(generic.DeleteView):
 
 class ExternalListInflowDetailView(generic.DetailView):
     model = models.external_list_inflow
-
+    template_name = 'dpmfa/external_inflow/external_list_inflow_detail.html'
+    
     def find_fixed_value_inflows_by_external_list_inflow(self, ext_list_pk):
         return models.fixed_value_inflow.objects.filter(external_list_inflow__pk=ext_list_pk).order_by('period')
 
@@ -859,6 +860,7 @@ class ExternalListInflowCreateView(generic.CreateView):
     
 class ExternalListInflowUpdateView(generic.UpdateView):
     model = models.external_list_inflow
+    template_name = 'dpmfa/external_inflow/external_list_inflow_form.html'
     
     fields = [
         'target',
@@ -871,6 +873,7 @@ class ExternalListInflowUpdateView(generic.UpdateView):
     
 class ExternalListInflowDeleteView(generic.DeleteView):
     model = models.external_list_inflow
+    template_name = 'dpmfa/external_inflow/external_list_inflow_confirm_delete.html'
     
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
