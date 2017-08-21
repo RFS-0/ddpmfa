@@ -3,21 +3,35 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}DPMFA{% endblock %}</title>
-    <script type="text/javascript" src="{% static "dpmfa/js/jquery.slim.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "dpmfa/js/jquery.pan.js" %}"></script>
-    <script type="text/javascript" src="{% static "dpmfa/js/tether.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "dpmfa/js/bootstrap.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "dpmfa/js/general.js" %}"></script>
-    <script type="text/javascript" src="{% static "dpmfa/js/jsplumb_modes_fork.js" %}"></script>
-    <script type="text/javascript" src="{% static "dpmfa/js/modes_o.js" %}"></script>
-	<script type="text/javascript" src="{% static "dpmfa/js/modes_run.js" %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static "dpmfa/css/bootstrap.min.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "dpmfa/css/bootstrap-theme.min.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "dpmfa/css/general.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "dpmfa/css/modes.css" %}" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %}DPMFA{% endblock %}</title>
+
+    <!-- ########## SCRIPTS ########## -->
+
+    <!-- GENERAL PURPOSE THRID PARTY LIBS -->
+    <script type="text/javascript" src="{% static 'dpmfa/js/jquery.slim.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dpmfa/js/tether.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dpmfa/js/bootstrap.min.js' %}"></script>
+
+    <!-- MODIFICATION / CONFIGURATION / USE 1 -->
+    <script type="text/javascript" src="{% static 'dpmfa/js/general.js' %}"></script>
+
+    <!-- MODEL DESIGNER DEPENDENCIES -->
+    <script type="text/javascript" src="{% static 'dpmfa/js/jquery.pan_fork.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dpmfa/js/jquery.panzoom_fork.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dpmfa/js/jsplumb_fork.js' %}"></script>
+
+    <!-- MODEL DESIGNER IMPLEMENTATION AND INTEGRATION -->
+    <script type="text/javascript" src="{% static 'dpmfa/js/modes_o.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dpmfa/js/modes_run.js' %}"></script>
+
+    <!-- ########## STYLESHEETS ########## -->
+
+    <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/bootstrap-theme.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/general.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/modes.css' %}" />
 </head>
 <body>
 <!-- Navigation -->

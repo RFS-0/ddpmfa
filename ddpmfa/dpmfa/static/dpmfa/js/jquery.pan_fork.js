@@ -1,3 +1,8 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! THIS FILE HAS BEEN MODIFIED! Modifications are marked with comments: !!!
+// !!! search "RGM FORK".                                                   !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 (function( $ ){
 
     var getSize = function($element) {
@@ -105,8 +110,16 @@
         }
 
         var updateEdge = function() {
-
             if(!mouseOver) return false;
+            
+            // RGM FORK INSERT (START)
+            if (typeof settings['beforeEdgeMove'] == 'function')  {
+            	var allow = settings.beforeEdgeMove.apply(container, [dragging]) !== false;
+            	if (!allow) {
+            		return false;
+            	}
+            }
+            // RGM FORK INSERT (END)
 
             //The user's possibly maybe mouse-navigating,
             //so we'll find out what direction in case we need

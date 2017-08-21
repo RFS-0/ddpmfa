@@ -9,42 +9,42 @@
 
 (function(a_d, a_e) {
 	'use strict';
-	if (typeof a_d.a_6 == 'undefined') {
-		a_d.a_6 = function() {
-			this.a_y = [{
-				a_bn: this,
-				a_fa: a_d.a_6.a_y.a_e8,
-				a_e9: -1
+	if (typeof a_d.a_bs == 'undefined') {
+		a_d.a_bs = function() {
+			this.a_H = [{
+				a_bJ: this,
+				a_fv: a_d.a_bs.a_H.a_ft,
+				a_fu: -1
 			}];
 		};
 		
-		a_d.a_6.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_bs.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_6.prototype.a_4 = function() {
-			var a_y = this.a_O();
+		a_d.a_bs.prototype.a_bq = function() {
+			var a_H = this.a_5();
 			
-			if (a_y.a_e9 + 1 > a_d.a_6.a_e6) {
-				a_y.a_e9 = 0;
-				a_y.a_fa += a_d.a_6.a_e7;
+			if (a_H.a_fu + 1 > a_d.a_bs.a_fr) {
+				a_H.a_fu = 0;
+				a_H.a_fv += a_d.a_bs.a_fs;
 			} else {
-				++a_y.a_e9;
+				++a_H.a_fu;
 			}
 			
-			return a_y.a_fa + a_y.a_e9;
+			return a_H.a_fv + a_H.a_fu;
 		};
 		
-		a_d.a_6.a_y = {
-			a_e8: 'u',
-			a_e7: 'x',
-			a_e6: 999999999,
-			a_e5: null
+		a_d.a_bs.a_H = {
+			a_ft: 'u',
+			a_fs: 'x',
+			a_fr: 999999999,
+			a_fq: null
 		};
 		
-		a_d.a_6.a_5 = function() {
-			if (a_d.a_6.a_y.a_e5 == null) {
-				a_d.a_6.a_y.a_e5 = new a_d.a_6();
+		a_d.a_bs.a_br = function() {
+			if (a_d.a_bs.a_H.a_fq == null) {
+				a_d.a_bs.a_H.a_fq = new a_d.a_bs();
 			}
-			return a_d.a_6.a_y.a_e5;
+			return a_d.a_bs.a_H.a_fq;
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -54,30 +54,30 @@
 
 (function(a_d, a_e) {
 	'use strict';
-	if (typeof a_d.a_cj == 'undefined') {
-		a_d.a_cj = function(a_e4) {
-			this.a_y = [{
-				a_bn: this,
-				a_e4: a_e4
+	if (typeof a_d.a_cE == 'undefined') {
+		a_d.a_cE = function(a_fp) {
+			this.a_H = [{
+				a_bJ: this,
+				a_fp: a_fp
 			}];
 		};
 		
-		a_d.a_cj.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_cE.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_cj.prototype.a_ch = function(a_eJ) {
-			var a_y = this.a_O();
-			var a_e2 = '';
-			for (var a_be = 0; a_be < a_y.a_e4.length; ++a_be) {
-				var a_e3 = a_y.a_e4[a_be];
-				if (a_be % 2 == 0) {
-					a_e2 += a_e3;
+		a_d.a_cE.prototype.a_cC = function(a_e4) {
+			var a_H = this.a_5();
+			var a_fn = '';
+			for (var a_bA = 0; a_bA < a_H.a_fp.length; ++a_bA) {
+				var a_fo = a_H.a_fp[a_bA];
+				if (a_bA % 2 == 0) {
+					a_fn += a_fo;
 				} else {
-					if (typeof a_eJ[a_e3] != 'undefined') {
-						a_e2 += a_eJ[a_e3];
+					if (typeof a_e4[a_fo] != 'undefined') {
+						a_fn += a_e4[a_fo];
 					}
 				}
 			}
-			return a_e2;
+			return a_fn;
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -87,165 +87,165 @@
 
 (function(a_d, a_e) {
 	'use strict';
-	if (typeof a_d.a_ek == 'undefined') {
-		a_d.a_ek = function(a_eY, a_eW, a_eS) {
-			this.a_y = [{
-				a_bn: this,
+	if (typeof a_d.a_eF == 'undefined') {
+		a_d.a_eF = function(a_fj, a_fh, a_fd) {
+			this.a_H = [{
+				a_bJ: this,
 				
+				a_fj: a_fj,
+				a_fh: a_fh,
+				a_fd: a_fd,
+				
+				a_fe: (a_fh ? 1 : (-1)) * a_fj,
+				a_ff: a_fh ? 1 : (-1),
+				
+				a_fg: function(a_fl, a_fk, a_fm) {
+					return a_fl > a_fk || (a_fm && a_fl == a_fk);
+				}
+			}];
+		};
+		
+		a_d.a_eF.prototype.a_5 = function() { return this.a_H[0]; };
+		
+		a_d.a_eF.prototype.a_e9 = function() { return this.a_5().a_fj; };
+		
+		a_d.a_eF.prototype.a_fi = function() { return this.a_5().a_fh; };
+		
+		a_d.a_eF.prototype.a_e6 = function() { return this.a_5().a_fd; };
+		
+		a_d.a_eF.prototype.a_eU = function(a_dX) {
+			var a_H = this.a_5();
+			return a_H.a_fg(a_H.a_ff * a_dX, a_H.a_fe, a_H.a_fd);
+		};
+	}
+})(window.snOoPy.SNooPY, window);
+
+
+
+
+(function(a_d, a_e) {
+	'use strict';
+	if (typeof a_d.a_ey == 'undefined') {
+		a_d.a_ey = function(a_eY, a_eD, a_eC) {
+			this.a_H = [{
+				a_bJ: this,
 				a_eY: a_eY,
-				a_eW: a_eW,
-				a_eS: a_eS,
-				
-				a_eT: (a_eW ? 1 : (-1)) * a_eY,
-				a_eU: a_eW ? 1 : (-1),
-				
-				a_eV: function(a_e0, a_eZ, a_e1) {
-					return a_e0 > a_eZ || (a_e1 && a_e0 == a_eZ);
-				}
-			}];
-		};
-		
-		a_d.a_ek.prototype.a_O = function() { return this.a_y[0]; };
-		
-		a_d.a_ek.prototype.a_eO = function() { return this.a_O().a_eY; };
-		
-		a_d.a_ek.prototype.a_eX = function() { return this.a_O().a_eW; };
-		
-		a_d.a_ek.prototype.a_eL = function() { return this.a_O().a_eS; };
-		
-		a_d.a_ek.prototype.a_ez = function(a_dC) {
-			var a_y = this.a_O();
-			return a_y.a_eV(a_y.a_eU * a_dC, a_y.a_eT, a_y.a_eS);
-		};
-	}
-})(window.snOoPy.SNooPY, window);
-
-
-
-
-(function(a_d, a_e) {
-	'use strict';
-	if (typeof a_d.a_ed == 'undefined') {
-		a_d.a_ed = function(a_eD, a_ei, a_eh) {
-			this.a_y = [{
-				a_bn: this,
 				a_eD: a_eD,
-				a_ei: a_ei,
-				a_eh: a_eh,
+				a_eC: a_eC,
 				
-				a_eR: null,
-				a_eP: null,
-				a_eI: null,
-				a_eG: null,
+				a_fc: null,
+				a_fa: null,
+				a_e3: null,
+				a_e1: null,
 				
-				a_eN: function(a_dC) {
-					return a_dC ? a_d.a_ed.a_y.a_em : a_d.a_ed.a_y.a_el;
+				a_e8: function(a_dX) {
+					return a_dX ? a_d.a_ey.a_H.a_eH : a_d.a_ey.a_H.a_eG;
 				},
 				
-				a_ew: function(a_dC) {
-					var a_y = this;
-					if (a_y.a_eR == null) {
-						a_y.a_eR = new a_d.a_cj(a_d.a_ed.a_y.a_ev.slice());
+				a_eR: function(a_dX) {
+					var a_H = this;
+					if (a_H.a_fc == null) {
+						a_H.a_fc = new a_d.a_cE(a_d.a_ey.a_H.a_eQ.slice());
 					}
-					var a_eJ = {};
-					a_eJ[a_d.a_ed.a_y.a_eo] = a_dC;
-					return a_y.a_eR.a_ch(a_eJ);
+					var a_e4 = {};
+					a_e4[a_d.a_ey.a_H.a_eJ] = a_dX;
+					return a_H.a_fc.a_cC(a_e4);
 				},
 				
-				a_eC: function(a_eQ) {
-					var a_y = this;
-					if (a_y.a_eP == null) {
-						a_y.a_eP = new a_d.a_cj(a_d.a_ed.a_y.a_eu.slice());
+				a_eX: function(a_fb) {
+					var a_H = this;
+					if (a_H.a_fa == null) {
+						a_H.a_fa = new a_d.a_cE(a_d.a_ey.a_H.a_eP.slice());
 					}
-					var a_eJ = {};
-					a_eJ[a_d.a_ed.a_y.a_eq] = a_eQ;
-					a_eJ[a_d.a_ed.a_y.a_er] = a_y.a_eD;
-					return a_y.a_eP.a_ch(a_eJ);
+					var a_e4 = {};
+					a_e4[a_d.a_ey.a_H.a_eL] = a_fb;
+					a_e4[a_d.a_ey.a_H.a_eM] = a_H.a_eY;
+					return a_H.a_fa.a_cC(a_e4);
 				},
 				
-				a_eH: function(a_eK, a_dC, a_eM) {
-					var a_y = this;
-					var a_eJ = {};
-					a_eJ[a_d.a_ed.a_y.a_eo] = a_dC;
-					a_eJ[a_d.a_ed.a_y.a_ep] = a_eM.a_eO();
-					a_eJ[a_d.a_ed.a_y.a_en] = a_y.a_eN(a_eM.a_eL());
-					return a_eK.a_ch(a_eJ);
+				a_e2: function(a_e5, a_dX, a_e7) {
+					var a_H = this;
+					var a_e4 = {};
+					a_e4[a_d.a_ey.a_H.a_eJ] = a_dX;
+					a_e4[a_d.a_ey.a_H.a_eK] = a_e7.a_e9();
+					a_e4[a_d.a_ey.a_H.a_eI] = a_H.a_e8(a_e7.a_e6());
+					return a_e5.a_cC(a_e4);
 				},
 				
-				a_eA: function(a_dC) {
-					var a_y = this;
-					if (a_y.a_eI == null) {
-						a_y.a_eI = new a_d.a_cj(a_d.a_ed.a_y.a_et.slice());
+				a_eV: function(a_dX) {
+					var a_H = this;
+					if (a_H.a_e3 == null) {
+						a_H.a_e3 = new a_d.a_cE(a_d.a_ey.a_H.a_eO.slice());
 					}
-					return a_y.a_eH(a_y.a_eI, a_dC, a_y.a_ei);
+					return a_H.a_e2(a_H.a_e3, a_dX, a_H.a_eD);
 				},
 				
-				a_ex: function(a_dC) {
-					var a_y = this;
-					if (a_y.a_eG == null) {
-						a_y.a_eG = new a_d.a_cj(a_d.a_ed.a_y.a_es.slice());
+				a_eS: function(a_dX) {
+					var a_H = this;
+					if (a_H.a_e1 == null) {
+						a_H.a_e1 = new a_d.a_cE(a_d.a_ey.a_H.a_eN.slice());
 					}
-					return a_y.a_eH(a_y.a_eG, a_dC, a_y.a_eh);
+					return a_H.a_e2(a_H.a_e1, a_dX, a_H.a_eC);
 				}
 			}];
 		};
 		
-		a_d.a_ed.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_ey.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_ed.prototype.a_bZ = function(a_d9) {
-			var a_y = this.a_O();
+		a_d.a_ey.prototype.a_cl = function(a_eu) {
+			var a_H = this.a_5();
 			
-			var a_eF = (new RegExp('^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$')).exec(a_d9);
-			var a_eE = 2;
-			if (a_eF) {
-				var a_eB = 0;
-				if (a_eF[a_eE]) {
-					a_eB = a_eF[a_eE].length - 1;
+			var a_e0 = (new RegExp('^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$')).exec(a_eu);
+			var a_eZ = 2;
+			if (a_e0) {
+				var a_eW = 0;
+				if (a_e0[a_eZ]) {
+					a_eW = a_e0[a_eZ].length - 1;
 				}
-				if (a_y.a_eD >= 0 && a_eB > a_y.a_eD) {
-					return a_y.a_eC(a_eB);
+				if (a_H.a_eY >= 0 && a_eW > a_H.a_eY) {
+					return a_H.a_eX(a_eW);
 				}
 				
-				var a_ey = Number.parseFloat(a_d9);
+				var a_eT = Number.parseFloat(a_eu);
 				
-				if (a_y.a_ei != null && !a_y.a_ei.a_ez(a_ey)) {
-					return a_y.a_eA(a_d9);
+				if (a_H.a_eD != null && !a_H.a_eD.a_eU(a_eT)) {
+					return a_H.a_eV(a_eu);
 				}
-				if (a_y.a_eh != null && !a_y.a_eh.a_ez(a_ey)) {
-					return a_y.a_ex(a_d9);
+				if (a_H.a_eC != null && !a_H.a_eC.a_eU(a_eT)) {
+					return a_H.a_eS(a_eu);
 				}
 				
 			} else {
-				return a_y.a_ew(a_d9);
+				return a_H.a_eR(a_eu);
 			}
 		};
 		
-		a_d.a_ed.a_y = {
-			a_ev: ['The value "', 'foundValue', '" is not a correctly formatted number.'],
-			a_eu: ['This value has too many decimals. The maximum allowed is ', 'maxDecimals', '. ', 'foundDecimals', ' was/were found.'],
-			a_et: ['The value ', 'foundValue', ' is too small. The minimum value is ', 'referenceValue', ' (inclusive: ', 'inclusiveYesOrNo', ').'],
-			a_es: ['The value ', 'foundValue', ' is too large. The maximum value is ', 'referenceValue', ' (inclusive: ', 'inclusiveYesOrNo', ').'],
-			a_er: 'maxDecimals',
-			a_eq: 'foundDecimals',
-			a_ep: 'referenceValue',
-			a_eo: 'foundValue',
-			a_en: 'inclusiveYesOrNo',
-			a_em: 'yes',
-			a_el: 'no'
+		a_d.a_ey.a_H = {
+			a_eQ: ['The value "', 'foundValue', '" is not a correctly formatted number.'],
+			a_eP: ['This value has too many decimals. The maximum allowed is ', 'maxDecimals', '. ', 'foundDecimals', ' was/were found.'],
+			a_eO: ['The value ', 'foundValue', ' is too small. The minimum value is ', 'referenceValue', ' (inclusive: ', 'inclusiveYesOrNo', ').'],
+			a_eN: ['The value ', 'foundValue', ' is too large. The maximum value is ', 'referenceValue', ' (inclusive: ', 'inclusiveYesOrNo', ').'],
+			a_eM: 'maxDecimals',
+			a_eL: 'foundDecimals',
+			a_eK: 'referenceValue',
+			a_eJ: 'foundValue',
+			a_eI: 'inclusiveYesOrNo',
+			a_eH: 'yes',
+			a_eG: 'no'
 		};
 		
-		a_d.a_ed.a_ec = function(a_ej) {
-			var a_ei = null;
-			if (typeof a_ej['min'] != 'undefined' && a_ej.min != null) {
-				a_ei = new a_d.a_ek(a_ej.min.value, true, a_ej.min.inclusive);
+		a_d.a_ey.a_ex = function(a_eE) {
+			var a_eD = null;
+			if (typeof a_eE['min'] != 'undefined' && a_eE.min != null) {
+				a_eD = new a_d.a_eF(a_eE.min.value, true, a_eE.min.inclusive);
 			}
 			
-			var a_eh = null;
-			if (typeof a_ej['max'] != 'undefined' && a_ej.max != null) {
-				a_eh = new a_d.a_ek(a_ej.max.value, false, a_ej.max.inclusive);
+			var a_eC = null;
+			if (typeof a_eE['max'] != 'undefined' && a_eE.max != null) {
+				a_eC = new a_d.a_eF(a_eE.max.value, false, a_eE.max.inclusive);
 			}
 			
-			return new a_d.a_ed(a_ej.decimals, a_ei, a_eh);
+			return new a_d.a_ey(a_eE.decimals, a_eD, a_eC);
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -257,28 +257,28 @@
 	'use strict';
 	if (typeof a_d.a_r == 'undefined') {
 		a_d.a_r = function() {
-			this.a_y = [{
-				a_bn: this,
-				a_ef: {}
+			this.a_H = [{
+				a_bJ: this,
+				a_eA: {}
 			}];
 		};
 		
-		a_d.a_r.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_r.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_r.prototype.a_j = function(a_cV, a_eg) {
-			this.a_O().a_ef[a_cV] = a_eg;
+		a_d.a_r.prototype.a_j = function(a_dg, a_eB) {
+			this.a_5().a_eA[a_dg] = a_eB;
 		};
 		
-		a_d.a_r.prototype.a_ee = function(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS) {
-			var a_y = this.a_O();
-			if (typeof a_y.a_ef[a_cV] == 'undefined') {
-				throw 'Unknown field type "' + a_cV + '" in a_r.a_ee(...)';
+		a_d.a_r.prototype.a_ez = function(a_dg, a_c2, a_b8, a_c3, a_df, a_dd) {
+			var a_H = this.a_5();
+			if (typeof a_H.a_eA[a_dg] == 'undefined') {
+				throw 'Unknown field type "' + a_dg + '" in a_r.a_ez(...)';
 			}
-			return a_y.a_ef[a_cV].a_ee(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS);
+			return a_H.a_eA[a_dg].a_ez(a_dg, a_c2, a_b8, a_c3, a_df, a_dd);
 		};
 		
-		a_d.a_r.prototype.a_bQ = function(a_cP) {
-			return this.a_ee(a_cP.fieldType, a_cP.fieldArgs, a_cP.propName, a_cP.label, a_cP.valueData, a_cP.dirty);
+		a_d.a_r.prototype.a_cc = function(a_da) {
+			return this.a_ez(a_da.fieldType, a_da.fieldArgs, a_da.propName, a_da.label, a_da.valueData, a_da.dirty);
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -290,17 +290,17 @@
 	'use strict';
 	if (typeof a_d.a_q == 'undefined') {
 		a_d.a_q = function() {
-			this.a_y = [{ a_bn: this }];
+			this.a_H = [{ a_bJ: this }];
 		};
 		
-		a_d.a_q.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_q.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_q.prototype.a_ee = function(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS) {
-			return new a_d.a_p(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS);
+		a_d.a_q.prototype.a_ez = function(a_dg, a_c2, a_b8, a_c3, a_df, a_dd) {
+			return new a_d.a_p(a_dg, a_c2, a_b8, a_c3, a_df, a_dd);
 		};
 		
-		a_d.a_q.prototype.a_bQ = function(a_cP) {
-			return this.a_ee(a_cP.fieldType, a_cP.fieldArgs, a_cP.propName, a_cP.label, a_cP.valueData, a_cP.dirty);
+		a_d.a_q.prototype.a_cc = function(a_da) {
+			return this.a_ez(a_da.fieldType, a_da.fieldArgs, a_da.propName, a_da.label, a_da.valueData, a_da.dirty);
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -312,17 +312,17 @@
 	'use strict';
 	if (typeof a_d.a_n == 'undefined') {
 		a_d.a_n = function() {
-			this.a_y = [{ a_bn: this }];
+			this.a_H = [{ a_bJ: this }];
 		};
 		
-		a_d.a_n.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_n.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_n.prototype.a_ee = function(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS) {
-			return new a_d.a_m(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS);
+		a_d.a_n.prototype.a_ez = function(a_dg, a_c2, a_b8, a_c3, a_df, a_dd) {
+			return new a_d.a_m(a_dg, a_c2, a_b8, a_c3, a_df, a_dd);
 		};
 		
-		a_d.a_n.prototype.a_bQ = function(a_cP) {
-			return this.a_ee(a_cP.fieldType, a_cP.fieldArgs, a_cP.propName, a_cP.label, a_cP.valueData, a_cP.dirty);
+		a_d.a_n.prototype.a_cc = function(a_da) {
+			return this.a_ez(a_da.fieldType, a_da.fieldArgs, a_da.propName, a_da.label, a_da.valueData, a_da.dirty);
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -333,22 +333,22 @@
 (function(a_d, a_e) {
 	'use strict';
 	if (typeof a_d.a_k == 'undefined') {
-		a_d.a_k = function(a_bo) {
-			this.a_y = [{
-				a_bn: this,
-				a_bo: a_bo
+		a_d.a_k = function(a_bK) {
+			this.a_H = [{
+				a_bJ: this,
+				a_bK: a_bK
 			}];
 		};
 		
-		a_d.a_k.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_k.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_k.prototype.a_ee = function(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS) {
-			var a_y = this.a_O();
-			return new a_d.a_i(a_y.a_bo, a_cV, a_cH, a_bM, a_cI, a_cU, a_cS);
+		a_d.a_k.prototype.a_ez = function(a_dg, a_c2, a_b8, a_c3, a_df, a_dd) {
+			var a_H = this.a_5();
+			return new a_d.a_i(a_H.a_bK, a_dg, a_c2, a_b8, a_c3, a_df, a_dd);
 		};
 		
-		a_d.a_k.prototype.a_bQ = function(a_cP) {
-			return this.a_ee(a_cP.fieldType, a_cP.fieldArgs, a_cP.propName, a_cP.label, a_cP.valueData, a_cP.dirty);
+		a_d.a_k.prototype.a_cc = function(a_da) {
+			return this.a_ez(a_da.fieldType, a_da.fieldArgs, a_da.propName, a_da.label, a_da.valueData, a_da.dirty);
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -359,178 +359,178 @@
 (function(a_d, a_e) {
 	'use strict';
 	if (typeof a_d.a_p == 'undefined') {
-		a_d.a_p = function(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS) {
-			this.a_y = [{
-				a_bn: this,
-				a_cV: a_cV,
-				a_cH: a_cH,
-				a_bM, a_bM,
-				a_cI: a_cI,
-				a_dI: a_cU,
-				a_dC: a_cU,
-				a_cT: a_cS,
+		a_d.a_p = function(a_dg, a_c2, a_b8, a_c3, a_df, a_dd) {
+			this.a_H = [{
+				a_bJ: this,
+				a_dg: a_dg,
+				a_c2: a_c2,
+				a_b8, a_b8,
+				a_c3: a_c3,
+				a_d3: a_df,
+				a_dX: a_df,
+				a_de: a_dd,
 				
-				a_dY: null,
-				a_dB: null,
-				a_dX: null,
+				a_ej: null,
+				a_dW: null,
+				a_ei: null,
 				
-				a_ea: null,
+				a_ev: null,
 				
-				a_eb: function() {
-					var a_y = this;
-					if (a_y.a_cH.numberConfig == null) return null;
-					if (a_y.a_ea == null) {
-						a_y.a_ea = a_d.a_ed.a_ec(a_y.a_cH.numberConfig);
+				a_ew: function() {
+					var a_H = this;
+					if (a_H.a_c2.numberConfig == null) return null;
+					if (a_H.a_ev == null) {
+						a_H.a_ev = a_d.a_ey.a_ex(a_H.a_c2.numberConfig);
 					}
-					return a_y.a_ea;
+					return a_H.a_ev;
 				},
 				
-				a_dT: function(a_d9) {
-					var a_y = this;
-					var a_ea = a_y.a_eb();
-					return a_ea == null ? null : a_ea.a_bZ(a_d9);
+				a_ee: function(a_eu) {
+					var a_H = this;
+					var a_ev = a_H.a_ew();
+					return a_ev == null ? null : a_ev.a_cl(a_eu);
 				},
 				
-				a_d5: function(a_d4) {
-					return a_d.a_p.a_y.a_dK + a_d4 + a_d.a_p.a_y.a_dJ;
+				a_eq: function(a_ep) {
+					return a_d.a_p.a_H.a_d5 + a_ep + a_d.a_p.a_H.a_d4;
 				},
 				
-				a_d0: function(a_b7) {
-					var a_y = this;
-					a_b7.removeClass(a_y.a_d5(a_d.a_p.a_y.a_d8)).removeClass(a_y.a_d5(a_d.a_p.a_y.a_d7)).removeClass(a_y.a_d5(a_d.a_p.a_y.a_d6));
+				a_el: function(a_be) {
+					var a_H = this;
+					a_be.removeClass(a_H.a_eq(a_d.a_p.a_H.a_et)).removeClass(a_H.a_eq(a_d.a_p.a_H.a_es)).removeClass(a_H.a_eq(a_d.a_p.a_H.a_er));
 				},
 				
-				a_d1: function(a_dU, a_d4) {
-					var a_y = this;
-					if (a_y.a_dY != null) {
-						a_y.a_d0(a_y.a_dY);
-						a_y.a_dY.addClass(a_y.a_d5(a_d4));
+				a_em: function(a_ef, a_ep) {
+					var a_H = this;
+					if (a_H.a_ej != null) {
+						a_H.a_el(a_H.a_ej);
+						a_H.a_ej.addClass(a_H.a_eq(a_ep));
 						
-						if (a_y.a_dX == null) {
-							a_y.a_dX = jQuery('<span class="help-block"></span>');
-							a_y.a_dY.append(a_y.a_dX);
+						if (a_H.a_ei == null) {
+							a_H.a_ei = jQuery('<span class="help-block"></span>');
+							a_H.a_ej.append(a_H.a_ei);
 						}
-						a_y.a_dX.text(a_dU);
+						a_H.a_ei.text(a_ef);
 					}
 				},
 				
-				a_dS: function(a_dU) {
-					this.a_d1(a_dU, a_d.a_p.a_y.a_dN);
+				a_ed: function(a_ef) {
+					this.a_em(a_ef, a_d.a_p.a_H.a_d8);
 				},
 				
-				a_d3: function(a_dU) {
-					this.a_d1(a_dU, a_d.a_p.a_y.a_dM);
+				a_eo: function(a_ef) {
+					this.a_em(a_ef, a_d.a_p.a_H.a_d7);
 				},
 				
-				a_d2: function(a_dU) {
-					this.a_d1(a_dU, a_d.a_p.a_y.a_dL);
+				a_en: function(a_ef) {
+					this.a_em(a_ef, a_d.a_p.a_H.a_d6);
 				},
 				
-				a_dV: function() {
-					var a_y = this;
-					if (a_y.a_dY != null) {
-						a_y.a_d0(a_y.a_dY);
+				a_eg: function() {
+					var a_H = this;
+					if (a_H.a_ej != null) {
+						a_H.a_el(a_H.a_ej);
 						
-						if (a_y.a_dX != null) {
-							a_y.a_dX.remove();
-							a_y.a_dX = null;
+						if (a_H.a_ei != null) {
+							a_H.a_ei.remove();
+							a_H.a_ei = null;
 						}
 					}
 				},
 			}];
 		};
 		
-		a_d.a_p.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_p.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_p.prototype.a_b1 = function(a_bT) {
-			var a_y = this.a_O();
-			var a_dZ = a_d.a_6.a_5().a_4();
-			var a_dY = jQuery('<div class="form-group"></div>');
-			var a_dE = jQuery('<label class="control-label"></label>')
-				.attr('for', a_dZ)
-				.text(a_y.a_cI);
-			var a_dB = a_y.a_cH.displayAsTextArea
-				? a_dB = jQuery('<textarea class="form-control"></textarea>')
-				: a_dB = jQuery('<input type="text" class="form-control" />');
-			a_dB
-				.attr('id', a_dZ)
-				.val(a_y.a_dC);
-			a_dY.append(a_dE);
-			a_dY.append(a_dB);
-			a_bT.append(a_dY);
+		a_d.a_p.prototype.a_cn = function(a_cf) {
+			var a_H = this.a_5();
+			var a_ek = a_d.a_bs.a_br().a_bq();
+			var a_ej = jQuery('<div class="form-group"></div>');
+			var a_dZ = jQuery('<label class="control-label"></label>')
+				.attr('for', a_ek)
+				.text(a_H.a_c3);
+			var a_dW = a_H.a_c2.displayAsTextArea
+				? a_dW = jQuery('<textarea class="form-control"></textarea>')
+				: a_dW = jQuery('<input type="text" class="form-control" />');
+			a_dW
+				.attr('id', a_ek)
+				.val(a_H.a_dX);
+			a_ej.append(a_dZ);
+			a_ej.append(a_dW);
+			a_cf.append(a_ej);
 			
-			a_y.a_dY = a_dY;
-			a_y.a_dB = a_dB;
+			a_H.a_ej = a_ej;
+			a_H.a_dW = a_dW;
 		};
 		
-		a_d.a_p.prototype.a_cx = function() {
-			var a_y = this.a_O();
-			a_y.a_dY = null;
-			a_y.a_dB = null;
-			a_y.a_dX = null;
-		};
-		
-		a_d.a_p.prototype.a_bD = function() {
-			var a_y = this.a_O();
-			a_y.a_dC = a_y.a_dB.val();
-		};
-		
-		a_d.a_p.prototype.a_cf = function() {
-			var a_y = this.a_O();
-			var a_dW = {
-				fieldType: a_y.a_cV,
-				fieldArgs: a_y.a_cH,
-				propName: a_y.a_bM,
-				label: a_y.a_cI,
-				valueData: a_y.a_dC,
-				dirty: this.a_cw()
-			};
-			return a_dW;
-		};
-		
-		a_d.a_p.prototype.a_cw = function() {
-			var a_y = this.a_O();
-			return a_y.a_cT || a_y.a_dC != a_y.a_dI;
-		};
-		
-		a_d.a_p.prototype.a_cv = function(a_cu) {
-			var a_y = this.a_O();
-			a_y.a_cT = false;
-			a_y.a_dI = a_y.a_dC;
+		a_d.a_p.prototype.a_cS = function() {
+			var a_H = this.a_5();
+			a_H.a_ej = null;
+			a_H.a_dW = null;
+			a_H.a_ei = null;
 		};
 		
 		a_d.a_p.prototype.a_bZ = function() {
-			var a_y = this.a_O();
-			a_y.a_dV();
-			if (a_y.a_cH.notEmpty && a_y.a_dC.length == 0) {
-				var a_dU = a_d.a_p.a_y.a_dQ;
-				a_y.a_dS(a_dU);
-				return a_dU;
+			var a_H = this.a_5();
+			a_H.a_dX = a_H.a_dW.val();
+		};
+		
+		a_d.a_p.prototype.a_cA = function() {
+			var a_H = this.a_5();
+			var a_eh = {
+				fieldType: a_H.a_dg,
+				fieldArgs: a_H.a_c2,
+				propName: a_H.a_b8,
+				label: a_H.a_c3,
+				valueData: a_H.a_dX,
+				dirty: this.a_cR()
+			};
+			return a_eh;
+		};
+		
+		a_d.a_p.prototype.a_cR = function() {
+			var a_H = this.a_5();
+			return a_H.a_de || a_H.a_dX != a_H.a_d3;
+		};
+		
+		a_d.a_p.prototype.a_cQ = function(a_cP) {
+			var a_H = this.a_5();
+			a_H.a_de = false;
+			a_H.a_d3 = a_H.a_dX;
+		};
+		
+		a_d.a_p.prototype.a_cl = function() {
+			var a_H = this.a_5();
+			a_H.a_eg();
+			if (a_H.a_c2.notEmpty && a_H.a_dX.length == 0) {
+				var a_ef = a_d.a_p.a_H.a_eb;
+				a_H.a_ed(a_ef);
+				return a_ef;
 			}
-			if (a_y.a_cH.maxLength != -1 && a_y.a_dC.length > a_y.a_cH.maxLength) {
-				var a_dU = a_d.a_p.a_y.a_dP + a_y.a_cH.maxLength + a_d.a_p.a_y.a_dO;
-				a_y.a_dS(a_dU);
-				return a_dU;
+			if (a_H.a_c2.maxLength != -1 && a_H.a_dX.length > a_H.a_c2.maxLength) {
+				var a_ef = a_d.a_p.a_H.a_ea + a_H.a_c2.maxLength + a_d.a_p.a_H.a_d9;
+				a_H.a_ed(a_ef);
+				return a_ef;
 			}
 			
-			var a_dR = a_y.a_dT(a_y.a_dC);
-			if (a_dR != null) {
-				a_y.a_dS(a_dR);
-				return a_dR;
+			var a_ec = a_H.a_ee(a_H.a_dX);
+			if (a_ec != null) {
+				a_H.a_ed(a_ec);
+				return a_ec;
 			}
 			
 			return null;
 		};
 		
-		a_d.a_p.a_y = {
-			a_dQ: 'This field can not be empty',
-			a_dP: 'This field can contain no more than ',
-			a_dO: ' characters.',
-			a_dN: 'error',
-			a_dM: 'warning',
-			a_dL: 'success',
-			a_dK: 'has-',
-			a_dJ: ''
+		a_d.a_p.a_H = {
+			a_eb: 'This field can not be empty',
+			a_ea: 'This field can contain no more than ',
+			a_d9: ' characters.',
+			a_d8: 'error',
+			a_d7: 'warning',
+			a_d6: 'success',
+			a_d5: 'has-',
+			a_d4: ''
 		};
 		
 		a_d.a_p.a_h = 'TEXT';
@@ -543,75 +543,75 @@
 (function(a_d, a_e) {
 	'use strict';
 	if (typeof a_d.a_m == 'undefined') {
-		a_d.a_m = function(a_cV, a_cH, a_bM, a_cI, a_cU, a_cS) {
-			this.a_y = [{
-				a_bn: this,
-				a_cV: a_cV,
-				a_cH: a_cH,
-				a_bM, a_bM,
-				a_cI: a_cI,
-				a_dI: a_cU,
-				a_dC: a_cU,
-				a_cT: a_cS,
+		a_d.a_m = function(a_dg, a_c2, a_b8, a_c3, a_df, a_dd) {
+			this.a_H = [{
+				a_bJ: this,
+				a_dg: a_dg,
+				a_c2: a_c2,
+				a_b8, a_b8,
+				a_c3: a_c3,
+				a_d3: a_df,
+				a_dX: a_df,
+				a_de: a_dd,
 				
-				a_dB: null,
+				a_dW: null,
 				
-				a_dD: function(a_dF, a_dH) {
-					a_dF.prop('checked', a_dH);
+				a_dY: function(a_d0, a_d2) {
+					a_d0.prop('checked', a_d2);
 				},
 				
-				a_dG: function(a_dF) {
-					return a_dF.is(':checked');
+				a_d1: function(a_d0) {
+					return a_d0.is(':checked');
 				}
 			}];
 		};
 		
-		a_d.a_m.prototype.a_O = function() {
-			return this.a_y[0];
+		a_d.a_m.prototype.a_5 = function() {
+			return this.a_H[0];
 		};
 		
-		a_d.a_m.prototype.a_b1 = function(a_bT) {
-			var a_y = this.a_O();
+		a_d.a_m.prototype.a_cn = function(a_cf) {
+			var a_H = this.a_5();
 			
-			var a_B = jQuery('<div class="checkbox"></div>');
-			a_bT.append(a_B);
+			var a_K = jQuery('<div class="checkbox"></div>');
+			a_cf.append(a_K);
 			
-			var a_dE = jQuery('<label></label>').text(a_y.a_cI);
-			a_B.append(a_dE);
+			var a_dZ = jQuery('<label></label>').text(a_H.a_c3);
+			a_K.append(a_dZ);
 			
-			a_y.a_dB = jQuery('<input type="checkbox" />');
-			a_B.prepend(a_y.a_dB);
+			a_H.a_dW = jQuery('<input type="checkbox" />');
+			a_K.prepend(a_H.a_dW);
 			
-			a_y.a_dD(a_y.a_dB, a_y.a_dC);
+			a_H.a_dY(a_H.a_dW, a_H.a_dX);
 		};
 		
-		a_d.a_m.prototype.a_cx = function() {
-			var a_y = this.a_O();
-			a_y.a_dB = null;
-		};
-		
-		a_d.a_m.prototype.a_bD = function() {
-			var a_y = this.a_O();
-// TODO
-		};
-		
-		a_d.a_m.prototype.a_cf = function() {
-			var a_y = this.a_O();
-// TODO
-		};
-		
-		a_d.a_m.prototype.a_cw = function() {
-			var a_y = this.a_O();
-// TODO
-		};
-		
-		a_d.a_m.prototype.a_cv = function(a_cu) {
-			var a_y = this.a_O();
-// TODO
+		a_d.a_m.prototype.a_cS = function() {
+			var a_H = this.a_5();
+			a_H.a_dW = null;
 		};
 		
 		a_d.a_m.prototype.a_bZ = function() {
-			var a_y = this.a_O();
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_m.prototype.a_cA = function() {
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_m.prototype.a_cR = function() {
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_m.prototype.a_cQ = function(a_cP) {
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_m.prototype.a_cl = function() {
+			var a_H = this.a_5();
 // TODO
 			return null;
 		};
@@ -625,210 +625,210 @@
 
 (function(a_d, a_e) {
 	'use strict';
-	if (typeof a_d.a_cl == 'undefined') {
-		a_d.a_cl = function(a_dj, a_bW, a_cI, a_bO) {
-			this.a_y = [{
-				a_bn: this,
-				a_dj: a_dj,
-				a_bW: a_bW,
-				a_cI: a_cI,
-				a_bO: a_bO,
+	if (typeof a_d.a_cG == 'undefined') {
+		a_d.a_cG = function(a_dE, a_ci, a_c3, a_ca) {
+			this.a_H = [{
+				a_bJ: this,
+				a_dE: a_dE,
+				a_ci: a_ci,
+				a_c3: a_c3,
+				a_ca: a_ca,
 				
-				a_cL: null,
-				a_c5: null,
-				a_B: null,
-				a_c4: null,
-				a_c3: null,
+				a_c6: null,
+				a_dq: null,
+				a_K: null,
+				a_dp: null,
+				a_do: null,
 				
-				a_c9: function() {
-					return jQuery('<div class="panel panel-default"></div>').addClass(a_d.a_cl.a_y.a_bC);
+				a_du: function() {
+					return jQuery('<div class="panel panel-default"></div>').addClass(a_d.a_cG.a_H.a_bY);
 				},
 				
-				a_c7: function() {
-					var a_y = this;
+				a_ds: function() {
+					var a_H = this;
 					
-					var a_bI = jQuery('<div class="panel-heading"></div>').addClass(a_d.a_cl.a_y.a_bB).text(a_y.a_cI);
-					a_y.a_B.append(a_bI);
+					var a_b4 = jQuery('<div class="panel-heading"></div>').addClass(a_d.a_cG.a_H.a_bX).text(a_H.a_c3);
+					a_H.a_K.append(a_b4);
 					
-					var a_cC = jQuery('<div class="panel-body"></div>').addClass(a_d.a_cl.a_y.a_cs);
-					a_y.a_B.append(a_cC);
+					var a_cX = jQuery('<div class="panel-body"></div>').addClass(a_d.a_cG.a_H.a_cN);
+					a_H.a_K.append(a_cX);
 					
-					var a_dx = jQuery('<div class="btn-group"></div>').addClass(a_d.a_cl.a_y.a_c2);
-					a_cC.append(a_dx);
+					var a_dS = jQuery('<div class="btn-group"></div>').addClass(a_d.a_cG.a_H.a_dn);
+					a_cX.append(a_dS);
 					
-					var a_dz = jQuery('<button class="btn btn-default"></button>').addClass(a_d.a_cl.a_y.a_dA).text(a_d.a_cl.a_y.a_cX);
-					a_dx.append(a_dz);
-					a_y.a_c4 = a_dz;
-					a_dz.click(function() { a_y.a_do(); });
+					var a_dU = jQuery('<button class="btn btn-default"></button>').addClass(a_d.a_cG.a_H.a_dV).text(a_d.a_cG.a_H.a_di);
+					a_dS.append(a_dU);
+					a_H.a_dp = a_dU;
+					a_dU.click(function() { a_H.a_dJ(); });
 					
-					var a_dw  = jQuery('<button class="btn btn-default"></button>').addClass(a_d.a_cl.a_y.a_dy).text(a_d.a_cl.a_y.a_cW);
-					a_dx.append(a_dw);
-					a_y.a_c3 = a_dw;
-					a_dw.click(function() { a_y.a_dn(); });
+					var a_dR  = jQuery('<button class="btn btn-default"></button>').addClass(a_d.a_cG.a_H.a_dT).text(a_d.a_cG.a_H.a_dh);
+					a_dS.append(a_dR);
+					a_H.a_do = a_dR;
+					a_dR.click(function() { a_H.a_dI(); });
 					
-					a_y.a_bn.a_cN();
+					a_H.a_bJ.a_c8();
 					
-					var a_dv = jQuery('<div></div>').addClass(a_d.a_cl.a_y.a_cY);
-					a_cC.append(a_dv);
+					var a_dQ = jQuery('<div></div>').addClass(a_d.a_cG.a_H.a_dj);
+					a_cX.append(a_dQ);
 					
-					for (var a_be = 0; a_be < a_y.a_bO.length; ++a_be) {
-						a_y.a_bO[a_be].a_b1(a_dv);
+					for (var a_bA = 0; a_bA < a_H.a_ca.length; ++a_bA) {
+						a_H.a_ca[a_bA].a_cn(a_dQ);
 					}
 				},
 				
-				a_dm: function(a_du) {
-					var a_y = this;
+				a_dH: function(a_dP) {
+					var a_H = this;
 					
-					if (a_du) {
-						if (a_y.a_cL != null) {
-							var a_dt = a_y.a_cL;
-							var a_ds = a_dt.a_df();
-							var a_dr = a_y.a_c5;
+					if (a_dP) {
+						if (a_H.a_c6 != null) {
+							var a_dO = a_H.a_c6;
+							var a_dN = a_dO.a_dA();
+							var a_dM = a_H.a_dq;
 							
-							a_y.a_B.insertBefore(a_dt.a_dd());
+							a_H.a_K.insertBefore(a_dO.a_dy());
 							
-							a_y.a_bn.a_cM(a_ds);
-							a_y.a_bn.a_cO(a_dt);
+							a_H.a_bJ.a_c7(a_dN);
+							a_H.a_bJ.a_c9(a_dO);
 							
-							a_dt.a_cM(a_y.a_bn);
-							a_dt.a_cO(a_dr);
+							a_dO.a_c7(a_H.a_bJ);
+							a_dO.a_c9(a_dM);
 							
-							a_y.a_bn.a_cN();
-							a_dt.a_cN();
+							a_H.a_bJ.a_c8();
+							a_dO.a_c8();
 							
-							if (a_ds != null) {
-								a_ds.a_cO(a_y.a_bn);
-								a_ds.a_cN();
+							if (a_dN != null) {
+								a_dN.a_c9(a_H.a_bJ);
+								a_dN.a_c8();
 							}
 							
-							if (a_dr != null) {
-								a_dr.a_cM(a_dt);
-								a_dr.a_cN();
+							if (a_dM != null) {
+								a_dM.a_c7(a_dO);
+								a_dM.a_c8();
 							}
 						}
 					} else {
-						if (a_y.a_c5 != null) {
-							var a_dt = a_y.a_c5;
-							var a_ds = a_y.a_cL;
-							var a_dr = a_dt.a_de();
+						if (a_H.a_dq != null) {
+							var a_dO = a_H.a_dq;
+							var a_dN = a_H.a_c6;
+							var a_dM = a_dO.a_dz();
 							
-							a_y.a_B.insertAfter(a_dt.a_dd());
+							a_H.a_K.insertAfter(a_dO.a_dy());
 							
-							a_y.a_bn.a_cM(a_dt);
-							a_y.a_bn.a_cO(a_dr);
+							a_H.a_bJ.a_c7(a_dO);
+							a_H.a_bJ.a_c9(a_dM);
 							
-							a_dt.a_cM(a_ds);
-							a_dt.a_cO(a_y.a_bn);
+							a_dO.a_c7(a_dN);
+							a_dO.a_c9(a_H.a_bJ);
 							
-							a_y.a_bn.a_cN();
-							a_dt.a_cN();
+							a_H.a_bJ.a_c8();
+							a_dO.a_c8();
 							
-							if (a_ds != null) {
-								a_ds.a_cO(a_dt);
-								a_ds.a_cN();
+							if (a_dN != null) {
+								a_dN.a_c9(a_dO);
+								a_dN.a_c8();
 							}
 							
-							if (a_dr != null) {
-								a_dr.a_cM(a_y.a_bn);
-								a_dr.a_cN();
+							if (a_dM != null) {
+								a_dM.a_c7(a_H.a_bJ);
+								a_dM.a_c8();
 							}
 						}
 					}
 				},
 				
-				a_c6: function(a_dp, a_dq) {
-					if (a_dq) {
-						a_dp.removeClass('disabled');
+				a_dr: function(a_dK, a_dL) {
+					if (a_dL) {
+						a_dK.removeClass('disabled');
 					} else {
-						a_dp.addClass('disabled');
+						a_dK.addClass('disabled');
 					}
 				},
 				
-				a_do: function() {
-					this.a_dm(true);
+				a_dJ: function() {
+					this.a_dH(true);
 				},
 				
-				a_dn: function() {
-					this.a_dm(false);
+				a_dI: function() {
+					this.a_dH(false);
 				}
 			}]
 		};
 		
-		a_d.a_cl.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_cG.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_cl.prototype.a_dl = function(a_dj) { this.a_O().a_dj = a_dj; };
+		a_d.a_cG.prototype.a_dG = function(a_dE) { this.a_5().a_dE = a_dE; };
 		
-		a_d.a_cl.prototype.a_dk = function() { return this.a_O().a_dj; };
+		a_d.a_cG.prototype.a_dF = function() { return this.a_5().a_dE; };
 		
-		a_d.a_cl.prototype.a_bX = function(a_bW) { this.a_O().a_bW = a_bW; };
+		a_d.a_cG.prototype.a_cj = function(a_ci) { this.a_5().a_ci = a_ci; };
 		
-		a_d.a_cl.prototype.a_di = function() { return this.a_O().a_bW; };
+		a_d.a_cG.prototype.a_dD = function() { return this.a_5().a_ci; };
 		
-		a_d.a_cl.prototype.a_dh = function() { return this.a_O().a_cI; };
+		a_d.a_cG.prototype.a_dC = function() { return this.a_5().a_c3; };
 		
-		a_d.a_cl.prototype.a_dg = function() { return this.a_O().a_bO; };
+		a_d.a_cG.prototype.a_dB = function() { return this.a_5().a_ca; };
 		
-		a_d.a_cl.prototype.a_cM = function(a_cL) { this.a_O().a_cL = a_cL; };
+		a_d.a_cG.prototype.a_c7 = function(a_c6) { this.a_5().a_c6 = a_c6; };
 		
-		a_d.a_cl.prototype.a_df = function() { return this.a_O().a_cL; };
+		a_d.a_cG.prototype.a_dA = function() { return this.a_5().a_c6; };
 		
-		a_d.a_cl.prototype.a_cO = function(a_c5) { this.a_O().a_c5 = a_c5; };
+		a_d.a_cG.prototype.a_c9 = function(a_dq) { this.a_5().a_dq = a_dq; };
 		
-		a_d.a_cl.prototype.a_de = function() { return this.a_O().a_c5; };
+		a_d.a_cG.prototype.a_dz = function() { return this.a_5().a_dq; };
 		
-		a_d.a_cl.prototype.a_dd = function() {
-			return this.a_O().a_B;
+		a_d.a_cG.prototype.a_dy = function() {
+			return this.a_5().a_K;
 		};
 		
-		a_d.a_cl.prototype.a_cA = function(a_bT) {
-			var a_y = this.a_O();
-			a_y.a_B = a_y.a_c9();
-			a_bT.append(a_y.a_B);
-			a_y.a_c7();
+		a_d.a_cG.prototype.a_cV = function(a_cf) {
+			var a_H = this.a_5();
+			a_H.a_K = a_H.a_du();
+			a_cf.append(a_H.a_K);
+			a_H.a_ds();
 		};
 		
-		a_d.a_cl.prototype.a_dc = function(a_db) {
-			var a_y = this.a_O();
-			a_y.a_B = a_y.a_c9();
-			a_y.a_B.insertBefore(a_db);
-			a_y.a_c7();
+		a_d.a_cG.prototype.a_dx = function(a_dw) {
+			var a_H = this.a_5();
+			a_H.a_K = a_H.a_du();
+			a_H.a_K.insertBefore(a_dw);
+			a_H.a_ds();
 		};
 		
-		a_d.a_cl.prototype.a_da = function(a_c8) {
-			var a_y = this.a_O();
-			a_y.a_B = a_y.a_c9();
-			a_y.a_B.insertAfter(a_c8);
-			a_y.a_c7();
+		a_d.a_cG.prototype.a_dv = function(a_dt) {
+			var a_H = this.a_5();
+			a_H.a_K = a_H.a_du();
+			a_H.a_K.insertAfter(a_dt);
+			a_H.a_ds();
 		};
 		
-		a_d.a_cl.prototype.a_cN = function() {
-			var a_y = this.a_O();
-			a_y.a_c6(a_y.a_c4, a_y.a_cL != null);
-			a_y.a_c6(a_y.a_c3, a_y.a_c5 != null);
+		a_d.a_cG.prototype.a_c8 = function() {
+			var a_H = this.a_5();
+			a_H.a_dr(a_H.a_dp, a_H.a_c6 != null);
+			a_H.a_dr(a_H.a_do, a_H.a_dq != null);
 		};
 		
-		a_d.a_cl.prototype.a_cx = function() {
-			var a_y = this.a_O();
-			a_y.a_B = null;
-			a_y.a_c4 = null;
-			a_y.a_c3 = null;
+		a_d.a_cG.prototype.a_cS = function() {
+			var a_H = this.a_5();
+			a_H.a_K = null;
+			a_H.a_dp = null;
+			a_H.a_do = null;
 		};
 		
-		a_d.a_cl.prototype.a_cf = function() {
+		a_d.a_cG.prototype.a_cA = function() {
 // TODO
 		};
 		
-		a_d.a_cl.a_y = {
-			a_bC: 'rgm-modes-subform-container',
-			a_bB: 'rgm-modes-subform-title',
-			a_cs: 'rgm-modes-subform-content',
-			a_c2: 'rgm-modes-subform-move-btns',
-			a_c1: 'rgm-modes-subform-move-btn',
-			a_c0: 'rgm-modes-subform-up-btn',
-			a_cZ: 'rgm-modes-subform-down-btn',
-			a_cY: 'rgm-modes-subform-fields',
-			a_cX: '\u25B2',
-			a_cW: '\u25BC'
+		a_d.a_cG.a_H = {
+			a_bY: 'rgm-modes-subform-container',
+			a_bX: 'rgm-modes-subform-title',
+			a_cN: 'rgm-modes-subform-content',
+			a_dn: 'rgm-modes-subform-move-btns',
+			a_dm: 'rgm-modes-subform-move-btn',
+			a_dl: 'rgm-modes-subform-up-btn',
+			a_dk: 'rgm-modes-subform-down-btn',
+			a_dj: 'rgm-modes-subform-fields',
+			a_di: '\u25B2',
+			a_dh: '\u25BC'
 		};
 	}
 
@@ -840,161 +840,161 @@
 (function(a_d, a_e) {
 	'use strict';
 	if (typeof a_d.a_i == 'undefined') {
-		a_d.a_i = function(a_bo, a_cV, a_cH, a_bM, a_cI, a_cU, a_cS) {
+		a_d.a_i = function(a_bK, a_dg, a_c2, a_b8, a_c3, a_df, a_dd) {
 // TODO: remove subforms
-			this.a_y = [{
-				a_bn: this,
-				a_bo: a_bo,
-				a_cV: a_cV,
-				a_cH: a_cH,
-				a_bM, a_bM,
-				a_cI: a_cI,
-				a_cR: a_cU,
-				a_cT: a_cS,
+			this.a_H = [{
+				a_bJ: this,
+				a_bK: a_bK,
+				a_dg: a_dg,
+				a_c2: a_c2,
+				a_b8, a_b8,
+				a_c3: a_c3,
+				a_dc: a_df,
+				a_de: a_dd,
 				
-				a_cz: null,
-				a_cB: [],
-				a_cK: {},
+				a_cU: null,
+				a_cW: [],
+				a_c5: {},
 				
-				a_cJ: function() {
-					var a_y = this;
+				a_c4: function() {
+					var a_H = this;
 					
-					var a_cL = null;
-					for (var a_be = 0; a_be < a_y.a_cR.length; ++a_be) {
-						var a_cF = a_y.a_cR[a_be];
+					var a_c6 = null;
+					for (var a_bA = 0; a_bA < a_H.a_dc.length; ++a_bA) {
+						var a_c0 = a_H.a_dc[a_bA];
 						
-						var a_bO = [];
-						for (var a_cQ = 0; a_cQ < a_cF.fields.length; ++a_cQ) {
-							var a_cP = a_cF.fields[a_cQ];
-							var a_bL = a_y.a_bo.a_bQ(a_cP);
-							a_bO.push(a_bL);
+						var a_ca = [];
+						for (var a_db = 0; a_db < a_c0.fields.length; ++a_db) {
+							var a_da = a_c0.fields[a_db];
+							var a_b7 = a_H.a_bK.a_cc(a_da);
+							a_ca.push(a_b7);
 						}
 						
-						var a_cy = new a_d.a_cl(a_cF.id, a_cF.tempId, a_cF.label, a_bO);
+						var a_cT = new a_d.a_cG(a_c0.id, a_c0.tempId, a_c0.label, a_ca);
 						
-						if (a_be > 0) {
-							a_cy.a_cM(a_cL);
-							a_cL.a_cO(a_cy);
+						if (a_bA > 0) {
+							a_cT.a_c7(a_c6);
+							a_c6.a_c9(a_cT);
 						}
 						
-						a_y.a_cB.push(a_cy);
-						a_cL = a_cy;
+						a_H.a_cW.push(a_cT);
+						a_c6 = a_cT;
 					}
 				},
 				
-				a_cG: function(a_cF) {
-					var a_y = this;
+				a_c1: function(a_c0) {
+					var a_H = this;
 					
-					var a_bW = a_d.a_i.a_y.a_cm + a_d.a_6.a_5().a_4();
+					var a_ci = a_d.a_i.a_H.a_cH + a_d.a_bs.a_br().a_bq();
 					
-					var a_bO = [];
-					for (var a_be = 0; a_be < a_cF.fields.length; ++a_be) {
-						var a_cP = a_cF.fields[a_be];
-						var a_bL = a_y.a_bo.a_bQ(a_cP);
-						a_bO.push(a_bL);
+					var a_ca = [];
+					for (var a_bA = 0; a_bA < a_c0.fields.length; ++a_bA) {
+						var a_da = a_c0.fields[a_bA];
+						var a_b7 = a_H.a_bK.a_cc(a_da);
+						a_ca.push(a_b7);
 					}
 					
-					var a_cy = new a_d.a_cl(a_cF.id, a_bW, a_cF.label, a_bO);
+					var a_cT = new a_d.a_cG(a_c0.id, a_ci, a_c0.label, a_ca);
 					
-					if (a_y.a_cB.length > 0) {
-						var a_cL = a_y.a_cB[a_y.a_cB.length - 1];
-						a_cL.a_cO(a_cy);
-						a_cL.a_cN();
-						a_cy.a_cM(a_cL);
+					if (a_H.a_cW.length > 0) {
+						var a_c6 = a_H.a_cW[a_H.a_cW.length - 1];
+						a_c6.a_c9(a_cT);
+						a_c6.a_c8();
+						a_cT.a_c7(a_c6);
 					}
 					
-					a_cy.a_cA(a_y.a_cz);
+					a_cT.a_cV(a_H.a_cU);
 					
-					a_y.a_cB.push(a_cy);
-					a_y.a_cK[a_bW] = a_cy;
+					a_H.a_cW.push(a_cT);
+					a_H.a_c5[a_ci] = a_cT;
 				}
 			}];
-			this.a_y[0].a_cJ();
+			this.a_H[0].a_c4();
 		};
 		
-		a_d.a_i.prototype.a_O = function() { return this.a_y[0]; };
+		a_d.a_i.prototype.a_5 = function() { return this.a_H[0]; };
 		
-		a_d.a_i.prototype.a_b1 = function(a_bT) {
-			var a_y = this.a_O();
-			var a_be = 0;
+		a_d.a_i.prototype.a_cn = function(a_cf) {
+			var a_H = this.a_5();
+			var a_bA = 0;
 			
-			var a_B = jQuery('<div class="panel panel-default"></div>').addClass(a_d.a_i.a_y.a_bC);
-			a_bT.append(a_B);
+			var a_K = jQuery('<div class="panel panel-default"></div>').addClass(a_d.a_i.a_H.a_bY);
+			a_cf.append(a_K);
 			
-			var a_bI = jQuery('<div class="panel-heading"></div>').addClass(a_d.a_i.a_y.a_bB);
-			a_bI.text(a_y.a_cI);
-			a_B.append(a_bI);
+			var a_b4 = jQuery('<div class="panel-heading"></div>').addClass(a_d.a_i.a_H.a_bX);
+			a_b4.text(a_H.a_c3);
+			a_K.append(a_b4);
 			
-			var a_cC = jQuery('<div class="panel-body"></div>').addClass(a_d.a_i.a_y.a_cs);
-			a_B.append(a_cC);
+			var a_cX = jQuery('<div class="panel-body"></div>').addClass(a_d.a_i.a_H.a_cN);
+			a_K.append(a_cX);
 			
-			var a_cE = jQuery('<div class="btn-group-vertical"></div>').addClass(a_d.a_i.a_y.a_cr);
-			a_cC.append(a_cE);
+			var a_cZ = jQuery('<div class="btn-group-vertical"></div>').addClass(a_d.a_i.a_H.a_cM);
+			a_cX.append(a_cZ);
 			
-			for (a_be = 0; a_be < a_y.a_cH.forms.length; ++a_be) {(function(a_be) {
-				var a_cF = a_y.a_cH.forms[a_be];
+			for (a_bA = 0; a_bA < a_H.a_c2.forms.length; ++a_bA) {(function(a_bA) {
+				var a_c0 = a_H.a_c2.forms[a_bA];
 				
-				var a_cD = jQuery('<button class="btn btn-default"></button>').addClass(a_d.a_i.a_y.a_cq).text(a_d.a_i.a_y.a_co + a_cF.label + a_d.a_i.a_y.a_cn);
-				a_cD.click(function() { a_y.a_cG(a_cF); });
-				a_cE.append(a_cD);
-			})(a_be);}
+				var a_cY = jQuery('<button class="btn btn-default"></button>').addClass(a_d.a_i.a_H.a_cL).text(a_d.a_i.a_H.a_cJ + a_c0.label + a_d.a_i.a_H.a_cI);
+				a_cY.click(function() { a_H.a_c1(a_c0); });
+				a_cZ.append(a_cY);
+			})(a_bA);}
 			
-			var a_cz = jQuery('<div></div>').addClass(a_d.a_i.a_y.a_cp);
-			a_cC.append(a_cz);
+			var a_cU = jQuery('<div></div>').addClass(a_d.a_i.a_H.a_cK);
+			a_cX.append(a_cU);
 			
-			for (a_be = 0; a_be < a_y.a_cB.length; ++a_be) {
-				var a_cy = a_y.a_cB[a_be];
-				a_cy.a_cA(a_cz);
+			for (a_bA = 0; a_bA < a_H.a_cW.length; ++a_bA) {
+				var a_cT = a_H.a_cW[a_bA];
+				a_cT.a_cV(a_cU);
 			}
 			
-			a_y.a_cz = a_cz;
+			a_H.a_cU = a_cU;
 		};
 		
-		a_d.a_i.prototype.a_cx = function() {
-			var a_y = this.a_O();
-			a_y.a_cz = null;
-			for (a_be = 0; a_be < a_y.a_cB.length; ++a_be) {
-				var a_cy = a_y.a_cB[a_be];
-				a_cy.a_cA(a_cz);
-				a_cy.a_cx();
+		a_d.a_i.prototype.a_cS = function() {
+			var a_H = this.a_5();
+			a_H.a_cU = null;
+			for (a_bA = 0; a_bA < a_H.a_cW.length; ++a_bA) {
+				var a_cT = a_H.a_cW[a_bA];
+				a_cT.a_cV(a_cU);
+				a_cT.a_cS();
 			}
-		};
-		
-		a_d.a_i.prototype.a_bD = function() {
-			var a_y = this.a_O();
-// TODO
-		};
-		
-		a_d.a_i.prototype.a_cf = function() {
-			var a_y = this.a_O();
-// TODO
-		};
-		
-		a_d.a_i.prototype.a_cw = function() {
-			var a_y = this.a_O();
-// TODO
-		};
-		
-		a_d.a_i.prototype.a_cv = function(a_cu) {
-			var a_y = this.a_O();
-// TODO
 		};
 		
 		a_d.a_i.prototype.a_bZ = function() {
-			var a_y = this.a_O();
+			var a_H = this.a_5();
 // TODO
 		};
 		
-		a_d.a_i.a_y = {
-			a_bC: 'rgm-modes-forms-field-container',
-			a_ct: 'rgm-modes-forms-field-title',
-			a_cs: 'rgm-modes-forms-field-content',
-			a_cr: 'rgm-modes-forms-field-add-buttons',
-			a_cq: 'rgm-modes-forms-field-add-button',
-			a_cp: 'rgm-modes-forms-field-forms',
-			a_co: 'Add new ',
-			a_cn: '',
-			a_cm: 'temp_'
+		a_d.a_i.prototype.a_cA = function() {
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_i.prototype.a_cR = function() {
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_i.prototype.a_cQ = function(a_cP) {
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_i.prototype.a_cl = function() {
+			var a_H = this.a_5();
+// TODO
+		};
+		
+		a_d.a_i.a_H = {
+			a_bY: 'rgm-modes-forms-field-container',
+			a_cO: 'rgm-modes-forms-field-title',
+			a_cN: 'rgm-modes-forms-field-content',
+			a_cM: 'rgm-modes-forms-field-add-buttons',
+			a_cL: 'rgm-modes-forms-field-add-button',
+			a_cK: 'rgm-modes-forms-field-forms',
+			a_cJ: 'Add new ',
+			a_cI: '',
+			a_cH: 'temp_'
 		};
 		
 		a_d.a_i.a_h = 'FORMS';
@@ -1007,198 +1007,198 @@
 (function(a_d, a_e) {
 	'use strict';
 	
-	if (typeof a_d.a_bq == 'undefined') {
-		a_d.a_bq = function(a_bp, a_bi, a_bo, a_C, a_bH) {
-// TODO (Could): a_bq should work like a_cl: unpack/repack a_bp
-			this.a_y = [{
-				a_bn: this,
-				a_bp: a_bp,
-				a_bi: a_bi,
-				a_bo: a_bo,
-				a_C: a_C,
-				a_bH: a_bH,
+	if (typeof a_d.a_bM == 'undefined') {
+		a_d.a_bM = function(a_bL, a_bE, a_bK, a_L, a_b3) {
+// TODO (Could): a_bM should work like a_cG: unpack/repack a_bL
+			this.a_H = [{
+				a_bJ: this,
+				a_bL: a_bL,
+				a_bE: a_bE,
+				a_bK: a_bK,
+				a_L: a_L,
+				a_b3: a_b3,
 				
-				a_B: null,
-				a_bI: null,
+				a_K: null,
+				a_b4: null,
 				
-				a_bO: [],
-				a_b3: {},
+				a_ca: [],
+				a_cp: {},
 				
-				a_ba: null,
+				a_bw: null,
 				
-				a_ci: null,
+				a_cD: null,
 				
-				a_b0: function(a_bJ) {
-					var a_y = this;
-					if (a_y.a_ck == null) {
-						a_y.a_ci = new a_d.a_cj(a_d.a_bq.a_y.a_bx);
+				a_cm: function(a_b5) {
+					var a_H = this;
+					if (a_H.a_cF == null) {
+						a_H.a_cD = new a_d.a_cE(a_d.a_bM.a_H.a_bT);
 					}
-					var a_cg ={};
-					a_cg[a_d.a_bq.a_y.a_bw] = a_bJ;
-					return a_y.a_ci.a_ch(a_cg);
+					var a_cB ={};
+					a_cB[a_d.a_bM.a_H.a_bS] = a_b5;
+					return a_H.a_cD.a_cC(a_cB);
 				},
 				
-				a_cb: function(a_ce, a_b4) {
-					var a_y = this;
-					var a_bL = a_y.a_b5(a_ce[0], null);
-					if (a_bL == null) return a_b4;
-					var a_cc = a_bL.a_cf();
-					for (var a_be = 1; a_be < a_ce.length; ++a_be) {
-						var a_cd = a_ce[a_be];
-						if (typeof a_cc[a_cd] == 'undefined') {
-							return a_b4;
+				a_cw: function(a_cz, a_cq) {
+					var a_H = this;
+					var a_b7 = a_H.a_cr(a_cz[0], null);
+					if (a_b7 == null) return a_cq;
+					var a_cx = a_b7.a_cA();
+					for (var a_bA = 1; a_bA < a_cz.length; ++a_bA) {
+						var a_cy = a_cz[a_bA];
+						if (typeof a_cx[a_cy] == 'undefined') {
+							return a_cq;
 						}
-						a_cc = a_cc[a_cd];
+						a_cx = a_cx[a_cy];
 					}
-					return a_cc;
+					return a_cx;
 				},
 				
-				a_bY: function() {
-					var a_y = this;
-					a_y.a_bI.text(a_y.a_bK());
+				a_ck: function() {
+					var a_H = this;
+					a_H.a_b4.text(a_H.a_b6());
 				},
 				
-				a_bK: function() {
-					var a_y = this;
-					return a_y.a_cb(a_y.a_bp.titleLabelPath, '');
+				a_b6: function() {
+					var a_H = this;
+					return a_H.a_cw(a_H.a_bL.titleLabelPath, '');
 				},
 				
-				a_bV: function(a_b7, a_b9, a_ca) {
-					a_b7.css({ top: a_ca + 'px', left: a_b9 + 'px' });
+				a_ch: function(a_be, a_cu, a_cv) {
+					a_be.css({ top: a_cv + 'px', left: a_cu + 'px' });
 				},
 				
-				a_b8: function(a_b7) {
+				a_ct: function(a_be) {
 // TODO
 				},
 				
-				a_bU: function(a_b7, a_b6) {
-					for (var a_be = 0; a_be < a_b6.length; ++a_be) {
-						a_b7.addClass(a_b6[a_be]);
+				a_cg: function(a_be, a_cs) {
+					for (var a_bA = 0; a_bA < a_cs.length; ++a_bA) {
+						a_be.addClass(a_cs[a_bA]);
 					}
 				},
 				
-				a_bN: function(a_bM, a_bL) {
-					var a_y = this;
-					a_y.a_b3['pn' + a_bM] = a_bL;
+				a_b9: function(a_b8, a_b7) {
+					var a_H = this;
+					a_H.a_cp['pn' + a_b8] = a_b7;
 				},
 				
-				a_b5: function(a_bM, a_b4) {
-					var a_y = this;
-					var a_b2 = 'pn' + a_bM;
-					if (typeof a_y.a_b3[a_b2] == 'undefined') return a_b4;
-					return a_y.a_b3[a_b2];
+				a_cr: function(a_b8, a_cq) {
+					var a_H = this;
+					var a_co = 'pn' + a_b8;
+					if (typeof a_H.a_cp[a_co] == 'undefined') return a_cq;
+					return a_H.a_cp[a_co];
 				},
 				
-				a_bS: function() {
-					var a_y = this;
-					a_y.a_C.a_V(
-						function(a_P, a_T, a_S, a_R) {
-							for (var a_be = 0; a_be < a_y.a_bO.length; ++a_be) {
-								var a_bL = a_y.a_bO[a_be];
-								a_bL.a_b1(a_S);
+				a_ce: function() {
+					var a_H = this;
+					a_H.a_L.a_bd(
+						function(a_6, a_bb, a_ba, a_9, a_8) {
+							for (var a_bA = 0; a_bA < a_H.a_ca.length; ++a_bA) {
+								var a_b7 = a_H.a_ca[a_bA];
+								a_b7.a_cn(a_ba);
 							}
-							a_T.text(a_y.a_b0(a_y.a_bK()));
-							a_R.text(a_d.a_bq.a_y.a_by);
+							a_bb.text(a_H.a_cm(a_H.a_b6()));
+							a_8.text(a_d.a_bM.a_H.a_bU);
 						},
-						function() { return a_y.a_Y(); }
+						function() { return a_H.a_bl(); }
 					);
 				},
 				
-				a_Y: function() {
-					var a_y = this;
-					for (var a_be = 0; a_be < a_y.a_bO.length; ++a_be) {
-						var a_bL = a_y.a_bO[a_be];
-						a_bL.a_bD();
-						if (a_bL.a_bZ() != null) {
+				a_bl: function() {
+					var a_H = this;
+					for (var a_bA = 0; a_bA < a_H.a_ca.length; ++a_bA) {
+						var a_b7 = a_H.a_ca[a_bA];
+						a_b7.a_bZ();
+						if (a_b7.a_cl() != null) {
 							return false;
 						}
 					}
-					a_y.a_bY();
+					a_H.a_ck();
 					return true;
 				}
 			}];
 		};
 		
-		a_d.a_bq.prototype.a_O = function() {
-			return this.a_y[0];
+		a_d.a_bM.prototype.a_5 = function() {
+			return this.a_H[0];
 		};
 		
-		a_d.a_bq.prototype.a_bX = function(a_bW) {
-			var a_y = this.a_O();
-			a_y.a_bp.tempId = a_bW;
+		a_d.a_bM.prototype.a_cj = function(a_ci) {
+			var a_H = this.a_5();
+			a_H.a_bL.tempId = a_ci;
 		};
 		
-		a_d.a_bq.prototype.a_E = function(a_bT, a_ba) {
-			var a_y = this.a_O();
-			var a_be = 0;
+		a_d.a_bM.prototype.a_N = function(a_cf, a_bw) {
+			var a_H = this.a_5();
+			var a_bA = 0;
 			
-			a_y.a_ba = a_ba;
+			a_H.a_bw = a_bw;
 			
-			a_y.a_B = jQuery('<div></div>').addClass(a_d.a_bq.a_y.a_bC).attr('id', a_y.a_bi);
-			a_y.a_bV(a_y.a_B, a_y.a_bp.position.x, a_y.a_bp.position.y);
-			a_y.a_bU(a_y.a_B, a_y.a_bp.classes);
-			a_bT.append(a_y.a_B);
+			a_H.a_K = jQuery('<div></div>').addClass(a_d.a_bM.a_H.a_bY).attr('id', a_H.a_bE);
+			a_H.a_ch(a_H.a_K, a_H.a_bL.position.x, a_H.a_bL.position.y);
+			a_H.a_cg(a_H.a_K, a_H.a_bL.classes);
+			a_cf.append(a_H.a_K);
 			
-			var a_bR = jQuery('<span></span>').addClass(a_d.a_bq.a_y.a_bA);
-			a_bR.click(function() { a_y.a_bS(); });
-			a_y.a_B.append(a_bR);
+			var a_cd = jQuery('<span></span>').addClass(a_d.a_bM.a_H.a_bW);
+			a_cd.click(function() { a_H.a_ce(); });
+			a_H.a_K.append(a_cd);
 			
-			for (a_be = 0; a_be < a_y.a_bp.fields.length; ++a_be) {
-				var a_bP = a_y.a_bp.fields[a_be];
-				var a_bL = a_y.a_bo.a_bQ(a_bP);
-				var a_bM = a_bP.propName;
-				a_y.a_bO.push(a_bL);
-				a_y.a_bN(a_bM, a_bL);
+			for (a_bA = 0; a_bA < a_H.a_bL.fields.length; ++a_bA) {
+				var a_cb = a_H.a_bL.fields[a_bA];
+				var a_b7 = a_H.a_bK.a_cc(a_cb);
+				var a_b8 = a_cb.propName;
+				a_H.a_ca.push(a_b7);
+				a_H.a_b9(a_b8, a_b7);
 			}
 			
-			var a_bJ = a_y.a_bK();
-			a_y.a_bI = jQuery('<div></div>').addClass(a_d.a_bq.a_y.a_bB).text(a_bJ);
-			a_y.a_B.append(a_y.a_bI);
+			var a_b5 = a_H.a_b6();
+			a_H.a_b4 = jQuery('<div></div>').addClass(a_d.a_bM.a_H.a_bX).text(a_b5);
+			a_H.a_K.append(a_H.a_b4);
 			
-			a_y.a_ba.draggable(a_y.a_B);
+			a_H.a_bw.draggable(a_H.a_K);
 			
-			if (a_y.a_bp.maxOutgoing != 0) {
-				for (var a_be = 0; a_be < a_y.a_bH.length; ++a_be) {
-					var a_bc = a_y.a_bH[a_be];
-					var a_bE = a_d.a_bq.a_y.a_bz + a_bc.typeName;
+			if (a_H.a_bL.maxOutgoing != 0) {
+				for (var a_bA = 0; a_bA < a_H.a_b3.length; ++a_bA) {
+					var a_by = a_H.a_b3[a_bA];
+					var a_b0 = a_d.a_bM.a_H.a_bV + a_by.typeName;
 					
-					var a_bG = jQuery('<div></div>').addClass(a_bE);
+					var a_b2 = jQuery('<div></div>').addClass(a_b0);
 // TODO: Add data so that we can later know which type of connection was created?
-					a_y.a_B.append(a_bG);
+					a_H.a_K.append(a_b2);
 					
-					var a_bF = a_y.a_ba.makeSource(a_y.a_B, {
-						filter: '.' + a_bE,
+					var a_b1 = a_H.a_bw.makeSource(a_H.a_K, {
+						filter: '.' + a_b0,
 						anchor: 'Continuous',
 						connectorStyle: { stroke: '#000000', strokeWidth: 2, outlineStroke: 'transparent', outlineWidth: 4 },
-						connectionType: a_bc.typeName,
-						maxConnections: a_y.a_bp.maxOutgoing
+						connectionType: a_by.typeName,
+						maxConnections: a_H.a_bL.maxOutgoing
 					});
 				}
 			}
 			
-			if (a_y.a_bp.maxIncoming != 0) {
-				a_y.a_ba.makeTarget(a_y.a_B, {
+			if (a_H.a_bL.maxIncoming != 0) {
+				a_H.a_bw.makeTarget(a_H.a_K, {
 					anchor: 'Continuous',
 					allowLoopback: false
 				});
 			}
 		};
 		
-		a_d.a_bq.prototype.a_bD = function() {
+		a_d.a_bM.prototype.a_bZ = function() {
 // TODO
 // - sync (directly into nodeData):
 //   - position
 //   - fields
 		};
 		
-		a_d.a_bq.a_y = {
-			a_bC: 'rgm-modes-node-container',
-			a_bB: 'rgm-modes-node-title',
-			a_bA: 'rgm-modes-node-configure-button',
-			a_bz: 'rgm-modes-node-source-endpoint-',
-			a_by: 'OK',
-			a_bx: ['Configure "', 'titleLabel', '"'],
-			a_bw: 'titleLabel'
+		a_d.a_bM.a_H = {
+			a_bY: 'rgm-modes-node-container',
+			a_bX: 'rgm-modes-node-title',
+			a_bW: 'rgm-modes-node-configure-button',
+			a_bV: 'rgm-modes-node-source-endpoint-',
+			a_bU: 'OK',
+			a_bT: ['Configure "', 'titleLabel', '"'],
+			a_bS: 'titleLabel'
 		};
 	}
 })(window.snOoPy.SNooPY, window);
@@ -1209,90 +1209,91 @@
 (function(a_d, a_e) {
 	'use strict';
 	if (typeof a_d.a_c == 'undefined') {
-		a_d.a_c = function(a_bo) {
-			this.a_y = [{
-				a_bn: this,
-				a_bo: a_bo,
+		a_d.a_c = function(a_bK) {
+			this.a_H = [{
+				a_bJ: this,
+				a_bK: a_bK,
 				
-				a_B: null,
-				a_N: null,
-				a_P: null,
+				a_K: null,
 				a_T: null,
-				a_S: null,
-				a_R: null,
-				a_Q: null,
-				
-				a_M: null,
-				
-				a_bm: [],
-				a_bl: {},
-				a_bj: [],
-				
+				a_6: null,
+				a_bb: null,
 				a_ba: null,
-				a_br: false,
+				a_9: null,
+				a_8: null,
+				a_7: null,
 				
-				a_bb: function(a_8, a_7) {
-					var a_y = this;
-					if (a_7) {
+				a_4: null,
+				
+				a_bI: [],
+				a_bH: {},
+				a_bF: [],
+				
+				a_bw: null,
+				a_bN: false,
+				
+				a_bx: function(a_bu, a_bt) {
+					var a_H = this;
+					if (a_bt) {
 					
 // TODO implement (the following is demo code)
-						var a_bv = a_y.a_bl[a_8.sourceId];
-						var a_bu = a_y.a_bl[a_8.targetId];
-						var a_bs = a_8.connection;
-						a_bs.setLabel('Here some label');
-						// a_y.a_bt(a_bs);						
+						var a_bR = a_H.a_bH[a_bu.sourceId];
+						var a_bQ = a_H.a_bH[a_bu.targetId];
+						var a_bO = a_bu.connection;
+						a_bO.setLabel('Here some label');
+						// a_H.a_bP(a_bO);						
 					}
 				},
 				
-				a_9: function(a_8, a_7) {
-					var a_y = this;
-					if (a_y.a_br) return;
+				a_bv: function(a_bu, a_bt) {
+					var a_H = this;
+					if (a_H.a_bN) return;
 // TODO
 					alert('Connection detached');
 				},
 				
-				a_bt: function(a_bs) {
-					var a_y = this;
-					a_y.a_br = true;
-					a_y.a_ba.deleteConnection(a_bs);
-					a_y.a_br = false;
+				a_bP: function(a_bO) {
+					var a_H = this;
+					a_H.a_bN = true;
+					a_H.a_bw.deleteConnection(a_bO);
+					a_H.a_bN = false;
 				},
 				
-				a_J: function() {
-					var a_y = this;
+				a_S: function() {
+					var a_H = this;
 					
-					for (var a_be = 0; a_be < a_y.a_M.nodes.length; ++a_be) {(function(a_be) {
-						var a_bi = a_d.a_c.a_y.a_u + a_d.a_6.a_5().a_4();
+					for (var a_bA = 0; a_bA < a_H.a_4.nodes.length; ++a_bA) {(function(a_bA) {
+						var a_bE = a_d.a_c.a_H.a_w + a_d.a_bs.a_br().a_bq();
 						
-						var a_bp = a_y.a_M.nodes[a_be];
-						var a_bk = new a_d.a_bq(a_bp, a_bi, a_y.a_bo, a_y.a_bn, a_y.a_M.connectionTypes);
-						a_bk.a_E(a_y.a_N, a_y.a_ba);
-						a_y.a_bm.push(a_bk);
-						a_y.a_bl[a_bi] = a_bk;
-						a_y.a_bj.push(a_bi);
-					})(a_be);}
+						var a_bL = a_H.a_4.nodes[a_bA];
+						var a_bG = new a_d.a_bM(a_bL, a_bE, a_H.a_bK, a_H.a_bJ, a_H.a_4.connectionTypes);
+						a_bG.a_N(a_H.a_T, a_H.a_bw);
+						a_H.a_bI.push(a_bG);
+						a_H.a_bH[a_bE] = a_bG;
+						a_H.a_bF.push(a_bE);
+					})(a_bA);}
 				},
 				
-				a_bg: function(a_bf) {
-					var a_N = jQuery('<div></div>').addClass(a_d.a_c.a_y.a_t + a_bf);
-					var a_bh = jQuery('<div></div>');
-					a_bh.append(a_N);
-					return a_bh;
+				a_bC: function(a_bB) {
+					var a_T = jQuery('<div></div>').addClass(a_d.a_c.a_H.a_v + a_bB);
+					var a_bD = jQuery('<div></div>');
+					a_bD.append(a_T);
+					return a_bD;
 				},
 				
-				a_bd: function(a_ba, a_bc) {
-					var a_y = this;
+				a_bz: function(a_bw, a_by) {
+					var a_H = this;
 					
-					var a_bf = a_bc.typeName;
+					var a_bB = a_by.typeName;
 					
-					a_ba.registerConnectionType(a_bf, {
+					a_bw.registerConnectionType(a_bB, {
 						anchor: 'Continuous',
 						connector: 'StateMachine',
 						hoverPaintStyle:{ stroke: '#00ff00', strokeWidth: 2 },
 						overlays: [
 							['Arrow', { width:10, length: 14, foldback: 0.8, location:1, id: 'arrow' } ],
 							['Custom', {
-								create: function(component) { return a_y.a_bg(a_bf) },
+								create: function(component) { return a_H.a_bC(a_bB) },
 								location: 0.7,
 								id: 'typeOverlay'
 							}]
@@ -1300,162 +1301,235 @@
 					});
 				},
 				
-				a_K: function() {
-					var a_y = this;
-					for (var a_be = 0; a_be < a_y.a_M.connectionTypes.length; ++a_be) {
-						var a_bc = a_y.a_M.connectionTypes[a_be];
-						a_y.a_bd(a_y.a_ba, a_bc);
+				a_2: function() {
+					var a_H = this;
+					for (var a_bA = 0; a_bA < a_H.a_4.connectionTypes.length; ++a_bA) {
+						var a_by = a_H.a_4.connectionTypes[a_bA];
+						a_H.a_bz(a_H.a_bw, a_by);
 					}
 				},
 				
-				a_L: function() {
-					var a_y = this;
+				a_3: function() {
+					var a_H = this;
 					
-					if (a_y.a_ba == null) {
+					if (a_H.a_bw == null) {
 // TODO: clean
-						a_y.a_ba = jsPlumb.getInstance({
+						a_H.a_bw = jsPlumb.getInstance({
 							Endpoint: ['Dot', {radius: 2}],
 							Connector: 'StateMachine',
-							Container: a_y.a_N
+							Container: a_H.a_T
 						});
 					
-						a_y.a_ba.bind('connection', function(a_8, a_7) {
-							a_y.a_bb(a_8, a_7);
+						a_H.a_bw.bind('connection', function(a_bu, a_bt) {
+							a_H.a_bx(a_bu, a_bt);
 						});
 						
-						a_y.a_ba.bind('connectionDetached', function(a_8, a_7) {
-							a_y.a_9(a_8, a_7);
+						a_H.a_bw.bind('connectionDetached', function(a_bu, a_bt) {
+							a_H.a_bv(a_bu, a_bt);
 						});
 					}
 				},
 				
-				a_I: function() {
-					var a_y = this;
+				a_R: function() {
+					var a_H = this;
 					
-					var a_3 = a_d.a_6.a_5().a_4();
+					var a_bp = a_d.a_bs.a_br().a_bq();
 					
-					a_y.a_P = jQuery('<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"></div>').attr('id', a_3);
+					a_H.a_6 = jQuery('<div class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"></div>').attr('id', a_bp);
 				
-					var a_2 = jQuery('<div class="modal-dialog" role="document"></div>');
-					a_y.a_P.append(a_2);
+					var a_bo = jQuery('<div class="modal-dialog" role="document"></div>');
+					a_H.a_6.append(a_bo);
 					
-					var a_0 = jQuery('<div class="modal-content"></div>');
-					a_2.append(a_0);
+					var a_bm = jQuery('<div class="modal-content"></div>');
+					a_bo.append(a_bm);
 					
-					var a_1 = jQuery('<div class="modal-header"></div>');
-					a_0.append(a_1);
+					var a_bn = jQuery('<div class="modal-header"></div>');
+					a_bm.append(a_bn);
 					
-					a_y.a_T = jQuery('<h1></h1>');
-					a_1.append(a_y.a_T);
+					a_H.a_bb = jQuery('<h1></h1>');
+					a_bn.append(a_H.a_bb);
 					
-					a_y.a_S = jQuery('<div class="modal-body"></div>');
-					a_0.append(a_y.a_S);
+					a_H.a_ba = jQuery('<div class="modal-body"></div>');
+					a_bm.append(a_H.a_ba);
 					
-					var a_Z = jQuery('<div class="modal-footer"></div>');
-					a_0.append(a_Z);
+					a_H.a_9 = jQuery('<div class="modal-footer"></div>');
+					a_bm.append(a_H.a_9);
 					
-					a_y.a_R = jQuery('<button type="button" class="btn btn-default"></button>');
-					a_Z.append(a_y.a_R);
+					a_H.a_8 = jQuery('<button type="button" class="btn btn-default"></button>');
+					a_H.a_9.append(a_H.a_8);
 					
-					a_y.a_R.click(function(event) { return a_y.a_Y(event); });
+					a_H.a_8.click(function(event) { return a_H.a_bl(event); });
 					
-					a_y.a_P.insertAfter(a_y.a_B);
-					a_y.a_P.modal('hide');
+					a_H.a_K.append(a_H.a_6);
+					a_H.a_6.modal('hide');
 				},
 				
-				a_Y: function(a_W) {
-					var a_y = this;
-					var a_X = typeof a_y.a_Q != 'function' || a_y.a_Q.apply(a_y.a_P, []);
-					if (a_X) {
-						a_y.a_P.modal('hide');
+				a_bl: function(a_bj) {
+					var a_H = this;
+					var a_bk = typeof a_H.a_7 != 'function' || a_H.a_7.apply(a_H.a_6, []);
+					if (a_bk) {
+						a_H.a_6.modal('hide');
 					} else {
-						a_W.preventDefault();
-						a_W.stopImmediatePropagation();
+						a_bj.preventDefault();
+						a_bj.stopImmediatePropagation();
 						return false; 
 					}
+				},
+				
+				a_bi: function() {
+					var a_H = this;
+					return a_H.a_T.parents('.' + a_d.a_c.a_H.a_y).length > 0;
+				},
+				
+				a_Z: function(a_Y) {
+					var a_H = this;
+					return a_H.a_bi();
+				},
+				
+				a_bh: function(a_be) {
+					var a_bg = a_be.css('left');
+					
+				},
+				
+				a_bf: function(a_be) {
+				
 				}
 			}];
 		};
 		
-		a_d.a_c.prototype.a_O = function() {
-			return this.a_y[0];
+		a_d.a_c.prototype.a_5 = function() {
+			return this.a_H[0];
 		};
 				
-		a_d.a_c.prototype.a_V = function(a_U, a_Q) {
-			var a_y = this.a_O();
-			a_y.a_T.empty();
-			a_y.a_S.empty();
-			a_y.a_R.empty();
-			a_U.apply(a_y.a_P, [a_y.a_P, a_y.a_T, a_y.a_S, a_y.a_R]);
-			a_y.a_Q = a_Q;
-			a_y.a_P.modal('show');
+		a_d.a_c.prototype.a_bd = function(a_bc, a_7) {
+			var a_H = this.a_5();
+			a_H.a_bb.empty();
+			a_H.a_ba.empty();
+			a_H.a_8.empty();
+			a_H.a_9.children().not(a_H.a_8).remove();
+			a_bc.apply(a_H.a_6, [a_H.a_6, a_H.a_bb, a_H.a_ba, a_H.a_9, a_H.a_8]);
+			a_H.a_7 = a_7;
+			a_H.a_6.modal('show');
 		};
 		
-		a_d.a_c.prototype.a_E = function(a_B) {
-			var a_y = this.a_O();
+		a_d.a_c.prototype.a_N = function(a_K) {
+			var a_H = this.a_5();
 			
-			a_y.a_B = a_B;
+			a_H.a_K = a_K;
 			
+			var a_X = jQuery('<div></div>').addClass(a_d.a_c.a_H.a_F);
+			a_H.a_K.append(a_X);
 			
+			a_H.a_T = jQuery('<div></div>').addClass(a_d.a_c.a_H.a_E);
+			a_X.append(a_H.a_T);
 			
-			a_y.a_N = jQuery('<div></div>').addClass(a_d.a_c.a_y.a_w);
-			a_y.a_B.append(a_y.a_N);
+			a_H.a_4 = a_H.a_K.data(a_d.a_c.a_H.a_x);
 			
-			a_y.a_M = a_y.a_B.data(a_d.a_c.a_y.a_v);
+			a_H.a_3();
+			a_H.a_2();
 			
-			a_y.a_L();
-			a_y.a_K();
+			var a_1 = jQuery('<div></div>').addClass(a_d.a_c.a_H.a_D);
+			a_H.a_K.append(a_1);
 			
-// TODO: remove demo code below
+			var a_0 = jQuery('<div></div>').addClass(a_d.a_c.a_H.a_C);
+			a_1.append(a_0);
 			
-			jQuery('.rgm-modes-container').pan({
+			var a_W	= jQuery('<button type="button" class="btn btn-default"></button>').addClass(a_d.a_c.a_H.a_B).text(a_d.a_c.a_H.a_u);
+			a_0.append(a_W);
+			
+			var a_V	= jQuery('<button type="button" class="btn btn-default"></button>').addClass(a_d.a_c.a_H.a_A).text(a_d.a_c.a_H.a_t);
+			a_0.append(a_V);
+			
+
+// TODO: Mouse wheel / keyboard shortcuts for zooming?
+// TODO: Infinite or very large canvas (still don't zoom in too quickly -> step?)
+			
+			a_X.pan({
 				mouseControl: 'edge',
-				mouseSpeed: 150
+				mouseEdgeSpeed: 20,
+				beforeEdgeMove: function(a_Y) { return a_H.a_Z(a_Y); }
 			});
-// TODO: remove demo code above
 			
-			a_y.a_J();
 			
-			a_y.a_I();
+			var a_U = {
+				get clientX() {
+					var cX = a_X.position().left
+						+ a_X.width() / 2
+						- jQuery(document).scrollLeft()
+						- parseFloat(a_H.a_T.css('left'));
+					return cX;
+				},
+				get clientY() {
+					var cY = a_X.position().top
+						+ a_X.height() / 2
+						- jQuery(document).scrollTop()
+						- parseFloat(a_H.a_T.css('top'));
+					console.log('cY', cY);
+					return cY;
+				}
+			};
+			
+			a_H.a_T.panzoom({
+				$zoomIn: a_W,
+            	$zoomOut: a_V,
+            	focal: a_U
+			});
+			
+			//a_H.a_T.find('div').on('mousedown touchstart', function( e ) {
+			//	e.stopImmediatePropagation();
+			//});
+			
+			a_H.a_S();
+			
+			a_H.a_R();
 		};
 		
-		a_d.a_c.a_b = function(a_H, a_A, a_F, a_D) {
-			var a_G = a_d.a_c.a_y.a_s();
+		a_d.a_c.a_b = function(a_Q, a_J, a_O, a_M) {
+			var a_P = a_d.a_c.a_H.a_s();
 			
 			jsPlumb.ready(function() {
 				jQuery(document).ready(function() {					
-					if (typeof a_H == 'function') {
-						a_H.apply({}, []);
+					if (typeof a_Q == 'function') {
+						a_Q.apply({}, []);
 					}
-					var a_z = [];
-					jQuery(a_d.a_c.a_y.a_x).each(function() {
-						var a_B = jQuery(this);
-						var a_C = new a_d.a_c(a_G);
+					var a_I = [];
+					jQuery(a_d.a_c.a_H.a_G).each(function() {
+						var a_K = jQuery(this);
+						var a_L = new a_d.a_c(a_P);
 						
-						if (typeof a_F == 'function') {
-							a_F.apply(a_B, [a_C, a_B]);
+						if (typeof a_O == 'function') {
+							a_O.apply(a_K, [a_L, a_K]);
 						}
 						
-						a_C.a_E(jQuery(this));
-						a_z.push(a_C);
+						a_L.a_N(jQuery(this));
+						a_I.push(a_L);
 						
-						if (typeof a_D == 'function') {
-							a_D.apply(a_C, [a_C, a_B]);
+						if (typeof a_M == 'function') {
+							a_M.apply(a_L, [a_L, a_K]);
 						}
 					});
-					if (typeof a_A == 'function') {
-						a_A.apply({}, [a_z]);
+					if (typeof a_J == 'function') {
+						a_J.apply({}, [a_I]);
 					}
 				});
 			});
 		};
 		
-		a_d.a_c.a_y = {
-			a_x: '.rgm-modes-container',
-			a_w: 'rgm-modes-inner-container',
-			a_v: 'model',
-			a_u: 'rgm_modes_node_',
-			a_t: 'rmg-modes-connection-overlay-',
+		a_d.a_c.a_H = {
+			a_G: '.rgm-modes-container',
+			a_F: 'rgm-modes-viewport',
+			a_E: 'rgm-modes-drawing-container',
+			a_D: 'rgm-modes-controls-container',
+			a_C: 'rgm-modes-zoom-controls',
+			a_B: 'rgm-modes-zoom-in-btn',
+			a_A: 'rgm-modes-zoom-out-btn',
+			a_z: 'rgm-modes-zoom-reset-btn',
+			a_y: 'jtk-drag-select',
+			a_x: 'model',
+			a_w: 'rgm_modes_node_',
+			a_v: 'rmg-modes-connection-overlay-',
+			a_u: '\uD83D\uDD0D+ Zoom In',
+			a_t: '\uD83D\uDD0D- Zoom Out',
 			
 			a_s: function() {
 				var a_f = new a_d.a_r();

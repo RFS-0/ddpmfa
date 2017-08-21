@@ -1,4 +1,7 @@
-// !!! MODIFICATIONS: SERACH "MODES FORK"
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! THIS FILE HAS BEEN MODIFIED! Modifications are marked with comments: !!!
+// !!! search "RGM FORK".                                                   !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 /**
  * jsBezier
@@ -1489,11 +1492,11 @@
             useGhostProxy = params.ghostProxy === true ? TRUE : params.ghostProxy && typeof params.ghostProxy === "function" ? params.ghostProxy : FALSE,
             ghostProxy = function(el) { return el.cloneNode(true); };
 		
-		// MODES FORK: INSERTED (START)
-		var innerQ = jQuery('.rgm-modes-inner-container');
-        var downAt2 = [innerQ.position().left, innerQ.position().top];
+		// RGM FORK: INSERTED (START)
+		var drawingQ = jQuery(dragEl).parents('.rgm-modes-drawing-container');
+        var downAt2 = [drawingQ.position().left, drawingQ.position().top];
         var moveEventCounter = 0;
-		// MODES FORK: INSERTED (END)
+		// RGM FORK: INSERTED (END)
 		
         var snapThreshold = params.snapThreshold || 5,
             _snap = function(pos, x, y, thresholdX, thresholdY) {
@@ -1646,9 +1649,9 @@
                     consumeStartEvent && _consume(e);
                     downAt = _pl(e);
                     
-                    // MODES FORK: INSERTED (START)
-					downAt2 = [innerQ.position().left, innerQ.position().top];
-					// MODES FORK: INSERTED (END)
+                    // RGM FORK: INSERTED (START)
+					downAt2 = [drawingQ.position().left, drawingQ.position().top];
+					// RGM FORK: INSERTED (END)
                     
                     //
                     this.params.bind(document, "mousemove", this.moveListener);
@@ -1665,9 +1668,9 @@
         }.bind(this);
 
         this.moveListener = function(e) {
-        	// MODES FORK: INSERTED (START)
+        	// RGM FORK: INSERTED (START)
 			moveEventCounter = (moveEventCounter + 1) % 1000000;
-			// MODES FORK: INSERTED (END)
+			// RGM FORK: INSERTED (END)
 			
             if (downAt) {
                 if (!moving) {
@@ -1686,12 +1689,18 @@
                     var pos = _pl(e), dx = pos[0] - downAt[0], dy = pos[1] - downAt[1],
                         z = this.params.ignoreZoom ? 1 : k.getZoom();
                     
-                    // MODES FORK: INSERTED (START)
-					var dx2 = downAt2[0] - innerQ.position().left;
-                    var dy2 = downAt2[1] - innerQ.position().top;
+                    // RGM FORK: INSERTED (START)
+                    var drawingQTransform = drawingQ.css('transform');
+					var drawingQZoom = drawingQTransform == 'none' ? 1 : parseFloat((new RegExp('\\d(\\.\\d*)?')).exec(drawingQTransform)[0]);
+                    
+					var dx2 = downAt2[0] - drawingQ.position().left;
+                    var dy2 = downAt2[1] - drawingQ.position().top;
                     dx += dx2;
                     dy += dy2;
-					// MODES FORK: INSERTED (END)    
+                    
+                    dx /= drawingQZoom;
+                    dy /= drawingQZoom;
+					// RGM FORK: INSERTED (END)    
                     
                     dx /= z;
                     dy /= z;
@@ -1699,15 +1708,15 @@
                     k.updateSelection(dx, dy, this);
                     k.updatePosses(dx, dy, this);
                     
-                    // MODES FORK: INSERTED (START)
+                    // RGM FORK: INSERTED (START)
 					var refMoveEventCounter = moveEventCounter;
 					var originalObject = this;
                     window.setTimeout(function() {
                     	if (moveEventCounter == refMoveEventCounter && typeof originalObject['moveListener'] == 'function') {
                     		originalObject.moveListener(e);
                     	}
-                    }, 400);
-					// MODES FORK: INSERTED (END)
+                    }, 50);
+					// RGM FORK: INSERTED (END)
                 }
             }
         }.bind(this);
