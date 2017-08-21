@@ -1,6 +1,7 @@
-// !!! THIS FILE WAS MODIFIED TO ALLOW TO PREVENT EDGE MODE PANNING BY INTRODUCING THE
-// !!! EVENT 'beforeEdgeMove'. Modifications are marked with comments: search
-// !!! "EVENT FORK"
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! THIS FILE HAS BEEN MODIFIED! Modifications are marked with comments: !!!
+// !!! search "RGM FORK".                                                   !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 (function( $ ){
 
@@ -111,14 +112,14 @@
         var updateEdge = function() {
             if(!mouseOver) return false;
             
-            // EVENT FORK INSERT (START)
+            // RGM FORK INSERT (START)
             if (typeof settings['beforeEdgeMove'] == 'function')  {
             	var allow = settings.beforeEdgeMove.apply(container, [dragging]) !== false;
             	if (!allow) {
             		return false;
             	}
             }
-            // EVENT FORK INSERT (END)
+            // RGM FORK INSERT (END)
 
             //The user's possibly maybe mouse-navigating,
             //so we'll find out what direction in case we need

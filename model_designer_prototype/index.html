@@ -3,31 +3,49 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>modes</title>
-		<meta name="viewport" content="width=device-width, initial-scape=1.0" />
-		<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
-		<link rel="stylesheet" type="text/css" href="modes.css" />
-		<script type="text/javascript" src="jquery.slim.min.js"></script>
-		<script type="text/javascript" src="tether.min.js"></script>
-		<script type="text/javascript" src="bootstrap.min.js"></script>
-        <script type="text/javascript" src="jquery.pan_event_fork.js"></script>
-        <script type="text/javascript" src="jquery.panzoom.js"></script>
-		<script type="text/javascript" src="jsplumb_modes_fork.js"></script>
-		<script type="text/javascript" src="modes_o.js"></script>
-		<script type="text/javascript" src="modes_run.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/modes.css" />
+		<script type="text/javascript" src="js/jquery.slim.min.js"></script>
+		<script type="text/javascript" src="js/tether.min.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.pan_fork.js"></script>
+        <script type="text/javascript" src="js/jquery.panzoom_fork.js"></script>
+		<script type="text/javascript" src="js/jsplumb_fork.js"></script>
+		<script type="text/javascript" src="js/modes_o.js"></script>
+		<script type="text/javascript" src="js/modes_run.js"></script>
 	</head>
 	<body>
 		<h1>Model Designer</h1>
+		
 		<div class="rgm-modes-container"></div>
 		
 		<h2>Instructions</h2>
 		<p>...</p>
-		<p>Click on the cog wheel (<img src="cog_32.png" />) to configure inflows and
+		<p>Click on the cog wheel (<img src="img/cog.png" />) to configure inflows and
 			compartments...</p>
 		<p>...</p>
-		<p>Start dragging on a transfer icon (<img src="constant_transfer.png" /> /
-			<img src="random_choice_transfer.png" /> /
-			<img src="aggregated_transfer.png" /> / <img src="stochastic_transfer.png" />)
+		<p>Start dragging on a transfer icon (<img src="img/constant_transfer.png" /> /
+			<img src="img/random_choice_transfer.png" /> /
+			<img src="img/aggregated_transfer.png" /> /
+			<img src="img/stochastic_transfer.png" />)
 			to create a new transfer of the selected type.</p>
 		<p>...</p>
+		<p>Move the drawing surface: click on the white background and drag the drawing
+			surface to the desired location.</p>
+		<p>...</p>
+		<p>If you approach the edge of the viewport while dragging a block or connection
+			endpoint, the drawing surface moves.</p>
+		<p>...</p>
+		<h2>Browser Support</h2>
+		<p>The model designer has been tested with the current releases of the major
+			desktop browsers at the time of development:</p>
+		<ul>
+			<li>Chrome, version 60.0.3112.101</li>
+			<li>Firefox, version 55.0.2</li>
+			<li>Safari, version 10.1.2</li>
+<!-- FIND IE VERSION AND INSERT HERE -->
+<!-- FIND OPERA VERSION AND INSERT HERE -->
+		</ul>
 	</body>
 </html>

@@ -1,3 +1,8 @@
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! THIS FILE HAS BEEN MODIFIED! Modifications are marked with comments: !!!
+// !!! search "RGM FORK".                                                   !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 /**
  * @license jquery.panzoom.js v3.2.2
  * Updated: Wed Jun 21 2017
@@ -745,6 +750,7 @@
 				var surfaceV = surfaceM.inverse().x(offsetM.inverse().x(clientV));
 				surfaceM = surfaceM.x(new Matrix([scale, 0, 0, scale, 0, 0]));
 				clientV = offsetM.x(surfaceM.x(surfaceV));
+console.log('Matrix 4,5: ', matrix[4], matrix[5]);
 				matrix[4] = +matrix[4] + (clientX - clientV.e(0));
 				matrix[5] = +matrix[5] + (clientY - clientV.e(1));
 			}
@@ -969,6 +975,7 @@
 			// Bind touchstart if either panning or zooming is enabled
 			if (!options.disablePan || !options.disableZoom) {
 				events[ str_start ] = function(e) {
+					if (!jQuery(e.target).hasClass('rgm-modes-drawing-container')) return;
 					var touches;
 					if (e.type === 'touchstart' ?
 						// Touch
@@ -978,9 +985,10 @@
 						// Support: IE10 only
 						// IE10 does not support e.button for MSPointerDown, but does have e.which
 						!options.disablePan && (e.which || e.originalEvent.which) === options.which) {
-
+						
 						e.preventDefault();
 						e.stopPropagation();
+						
 						self._startMove(e, touches);
 					}
 				};
@@ -1027,11 +1035,23 @@
 			// Don't bind one without the other
 			if ($zoomIn.length && $zoomOut.length) {
 				// preventDefault cancels future mouse events on touch events
-				$zoomIn.on(str_click, function(e) {
+				
+				// RGM FORK (COMMENTED OUT): START
+				// $zoomIn.on(str_click, function(e) {
+				// RGM FORK (COMMENTED OUT): END
+				// RGM FORK (INSERTED): START
+				$zoomIn.on('click', function(e) {
+				// RGM FORK (INSERTED): END
 					e.preventDefault();
 					self.zoom();
 				});
-				$zoomOut.on(str_click, function(e) {
+				
+				// RGM FORK (COMMENTED OUT): START
+				// $zoomOut.on(str_click, function(e) {
+				// RGM FORK (COMMENTED OUT): END
+				// RGM FORK (INSERTED): START
+				$zoomOut.on('click', function(e) {
+				// RGM FORK (INSERTED): END
 					e.preventDefault();
 					self.zoom(true);
 				});
@@ -1180,6 +1200,9 @@
 			this._trigger('start', event, touches);
 
 			var setStart = function(event, touches) {
+				// RGM FORK INSERTED (START)
+				if (!jQuery(event.target).hasClass('rgm-modes-drawing-container')) return;
+				// RGM FORK INSERTED (END)
 				if (touches) {
 					if (touches.length === 2) {
 						if (startDistance != null) {
@@ -1208,6 +1231,9 @@
 			setStart(event, touches);
 
 			var move = function(e) {
+				// RGM FORK INSERTED (START)
+				if (!jQuery(event.target).hasClass('rgm-modes-drawing-container')) return;
+				// RGM FORK INSERTED (END)
 				var coords;
 				e.preventDefault();
 				touches = e.touches || e.originalEvent.touches;
