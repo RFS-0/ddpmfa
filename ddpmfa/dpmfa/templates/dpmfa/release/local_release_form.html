@@ -1,10 +1,10 @@
 {% extends "dpmfa/page.html" %}
 
 {% block title %}
-    {% if flow_compartment.pk %}
-        Edit Flow Compartment &quot;{{flow_compartment.name}}&quot;
+    {% if local_release.pk %}
+        Edit Local Release &quot;{{local_release.name}}&quot;
     {% else %}
-        New Flow Compartment
+        New Local Release
     {% endif %}
 {% endblock %}
 
@@ -19,16 +19,16 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' flow_compartment.model.project.pk %}">
-                {{ flow_compartment.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' flow_compartment.model.pk %}">
-                {{ flow_compartment.model.name }}</a></li>
-                {% if flow_compartment.pk %}
-                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:flow-compartment-detail' flow_compartment.pk %}">
-                    {{ flow_compartment.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' 1 %}">
+                {{ local_release.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' 1 %}">
+                {{ local_release.model.name }}</a></li>
+                {% if local_release.pk %}
+                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:local-release-detail' local_release.pk %}">
+                    {{ local_release.name }}</a></li>
                     <li class="breadcrumb-item active">Edit</li>
                 {% else %}
-                    <li class="breadcrumb-item active">New Flow Compartment</li>
+                    <li class="breadcrumb-item active">New Local Release</li>
                 {% endif %}
             </ol>
         </div>
@@ -37,10 +37,10 @@
     <div class="row">
         <div class="col-md-12">
             <h1>
-                {% if flow_compartment.pk %}
-                    Edit Flow Compartment &quot;{{flow_compartment.name}}&quot;
+                {% if local_release.pk %}
+                    Edit Local Release &quot;{{local_release.name}}&quot;
                 {% else %}
-                    New Flow Compartment
+                    New Local Release
                 {% endif %}
             </h1>
             <form method="POST" class="post-form">{% csrf_token %}

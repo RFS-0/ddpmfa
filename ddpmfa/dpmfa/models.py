@@ -225,7 +225,6 @@ class local_release(models.Model):
         null=True, 
         on_delete=models.CASCADE)
     
-    
     name = CharField(
         verbose_name='Local release', 
         default='local release', 

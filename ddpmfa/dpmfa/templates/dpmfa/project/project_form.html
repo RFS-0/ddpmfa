@@ -16,7 +16,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
@@ -32,7 +32,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
             <h1>
                 {% if project.name %}
                     Edit Project &quot;{{project.name}}&quot;
@@ -49,7 +49,7 @@
 					<label class="form-control-label" for="projectDescription">Description</label>
 					{{ form.description }}
 				</div>
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
      </div>

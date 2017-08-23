@@ -125,7 +125,11 @@ class ModelDetailView(generic.DetailView):
         return models.sink.objects.filter(model=model_pk)
     
     def find_simulation_by_model(self, model_pk):
-        return models.simulation.objects.get(model=model_pk)
+        try:
+            simulation = models.simulation.objects.get(model=model_pk)
+            return simulation
+        except:
+            return None
     
     def find_result_by_model(self, model_pk):
         return models.result.objects.filter(model=model_pk)
@@ -329,15 +333,8 @@ class FlowCompartmentDetailView(generic.DetailView):
 class FlowCompartmentUpdateView(generic.UpdateView):
     model = models.flow_compartment
     template_name = 'dpmfa/compartments/flow_compartment_form.html'
-    
-    fields = [
-        'name',
-        'description',
-        'categories',
-        'adjust_outgoing_tcs',
-        'log_inflows',
-        'log_outflows',
-        ]
+    form_class = forms.FlowCompartmentForm
+    context_object_name = 'flow_compartment'
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:flow-compartment-detail', kwargs={'pk': self.object.pk})
@@ -401,15 +398,8 @@ class StockDetailView(generic.DetailView):
 class StockUpdateView(generic.UpdateView):
     model = models.stock
     template_name = 'dpmfa/compartments/stock_form.html'
-    
-    fields = [
-        'name',
-        'description',
-        'categories',
-        'adjust_outgoing_tcs',
-        'log_inflows',
-        'log_outflows',
-        ]
+    form_class = forms.StockForm
+    context_object_name = 'stock'
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:stock-detail', kwargs={'pk': self.object.pk})
@@ -498,12 +488,22 @@ class SinkDeleteView(generic.DeleteView):
 
 class LocalReleaseDetailView(generic.DetailView):
     model = models.local_release
+    template_name = 'dpmfa/release/local_release_detail.html'
     
     fields = [
         'stock_of_local_release',
         'name',
         'delay'
         ]
+    
+class LocalReleaseUpdateView(generic.UpdateView):
+    model = models.local_release
+    template_name = 'dpmfa/release/local_release_form.html'
+    form_class = forms.LocalReleaseForm
+    context_object_name = 'local_release'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:local-release-detail', kwargs={'pk': self.object.pk})
     
 # Fixed Rate Release
 
@@ -516,6 +516,15 @@ class FixedRateReleaseDetailView(generic.DetailView):
         'delay',
         'fixed_rate_release'
         ]
+    
+class FixedRateReleaseUpdateView(generic.UpdateView):
+    model = models.fixed_rate_release
+    template_name = 'dpmfa/release/fixed_rate_form.html'
+    form_class = forms.FixedRateReleaseForm
+    context_object_name = 'fixed_rate_release'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:fixed-rate-release-detail', kwargs={'pk': self.object.pk})
     
 # List Release
 
@@ -541,6 +550,15 @@ class FunctionReleaseDetailView(generic.DetailView):
         'fixed_rate_release',
         'function_release'
         ]
+    
+class FunctionReleaseUpdateView(generic.UpdateView):
+    model = models.function_release
+    template_name = 'dpmfa/release/function_release_form.html'
+    form_class = forms.FunctionReleaseForm
+    context_object_name = 'fixed_rate_release'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:fixed-rate-release-detail', kwargs={'pk': self.object.pk})
     
 #==============================================================================
 #  Transfers

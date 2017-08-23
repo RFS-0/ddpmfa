@@ -52,6 +52,7 @@ urlpatterns = [
     # ex: /model/123/detail
     url(r'^model/(?P<pk>[0-9]+)/detail$', views.ModelDetailView.as_view(), name='model-detail'),
     
+    
     # ex: /model/create
     url(r'^model/create/(?P<project_pk>[0-9]+)$', views.ModelCreateView.as_view(), name='model-create'),
     
@@ -157,14 +158,23 @@ urlpatterns = [
 #==============================================================================
 
     # ex: /local_release/123/detail
-    url(r'^local_release/(?P<sink_pk>[0-9]+)/detail$', views.LocalReleaseDetailView.as_view(), name='function-release-detail'),
+    url(r'^local_release/(?P<pk>[0-9]+)/detail$', views.LocalReleaseDetailView.as_view(), name='local-release-detail'),
 
+    # ex: /local_release/123/update
+    url(r'^local_release/(?P<pk>[0-9]+)/update$', views.LocalReleaseUpdateView.as_view(), name='local-release-update'),
+    
     # ex: /fixed_rate_release/123/detail
-    url(r'^fixed_rate_release/(?P<sink_pk>[0-9]+)/detail$', views.FixedRateReleaseDetailView.as_view(), name='function-release-detail'),
+    url(r'^fixed_rate_release/(?P<pk>[0-9]+)/detail$', views.FixedRateReleaseDetailView.as_view(), name='fixed-release-detail'),
+    
+    # ex: /fixed_rate_release/123/update
+    url(r'^fixed_rate_release/(?P<pk>[0-9]+)/update$', views.FixedRateReleaseUpdateView.as_view(), name='fixed-release-update'),
 
     # ex: /function_release/123/detail
-    url(r'^function_release/(?P<sink_pk>[0-9]+)/detail$', views.FunctionReleaseDetailView.as_view(), name='function-release-detail'),
+    url(r'^function_release/(?P<pk>[0-9]+)/detail$', views.FunctionReleaseDetailView.as_view(), name='function-release-detail'),
 
+    # ex: /function_release/123/detail
+    url(r'^function_release/(?P<pk>[0-9]+)/update$', views.FunctionReleaseUpdateView.as_view(), name='function-release-detail'),
+    
 #==============================================================================
 #  Transfers
 #==============================================================================

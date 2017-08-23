@@ -2,6 +2,10 @@
 {% load class_tag %}
 {% load static %}
 
+{% if goto %}
+<script> window.location.hash = '#{{goto}}'; </script>
+{% endif %}
+
 {% block title %}Model: &quot;{{model.name}}&quot;{% endblock %}
 
 {% block body %}
@@ -45,7 +49,7 @@
 			                	<div class="panel-heading">
 			                  		<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#flowCompartments">
-			                    	<i class="glyphicon glyphicon-list-alt"></i>
+			                    	<i class="glyphicon glyphicon-list"></i>
 			                    	Flow Compartments</a>
 			                  		</h4>
 			                	</div>
@@ -60,7 +64,7 @@
 				                            		<th scope="row">Log inflows</th>
 				                            		<th scope="row">Log outflows</th> 
 				                            		<th scope="row">Adjust outgoing TC's</th> 
-				                            		<th scope="row">Actions</th>
+				                            		<th scope="row">Action</th>
 				                        		</tr>
 				                    		</thead>
 					                    	<tbody>
@@ -86,9 +90,6 @@
 					                                    	<a href="{% url 'dpmfa:flow-compartment-update' flow_compartment.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    	</a>
-					                                    	<a href="{% url 'dpmfa:flow-compartment-delete' flow_compartment.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-					                                    	</a>
 					                               		</td>
 					                           		</tr>
 					                        	{% endfor %}
@@ -104,7 +105,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#stockAccordion">
-			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    <i class="glyphicon glyphicon-list"></i>
 			                    Stocks</a>
 			                  </h4>
 			                </div>
@@ -120,14 +121,14 @@
 			                            		<th scope="row">Log outflows</th> 
 			                            		<th scope="row">Adjust outgoing TC's</th> 
 					                            <th scope="row">Local release</th>
-					                            <th scope="row">Actions</th>
+					                            <th scope="row">Action</th>
 					                        </tr>
 					                    </thead>
 					                    <tbody>
 					                   		{% for stock in stocks %}
 					                        	<tr>
 					                            	<td class="dpmfa-td-20-top">
-					                               		<a href="{% url 'dpmfa:stock-detail' stock.pk %}">
+					                               		<a href="{% url 'dpmfa:stock-update' stock.pk %}">
 					                               		{{ stock.name }}</a>
 					                           		</td>
 					                               	<td class="dpmfa-td-10-top"">
@@ -143,14 +144,13 @@
 				                               			{{ stock.adjust_outgoing_tcs }}
 				                               		</td>
 				                               		<td class="dpmfa-td-40-top">
+				                               			<a href="{% url 'dpmfa:local-release-update' stock.local_release.pk %}">
 				                               			{{ stock.local_release }}
+				                               			</a>
 				                               		</td>
 					                               	<td class="dpmfa-td-10-top">
-					                                    <a href="{% url 'dpmfa:stock-update' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    <a href="{% url 'dpmfa:local-release-update' stock.local_release.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-					                                    </a>
-					                                    <a href="{% url 'dpmfa:stock-delete' stock.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					                                    </a>
 					                               	</td>
 					                           	</tr>
@@ -167,7 +167,7 @@
 			              	<div class="panel-heading">
 			                	<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#sinkAccordion">
-			                    	<i class="glyphicon glyphicon-list-alt"></i>
+			                    	<i class="glyphicon glyphicon-list"></i>
 			                    	Sinks</a>
 			                  	</h4>
 			                </div>
@@ -180,7 +180,7 @@
 					                            <th scope="row">Name</th>
 					                            <th scope="row">Categories</th>
 			                            		<th scope="row">Log inflows</th> 
-					                            <th scope="row">Actions</th>
+					                            <th scope="row">Action</th>
 					                        </tr>
 					                    </thead>
 						             	<tbody>
@@ -199,9 +199,6 @@
 					                               	<td class="dpmfa-td-10-top">
 					                                    <a href="{% url 'dpmfa:sink-update' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-					                                    </a>
-					                                    <a href="{% url 'dpmfa:sink-delete' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 					                                    </a>
 					                               	</td>
 						                   		</tr>
@@ -222,7 +219,7 @@
 			                	<div class="panel-heading">
 			                  		<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#externalListInflow">
-			                    	<i class="glyphicon glyphicon-list-alt"></i>
+			                    	<i class="glyphicon glyphicon-list"></i>
 			                    	External List Inflows</a>
 			                  		</h4>
 			                	</div>
@@ -238,7 +235,7 @@
 							                            <th scope="row">Derivation distribution</th>
 							                            <th scope="row">Derivation parameters</th>
 							                            <th scope="row">Derivation factor</th>
-							                            <th scope="row">Actions</th>
+							                            <th scope="row">Action</th>
 							                        </tr>
 							                    </thead>
 							                    <tbody>
@@ -267,9 +264,6 @@
 							                             		<a href="{% url 'dpmfa:external-list-inflow-update' external_list_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 							                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 							                                    </a>
-							                                    <a href="{% url 'dpmfa:external-list-inflow-delete' external_list_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-							                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-							                                    </a>
 							                               </td>
 							                           </tr>
 							                        {% endfor %}
@@ -285,7 +279,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#externalFunctionInflowAccordion">
-			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    <i class="glyphicon glyphicon-list"></i>
 			                    External Function Inflows</a>
 			                  </h4>
 			                </div>
@@ -303,7 +297,7 @@
 							                <th scope="row">Derivation factor</th>
 				                            <th scope="row">Basic inflow</th>
 				                            <th scope="row">Inflow function</th>
-				                            <th scope="row">Actions</th>
+				                            <th scope="row">Action</th>
 				                        </tr>
 				                    </thead>
 				                    <tbody>
@@ -339,9 +333,6 @@
 				                             		<a href="{% url 'dpmfa:external-function-inflow-update' external_function_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 				                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				                                    </a>
-				                                    <a href="{% url 'dpmfa:external-function-inflow-delete' external_function_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-				                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				                                    </a>
 				                               	</td>
 				                         
 				                           </tr>
@@ -360,7 +351,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#constantTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    <i class="glyphicon glyphicon-list"></i>
 			                    Constant Transfers</a>
 			                  </h4>
 			                </div>
@@ -377,7 +368,7 @@
 					                            <th scope="row">Target</th>
 					                            <th scope="row">Aggregated transfer</th>
 					                            <th scope="row">Value</th>
-					                            <th scope="row">Actions</th>
+					                            <th scope="row">Action</th>
 					                        </tr>
 					                    </thead>
 					                    <tbody>
@@ -409,9 +400,6 @@
 					                                    <a href="{% url 'dpmfa:constant-transfer-update' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
-					                                    <a href="{% url 'dpmfa:constant-transfer-delete' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-					                                    </a>
 					                               </td>
 					                           </tr>
 					                        {% endfor %}
@@ -429,7 +417,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#randomChoiceTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    <i class="glyphicon glyphicon-list"></i>
 			                    Random Choice Transfers</a>
 			                  </h4>
 			                </div>
@@ -446,7 +434,7 @@
 					                            <th scope="row">Target</th>
 					                            <th scope="row">Aggregated transfer</th>
 					                            <th scope="row">Sample</th>
-					                            <th scope="row">Actions</th>
+					                            <th scope="row">Action</th>
 					                        </tr>
 					                    </thead>
 					                    <tbody>
@@ -478,9 +466,6 @@
 					                                    <a href="{% url 'dpmfa:random-choice-transfer-update' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
-					                                    <a href="{% url 'dpmfa:random-choice-transfer-delete' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-					                                    </a>
 					                               </td>
 					                           </tr>
 					                        {% endfor %}
@@ -498,7 +483,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#stochasticTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    <i class="glyphicon glyphicon-list"></i>
 			                    Stochastic Transfers</a>
 			                  </h4>
 			                </div>
@@ -516,7 +501,7 @@
 					                            <th scope="row">Aggregated transfer</th>
 					                            <th scope="row">Parameter</th>
 					                            <th scope="row">Function</th>
-					                            <th scope="row">Actions</th>
+					                            <th scope="row">Action</th>
 					                        </tr>
 					                    </thead>
 					                    <tbody>
@@ -551,9 +536,6 @@
 					                                    <a href="{% url 'dpmfa:stochastic-transfer-update' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
-					                                    <a href="{% url 'dpmfa:stochastic-transfer-delete' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-					                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-					                                    </a>
 					                               </td>
 					                           </tr>
 					                        {% endfor %}
@@ -571,7 +553,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#aggregatedTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list-alt"></i>
+			                    <i class="glyphicon glyphicon-list"></i>
 			                    Aggregated Transfers</a>
 			                  </h4>
 			                </div>
@@ -587,7 +569,7 @@
 					                            <th scope="row">Source</th>
 					                            <th scope="row">Target</th>
 					                            <th scope="row">Weights</th>
-					                            <th scope="row">Actions</th>
+					                            <th scope="row">Action</th>
 					                        </tr>
 					                    </thead>
 					                    <tbody>
@@ -616,9 +598,6 @@
 					                               		<a href="{% url 'dpmfa:aggregated-transfer-update' aggregated_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 				                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				                                    </a>
-				                                    <a href="{% url 'dpmfa:aggregated-transfer-delete' aggregated_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-				                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-				                                    </a>
 					                               </td>
 					                           </tr>
 					                        {% endfor %}
@@ -642,7 +621,7 @@
 		                            <th scope="row">Periods</th>
 		                            <th scope="row">Created</th>
 		                            <th scope="row">Changed</th>
-		                            <th scope="row">Actions</th>
+		                            <th scope="row">Action</th>
 		                        </tr>
 		                    </thead>
 		                    <tbody>
@@ -666,9 +645,6 @@
 		                           	<td class="dmpfa-td-10-top">
 		                           		<a href="{% url 'dpmfa:simulation-update' simulation.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
 		                                   <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-		                               </a>
-		                               <a href="{% url 'dpmfa:simulation-delete' simulation.pk %}" class="btn btn-default" data-toggle="tooltip" title="Delete">
-		                                   <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 		                               </a>
 		                        	</td>
 		                       	</tr>

@@ -1,0 +1,44 @@
+{% extends "dpmfa/page.html" %}
+
+{% block title %}Local Release &quot;{{local_release.name}}&quot;{% endblock %}
+
+{% block body %}
+<header>
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' local_release.stock.model.project.pk %}">{{ local_release.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' local_release.stock.model.pk %}">{{ local_release.model.name }}</a></li>
+              <li class="breadcrumb-item active">{{local_release.name}}</li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Local Release &quot;{{ local_release.name }}&quot;</h1>
+            	<h2>Properties</h2>
+            		<table class="table table-striped table-hover table-responsive">
+		                <tr>
+		                    <th>Name</th>
+		                    <td>{{ local_release.name }}</td>
+		                </tr>
+		                <tr>
+		                    <th>Stock of Local Release</th>
+		                    <td>{{ local_release.stock_of_local_release.name }}</td>
+		                </tr>
+		                <tr>
+		                    <th>Delay</th>
+		                    <td>{{ local_release.delay }}</td>
+		                </tr>
+		            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
