@@ -508,7 +508,8 @@ class external_function_inflow(external_inflow):
       
     basic_inflow = models.OneToOneField(
         to='single_period_inflow', 
-        verbose_name='name of the single period inflow', 
+        verbose_name='name of the single period inflow',
+        related_name='external_function_inflow',
         on_delete=models.CASCADE, 
         null=True)
     

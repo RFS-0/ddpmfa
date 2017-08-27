@@ -148,7 +148,7 @@ class LocalReleaseConverter(object):
     def __init__(self, db_local_release=django_models.local_release):
         self.db_entity = db_local_release
             
-        self.stock_of_local_release = db_local_release.stock_of_local_release
+        # self.stock_of_local_release = db_local_release.stock_of_local_release
         self.name = db_local_release.name
         self.delay = db_local_release.delay
             
