@@ -545,6 +545,9 @@ class fixed_value_inflow(single_period_inflow):
         verbose_name='the inflow value', 
         null=True)
     
+    def get_absolute_url(self):
+        return reverse('dpmfa:fixed-value-inflow-update', args=[self.id])
+    
 class stochastic_function_inflow(single_period_inflow):
     
     # TODO [all]: we will have to implement a function field to store functions
@@ -555,7 +558,10 @@ class stochastic_function_inflow(single_period_inflow):
     
     parameter_values = models.CharField(
         verbose_name='Pdf parameter values', 
-        max_length=250, null=True) 
+        max_length=250, null=True)
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:stochastic-function-inflow-update', args=[self.id]) 
     
 class random_choice_inflow(single_period_inflow):
     
@@ -564,6 +570,9 @@ class random_choice_inflow(single_period_inflow):
         verbose_name='Sample', 
         max_length=250, 
         null=True)
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:random-choice-inflow-update', args=[self.id]) 
     
 #==============================================================================
 #  Simulation

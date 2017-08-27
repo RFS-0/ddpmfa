@@ -6,36 +6,19 @@
 
 {% block body %}
 <header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-                Fixed Value Inflow for Period {{fixed_value_inflow.period}}
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-        </ul>
-      </div>
-    </nav>
 </header>
-
-
-
-
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' external_list_inflow.target.model.project.pk %}">{{ external_list_inflow.target.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' external_list_inflow.target.model.pk %}">{{ external_list_inflow.target.model.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' project.pk %}">{{ project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.pk %}">{{ model.name }}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:external-list-inflow-detail' external_list_inflow.pk %}">{{ external_list_inflow.name }}</a></li>
-                <li class="breadcrumb-item active">Fixed Value Inflow for Period {{fixed_value_inflow.period}}</li>
             </ol>
         </div>
     </div>
-
     <div class="row">
         <div class="col-xs-12">
             <h1>

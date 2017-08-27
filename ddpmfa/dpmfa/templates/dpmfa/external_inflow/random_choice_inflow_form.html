@@ -10,47 +10,22 @@
 
 {% block body %}
 <header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-                {% if random_choice_inflow.pk %}
-                    Edit Random Choice Inflow for Period {{random_choice_inflow.period}}
-                {% else %}
-                    New Random Choice Inflow
-                {% endif %}
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-        </ul>
-      </div>
-    </nav>
 </header>
-
-
-
-
 <div class="container">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' external_list_inflow.target.model.project.pk %}">{{ external_list_inflow.target.model.project.name }}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' external_list_inflow.target.model.pk %}">{{ external_list_inflow.target.model.name }}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:external-list-inflow-detail' external_list_inflow.pk %}">{{ external_list_inflow.name }}</a></li>
-                {% if random_choice_inflow.pk %}
-                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:random-choice-inflow-detail' random_choice_inflow.pk %}">Random Choice for Period {{ random_choice_inflow.period }}</a></li>
-                    <li class="breadcrumb-item active">Edit</li>
-                {% else %}
-                    <li class="breadcrumb-item active">New Random Choice Inflow</li>
-                {% endif %}
             </ol>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-12">
             <h1>
                 {% if random_choice_inflow.pk %}
                     Edit Random Choice Inflow for Period {{random_choice_inflow.period}}
@@ -61,7 +36,7 @@
 
             <form method="POST" class="post-form">{% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="save btn btn-default">Save</button>
+                <button type="submit" class="save btn btn-primary">Save</button>
             </form>
         </div>
     </div>
