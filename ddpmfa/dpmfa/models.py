@@ -63,6 +63,7 @@ class model(models.Model):
     
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
+
     
 #==============================================================================
 #  Model Designer
@@ -227,12 +228,6 @@ class sink(compartment):
 #==============================================================================
 
 class local_release(models.Model):
-    
-    stock_of_local_release = models.OneToOneField(
-        to='stock', 
-        related_name='local_release_transfer', 
-        null=True, 
-        on_delete=models.CASCADE)
     
     name = CharField(
         verbose_name='Local release', 
@@ -505,7 +500,7 @@ class external_function_inflow(external_inflow):
         null=True)
 
     function_parameters = models.CharField(
-        verbose_name='Release function parameters',
+        verbose_name='Inflow function parameters',
         validators=[float_list_validator],
         max_length = 250,
         null = True)
