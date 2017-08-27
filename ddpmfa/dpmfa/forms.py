@@ -13,12 +13,10 @@ class ProjectForm(forms.ModelForm):
         fields = ('name', 
                   'description')
         widgets = {
-            'name': forms.widgets.TextInput(attrs={'type': 'text',
-                                                   'class': 'form-control',
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                    'id': 'projectName',
                                                    'placeholder' : 'Enter a project name'}),
-            'description': forms.widgets.Textarea(attrs={'type': 'text',
-                                                   'class': 'form-control',
+            'description': forms.widgets.Textarea(attrs={'class': 'form-control',
                                                    'id':'projectDescription',
                                                    'placeholder' : 'Enter a project description'}),
             }
@@ -34,12 +32,10 @@ class ModelForm(forms.ModelForm):
                   'description')
         
         widgets = {
-            'name': forms.widgets.TextInput(attrs={'type': 'text',
-                                                   'class': 'form-control',
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                    'id': 'modelName',
                                                    'placeholder' : 'Enter a model name'}),
-            'description': forms.widgets.Textarea(attrs={'type': 'text',
-                                                   'class': 'form-control',
+            'description': forms.widgets.Textarea(attrs={'class': 'form-control',
                                                    'id':'modelDescription',
                                                    'placeholder' : 'Enter a model description'}),
             }
@@ -61,27 +57,21 @@ class FlowCompartmentForm(forms.ModelForm):
                   'adjust_outgoing_tcs')
         
         widgets = {
-            'name': forms.widgets.TextInput(attrs={'type': 'text',
-                                                   'class': 'form-control',
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                    'id': 'flowCompartmentName',
-                                                   'placeholder' : 'Enter a flow compartment name'}),
-            'description': forms.widgets.Textarea(attrs={'type': 'text',
-                                                         'class': 'form-control',
+                                                   'placeholder' : 'Enter a name'}),
+            'description': forms.widgets.Textarea(attrs={'class': 'form-control',
                                                          'id':'flowCompartmentDescription',
-                                                         'placeholder' : 'Enter a flow compartment description'}),
-            'categories': forms.widgets.TextInput(attrs={'type': 'text',
-                                                         'class': 'form-control',
+                                                         'placeholder' : 'Enter a description'}),
+            'categories': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                          'id': 'flowCompartmentCategories',
                                                          'placeholder' : 'Enter categories'}),
-            'log_inflows': forms.widgets.CheckboxInput(attrs={'type':'checkbox',
-                                                              'class': 'checkbox',
+            'log_inflows': forms.widgets.CheckboxInput(attrs={'class': 'checkbox',
                                                               'id': 'flowCompartmentLogInflows'}),
-            'log_outflows': forms.widgets.CheckboxInput(attrs={'type':'checkbox',
-                                                              'class': 'checkbox',
-                                                              'id': 'flowCompartmentLogInflows'}),
-            'adjust_outgoing_tcs': forms.widgets.CheckboxInput(attrs={'type':'checkbox',
-                                                              'class': 'checkbox',
-                                                              'id': 'flowCompartmentLogInflows'})
+            'log_outflows': forms.widgets.CheckboxInput(attrs={'class': 'checkbox',
+                                                              'id': 'flowCompartmentLogOutflows'}),
+            'adjust_outgoing_tcs': forms.widgets.CheckboxInput(attrs={'class': 'checkbox',
+                                                              'id': 'flowCompartmentAdjustTCs'})
             }
         
 # Stock
@@ -100,10 +90,10 @@ class StockForm(forms.ModelForm):
         widgets = {
             'name': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                    'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'}),
+                                                   'placeholder' : 'Enter a name'}),
             'description': forms.widgets.Textarea(attrs={'class': 'form-control',
                                                          'id':'stockDescription',
-                                                         'placeholder' : 'Enter a flow compartment description'}),
+                                                         'placeholder' : 'Enter a description'}),
             'local_release':forms.widgets.Select(attrs={'class':'form-control',
                                                  'id':'stockLocalRelease'}),
             'categories': forms.widgets.TextInput(attrs={'class': 'form-control',
@@ -112,15 +102,41 @@ class StockForm(forms.ModelForm):
             'log_inflows': forms.widgets.CheckboxInput(attrs={'class': 'checkbox',
                                                               'id': 'stockLogInflows'}),
             'log_outflows': forms.widgets.CheckboxInput(attrs={'class': 'checkbox',
-                                                              'id': 'stockLogInflows'}),
+                                                              'id': 'stockLogOutflows'}),
             'adjust_outgoing_tcs': forms.widgets.CheckboxInput(attrs={'type':'checkbox',
                                                               'class': 'checkbox',
-                                                              'id': 'stockLogInflows'})
+                                                              'id': 'stockAdjustOutgoingTCs'})
+            }
+
+# ==============================================================================
+#  Sinks
+# ==============================================================================
+
+class SinkForm(forms.ModelForm):
+    class Meta:
+        model = django_models.sink
+        fields = ('name',
+                  'description',
+                  'categories',
+                  'log_inflows')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'sinkName',
+                                                   'placeholder' : 'Enter a name'}),
+            'description': forms.widgets.Textarea(attrs={'class': 'form-control',
+                                                         'id':'sinkDescription',
+                                                         'placeholder' : 'Enter a description'}),
+            'categories': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                         'id': 'sinkCategories',
+                                                         'placeholder' : 'Enter categories'}),
+            'log_inflows': forms.widgets.CheckboxInput(attrs={'class': 'checkbox',
+                                                              'id': 'sinkkLogInflows'}),
             }
 
 
 # ==============================================================================
-#  Compartments
+#  Releases
 # ==============================================================================
 
 # Local Release
@@ -133,12 +149,12 @@ class LocalReleaseForm(forms.ModelForm):
         
         widgets = {
             'name': forms.widgets.TextInput(attrs={'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'}),
+                                                   'id': 'localReleasekName',
+                                                   'placeholder' : 'Enter a name'}),
             'delay': forms.widgets.NumberInput(attrs={'type': 'text',
                                                    'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'})
+                                                   'id': 'localReleaseName',
+                                                   'placeholder' : 'Enter a delay'})
             }
 
 # Fixed Rate Release
@@ -152,16 +168,15 @@ class FixedRateReleaseForm(forms.ModelForm):
         
         widgets = {
             'name': forms.widgets.TextInput(attrs={'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'}),
+                                                   'id': 'fixedRateReleasekName',
+                                                   'placeholder' : 'Enter a name'}),
             'delay': forms.widgets.NumberInput(attrs={'type': 'text',
                                                    'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'}),
-            'release_rate': forms.widgets.NumberInput(attrs={'type': 'text',
-                                                   'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'})
+                                                   'id': 'fixedRateReleaseName',
+                                                   'placeholder' : 'Enter a delay'}),
+            'release_rate': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'fixedRateReleaseReleaseRate',
+                                                   'placeholder' : 'Enter a release rate'})
             }
         
 class FunctionReleaseForm(forms.ModelForm):
@@ -174,15 +189,155 @@ class FunctionReleaseForm(forms.ModelForm):
         
         widgets = {
             'name': forms.widgets.TextInput(attrs={'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'}),
-            'delay': forms.widgets.NumberInput(attrs={'type': 'text',
-                                                   'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'}),
+                                                   'id': 'functionReleaseName',
+                                                   'placeholder' : 'Enter a name'}),
+            'delay': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'functionReleaseDelay',
+                                                   'placeholder' : 'Enter a delay'}),
             'release_rate': forms.widgets.NumberInput(attrs={'type': 'text',
                                                    'class': 'form-control',
-                                                   'id': 'stockName',
-                                                   'placeholder' : 'Enter a flow compartment name'})
+                                                   'id': 'functionReleaseRate',
+                                                   'placeholder' : 'Enter a release rate'}),
+            'release_function': forms.widgets.Select(attrs={'class':'form-control',
+                                                           'id':'functionReleaseFunction'}),
+            'function_parameters': forms.widgets.NumberInput(attrs={'class':'form-control',
+                                                           'id':'functionReleaseFunctionParameters'}),       
             }
 
+# ==============================================================================
+#  Transfers
+# ==============================================================================
+
+# Constant Transfer
+
+class ConstantTransferForm(forms.ModelForm):
+    class Meta:
+        model = django_models.constant_transfer
+        fields = ('name',
+                  'priority',
+                  'weight',
+                  'value')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'constantTransferName',
+                                                   'placeholder' : 'Enter a name'}),
+            'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'constantTransferPriority',
+                                                   'placeholder' : 'Enter a priority'}),
+            'weight': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'constantTransferWeight',
+                                                   'placeholder' : 'Enter a weight'}),
+            'value': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'constantTransferWeight',
+                                                   'placeholder' : 'Enter a value'})
+            }
+        
+# Random Choice Transfer
+        
+class RandomChoiceTransferForm(forms.ModelForm):
+    class Meta:
+        model = django_models.random_choice_transfer
+        fields = ('name',
+                  'priority',
+                  'weight',
+                  'sample')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'randomChoiceTransferrName',
+                                                   'placeholder' : 'Enter a name'}),
+            'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'randomChoiceTransferrPriority',
+                                                   'placeholder' : 'Enter a priority'}),
+            'weight': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'randomChoiceTransferrWeight',
+                                                   'placeholder' : 'Enter a weight'}),
+            'sample': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'randomChoiceTransferrWeight',
+                                                   'placeholder' : 'Enter a sample'})
+            }
+
+# ==============================================================================
+#  External Inflows
+# ==============================================================================
+
+# External List Inflow
+
+class ExternalListInflowForm(forms.ModelForm):
+    class Meta:
+        model = django_models.external_list_inflow
+        fields = ('name',
+                  'start_delay',
+                  'derivation_distribution',
+                  'derivation_parameters',
+                  'derivation_factor')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'externalListInflowName',
+                                                    'placeholder' : 'Enter a name'}),
+            'start_delay': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                            'id': 'externalListInflowStartDelay',
+                                                            'placeholder' : 'Enter delay'}),
+            'derivation_distribution':forms.widgets.Select(attrs={'class':'form-control',
+                                                                  'id':'externalListInflowDerivationDistribution'}),
+            'derivation_parameters': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                                    'id': 'externalListInflowDerivationParameters',
+                                                                    'placeholder' : 'Enter the derivation parameters'})
+            }
+        
+# ==============================================================================
+#  Single Period Inflows
+# ==============================================================================
+
+# Fixed Value Inflow
+
+class FixedValueInflowForm(forms.ModelForm):
+    class Meta:
+        model = django_models.fixed_value_inflow
+        fields = ('period',
+                  'value')
+        
+        widgets = {
+            'period': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                                'id': 'fixedValueInflowPeriod',
+                                                                'placeholder' : 'Enter a period'}),
+            'value': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                                'id': 'fixedValueInflowValue',
+                                                                'placeholder' : 'Enter a value'}),
+            }
+        
+class StochasticFunctionInflowForm(forms.ModelForm):
+    class Meta:
+        model = django_models.stochastic_function_inflow
+        fields = ('period',
+                  'pdf',
+                  'parameter_values')
+        
+        widgets = {
+            'period': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                                'id': 'stochasticFunctionInflowPeriod',
+                                                                'placeholder' : 'Enter a period'}),
+            'value': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                                'id': 'stochasticFunctionInflowValue',
+                                                                'placeholder' : 'Enter a value'}),
+            'parameter_values': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'stochasticFunctionInflowwParameterValues',
+                                                   'placeholder' : 'Enter parameter values'}),
+            }
+
+class RandomChoiceInflowForm(forms.ModelForm):
+    class Meta:
+        model = django_models.random_choice_inflow
+        fields = ('period',
+                  'sample')
+        
+        widgets = {
+            'period': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                                'id': 'randomChoiceInflowPeriod',
+                                                                'placeholder' : 'Enter a period'}),
+            'sample': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'randomChoiceInflowwParameterValues',
+                                                   'placeholder' : 'Enter a sample'}),
+            }

@@ -92,6 +92,9 @@ urlpatterns = [
 #  Compartment
 #==============================================================================
 
+    # only for redirection
+    url(r'compartment/(?P<compartment_pk>[0-9]+)/redirect$', views.CompartmentRedirectView.as_view(), name='compartment-redirect'),
+
     # # ex: /compartment/12/detail
     # url(r'^compartment/(?P<model_pk>[0-9]+)/detail$', views.CompartmentDetailView.as_view(), name='compartment-detail'),
 
@@ -179,6 +182,9 @@ urlpatterns = [
 #  Transfers
 #==============================================================================
 
+    # only for redirection
+    url(r'transfer/(?P<transfer_pk>[0-9]+)/redirect$', views.TransferRedirectView.as_view(), name='transfer-redirect'),
+
     # Constant
 
     # ex: /constant_transfer/123/detail
@@ -192,8 +198,6 @@ urlpatterns = [
     
     # ex: /constant_transfer/123/delete
     url(r'^constant_transfer/(?P<pk>[0-9]+)/delete$', views.ConstantTransferDeleteView.as_view(), name='constant-transfer-delete'),
-    
-    
     
     # Random Choice
    
@@ -287,23 +291,14 @@ urlpatterns = [
 #  Single Period Inflow
 #==============================================================================
 
-    # # ex: /single_period_inflow/123/detail
-    # url(r'^single_period_inflow/(?P<pk>[0-9]+)/detail$', views.SinglePeriodInflowDetailView.as_view(), name='constant-transfer-detail'),
-
-    # # ex: /fixed_value_inflow/123/detail
-    # url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/detail$', views.FixedValueInflowDetailView.as_view(), name='constant-transfer-detail'),
-
-    # # ex: /stochastic_inflow/123/detail
-    # url(r'^stochastic_inflow/(?P<pk>[0-9]+)/detail$', views.StochasticInflowDetailView.as_view(), name='constant-transfer-detail'),
-
-    # # ex: /random_choice_inflow/123/detail
-    # url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='constant-transfer-detail'),
+    # only for redirection
+    url(r'single_period_inflow/(?P<single_period_inflow_pk>[0-9]+)/redirect$', views.SinglePeriodInflowRedirectView.as_view(), name='single-period-inflow-redirect'),
 
 #==============================================================================
 #  Fixed Value Inflow
 #==============================================================================
 
-    url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/detail$', views.FixedValueInflowDetailView.as_view(), name='fixed-value-inflow-detail'),
+#     url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/detail$', views.FixedValueInflowDetailView.as_view(), name='fixed-value-inflow-detail'),
 
     url(r'^fixed_value_inflow/(?P<pk>[0-9]+)/update', views.FixedValueInflowUpdateView.as_view(), name='fixed-value-inflow-update'),
 
@@ -315,7 +310,7 @@ urlpatterns = [
 #  Random Choice Inflow
 #==============================================================================
 
-    url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='random-choice-inflow-detail'),
+#     url(r'^random_choice_inflow/(?P<pk>[0-9]+)/detail$', views.RandomChoiceInflowDetailView.as_view(), name='random-choice-inflow-detail'),
 
     url(r'^random_choice_inflow/(?P<pk>[0-9]+)/update', views.RandomChoiceInflowUpdateView.as_view(), name='random-choice-inflow-update'),
 
@@ -327,7 +322,7 @@ urlpatterns = [
 #  Stochastic Function Inflow
 #==============================================================================
 
-    url(r'^stochastic_function_inflow/(?P<pk>[0-9]+)/detail$', views.StochasticFunctionInflowDetailView.as_view(), name='stochastic-function-inflow-detail'),
+#     url(r'^stochastic_function_inflow/(?P<pk>[0-9]+)/detail$', views.StochasticFunctionInflowDetailView.as_view(), name='stochastic-function-inflow-detail'),
 
     url(r'^stochastic_function_inflow/(?P<pk>[0-9]+)/update', views.StochasticFunctionInflowUpdateView.as_view(), name='stochastic-function-inflow-update'),
 

@@ -124,30 +124,54 @@ class ModelDetailView(generic.DetailView):
     def find_sinks_by_model(self, model_pk):
         return models.sink.objects.filter(model=model_pk)
     
+    def find_transfers_by_sink(self, model_pk):
+        sinks = models.sink.objects.filter(model=model_pk)
+        sink_transfers = {}
+        for sink in sinks:
+            qs = sink.transfers.get_queryset()
+            sink_transfers[sink.pk] = qs
+        return sink_transfers
+    
     def find_simulation_by_model(self, model_pk):
         try:
             simulation = models.simulation.objects.get(model=model_pk)
             return simulation
         except:
             return None
-    
+
     def find_result_by_model(self, model_pk):
         return models.result.objects.filter(model=model_pk)
+    
+    def find_single_period_inflows_by_external_list_inflow(self, model_pk):
+        external_list_inflows = models.external_list_inflow.objects.filter(target__model=model_pk)
+        single_period_inflows_of_external_list_inflow = {}
+        for external_list_inflow in external_list_inflows:
+            qs = external_list_inflow.single_period_inflows.get_queryset()
+            single_period_inflows = []
+            for single_period_inflow in qs:
+                single_period_inflows.append(single_period_inflow)
+            single_period_inflows.sort(key=lambda x: x.period)
+            single_period_inflows_of_external_list_inflow[external_list_inflow.pk] = single_period_inflows
+        return single_period_inflows_of_external_list_inflow
+            
 
     def get_context_data(self, **kwargs):
         context = super(ModelDetailView, self).get_context_data(**kwargs)
 
-        context['external_list_inflows'] = self.find_external_list_inflows_by_model(self.object.pk)
-        context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
-
+        context['flow_compartments'] = self.find_flow_compartments_by_model(self.object.pk)
+        context['stocks'] = self.find_stocks_by_model(self.object.pk)
+        context['sinks'] = self.find_sinks_by_model(self.object.pk)
+        context['transfers_of_sink'] = self.find_transfers_by_sink(self.object.pk)
+        
         context['constant_transfers'] = self.find_constant_transfers_by_model(self.object.pk, False)
         context['random_choice_transfers'] = self.find_random_choice_transfers_by_model(self.object.pk, False)
         context['stochastic_transfers'] = self.find_stochastic_transfers_by_model(self.object.pk, False)
         context['aggregated_transfers'] = self.find_aggregated_transfers_by_model(self.object.pk, False)
+        
+        context['external_list_inflows'] = self.find_external_list_inflows_by_model(self.object.pk)
+        context['single_period_inflows'] = self.find_single_period_inflows_by_external_list_inflow(self.object.pk)
+        context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
 
-        context['flow_compartments'] = self.find_flow_compartments_by_model(self.object.pk)
-        context['stocks'] = self.find_stocks_by_model(self.object.pk)
-        context['sinks'] = self.find_sinks_by_model(self.object.pk)
         context['simulation'] = self.find_simulation_by_model(self.object.pk)
         context['results'] = self.find_result_by_model(self.object.pk)
 
@@ -245,12 +269,8 @@ class ModelDesignerRedirectView(generic.RedirectView):
     
     def get_redirect_url(self, *args, **kwargs):
         try:
-            print("trying to get designer")
             designer = models.model_designer.objects.get(model_id=self.kwargs['model_pk'])
-            print("got designer")
-            print("not yet redirected")
             return designer.get_absolute_url()
-            print("redirected")
         except:
             return reverse_lazy('dpmfa:designer-create', kwargs={'model_pk': self.kwargs['model_pk']})
 
@@ -277,6 +297,24 @@ class ParameterRedirectView(generic.RedirectView):
 #==============================================================================
 #  Compartment
 #==============================================================================
+
+class CompartmentRedirectView(generic.RedirectView):
+    permanent = False
+    query_string = False
+    
+    def get_redirect_url(self, *args, **kwargs):
+        try: 
+            compartment_pk = self.kwargs['compartment_pk']
+            if len(models.flow_compartment.objects.filter(pk=compartment_pk)) > 0:
+                return models.flow_compartment.objects.get(pk=compartment_pk).get_absolute_url()
+            elif len(models.sink.objects.filter(pk=compartment_pk)) > 0:
+                return models.sink.objects.get(pk=compartment_pk).get_absolute_url()
+            elif len(models.stock.objects.filter(pk=compartment_pk)) > 0:
+                return models.stock.objects.get(pk=compartment_pk).get_absolute_url()
+            else:
+                print("Could not retrieve a compartment for inflow")
+        except:
+            return
 
 # class CompartmentDetailView(generic.DetailView):
 #    model = models.compartment
@@ -419,7 +457,6 @@ class SinkDetailView(generic.DetailView):
     model = models.sink
     template_name = 'dpmfa/compartments/sink_detail.html'
     
-    
     fields = [
         'model',
         'name',
@@ -450,13 +487,8 @@ class SinkDetailView(generic.DetailView):
 class SinkUpdateView(generic.UpdateView):
     model = models.sink
     template_name = 'dpmfa/compartments/sink_form.html'
-    
-    fields = [
-        'name',
-        'description',
-        'log_inflows',
-        'categories',
-        ]
+    form_class = forms.SinkForm
+    context_object_name = 'sink'
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:sink-detail', kwargs={'pk': self.object.pk})
@@ -564,6 +596,26 @@ class FunctionReleaseUpdateView(generic.UpdateView):
 #  Transfers
 #==============================================================================
 
+class TransferRedirectView(generic.RedirectView):
+    permanent = False
+    query_string = False
+    
+    def get_redirect_url(self, *args, **kwargs):
+        try: 
+            transfer_pk = self.kwargs['transfer_pk']
+            if len(models.constant_transfer.objects.filter(pk=transfer_pk)) > 0:
+                return models.constant_transfer.objects.get(pk=transfer_pk).get_absolute_url()
+            elif len(models.random_choice_transfer.objects.filter(pk=transfer_pk)) > 0:
+                return models.random_choice_transfer.objects.get(pk=transfer_pk).get_absolute_url()
+            elif len(models.stochastic_transfer.objects.filter(pk=transfer_pk)) > 0:
+                return models.stochastic_transfer.objects.get(pk=transfer_pk).get_absolute_url()
+            elif len(models.aggregated_transfer.objects.filter(pk=transfer_pk)) > 0:
+                return models.aggregated_transfer.objects.get(pk=transfer_pk).get_absolute_url()
+            else:
+                print("Could not retrieve a transfer for sink")
+        except:
+            return
+
 # Constant
 
 class ConstantTransferDetailView(generic.DetailView):
@@ -596,17 +648,18 @@ class ConstantTransferDetailView(generic.DetailView):
 class ConstantTransferUpdateView(generic.UpdateView):
     model = models.constant_transfer
     template_name = 'dpmfa/transfers/constant_transfer_form.html'
+    form_class = forms.ConstantTransferForm
+    context_object_name = 'constant_transfer'
     
-    fields = [
-        'target',
-        'belongs_to_aggregated_transfer',
-        'name',
-        'priority',
-        'current_tc',
-        'weight',
-        'value'
-        ]
+    def get_context_data(self, **kwargs):
+        context = super(ConstantTransferUpdateView, self).get_context_data(**kwargs)
+        context['model'] = self.object.target.model 
+        return context
     
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+   
+        
 class ConstantTransferDeleteView(generic.DeleteView):
     model = models.constant_transfer
     template_name = 'dpmfa/transfers/constant_transfer_confirm_delete.html'
@@ -887,15 +940,11 @@ class ExternalListInflowCreateView(generic.CreateView):
 class ExternalListInflowUpdateView(generic.UpdateView):
     model = models.external_list_inflow
     template_name = 'dpmfa/external_inflow/external_list_inflow_form.html'
+    form_class = forms.ExternalListInflowForm
+    context_object_name = 'external_list_inflow'
     
-    fields = [
-        'target',
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
     
 class ExternalListInflowDeleteView(generic.DeleteView):
     model = models.external_list_inflow
@@ -959,36 +1008,45 @@ class ExternalFunctionInflowDeleteView(generic.DeleteView):
         return HttpResponseRedirect(self.get_success_url())
     
 #==============================================================================
-#  Fixed Value Inflow
+#  External Inflows
 #==============================================================================
 
-class FixedValueInflowDetailView(generic.DetailView):
-    model = models.fixed_value_inflow
+class SinglePeriodInflowRedirectView(generic.RedirectView):
+    permanent = False
+    query_string = False
+    
+    def get_redirect_url(self, *args, **kwargs):
+        try: 
+            single_period_inflow_pk = self.kwargs['single_period_inflow_pk']
+            if len(models.fixed_value_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
+                print("trying to get fixed value inflow")
+                return models.fixed_value_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
+            elif len(models.stochastic_function_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
+                print("trying to get stochastic function inflow")
+                return models.stochastic_function_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
+            elif len(models.random_choice_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
+                print("trying to get random choice inflow")
+                return models.random_choice_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
+            else:
+                print("Could not retrieve a compartment for inflow")
+        except:
+            print("Redirection of single period inflow failed")
 
-    def get_context_data(self, **kwargs):
-        context = super(FixedValueInflowDetailView, self).get_context_data(**kwargs)
-
-        external_list_inflow_pk = self.object.external_list_inflow.pk
-        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
-
-        return context
+# Fixed Value Inflow
 
 class FixedValueInflowUpdateView(generic.UpdateView):
     model = models.fixed_value_inflow
-
-    fields = ['value']
-
-    def get_context_data(self, **kwargs):
-        context = super(FixedValueInflowUpdateView, self).get_context_data(**kwargs)
-
-        external_list_inflow_pk = self.object.external_list_inflow.pk
-        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
-
-        return context
+    template_name = 'dpmfa/compartments/fixed_value_inflow_form.html'
+    form_class = forms.FixedValueInflowForm
+    context_object_name = 'fixed_value_inflow'
 
     def get_success_url(self, **kwargs):
-        external_list_inflow_pk = self.object.external_list_inflow.pk
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk})
+        external_list_inflow = self.object.external_list_inflow.get_queryset()[0]
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': external_list_inflow.pk})
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:fixed-value-inflow-update', args=[self.id])
+
 
 class FixedValueInflowDeleteView(generic.DeleteView):
     model = models.fixed_value_inflow
@@ -1045,9 +1103,9 @@ class FixedValueInflowCreateView(generic.CreateView):
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
 
-# ==============================================================================
+
 #  Random Choice Inflow
-# ==============================================================================
+
 
 class RandomChoiceInflowDetailView(generic.DetailView):
     model = models.random_choice_inflow
@@ -1065,20 +1123,16 @@ class RandomChoiceInflowDetailView(generic.DetailView):
 
 class RandomChoiceInflowUpdateView(generic.UpdateView):
     model = models.random_choice_inflow
-
-    fields = ['sample']
-
-    def get_context_data(self, **kwargs):
-        context = super(RandomChoiceInflowUpdateView, self).get_context_data(**kwargs)
-
-        external_list_inflow_pk = self.object.external_list_inflow.pk
-        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
-
-        return context
+    template_name = 'dpmfa/compartments/random_choice_inflow_form.html'
+    form_class = forms.RandomChoiceInflowForm
+    context_object_name = 'random_choice_inflow'
 
     def get_success_url(self, **kwargs):
-        external_list_inflow_pk = self.object.external_list_inflow.pk
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk})
+        external_list_inflow = self.object.external_list_inflow.get_queryset()[0]
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': external_list_inflow.pk})
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:random-choice-inflow-update', args=[self.id])
 
 
 class RandomChoiceInflowDeleteView(generic.DeleteView):
@@ -1139,12 +1193,13 @@ class RandomChoiceInflowCreateView(generic.CreateView):
         return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
 
 
-# ==============================================================================
+
 #  Stochastic Function Inflow
-# ==============================================================================
+
 
 class StochasticFunctionInflowDetailView(generic.DetailView):
     model = models.stochastic_function_inflow
+    template_name = 'dpmfa/external_inflow/stochastic_function_inflow_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(StochasticFunctionInflowDetailView, self).get_context_data(**kwargs)
@@ -1156,24 +1211,21 @@ class StochasticFunctionInflowDetailView(generic.DetailView):
 
 class StochasticFunctionInflowUpdateView(generic.UpdateView):
     model = models.stochastic_function_inflow
-
-    fields = ['pdf', 'parameter_values']
-
-    def get_context_data(self, **kwargs):
-        context = super(StochasticFunctionInflowUpdateView, self).get_context_data(**kwargs)
-
-        external_list_inflow_pk = self.object.external_list_inflow.pk
-        context['external_list_inflow'] = models.external_list_inflow.objects.get(pk=external_list_inflow_pk)
-
-        return context
+    template_name = 'dpmfa/compartments/stochastic_function_inflow_form.html'
+    form_class = forms.StochasticFunctionInflowForm
+    context_object_name = 'stochastic_function_inflow'
 
     def get_success_url(self, **kwargs):
-        external_list_inflow_pk = self.object.external_list_inflow.pk
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': external_list_inflow_pk })
+        stochastic_function_inflow = self.object.stochastic_function_inflow.get_queryset()[0]
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': stochastic_function_inflow.pk})
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:stochastic-function-inflow-update', args=[self.id])
 
 
 class StochasticFunctionInflowDeleteView(generic.DeleteView):
     model = models.stochastic_function_inflow
+    template_name = 'dpmfa/external_inflow/stochastic_function_inflow_confirm_delete.html'
 
     def get_context_data(self, **kwargs):
         context = super(StochasticFunctionInflowDeleteView, self).get_context_data(**kwargs)
@@ -1198,6 +1250,7 @@ class StochasticFunctionInflowDeleteView(generic.DeleteView):
 
 class StochasticFunctionInflowCreateView(generic.CreateView):
     model = models.stochastic_function_inflow
+    template_name = 'dpmfa/external_inflow/stochastic_function_inflow_form.html'
 
     fields = ['pdf', 'parameter_values']
 

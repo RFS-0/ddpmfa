@@ -10,21 +10,6 @@
 
 {% block body %}
 <header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-                {% if external_list_inflow.pk %}
-                    Edit External List Inflow &quot;{{external_list_inflow.name}}&quot;
-                {% else %}
-                    New External List Inflow
-                {% endif %}
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-        </ul>
-      </div>
-    </nav>
 </header>
 
 
@@ -60,7 +45,7 @@
 
             <form method="POST" class="post-form">{% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="save btn btn-default">Save</button>
+                <button type="submit" class="save btn btn-primary">Save</button>
             </form>
         </div>
     </div>

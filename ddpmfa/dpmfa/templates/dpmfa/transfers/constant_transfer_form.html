@@ -1,12 +1,53 @@
 {% extends "dpmfa/page.html" %}
 {% load static %}
 
-{% block title %} New constant transfer {% endblock %}
+{% block title %}
+    {% if constant_transfer.pk %}
+        Edit Constant Transfer &quot;{{constant_transfer.name}}&quot;
+    {% else %}
+  		New Constant Transfer
+    {% endif %}
+{% endblock %}
 
 {% block body %}
+<header>
+</header>
 
-<h1> New constant transfer</h1>
 
-{{ form.as_p }}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' model.project.pk %}">{{ constant_transfer.target.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.pk %}">{{ constant_transfer.model.name }}</a></li>
+                {% if constant_transfer.pk %}
+                    <li class="breadcrumb-item"><a href="{% url 'dpmfa:constant-transfer-detail' constant_transfer.pk %}">{{ constant_transfer.name }}</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
+                {% else %}
+                    <li class="breadcrumb-item active">New Constant Transfer</li>
+                {% endif %}
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>
+                {% if constant_transfer.pk %}
+                    Edit Constant Transfer &quot;{{constant_transfer.name}}&quot;
+                {% else %}
+                    New Constant Transfer
+                {% endif %}
+            </h1>
+
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

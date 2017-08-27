@@ -390,7 +390,7 @@ class Command(BaseCommand):
         random_choice_transfer_for_first_stage_flow_compartment.save()
         
         const_transfer_for_first_stage_flow_compartment = constant_transfer(
-            target=second_stage_use_compartment, 
+            target=first_stage_disposal_compartment, 
             source_flow_compartment = first_stage_flow_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 

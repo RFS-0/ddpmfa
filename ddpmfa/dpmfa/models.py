@@ -192,6 +192,9 @@ class flow_compartment(compartment):
         verbose_name='Log outflows', 
         default=True)
     
+    def get_absolute_url(self):
+        return reverse('dpmfa:flow-compartment-update', args=[self.id])
+    
 #==============================================================================
 #  Stock
 #==============================================================================
@@ -204,6 +207,9 @@ class stock(flow_compartment):
         on_delete=models.CASCADE,
         null=True)
     
+    def get_absolute_url(self):
+        return reverse('dpmfa:stock--update', args=[self.id])
+    
 #==============================================================================
 #  Sink
 #==============================================================================
@@ -212,6 +218,9 @@ class sink(compartment):
     
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:sink-update', args=[self.id])
     
 #==============================================================================
 #  Releases
@@ -341,6 +350,9 @@ class constant_transfer(transfer):
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
     
+    def get_absolute_url(self):
+        return reverse('dpmfa:constant-transfer-update', args=[self.id])
+    
 class random_choice_transfer(transfer):
     
     # TODO [all]: we will have to implement a float list validator 
@@ -351,6 +363,9 @@ class random_choice_transfer(transfer):
     
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:random-choice-transfer-update', args=[self.id])
     
 class stochastic_transfer(transfer):
     
@@ -368,6 +383,9 @@ class stochastic_transfer(transfer):
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
     
+    def get_absolute_url(self):
+        return reverse('dpmfa:stochastic-transfer-update', args=[self.id])
+    
 class aggregated_transfer(transfer):
     
     # TODO: implement a float list validator
@@ -378,12 +396,40 @@ class aggregated_transfer(transfer):
         
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:aggregated-transfer-update', args=[self.id])
+    
 
 #==============================================================================
 #  External Inflow
 #==============================================================================
     
 class external_inflow(models.Model):
+    
+    NORMAL = 'NORM'
+    GEOMETRIC = 'GEO'
+    BINOMIAL = 'BINOM'
+    EXPONENTIAL = 'EXPO'
+    TRIANGULAR = 'TRI'
+    UNIFORM = 'UNI'
+    GAMMA = 'GAM'
+    PARETO = 'PAR'
+    POISSON = 'POI'
+    CHISQUARE = 'CHI'
+
+    DISTRIBUTION_TYPES = (
+    (NORMAL, 'Normal distribution'),
+    (GEOMETRIC, 'Geometric distribution'),
+    (BINOMIAL, 'Binomial distribution'),
+    (EXPONENTIAL, 'Exponential distribution'),
+    (TRIANGULAR, 'Triangular distribution'),
+    (UNIFORM, 'Uniform distribution'),
+    (GAMMA, 'Gamma distribution'),
+    (PARETO, 'Pareto distribution'),
+    (POISSON, 'Poisson distribution'),
+    (CHISQUARE, 'Chisquare distribution'),    
+    )
     
     target = models.ForeignKey(
         to='compartment', 
@@ -403,6 +449,7 @@ class external_inflow(models.Model):
     
     # TODO [all]: we will have to implement a function field to store functions
     derivation_distribution = models.CharField(
+        choices = DISTRIBUTION_TYPES,
         verbose_name='Probability density function', 
         max_length=250, 
         null=True)
@@ -494,7 +541,7 @@ class single_period_inflow(models.Model):
         null=True)
     
     def __str__(self):
-        return 'primary key: ' + ' (' + str(self.pk) + ')'
+        return str(self.pk)
     
 class fixed_value_inflow(single_period_inflow):
     

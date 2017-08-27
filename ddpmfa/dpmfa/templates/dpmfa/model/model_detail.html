@@ -1,6 +1,7 @@
 {% extends "dpmfa/page.html" %}
 {% load class_tag %}
 {% load static %}
+{% load custom_dpmfa_tags %}
 
 {% if goto %}
 <script> window.location.hash = '#{{goto}}'; </script>
@@ -71,7 +72,7 @@
 					 							{% for flow_compartment in flow_compartments %}
 					                        		<tr>
 					                               		<td class="dpmfa-td-20-top">
-					                               			<a href="{% url 'dpmfa:flow-compartment-detail' flow_compartment.pk %}">
+					                               			<a href="{% url 'dpmfa:flow-compartment-detail' flow_compartment.pk %}" data-toggle="tooltip" title="Detail">
 					                               			{{ flow_compartment.name }}</a>
 					                               		</td>
 					                               		<td class="dpmfa-td-10-top">
@@ -87,7 +88,7 @@
 					                               			{{ flow_compartment.adjust_outgoing_tcs }}
 					                               		</td>
 					                               		<td class="dpmfa-td-10-top">
-					                                    	<a href="{% url 'dpmfa:flow-compartment-update' flow_compartment.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    	<a href="{% url 'dpmfa:flow-compartment-update' flow_compartment.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    	</a>
 					                               		</td>
@@ -128,7 +129,7 @@
 					                   		{% for stock in stocks %}
 					                        	<tr>
 					                            	<td class="dpmfa-td-20-top">
-					                               		<a href="{% url 'dpmfa:stock-update' stock.pk %}">
+					                               		<a href="{% url 'dpmfa:stock-detail' stock.pk %}">
 					                               		{{ stock.name }}</a>
 					                           		</td>
 					                               	<td class="dpmfa-td-10-top"">
@@ -149,7 +150,7 @@
 				                               			</a>
 				                               		</td>
 					                               	<td class="dpmfa-td-10-top">
-					                                    <a href="{% url 'dpmfa:local-release-update' stock.local_release.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    <a href="{% url 'dpmfa:stock-update' stock.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 					                                    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
 					                               	</td>
@@ -180,6 +181,7 @@
 					                            <th scope="row">Name</th>
 					                            <th scope="row">Categories</th>
 			                            		<th scope="row">Log inflows</th> 
+			                            		<th scope="row">Transfers</th> 
 					                            <th scope="row">Action</th>
 					                        </tr>
 					                    </thead>
@@ -187,17 +189,32 @@
 						                	{% for sink in sinks %}
 						                    	<tr>
 					                               	<td class="dpmfa-td-20-top"">
-					                               		<a href="{% url 'dpmfa:sink-detail' sink.pk %}">
+					                               		<a href="{% url 'dpmfa:sink-detail' sink.pk %}" data-toggle="tooltip" title="Detail">
 					                               		{{ sink.name }}</a>
 					                               	</td>
 					                               	<td class="dpmfa-td-10-top">
 					                               		{{ sink.categories }}
 					                               	</td>
-					                               	<td class="dpmfa-td-59-top">
+					                               	<td class="dpmfa-td-5-top">
 					                               		{{ sink.log_inflows }}
 					                               	</td>
+					                               	<td class="dpmfa-td-59-top">
+					                               	{% if transfers_of_sink %}
+					                               		{% for transfer_of_sink in transfers_of_sink|lookup:sink.pk  %}
+					                               			{% if transfer_of_sink.pk %}
+					                               				<p>
+					                               				<a href="{% url 'dpmfa:transfer-redirect' transfer_of_sink.pk %}">
+					                               				{{ transfer_of_sink.name }}
+					                               				</p>
+					                               				</a>
+					                               			{% endif %}
+					                               		{% endfor %}
+					                               	{% else %}
+					                               		lookup for transfers of sink failed
+					                               	{% endif %}
+					                               	</td>
 					                               	<td class="dpmfa-td-10-top">
-					                                    <a href="{% url 'dpmfa:sink-update' sink.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    <a href="{% url 'dpmfa:sink-update' sink.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 					                                    	<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
 					                               	</td>
@@ -235,6 +252,7 @@
 							                            <th scope="row">Derivation distribution</th>
 							                            <th scope="row">Derivation parameters</th>
 							                            <th scope="row">Derivation factor</th>
+							                            <th scope="row">Single period inflows</th>
 							                            <th scope="row">Action</th>
 							                        </tr>
 							                    </thead>
@@ -242,26 +260,44 @@
 							                        {% for external_list_inflow in external_list_inflows %}
 							                           <tr>
 							                               	<td class="dpmfa-td-20-top">
-							                               		<a href="{% url 'dpmfa:external-list-inflow-detail' external_list_inflow.pk %}">
+							                               		<a href="{% url 'dpmfa:external-list-inflow-detail' external_list_inflow.pk %}" data-toggle="tooltip" title="Detail">
 							                               		{{ external_list_inflow.name }}</a>
 							                               	</td>
 							                               	<td class="dpmfa-td-10-top">
-							                               		{{ external_list_inflow.target }}
+							                               		<a href="{% url 'dpmfa:compartment-redirect' external_list_inflow.target.pk %}">
+							                               		{{ external_list_inflow.target.name }}</a>
 							                               	</td>
 							                               	<td class="dpmfa-td-5-top">
 							                               		{{ external_list_inflow.start_delay}}
 							                               	</td>
-							                               	<td class="dpmfa-td-10-top">
+							                               	<td class="dpmfa-td-5-top">
 							                               		{{ external_list_inflow.derivation_distribution}}
 							                               	</td> 
-							                               	<td class="dpmfa-td-10-top">
+							                               	<td class="dpmfa-td-5-top">
 							                               		{{ external_list_inflow.derivation_parameters}}
 							                               	</td>
-							                               	<td class="dpmfa-td-20-top">
+							                               	<td class="dpmfa-td-5-top">
 							                               		{{ external_list_inflow.derivation_factor}}
 							                               	</td>
+							                               	<td class="dpmfa-td-40-top">
+						                               			{% if single_period_inflows %}
+							                               			<ol>
+									                               		{% for single_period_inflow in single_period_inflows|lookup:external_list_inflow.pk  %}
+									                               			{% if single_period_inflow.pk %}
+									                               				<li>
+									                               				<a href="{% url 'dpmfa:single-period-inflow-redirect' single_period_inflow.pk %}">
+									                               				{{ single_period_inflow }}
+									                               				</li>
+									                               				</a>
+									                               			{% endif %}
+									                               		{% endfor %}
+									                               		{% else %}
+									                               			single period lookup failed
+							                               			</ol>
+									                      		{% endif %}
+							                               	</td>
 							                             	<td class="dpmfa-td-10-top">
-							                             		<a href="{% url 'dpmfa:external-list-inflow-update' external_list_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+							                             		<a href="{% url 'dpmfa:external-list-inflow-update' external_list_inflow.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 							                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 							                                    </a>
 							                               </td>
@@ -304,11 +340,12 @@
 				                   		{% for external_function_inflow in external_function_inflows %}
 				                       		<tr>
 				                           		<td class="dpmfa-td-20-top">
-				                           			<a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}">
+				                           			<a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}" data-toggle="tooltip" title="Detail">
 			                               			{{ external_function_inflow.name }}</a>
 			                               		</td>
 				                               	<td class="dpmfa-td-10-top">
-				                               		{{ external_function_inflow.target }}
+				                               		<a href="{% url 'dpmfa:compartment-redirect' external_function_inflow.target.pk %}" data-toggle="tooltip" title="Update">
+				                               		{{ external_function_inflow.target }}</a>
 				                               	</td>
 				                               	<td class="dpmfa-td-5-top">
 				                               		{{ external_function_inflow.start_delay}}
@@ -330,7 +367,7 @@
 				                               		{{ external_function_inflow.inflow_function}}
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
-				                             		<a href="{% url 'dpmfa:external-function-inflow-update' external_function_inflow.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+				                             		<a href="{% url 'dpmfa:external-function-inflow-update' external_function_inflow.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 				                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				                                    </a>
 				                               	</td>
@@ -388,7 +425,8 @@
 					                               		{{ constant_transfer.source_flow_compartment }} 
 					                               </td>
 					                               <td class="dpmfa-td-20-top">
-					                               		{{ constant_transfer.target }} 
+					                               		<a href="{% url 'dpmfa:compartment-redirect' constant_transfer.target.pk %}">
+					                               		{{ constant_transfer.target.name }} 
 					                               </td>
 					                               <td class="dpmfa-td-10-top">
 					                               		{{ constant_transfer.belongs_to_aggregated_transfer }} 
@@ -397,7 +435,7 @@
 					                               		{{ constant_transfer.value }} 
 					                               </td>
 					                               <td class="dmpfa-td-10-top">
-					                                    <a href="{% url 'dpmfa:constant-transfer-update' constant_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    <a href="{% url 'dpmfa:constant-transfer-update' constant_transfer.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
 					                               </td>
@@ -463,7 +501,7 @@
 					                               		{{ random_choice_transfer.sample }} 
 					                               </td>
 					                               <td class="dmpfa-td-10-top">
-					                                    <a href="{% url 'dpmfa:random-choice-transfer-update' random_choice_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    <a href="{% url 'dpmfa:random-choice-transfer-update' random_choice_transfer.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
 					                               </td>
@@ -533,7 +571,7 @@
 					                               		{{ stochastic_transfer.function }} 
 					                               </td>
 					                               <td class="dmpfa-td-10-top">
-					                                    <a href="{% url 'dpmfa:stochastic-transfer-update' stochastic_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                                    <a href="{% url 'dpmfa:stochastic-transfer-update' stochastic_transfer.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 					                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 					                                    </a>
 					                               </td>
