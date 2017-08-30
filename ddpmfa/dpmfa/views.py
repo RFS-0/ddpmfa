@@ -180,7 +180,9 @@ class ModelDetailView(generic.DetailView):
 
     def find_result_by_model(self, model_pk):
         return models.result.objects.filter(model=model_pk)
-            
+    
+    def find_experiments_by_model(self, model_pk):
+        return models.experiment.objects.filter(model_instance=model_pk)
 
     def get_context_data(self, **kwargs):
         context = super(ModelDetailView, self).get_context_data(**kwargs)
@@ -201,9 +203,8 @@ class ModelDetailView(generic.DetailView):
         context['single_period_inflows'] = self.find_single_period_inflows_by_external_list_inflow(self.object.pk)
         context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
 
-        context['simulation'] = self.find_simulation_by_model(self.object.pk)
-        context['results'] = self.find_result_by_model(self.object.pk)
-
+        context['model_instances'] = self.find_model_instances_by_model(self.object.pk)
+        
         return context
 
 

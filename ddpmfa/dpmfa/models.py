@@ -590,8 +590,14 @@ class random_choice_inflow(single_period_inflow):
 
 class experiment(models.Model):
     
+    prototype_model = models.ForeignKey(
+        to='model',
+        related_name='experiments',
+        on_delete=models.CASCADE,
+        null=True)
+    
     model_instance = models.OneToOneField(
-        to=model_instance,
+        to='model_instance',
         related_name='experiment',
         on_delete=models.CASCADE,
         null=True)

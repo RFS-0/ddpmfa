@@ -557,6 +557,7 @@ class Command(BaseCommand):
         iot_model_instance.save()
         
         iot_experiment = experiment(
+            prototype_model=iot_model,
             model_instance = iot_model_instance,
             name='IoT Experiment',
             runs=100,
