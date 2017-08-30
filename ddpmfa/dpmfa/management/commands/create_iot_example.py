@@ -509,17 +509,6 @@ class Command(BaseCommand):
         iot_simulation.save()
         
 #==============================================================================
-#  Results
-#==============================================================================
-        
-        iot_result = result(
-            model = iot_model, 
-            result = 'A CSV file'
-            )
-        
-        iot_result.save()
-        
-#==============================================================================
 #  Entities only for test purposes
 #==============================================================================  
 
@@ -558,6 +547,7 @@ class Command(BaseCommand):
         
         iot_experiment = experiment(
             prototype_model=iot_model,
+            name_of_model_instance='The name for this model instance',
             model_instance = iot_model_instance,
             name='IoT Experiment',
             runs=100,
@@ -565,6 +555,14 @@ class Command(BaseCommand):
             )
         
         iot_experiment.save()
+        
+        iot_result = result(
+            model_instance=iot_model_instance,
+            experiment=iot_experiment,
+            file=None)
+        
+        iot_result.save()
+        
 
 
 

@@ -601,6 +601,11 @@ class experiment(models.Model):
         related_name='experiment',
         on_delete=models.CASCADE,
         null=True)
+    
+    name_of_model_instance = models.CharField(
+        verbose_name='Name',
+        max_length=250,
+        null=True)
 
     name = models.CharField(
         verbose_name='Name',
@@ -782,24 +787,32 @@ class stock_immediate_flow_record(models.Model):
 
 class result(models.Model):
     
-    model = models.ForeignKey(
-        to = 'model',
+    model_instance = models.ForeignKey(
+        to = 'model_instance',
         related_name = 'results',
         verbose_name = 'Results',
         on_delete = models.CASCADE,
         null = True
         )
     
+    experiment = models.OneToOneField(
+        to = 'experiment',
+        related_name = 'result',
+        null = True
+        )
+    
+    file = models.FileField(
+        verbose_name = 'File',
+        upload_to = 'models/%model_instance_pk/',
+        null = True
+        )
+    
     evt_created = models.DateTimeField(
-        'Date created', 
-        auto_now_add=True, 
-        null=True)
+        verbose_name = 'Date created', 
+        auto_now_add = True, 
+        null = True)
     
     result = models.CharField(
-        verbose_name='Result', 
-        max_length=250, 
-        null=True)
-    
-    
-    
-    
+        verbose_name = 'Result', 
+        max_length = 250, 
+        null = True)
