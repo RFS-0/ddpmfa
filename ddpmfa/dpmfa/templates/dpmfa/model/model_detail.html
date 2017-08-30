@@ -526,10 +526,18 @@
 					                               		{{ random_choice_transfer.weight}} 
 					                               </td>
 					                               <td class="dpmfa-td-20-top 	">
-					                               		{{ random_choice_transfer.source_flow_compartment }} 
+				                            			{% if random_choice_transfer.source_flow_compartment %}
+														<a href="{% url 'dpmfa:compartment-redirect' random_choice_transfer.source_flow_compartment.pk %}">
+					                               		{{ random_choice_transfer.source_flow_compartment.name }} 
+					                               		</a>
+														{% endif %}
 					                               </td>
 					                               <td class="dpmfa-td-20-top">
-					                               		{{ random_choice_transfer.target }} 
+					                               		{% if random_choice_transfer.target %}
+														<a href="{% url 'dpmfa:compartment-redirect' random_choice_transfer.target.pk %}">
+					                               		{{ random_choice_transfer.target.name }} 
+					                               		</a>
+														{% endif %}
 					                               </td>
 					                               <td class="dpmfa-td-5-top">
 					                               		{{ random_choice_transfer.belongs_to_aggregated_transfer }} 
@@ -593,10 +601,18 @@
 					                               		{{ stochastic_transfer.weight}} 
 					                               </td>
 					                               <td class="dpmfa-td-20-top 	">
-					                               		{{ stochastic_transfer.source_flow_compartment }} 
+					                               		{% if stochastic_transfer.source_flow_compartment %}
+														<a href="{% url 'dpmfa:compartment-redirect' stochastic_transfer.source_flow_compartment.pk %}">
+					                               		{{ stochastic_transfer.source_flow_compartment.name }} 
+					                               		</a>
+														{% endif %}
 					                               </td>
 					                               <td class="dpmfa-td-15-top">
-					                               		{{ stochastic_transfer.target }} 
+					                               		{% if stochastic_transfer.target %}
+														<a href="{% url 'dpmfa:compartment-redirect' stochastic_transfer.target.pk %}">
+					                               		{{ stochastic_transfer.target.name }} 
+					                               		</a>
+														{% endif %}					                               
 					                               </td>
 					                               <td class="dpmfa-td-5-top">
 					                               		{{ stochastic_transfer.belongs_to_aggregated_transfer }} 
@@ -661,16 +677,24 @@
 					                               		{{ aggregated_transfer.weight}} 
 					                               	</td>
 					                               	<td class="dpmfa-td-20-top 	">
-					                               		{{ aggregated_transfer.source_flow_compartment }} 
+					                               		{% if aggregated_transfer.source_flow_compartment %}
+														<a href="{% url 'dpmfa:compartment-redirect' aggregated_transfer.source_flow_compartment.pk %}">
+					                               		{{ aggregated_transfer.source_flow_compartment.name }} 
+					                               		</a>
+														{% endif %}					                               	
 					                               	</td>
 					                               	<td class="dpmfa-td-15-top">
-					                               		{{ aggregated_transfer.target }} 
+					                               		{% if aggregated_transfer.target %}
+														<a href="{% url 'dpmfa:compartment-redirect' aggregated_transfer.target.pk %}">
+					                               		{{ aggregated_transfer.target.name }} 
+					                               		</a>
+														{% endif %}						                               	
 					                               	</td>
 					                               	<td class="dpmfa-td-25-top">
 					                               		{{ aggregated_transfer.weights }} 
 					                               	</td>
 					                               	<td class="dmpfa-td-10-top">
-					                               		<a href="{% url 'dpmfa:aggregated-transfer-update' aggregated_transfer.pk %}" class="btn btn-default" data-toggle="tooltip" title="Edit">
+					                               		<a href="{% url 'dpmfa:aggregated-transfer-update' aggregated_transfer.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
 				                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 				                                    </a>
 					                               </td>

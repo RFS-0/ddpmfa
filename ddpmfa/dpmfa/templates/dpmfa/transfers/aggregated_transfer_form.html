@@ -1,0 +1,45 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %}
+    {% if aggregated_transfer.pk %}
+        Edit Aggregated Transfer &quot;{{aggregated_transfer.name}}&quot;
+    {% else %}
+  		New Aggregated Transfer
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+<header>
+</header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' model.project.pk %}">{{ aggregated_transfer.target.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.pk %}">{{ aggregated_transfer.target.model.name }}</a></li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>
+                {% if aggregated_transfer.pk %}
+                    Edit Aggregated Transfer &quot;{{aggregated_transfer.name}}&quot;
+                {% else %}
+                    New Aggregated Transfer
+                {% endif %}
+            </h1>
+
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -257,7 +257,60 @@ class RandomChoiceTransferForm(forms.ModelForm):
                                                    'id': 'randomChoiceTransferrWeight',
                                                    'placeholder' : 'Enter a sample'})
             }
+        
+# Aggregated Transfer    
+        
+class AggregatedTransferForm(forms.ModelForm):
+    class Meta:
+        model = django_models.aggregated_transfer
+        fields = ('name',
+                  'priority',
+                  'weight',
+                  'weights')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'aggregatedTransferrName',
+                                                   'placeholder' : 'Enter a name'}),
+            'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'aggregatedTransferrPriority',
+                                                   'placeholder' : 'Enter a priority'}),
+            'weight': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'aggregatedTransferrWeight',
+                                                   'placeholder' : 'Enter a weight'}),
+            'weights': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'aggregatedTransferrWeights',
+                                                   'placeholder' : 'Enter weights'})
+            }
 
+# Stochastic Transfer 
+        
+class StochasticTransferForm(forms.ModelForm):
+    class Meta:
+        model = django_models.stochastic_transfer
+        fields = ('name',
+                  'priority',
+                  'weight',
+                  'function',
+                  'parameters')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'stochasticTransferrName',
+                                                   'placeholder' : 'Enter a name'}),
+            'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'stochasticTransferrPriority',
+                                                   'placeholder' : 'Enter a priority'}),
+            'weight': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                   'id': 'stochasticTransferrWeight',
+                                                   'placeholder' : 'Enter a weight'}),
+            'function': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'stochasticTransferrWeights',
+                                                   'placeholder' : 'Enter weights'}),
+            'parameters': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'stochasticTransferrWeights',
+                                                   'placeholder' : 'Enter weights'})
+            }
 # ==============================================================================
 #  External Inflows
 # ==============================================================================

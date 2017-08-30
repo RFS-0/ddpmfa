@@ -701,6 +701,7 @@ class ConstantTransferDeleteView(generic.DeleteView):
 
 class RandomChoiceTransferDetailView(generic.DetailView):
     model = models.random_choice_transfer
+    template_name = 'dpmfa/transfers/random_choice_transfer_detail.html'
     
     fields = [
         'target',
@@ -727,16 +728,18 @@ class RandomChoiceTransferCreateView(generic.CreateView):
 
 class RandomChoiceTransferUpdateView(generic.UpdateView):
     model = models.random_choice_transfer
+    template_name = 'dpmfa/transfers/random_choice_transfer_form.html'
+    form_class = forms.RandomChoiceTransferForm
+    context_object_name = 'random_choice_transfer'
     
-    fields = [
-        'target',
-        'belongs_to_aggregated_transfer',
-        'name',
-        'priority',
-        'current_tc',
-        'weight',
-        'sample'
-        ]
+    def get_context_data(self, **kwargs):
+        context = super(RandomChoiceTransferUpdateView, self).get_context_data(**kwargs)
+        context['model'] = self.object.target.model 
+        return context
+    
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:random-choice-transfer-detail', kwargs={'pk': self.object.pk })
+
 
 class RandomChoiceTransferDeleteView(generic.UpdateView):
     model = models.random_choice_transfer
@@ -755,6 +758,7 @@ class RandomChoiceTransferDeleteView(generic.UpdateView):
 
 class AggregatedTransferDetailView(generic.DetailView):
     model = models.aggregated_transfer
+    template_name = 'dpmfa/transfers/aggregated_transfer_detail.html'
     
     fields = [
         'target',
@@ -779,15 +783,19 @@ class AggregatedTransferCreateView(generic.CreateView):
 
 class AggregatedTransferUpdateView(generic.UpdateView):
     model = models.aggregated_transfer
+    template_name = 'dpmfa/transfers/aggregated_transfer_form.html'
+    form_class = forms.AggregatedTransferForm
+    context_object_name = 'aggregated_transfer'
     
-    fields = [
-        'target',
-        'belongs_to_aggregated_transfer',
-        'name',
-        'priority',
-        'current_tc',
-        'weight'
-        ]
+    def get_context_data(self, **kwargs):
+        context = super(AggregatedTransferUpdateView, self).get_context_data(**kwargs)
+        context['model'] = self.object.target.model 
+        return context
+    
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:aggregated-transfer-detail', kwargs={'pk': self.object.pk })
+   
+    
     
 class AggregatedTransferDeleteView(generic.DeleteView):
     model = models.aggregated_transfer
@@ -805,6 +813,7 @@ class AggregatedTransferDeleteView(generic.DeleteView):
 
 class StochasticTransferDetailView(generic.DetailView):
     model = models.stochastic_transfer
+    template_name = 'dpmfa/transfers/stochastic_transfer_detail.html'
     
     fields = [
         'target',
@@ -833,17 +842,18 @@ class StochasticTransferCreateView(generic.CreateView):
     
 class StochasticTransferUpdateView(generic.UpdateView):
     model = models.stochastic_transfer
+    template_name = 'dpmfa/transfers/stochastic_transfer_form.html'
+    form_class = forms.StochasticTransferForm
+    context_object_name = 'stochastic_transfer'
     
-    fields = [
-        'target',
-        'belongs_to_aggregated_transfer',
-        'name',
-        'priority',
-        'current_tc',
-        'weight',
-        'parameters',
-        'function'
-        ]    
+    def get_context_data(self, **kwargs):
+        context = super(StochasticTransferUpdateView, self).get_context_data(**kwargs)
+        context['model'] = self.object.target.model 
+        return context
+    
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:stochastic-transfer-detail', kwargs={'pk': self.object.pk })
+
     
 class StochasticTransferDeleteView(generic.DeleteView):
     model = models.stochastic_transfer
