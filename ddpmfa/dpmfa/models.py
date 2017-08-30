@@ -8,6 +8,7 @@ from .validators.validator import *
 from jsonfield import JSONField
 
 from django.urls import reverse
+from django.db.models.fields.related import OneToOneField
 
 #==============================================================================
 #  Project
@@ -70,6 +71,7 @@ class model_instance(model):
         to= 'model',
         related_name='model_instances',
         verbose_name='prototype',
+        null=True,
         on_delete=models.CASCADE)
     
 #==============================================================================
@@ -587,6 +589,7 @@ class random_choice_inflow(single_period_inflow):
 # ==============================================================================
 
 class experiment(models.Model):
+    
     model_instance = models.OneToOneField(
         to=model_instance,
         related_name='experiment',
@@ -631,7 +634,6 @@ class simulation(models.Model):
         verbose_name='model', 
         null=True)
     
-    
     runs = models.IntegerField(
         verbose_name='Runs', 
         null=True)
@@ -643,6 +645,12 @@ class simulation(models.Model):
     evt_created = models.DateTimeField(
         'Date created', 
         auto_now_add=True, 
+        null=True)
+    
+    results = OneToOneField(
+        to='result', 
+        related_name='r', 
+        verbose_name='model', 
         null=True)
     
     evt_changed = models.DateTimeField(

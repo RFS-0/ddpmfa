@@ -546,6 +546,24 @@ class Command(BaseCommand):
             value=1)
         
         transfer_for_aggregated_transfer.save()
+        
+        iot_model_instance = model_instance(
+            project=iot_project,
+            prototype_model=iot_model,
+            name='IoT Model Instance',
+            description='This describes the model instance'
+            )
+        
+        iot_model_instance.save()
+        
+        iot_experiment = experiment(
+            model_instance = iot_model_instance,
+            name='IoT Experiment',
+            runs=100,
+            periods=50 
+            )
+        
+        iot_experiment.save()
 
 
 
