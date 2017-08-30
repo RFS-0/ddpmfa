@@ -45,6 +45,12 @@ class ProjectListView(generic.ListView):
 
 
 class ProjectDetailView(generic.DetailView):
+    
+    def get_context_data(self, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+        context['prototype_models'] = models.model.objects.filter(model_instance=None)
+        return context
+
     model = models.project
     form_class = forms.ProjectForm
     context_object_name = 'project'
@@ -240,6 +246,18 @@ class ModelDeleteView(generic.DeleteView):
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk})
+
+
+# ==============================================================================
+#  Experiment
+# ==============================================================================
+
+class ExperimentCreateView(generic.CreateView):
+    model = models.experiment
+    form_class = forms.ExperimentForm
+    template_name = 'dpmfa/experiment/experiment_form.html'
+
+
 
 
 # ==============================================================================

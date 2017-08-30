@@ -32,7 +32,7 @@ class project(models.Model):
 #==============================================================================
 
 class model(models.Model):
-    
+
     project = models.ForeignKey(
         to='project', 
         related_name='models', 
@@ -64,6 +64,13 @@ class model(models.Model):
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
 
+class model_instance(model):
+
+    prototype_model = models.ForeignKey(
+        to= 'model',
+        related_name='model_instances',
+        verbose_name='prototype',
+        on_delete=models.CASCADE)
     
 #==============================================================================
 #  Model Designer
@@ -572,8 +579,46 @@ class random_choice_inflow(single_period_inflow):
         null=True)
     
     def get_absolute_url(self):
-        return reverse('dpmfa:random-choice-inflow-update', args=[self.id]) 
-    
+        return reverse('dpmfa:random-choice-inflow-update', args=[self.id])
+
+
+# ==============================================================================
+#  Experiments
+# ==============================================================================
+
+class experiment(models.Model):
+    model_instance = models.OneToOneField(
+        to=model_instance,
+        related_name='experiment',
+        on_delete=models.CASCADE,
+        null=True)
+
+    name = models.CharField(
+        verbose_name='Name',
+        max_length=250,
+        null=True)
+
+    runs = models.IntegerField(
+        verbose_name='Runs',
+        null=True)
+
+    periods = models.IntegerField(
+        verbose_name='Periods',
+        null=True)
+
+    evt_created = models.DateTimeField(
+        'Date created',
+        auto_now_add=True,
+        null=True)
+
+    evt_changed = models.DateTimeField(
+        verbose_name='Time of last change',
+        auto_now=True,
+        null=True)
+
+    def __str__(self):
+        return str(self.pk)
+
 #==============================================================================
 #  Simulation
 #==============================================================================

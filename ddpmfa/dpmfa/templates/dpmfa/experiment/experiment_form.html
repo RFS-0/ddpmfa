@@ -1,0 +1,60 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %}
+    {% if experiment.name %}
+        Edit Experiment &quot;{{experiment.name}}&quot;
+    {% else %}
+        New Experiment
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+<header>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active">
+                {% if experiment.name %}
+                    {{experiment.name}}
+                {% else %}
+                    New Experiment
+                {% endif %}
+              </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>
+                {% if experiment.name %}
+                    Edit Experiment &quot;{{experiment.name}}&quot;
+                {% else %}
+                    New Experiment
+                {% endif %}
+            </h1>
+            <form method="POST" class="post-form">{% csrf_token %}
+				<div class="form-group">
+					<label class="form-control-label" for="experimentName">Name</label>
+					{{ form.name }}
+				</div>
+				<div class="form-group">
+					<label class="form-control-label" for="experimentRuns">Runs</label>
+					{{ form.runs }}
+				</div>
+				<div class="form-group">
+					<label class="form-control-label" for="experimentPeriods">Periods</label>
+					{{ form.periods }}
+				</div>
+				<button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+     </div>
+</div>
+
+{% endblock %}

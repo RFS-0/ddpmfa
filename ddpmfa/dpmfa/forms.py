@@ -41,6 +41,28 @@ class ModelForm(forms.ModelForm):
             }
 
 # ==============================================================================
+#  Experiment
+# ==============================================================================
+
+class ExperimentForm(forms.ModelForm):
+    class Meta:
+        model = django_models.experiment
+        fields = ('name', 'runs', 'periods')
+
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'experimentName',
+                                                   'placeholder': 'Enter an experiment name'}),
+            'runs': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                       'id': 'experimentRuns',
+                                                       'placeholder': 'Enter the number of runs for the simulation'}),
+            'periods': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                       'id': 'experimentPeriods',
+                                                       'placeholder': 'Enter the number of periods for the simulation'}),
+        }
+
+
+# ==============================================================================
 #  Compartments
 # ==============================================================================
 

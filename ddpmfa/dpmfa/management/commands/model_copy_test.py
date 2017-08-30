@@ -11,9 +11,10 @@ class Command(BaseCommand):
         print(model1)
         print('------------')
         print(model1.compartments.all())
-        
+
         print(model2)
         print('------------')
         print(model2.compartments.all())
+        print(model2.prototype_model)
 
 

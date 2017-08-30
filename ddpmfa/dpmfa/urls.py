@@ -61,7 +61,14 @@ urlpatterns = [
     
     # ex: /model/123/delete
     url(r'^model/(?P<pk>[0-9]+)/delete$', views.ModelDeleteView.as_view(), name='model-delete'),
-    
+
+# ==============================================================================
+# Experiment
+# ==============================================================================
+
+    # ex: /experiment/123/create
+    url(r'^experiment/(?P<prototype_pk>[0-9]+)/create$', views.ExperimentCreateView.as_view(), name='experiment-create'),
+
 #==============================================================================
 #  Model Designer
 #==============================================================================

@@ -33,9 +33,9 @@
     <div class="row">
     	<a class="btn btn-primary btn-md" href="{% url 'dpmfa:model-create' project.pk %}">New model</a>
     </div>
-    <div>
+	<div>
     	<p></p>
-    </div>
+	</div>
     <div class="row">
 	    {% if project.models.all %}
 	   		<table class="table table-striped">
@@ -46,8 +46,8 @@
 	                    <th>Actions</th>
 	                </tr>
 	            </thead>
-	           	<tbody>
-	           		{% for  model in project.models.all %}
+				<tbody>
+					{% for model in prototype_models %}
 	                	<tr>
 	                    	<td><a href="{% url 'dpmfa:model-detail' model.pk %}">{{ model.name }}</a></td>
 	                        <td class="dpmfa-pre-wrap">{{ model.description }}</td>

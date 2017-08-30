@@ -4,12 +4,20 @@ class ModelCopier(object):
 
     """
     Copies the reference model `model_ref` and saves the copy in the database.
-    Returns the copy of the model.
+    Returns the copy of the model. Expects a `model` as input and returns a
+    `model_instance`.
     """
     @staticmethod
     def copy_model(model_ref):
-        model_copy = dbm.model.objects.get(pk=model_ref.pk)
-        model_copy.pk = None
+        model_copy = dbm.model_instance(
+            project=model_ref.project,
+            name=model_ref.name,
+            description=model_ref.description,
+            seed=model_ref.seed,
+            evt_created=model_ref.evt_created,
+            evt_changed=model_ref.evt_changed,
+            prototype_model=model_ref
+        )
         model_copy.save()
 
         compartment_by_ref_pk = {}
