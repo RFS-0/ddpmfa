@@ -61,6 +61,13 @@ urlpatterns = [
     
     # ex: /model/123/delete
     url(r'^model/(?P<pk>[0-9]+)/delete$', views.ModelDeleteView.as_view(), name='model-delete'),
+    
+# ==============================================================================
+# Model Instance
+# ==============================================================================
+
+    # ex: /model_instance/123/read_only
+    url(r'^model_instance/(?P<pk>[0-9]+)/read_only$', views.ModelInstanceReadOnlyView.as_view(), name='model-instance-read-only'),
 
 # ==============================================================================
 # Experiment

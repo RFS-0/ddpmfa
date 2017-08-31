@@ -206,6 +206,123 @@ class ModelDetailView(generic.DetailView):
         context['experiments'] = self.find_experiments_by_model(self.object.pk)
         
         return context
+    
+class ModelInstanceReadOnlyView(generic.DetailView):
+    
+    model = models.model_instance
+    template_name = 'dpmfa/model_instance/model_instance_detail.html'
+
+    def find_external_list_inflows_by_model_instance(self, model_instance_pk):
+        return models.external_list_inflow.objects.filter(target__model=model_instance_pk)
+    
+    def find_single_period_inflows_by_external_list_inflow(self, model_instance_pk):
+        external_list_inflows = models.external_list_inflow.objects.filter(target__model=model_instance_pk)
+        single_period_inflows_of_external_list_inflow = {}
+        for external_list_inflow in external_list_inflows:
+            qs = external_list_inflow.single_period_inflows.get_queryset()
+            single_period_inflows = []
+            for single_period_inflow in qs:
+                single_period_inflows.append(single_period_inflow)
+            single_period_inflows.sort(key=lambda x: x.period)
+            single_period_inflows_of_external_list_inflow[external_list_inflow.pk] = single_period_inflows
+        return single_period_inflows_of_external_list_inflow
+
+    def find_external_function_inflows_by_model(self, model_instance_pk):
+        return models.external_function_inflow.objects.filter(target__model=model_instance_pk)
+
+    def find_constant_transfers_by_model(self, model_instance_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.constant_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.constant_transfer.objects.filter(target__model=model_instance_pk)
+
+    def find_random_choice_transfers_by_model(self, model_instance_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.random_choice_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.random_choice_transfer.objects.filter(target__model=model_instance_pk)
+
+    def find_stochastic_transfers_by_model(self, model_instance_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.stochastic_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.stochastic_transfer.objects.filter(target__model=model_instance_pk)
+
+    def find_aggregated_transfers_by_model(self, model_instance_pk, not_in_aggregated):
+        if not_in_aggregated:
+            return models.aggregated_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+        else:
+            return models.aggregated_transfer.objects.filter(target__model=model_instance_pk)
+
+    def find_flow_compartments_by_model(self, model_instance_pk):
+        return models.flow_compartment.objects.filter(model=model_instance_pk)
+    
+    def find_transfers_by_flow_compartment(self, model_instance_pk):
+        flow_compartments = models.flow_compartment.objects.filter(model=model_instance_pk)
+        transfers_of_flow_compartment = {}
+        for flow_compartment in flow_compartments:
+            qs = flow_compartment.transfers.get_queryset()
+            transfers = []
+            for transfer in qs:
+                transfers.append(transfer)
+            transfers.sort(key=lambda t: t.priority)
+            transfers_of_flow_compartment[flow_compartment.pk] = transfers
+        return transfers_of_flow_compartment
+
+    def find_stocks_by_model(self, model_instance_pk):
+        return models.stock.objects.filter(model=model_instance_pk)
+    
+    def find_transfers_by_stock(self, model_instance_pk):
+        stocks = models.stock.objects.filter(model=model_instance_pk)
+        stock_transfers = {}
+        for stock in stocks:
+            qs = stock.transfers.get_queryset()
+            stock_transfers[stock.pk] = qs
+        return stock_transfers
+
+    def find_sinks_by_model(self, model_instance_pk):
+        return models.sink.objects.filter(model=model_instance_pk)
+    
+    def find_transfers_by_sink(self, model_instance_pk):
+        sinks = models.sink.objects.filter(model=model_instance_pk)
+        sink_transfers = {}
+        for sink in sinks:
+            qs = sink.transfers.get_queryset()
+            sink_transfers[sink.pk] = qs
+        return sink_transfers
+    
+    
+    def find_simulation_by_model(self, model_instance_pk):
+        try:
+            simulation = models.simulation.objects.get(model=model_instance_pk)
+            return simulation
+        except:
+            return None
+
+    def find_result_by_model(self, model_instance_pk):
+        return models.result.objects.filter(model=model_instance_pk)
+    
+    def get_context_data(self, **kwargs):
+        context = super(ModelInstanceReadOnlyView, self).get_context_data(**kwargs)
+
+        context['flow_compartments'] = self.find_external_list_inflows_by_model_instance(self.object.pk)
+        context['transfers_of_flow_compartment'] = self.find_transfers_by_flow_compartment(self.object.pk)
+        context['stocks'] = self.find_stocks_by_model(self.object.pk)
+        context['transfers_of_stock'] = self.find_transfers_by_stock(self.object.pk)
+        context['sinks'] = self.find_sinks_by_model(self.object.pk)
+        context['transfers_of_sink'] = self.find_transfers_by_sink(self.object.pk)
+        
+        context['constant_transfers'] = self.find_constant_transfers_by_model(self.object.pk, False)
+        context['random_choice_transfers'] = self.find_random_choice_transfers_by_model(self.object.pk, False)
+        context['stochastic_transfers'] = self.find_stochastic_transfers_by_model(self.object.pk, False)
+        context['aggregated_transfers'] = self.find_aggregated_transfers_by_model(self.object.pk, False)
+        
+        context['external_list_inflows'] = self.find_external_list_inflows_by_model(self.object.pk)
+        context['single_period_inflows'] = self.find_single_period_inflows_by_external_list_inflow(self.object.pk)
+        context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
+        
+        return context
+
 
 
 class ModelCreateView(generic.CreateView):

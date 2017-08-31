@@ -1,21 +1,4 @@
-- make everyting navigatable
-	- make sure all necessary urls are defined
-	- make sure all necessary views are defined
-- make all necessary models editable
-	- create detail views
-	- create update views
-	- create delete views
-- implement table for editing
-- make sure all fields are persistable in a way that is acceptable for the dpmfa package
-	- check that all necessary models and fields exist
-	- implement the correct type of field for each of the necessary fields
-		- create validators where necessary
-		- add validators where necessary
-	- check that all fields can be converted to values as expected by dpmfa package
-		- possibly with tests
-- finish converter class implementation
- - add class to convert a models
- - add class to convert a simulation
-- make sure simulation can be executed by django
-- start implementing model designer
-- start implementing result display
+- add a read only view for model instance
+- add an create view for experiment
+- add a delete view for experiment
+- add a read only view for experiment
