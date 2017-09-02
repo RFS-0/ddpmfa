@@ -742,7 +742,7 @@
 				                               	</td>
 				                               	<td class="dpmfa-td-20-top">
 				                               		<a href="{% url 'dpmfa:model-instance-read-only' experiment.model_instance.pk %}">
-					                               		{{ experiment.name_of_model_instance}} 
+					                               		{{ experiment.model_instance.name }} ({{ experiment.model_instance.pk }})
 				                               		</a>
 				                               	</td>
 				                               	<td class="dpmfa-td-20-top">
@@ -768,7 +768,7 @@
 				                </table>
 				            {% endif %}
 				            
-			<a class="btn btn-primary" href="">
+			<a class="btn btn-primary" href="{% url 'dpmfa:experiment-create' model.pk %}">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 New Experiment
             </a>

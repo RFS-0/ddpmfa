@@ -9,6 +9,7 @@ from itertools import chain
 
 import dpmfa.forms as forms
 import dpmfa.models as models
+from dpmfa.modelcopier import ModelCopier
 
 
 # ==============================================================================
@@ -375,6 +376,21 @@ class ExperimentCreateView(generic.CreateView):
     form_class = forms.ExperimentForm
     template_name = 'dpmfa/experiment/experiment_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ExperimentCreateView, self).get_context_data(**kwargs)
+        context['prototype_model'] = models.model.objects.get(pk=self.kwargs['prototype_pk'])
+        return context
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.kwargs['prototype_pk'] })
+
+    def form_valid(self, form):
+        experiment = form.save(commit=False)
+        prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
+        model_instance = ModelCopier.copy_model(prototype_model)
+        experiment.prototype_model = prototype_model
+        experiment.model_instance = model_instance
+        return super(ExperimentCreateView, self).form_valid(form)
 
 
 

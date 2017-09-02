@@ -601,11 +601,6 @@ class experiment(models.Model):
         related_name='experiment',
         on_delete=models.CASCADE,
         null=True)
-    
-    name_of_model_instance = models.CharField(
-        verbose_name='Name',
-        max_length=250,
-        null=True)
 
     name = models.CharField(
         verbose_name='Name',

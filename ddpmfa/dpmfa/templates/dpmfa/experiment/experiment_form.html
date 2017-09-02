@@ -2,11 +2,7 @@
 {% load static %}
 
 {% block title %}
-    {% if experiment.name %}
-        Edit Experiment &quot;{{experiment.name}}&quot;
-    {% else %}
-        New Experiment
-    {% endif %}
+    New Experiment
 {% endblock %}
 
 {% block body %}
@@ -18,13 +14,11 @@
     <div class="row">
         <div class="col-md-12">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item active">
-                {% if experiment.name %}
-                    {{experiment.name}}
-                {% else %}
-                    New Experiment
-                {% endif %}
-              </li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' prototype_model.project.pk %}">{{ prototype_model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' prototype_model.pk %}">{{ prototype_model.name }}</a></li>
+                <li class="breadcrumb-item active">New Experiment</li>
             </ol>
         </div>
     </div>
@@ -32,11 +26,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>
-                {% if experiment.name %}
-                    Edit Experiment &quot;{{experiment.name}}&quot;
-                {% else %}
-                    New Experiment
-                {% endif %}
+                New Experiment
             </h1>
             <form method="POST" class="post-form">{% csrf_token %}
 				<div class="form-group">

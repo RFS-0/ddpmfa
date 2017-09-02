@@ -547,7 +547,6 @@ class Command(BaseCommand):
         
         iot_experiment = experiment(
             prototype_model=iot_model,
-            name_of_model_instance='The name for this model instance',
             model_instance = iot_model_instance,
             name='IoT Experiment',
             runs=100,
