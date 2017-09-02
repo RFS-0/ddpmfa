@@ -205,6 +205,7 @@ class ModelDetailView(generic.DetailView):
         context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
         
         context['experiments'] = self.find_experiments_by_model(self.object.pk)
+        context['check_models'] = models.model.objects.all()
         
         return context
     
@@ -392,7 +393,18 @@ class ExperimentCreateView(generic.CreateView):
         experiment.model_instance = model_instance
         return super(ExperimentCreateView, self).form_valid(form)
 
+class ExperimentDeleteView(generic.DeleteView):
+    model = models.experiment
+    template_name = 'dpmfa/experiment/experiment_confirm_delete.html'
 
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.prototype_model.pk })
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.model_instance.delete()
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 # ==============================================================================
 #  Model Designer

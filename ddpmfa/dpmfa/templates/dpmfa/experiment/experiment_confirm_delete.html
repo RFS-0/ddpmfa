@@ -1,0 +1,42 @@
+{% extends "dpmfa/page.html" %}
+
+{% block title %}Delete Experiment &quot;{{experiment.name}}&quot;?{% endblock %}
+
+{% block body %}
+
+<header>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' experiment.prototype_model.project.pk %}">{{ experiment.prototype_model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' experiment.prototype_model.pk %}">{{ experiment.prototype_model.name }}</a></li>
+
+                <li class="breadcrumb-item active">
+                    Delete Experiment &quot;{{experiment.name}}&quot;?
+              </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>Delete Experiment &quot;{{experiment.name}}&quot;?</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form action="" method="post">{% csrf_token %}
+                <p>Are you sure you want to delete the experiment &quot;{{experiment.name}}&quot;?</p>
+                <input type="submit" value="Confirm" class="btn btn-default" />
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

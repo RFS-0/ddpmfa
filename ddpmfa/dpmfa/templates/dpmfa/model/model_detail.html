@@ -732,6 +732,7 @@
 				                            <th scope="row">Created</th>
 				                            <th scope="row">Changed</th>
 				                            <th scope="row">Results</th>
+				                            <th scope="row">Actions</th>
 				                        </tr>
 				                    </thead>
 				                    <tbody>
@@ -745,7 +746,7 @@
 					                               		{{ experiment.model_instance.name }} ({{ experiment.model_instance.pk }})
 				                               		</a>
 				                               	</td>
-				                               	<td class="dpmfa-td-20-top">
+				                               	<td class="dpmfa-td-10-top">
 				                               		{{ experiment.runs}} 
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
@@ -760,6 +761,11 @@
 				                               	<td class="dpmfa-td-10-top">
 				                               		<a href="">
 					                               		{{ experiment.result }} 
+				                               		</a>
+				                               	</td>
+				                               	<td class="dpmfa-td-10-top">
+				                               		<a href="{% url 'dpmfa:experiment-delete' experiment.pk %}" class="btn btn-primary">
+					                               		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 				                               		</a>
 				                               	</td>
 				                           </tr>
