@@ -9,7 +9,7 @@
 
     <!-- ########## SCRIPTS ########## -->
 
-    <!-- GENERAL PURPOSE THRID PARTY LIBS -->
+    <!-- GENERAL PURPOSE THIRD PARTY LIBS -->
     <script type="text/javascript" src="{% static 'dpmfa/js/jquery.slim.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'dpmfa/js/tether.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'dpmfa/js/bootstrap.min.js' %}"></script>
@@ -17,23 +17,23 @@
     <!-- MODIFICATION / CONFIGURATION / USE 1 -->
     <script type="text/javascript" src="{% static 'dpmfa/js/general.js' %}"></script>
 
-    <!-- MODEL DESIGNER DEPENDENCIES -->
-    <script type="text/javascript" src="{% static 'dpmfa/js/jquery.pan_fork.js' %}"></script>
-    <script type="text/javascript" src="{% static 'dpmfa/js/jquery.panzoom_fork.js' %}"></script>
-    <script type="text/javascript" src="{% static 'dpmfa/js/jsplumb_fork.js' %}"></script>
-
-    <!-- MODEL DESIGNER IMPLEMENTATION AND INTEGRATION -->
-    <script type="text/javascript" src="{% static 'dpmfa/js/modes_o.js' %}"></script>
-    <script type="text/javascript" src="{% static 'dpmfa/js/modes_run.js' %}"></script>
+    <!-- VIEW SPECIFIC SCRIPTS -->
+    {% block viewSpecificJsLibs %}<!-- none for this view -->{% endblock %}
 
     <!-- ########## STYLESHEETS ########## -->
 
+    <!-- GENERAL PURPOSE THIRD PARTY STYLESHEETS -->
     <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/bootstrap-theme.min.css' %}" />
+
+    <!-- MODIFICATION / CONFIGURATION / USE 1 -->
     <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/general.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'dpmfa/css/modes.css' %}" />
+
+    <!-- VIEW SPECIFIC STYLESHEETS -->
+    {% block viewSpecificCssLibs %}<!-- none for this view -->{% endblock %}
 </head>
 <body>
+{% block bodyHeader %}
 <!-- Navigation -->
 <header>
     <nav class="navbar navbar-default">
@@ -51,6 +51,7 @@
       </div>
 </nav>
 </header>
+{% endblock %}
 
 {% block body %}
 {% endblock %}
