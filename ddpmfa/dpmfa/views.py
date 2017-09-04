@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.http import HttpResponse
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy, reverse
 
 from itertools import chain
@@ -410,56 +411,29 @@ class ExperimentDeleteView(generic.DeleteView):
 #  Model Designer
 # ==============================================================================
 
-# class ModelDesingerDetailView(generic.DetailView):
-#     model = models.model_designer
 
-class ModelDesingerCreateView(generic.CreateView):
-    model = models.model_designer
-    template_name = 'dpmfa/model_designer/model_designer_form.html'
-    
-    fields = [
-        'designer_configuration',
-        ]
-
-    def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model_designer.model})
-
-    def form_valid(self, form):
-        model = form.save(commit=False)
-        model.model_id = self.kwargs['model_pk']
-        return super(ModelDesingerCreateView, self).form_valid(form)
+class ModelDesignerTemplateView(generic.TemplateView):
+    template_name = 'dpmfa/model_designer/model_designer.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ModelDesingerCreateView, self).get_context_data(**kwargs)
+        context = super(ModelDesignerTemplateView, self).get_context_data(**kwargs)
         context['model'] = models.model.objects.get(pk=self.kwargs['model_pk'])
         return context
-    
-class ModelDesingerUpdateView(generic.UpdateView):
-    model = models.model_designer
-    template_name = 'dpmfa/model_designer/model_designer_form.html'
-    
-    fields = [
-        'designer_configuration',
-        ]
 
-    def get_context_data(self, **kwargs):
-        context = super(ModelDesingerUpdateView, self).get_context_data(**kwargs)
-        context['model'] = models.model_designer.objects.get(pk=self.kwargs['pk']).model
-        return context
+class ModelDesignerSaveView(generic.View):
 
-class ModelDesingerDeleteView(generic.UpdateView):
-    model = models.model
-    
-class ModelDesignerRedirectView(generic.RedirectView):
-    permanent = False
-    query_string = False
-    
-    def get_redirect_url(self, *args, **kwargs):
-        try:
-            designer = models.model_designer.objects.get(model_id=self.kwargs['model_pk'])
-            return designer.get_absolute_url()
-        except:
-            return reverse_lazy('dpmfa:designer-create', kwargs={'model_pk': self.kwargs['model_pk']})
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(ModelDesignerSaveView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        print(request.body);
+        return JsonResponse({
+            'tempId123': 'persistentId456',
+            'tempId678': 'persistentId999'
+        })
+        
+
 
 #==============================================================================
 #  Model Parameters

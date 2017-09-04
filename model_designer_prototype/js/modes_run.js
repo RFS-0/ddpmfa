@@ -3,6 +3,8 @@
 	
 	var attachTestData = function(elemQ) {
 		var testData = {
+			id: 1,
+			valid: true,
 			cyclesAllowed: false,
 			parallelsAllowed: false,
 			nodes: [
@@ -20,6 +22,7 @@
 					maxIncoming: 0,
 					minIncoming: 0,
 					outConnectionTypes: ['inflowTarget'],
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -50,11 +53,15 @@
 						{
 							fieldType: 'FORMS',
 							fieldArgs: {
+								minForms: 1,
+								maxForms: -1,
 								forms: [
 									{
 										id: null,
 										tempId: null,
 										label: 'Fixed Value Inflow',
+										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
+										dirty: true,
 										fields: [
 											{
 												fieldType: 'TEXT',
@@ -62,7 +69,14 @@
 													displayAsTextArea: false,
 													notEmpty: true,
 													maxLength: 200,
-													numberConfig: null
+													numberConfig: {
+														decimals: -1,
+														min: {
+															value: 0,
+															inclusive: true
+														},
+														max: null
+													}
 												},
 												propName: 'value',
 												label: 'Value',
@@ -75,6 +89,8 @@
 										id: null,
 										tempId: null,
 										label: 'Stochastic Function Inflow',
+										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
+										dirty: true,
 										fields: [
 											{
 												fieldType: 'TEXT',
@@ -114,6 +130,8 @@
 									id: 1,
 									tempId: null,
 									label: 'Fixed Value Inflow',
+									titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
+									dirty: false,
 									fields: [
 										{
 											fieldType: 'TEXT',
@@ -121,7 +139,14 @@
 												displayAsTextArea: false,
 												notEmpty: true,
 												maxLength: 200,
-												numberConfig: null
+												numberConfig: {
+													decimals: -1,
+													min: {
+														value: 0,
+														inclusive: true
+													},
+													max: null
+												}
 											},
 											propName: 'value',
 											label: 'Value',
@@ -134,6 +159,8 @@
 									id: 2,
 									tempId: null,
 									label: 'Stochastic Function Inflow',
+									titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
+									dirty: false,
 									fields: [
 										{
 											fieldType: 'TEXT',
@@ -185,6 +212,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: ['constantTransfer', 'randomChoiceTransfer', 'aggregatedTransfer', 'stochasticTransfer'],
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -260,6 +288,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: ['constantTransfer', 'randomChoiceTransfer', 'aggregatedTransfer', 'stochasticTransfer'],
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -334,6 +363,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: ['constantTransfer', 'randomChoiceTransfer', 'aggregatedTransfer', 'stochasticTransfer'],
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -421,6 +451,7 @@
 					maxIncoming: 0,
 					minIncoming: 0,
 					outConnectionTypes: ['inflowTarget'],
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -453,6 +484,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: ['constantTransfer', 'randomChoiceTransfer', 'aggregatedTransfer', 'stochasticTransfer'],
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -485,6 +517,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: [],
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -548,6 +581,7 @@
 					maxIncoming: 0,
 					minIncoming: 0,
 					outConnectionTypes: ['inflowTarget'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -578,11 +612,15 @@
 						{
 							fieldType: 'FORMS',
 							fieldArgs: {
+								minForms: 1,
+								maxForms: -1,
 								forms: [
 									{
 										id: null,
 										tempId: null,
 										label: 'Fixed Value Inflow',
+										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
+										dirty: true,
 										fields: [
 											{
 												fieldType: 'TEXT',
@@ -603,6 +641,8 @@
 										id: null,
 										tempId: null,
 										label: 'Stochastic Function Inflow',
+										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
+										dirty: true,
 										fields: [
 											{
 												fieldType: 'TEXT',
@@ -672,6 +712,7 @@
 					maxIncoming: 0,
 					minIncoming: 0,
 					outConnectionTypes: ['inflowTarget'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -722,6 +763,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: ['constantTransfer', 'randomChoiceTransfer', 'aggregatedTransfer', 'stochasticTransfer'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -807,6 +849,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: ['constantTransfer', 'randomChoiceTransfer', 'aggregatedTransfer', 'stochasticTransfer'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -884,6 +927,7 @@
 					maxIncoming: -1,
 					minIncoming: 1,
 					outConnectionTypes: [],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -1013,6 +1057,7 @@
 						id: '2',
 						tempId: null
 					},
+					dirty: false,
 					fields: []
 				},
 				
@@ -1034,6 +1079,7 @@
 						id: '3',
 						tempId: null
 					},
+					dirty: false,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -1080,6 +1126,7 @@
 					typeLabel: 'Inflow Target Connection',
 					title: 'Inflow Target',
 					titleLabelPath: null,
+					dirty: true,
 					fields: []
 				},
 				{
@@ -1089,6 +1136,7 @@
 					typeLabel: 'Constant Transfer',
 					title: null,
 					titleLabelPath: ['name', 'valueData'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -1112,6 +1160,7 @@
 					typeLabel: 'Random Choice Transfer',
 					title: null,
 					titleLabelPath: ['name', 'valueData'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -1135,6 +1184,7 @@
 					typeLabel: 'Aggregated Transfer',
 					title: null,
 					titleLabelPath: ['name', 'valueData'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -1158,6 +1208,7 @@
 					typeLabel: 'Stochastic Transfer',
 					title: null,
 					titleLabelPath: ['name', 'valueData'],
+					dirty: true,
 					fields: [
 						{
 							fieldType: 'TEXT',
@@ -1177,6 +1228,12 @@
 			]
 		};
 		elemQ.data('model', testData);
+		
+		var saveUrl = elemQ.data('saveurl');
+		if (typeof saveUrl == 'undefined' || saveUrl == null || saveUrl == false || saveUrl == '') {
+			saveUrl = '/this/is/a/fake/url/';
+			elemQ.data('saveurl', saveUrl);
+		}
 	};
 	
 	ModelDesigner.installAllEventually(
@@ -1189,242 +1246,3 @@
 		function(fieldFactory) {} // Lets you put custom `FieldFactory`s to the `fieldFactory` of the `ModelDesigner` being installed
 	);
 })(window.rgm.modes.ModelDesigner);
-
-
-	
-/*
-	var cQ = jQuery('.rgm-modes-form-demo');
-	// jQuery('[data-toggle=modal]').click();
-	var ns = window.%rgm.%modes;
-	
-// 	var nv = new ns.%NumberValidator(
-// 		2,
-// 		new ns.%NumberBound(0, true, false),
-// 		new ns.%NumberBound(1000, false, true)
-// 	);
-// 	var nv = ns.%NumberValidator.%newFromConfig({
-// 		decimals: 2,
-// 		min: {
-// 			value: 0,
-// 			inclusive: false
-// 		},
-// 		max: {
-// 			value: 1000,
-// 			inclusive: true
-// 		}
-// 	});
-// 	console.log(nv.%check('-1.0'));
-// 	console.log(nv.%check('0.00'));
-// 	console.log(nv.%check('1.22'));
-// 	console.log(nv.%check('999.9999999999999'));
-// 	console.log(nv.%check('1000'));
-// 	console.log(nv.%check('1000.01'));
-// 	console.log(nv.%check(''));
-// 	console.log(nv.%check('-.'));
-// 	console.log(nv.%check('1.0.0'));
-// 	console.log(nv.%check('.1'));
-// 	console.log(nv.%check('1.'));
-// 	console.log(nv.%check('01'));
-
-	
-	var mapFieldFactory = new ns.%MapFieldFactory();
-	var textFieldFactory = new ns.%TextFieldFactory();
-	var SubformsFieldFactory = new ns.%SubformsFieldFactory(mapFieldFactory);
-	
-	mapFieldFactory.%putFactory('TEXT', textFieldFactory);
-	mapFieldFactory.%putFactory('FORMS', SubformsFieldFactory);
-	
-	var fieldDefs = [
-	
-	
-	
-		{
-			fieldType: 'TEXT',
-			fieldArgs: {
-				displayAsTextArea: false,
-				notEmpty: true,
-				maxLength: 200,
-				numberConfig: {
-					decimals: 0,
-					min: {
-						value: 0,
-						inclusive: false
-					},
-					max: null
-				}
-			},
-			propName: 'runs',
-			label: 'Runs',
-			valueData: '10',
-			dirty: false
-		},
-		{
-			fieldType: 'TEXT',
-			fieldArgs: {
-				displayAsTextArea: false,
-				notEmpty: true,
-				maxLength: 200,
-				numberConfig: null
-			},
-			propName: 'name',
-			label: 'Name',
-			valueData: 'Some inflow',
-			dirty: false
-		},
-		{
-			fieldType: 'TEXT',
-			fieldArgs: {
-				displayAsTextArea: true,
-				notEmpty: false,
-				maxLength: -1,
-				numberConfig: null
-			},
-			propName: 'description',
-			label: 'Description',
-			valueData: 'A description',
-			dirty: false
-		},
-		{
-			fieldType: 'FORMS',
-			fieldArgs: {
-				forms: [
-					{
-						id: null,
-						label: 'Fixed Value Inflow',
-						fields: [
-							{
-								fieldType: 'TEXT',
-								fieldArgs: {
-									displayAsTextArea: false,
-									notEmpty: true,
-									maxLength: 200,
-									numberConfig: null
-								},
-								propName: 'value',
-								label: 'Value',
-								valueData: '0',
-								dirty: true
-							}
-						]
-					},
-					{
-						id: null,
-						label: 'Stochastic Function Inflow',
-						fields: [
-							{
-								fieldType: 'TEXT',
-								fieldArgs: {
-									displayAsTextArea: false,
-									notEmpty: true,
-									maxLength: 200,
-									numberConfig: null
-								},
-								propName: 'functionName',
-								label: 'Function Name',
-								valueData: 'normal',
-								dirty: false
-							},
-							{
-								fieldType: 'TEXT',
-								fieldArgs: {
-									displayAsTextArea: false,
-									notEmpty: true,
-									maxLength: 200,
-									numberConfig: null
-								},
-								propName: 'parameters',
-								label: 'Parameters',
-								valueData: 'hans,peter,1,2,3',
-								dirty: false
-							}
-						],
-						dirty: true
-					}
-				]
-			},
-			propName: 'singlePeriodInflows',
-			label: 'Single Period Inflows',
-			valueData: [
-				{
-					id: 1,
-					label: 'Fixed Value Inflow',
-					fields: [
-						{
-							fieldType: 'TEXT',
-							fieldArgs: {
-								displayAsTextArea: false,
-								notEmpty: true,
-								maxLength: 200,
-								numberConfig: null
-							},
-							propName: 'value',
-							label: 'Value',
-							valueData: '0.3',
-							dirty: false
-						}
-					]
-				},
-				{
-					id: 2,
-					label: 'Stochastic Function Inflow',
-					fields: [
-						{
-							fieldType: 'TEXT',
-							fieldArgs: {
-								displayAsTextArea: false,
-								notEmpty: true,
-								maxLength: 200,
-								numberConfig: null
-							},
-							propName: 'functionName',
-							label: 'Function Name',
-							valueData: 'normal',
-							dirty: false
-						},
-						{
-							fieldType: 'TEXT',
-							fieldArgs: {
-								displayAsTextArea: false,
-								notEmpty: true,
-								maxLength: 200,
-								numberConfig: null
-							},
-							propName: 'parameters',
-							label: 'Parameters',
-							valueData: 'hans,peter,1,2,3',
-							dirty: false
-						}
-					],
-					dirty: false
-				}
-			]
-		}
-		
-		
-		
-	];
-	var fields = [];
-	
-	for (var i = 0; i < fieldDefs.length; ++i) {
-		var fieldDef = fieldDefs[i];
-		var field = mapFieldFactory.%newFieldFromDef(fieldDef);
-		field.%addToDocument(cQ);
-		fields.push(field);
-	}
-	
-	$('#exampleModalLong').modal('show');
-	$('#exampleModalLong').on('hide.bs.modal', function (event) {
-		for (var i = 0; i < fields.length; ++i) {
-			var field = fields[i];
-			field.%synchronize();
-			field.%isDirty();
-			console.log(field.%asDataObject());
-			console.log(field.%check());
-		}
-		
-		
-		event.preventDefault();
-     	event.stopImmediatePropagation();
-     	return false; 
-	});
-*/

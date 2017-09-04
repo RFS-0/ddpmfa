@@ -83,21 +83,12 @@ urlpatterns = [
 #  Model Designer
 #==============================================================================
 
-    # ex: /designer/123/detail
-    #url(r'^designer/(?P<pk>[0-9]+)/detail$', views.ModelDesingerDetailView.as_view(), name='designer-detail'),
-    
-    # ex: /designer/create
-    url(r'^designer/create/(?P<model_pk>[0-9]+)$', views.ModelDesingerCreateView.as_view(), name='designer-create'),
-    
-    # ex: /designer/123/update
-    url(r'^designer/(?P<pk>[0-9]+)/update$', views.ModelDesingerUpdateView.as_view(), name='designer-update'),
+    # ex: model/123/designer
+    url(r'^model/(?P<model_pk>[0-9]+)/designer/$', views.ModelDesignerTemplateView.as_view(), name='designer'),
 
-    # ex: /designer/123/delete
-    url(r'^designer/(?P<pk>[0-9]+)/delete$', views.ModelDesingerDeleteView.as_view(), name='designer-delete'),
-    
-    # only for redirection
-    url(r'designer/(?P<model_pk>[0-9]+)/redirect$', views.ModelDesignerRedirectView.as_view(), name='designer-redirect'),
-    
+    # ex: designer/save
+    url(r'^designer/save/$', views.ModelDesignerSaveView.as_view(), name='designer-save'),
+
 #==============================================================================
 #  Model Parameters
 #==============================================================================
