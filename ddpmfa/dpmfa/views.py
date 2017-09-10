@@ -7,10 +7,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy, reverse
 
 from itertools import chain
+import json
 
 import dpmfa.forms as forms
 import dpmfa.models as models
 from dpmfa.modelcopier import ModelCopier
+from dpmfa.modeljson import ModelJson
 
 
 # ==============================================================================
@@ -417,7 +419,13 @@ class ModelDesignerTemplateView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ModelDesignerTemplateView, self).get_context_data(**kwargs)
-        context['model'] = models.model.objects.get(pk=self.kwargs['model_pk'])
+
+        model = models.model.objects.get(pk=self.kwargs['model_pk'])
+
+        model_data = ModelJson.get_json_scaffold()
+
+        context['model'] = model
+        context['model_data_json'] = json.dumps(model_data)
         return context
 
 class ModelDesignerSaveView(generic.View):
@@ -428,6 +436,7 @@ class ModelDesignerSaveView(generic.View):
 
     def post(self, request, *args, **kwargs):
         print(request.body);
+        # TODO: save the changes and return real id map
         return JsonResponse({
             'tempId123': 'persistentId456',
             'tempId678': 'persistentId999'

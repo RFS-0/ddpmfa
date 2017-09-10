@@ -2,6 +2,10 @@
 	'use strict';
 	
 	var attachTestData = function(elemQ) {
+		var modelData = elemQ.data('model');
+		if (typeof modelData != 'undefined' && modelData != null && modelData != false && modelData != '') {
+			return;
+		}
 		var testData = {
 			id: 1,
 			valid: true,
@@ -60,6 +64,7 @@
 										id: null,
 										tempId: null,
 										label: 'Fixed Value Inflow',
+										type: 'fixedValueInflow',
 										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
 										dirty: true,
 										fields: [
@@ -89,6 +94,7 @@
 										id: null,
 										tempId: null,
 										label: 'Stochastic Function Inflow',
+										type: 'stochasticFunctionInflow',
 										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
 										dirty: true,
 										fields: [
@@ -130,6 +136,7 @@
 									id: 1,
 									tempId: null,
 									label: 'Fixed Value Inflow',
+									type: 'fixedValueInflow',
 									titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
 									dirty: false,
 									fields: [
@@ -159,6 +166,7 @@
 									id: 2,
 									tempId: null,
 									label: 'Stochastic Function Inflow',
+									type: 'stochasticFunctionInflow',
 									titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
 									dirty: false,
 									fields: [
@@ -619,6 +627,7 @@
 										id: null,
 										tempId: null,
 										label: 'Fixed Value Inflow',
+										type: 'fixedValueInflow',
 										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
 										dirty: true,
 										fields: [
@@ -641,6 +650,7 @@
 										id: null,
 										tempId: null,
 										label: 'Stochastic Function Inflow',
+										type: 'stochasticFunctionInflow',
 										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
 										dirty: true,
 										fields: [
@@ -1243,6 +1253,6 @@
 			attachTestData(containerQ);
 		},
 		function(modelDesigner, containerQ) {}, // Called after `modelDesigner` was installed in `containerQ`
-		function(fieldFactory) {} // Lets you put custom `FieldFactory`s to the `fieldFactory` of the `ModelDesigner` being installed
+		function(fieldFactory) {} // Called for configuration of `fieldFactory` (experimental)
 	);
 })(window.rgm.modes.ModelDesigner);

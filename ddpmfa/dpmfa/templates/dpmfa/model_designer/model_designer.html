@@ -20,4 +20,4 @@
     </header>
 {% endblock %}
 
-{% block body %}<div class="rgm-modes-container" data-saveurl="{% url 'dpmfa:designer-save' %}"></div>{% endblock %}
+{% block body %}<div class="rgm-modes-container" data-model="{{ model_data_json }}" data-saveurl="{% url 'dpmfa:designer-save' %}"></div>{% endblock %}
