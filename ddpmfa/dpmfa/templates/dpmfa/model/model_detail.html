@@ -47,7 +47,7 @@
 			                	<div class="panel-heading">
 			                  		<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#flowCompartments">
-			                    	<i class="glyphicon glyphicon-list"></i>
+			                    	<img src="{% static 'dpmfa/icons/flow.png' %}" style="width:40px;height:40px;">
 			                    	Flow Compartments</a>
 			                  		</h4>
 			                	</div>
@@ -119,8 +119,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#stockAccordion">
-			                    <i class="glyphicon glyphicon-list"></i>
-			                    Stocks</a>
+								<img src="{% static 'dpmfa/icons/stock.png' %}" style="width:40px;height:40px;">			                    Stocks</a>
 			                  </h4>
 			                </div>
 			                <div id="stockAccordion" class="panel-collapse collapse">
@@ -197,7 +196,7 @@
 			              	<div class="panel-heading">
 			                	<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#sinkAccordion">
-			                    	<i class="glyphicon glyphicon-list"></i>
+			                    	<img src="{% static 'dpmfa/icons/sink.png' %}" style="width:40px;height:40px;">
 			                    	Sinks</a>
 			                  	</h4>
 			                </div>
@@ -265,7 +264,7 @@
 			                	<div class="panel-heading">
 			                  		<h4 class="panel-title">
 			                    	<a data-toggle="collapse" href="#externalListInflow">
-			                    	<i class="glyphicon glyphicon-list"></i>
+			                    	<img src="{% static 'dpmfa/icons/list.png' %}" style="width:40px;height:40px;">
 			                    	External List Inflows</a>
 			                  		</h4>
 			                	</div>
@@ -344,7 +343,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#externalFunctionInflowAccordion">
-			                    <i class="glyphicon glyphicon-list"></i>
+			                    <img src="{% static 'dpmfa/icons/function.png' %}" style="width:40px;height:40px;">
 			                    External Function Inflows</a>
 			                  </h4>
 			                </div>
@@ -417,7 +416,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#constantTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list"></i>
+			                    <img src="{% static 'dpmfa/icons/constant.png' %}" style="width:40px;height:40px;">
 			                    Constant Transfers</a>
 			                  </h4>
 			                </div>
@@ -489,7 +488,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#randomChoiceTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list"></i>
+			                    <img src="{% static 'dpmfa/icons/random_.png' %}" style="width:40px;height:40px;">
 			                    Random Choice Transfers</a>
 			                  </h4>
 			                </div>
@@ -563,7 +562,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#stochasticTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list"></i>
+			                    <img src="{% static 'dpmfa/icons/stochastic_.png' %}" style="width:40px;height:40px;">
 			                    Stochastic Transfers</a>
 			                  </h4>
 			                </div>
@@ -641,7 +640,7 @@
 			                <div class="panel-heading">
 			                  <h4 class="panel-title">
 			                    <a data-toggle="collapse" href="#aggregatedTransferwAccordion">
-			                    <i class="glyphicon glyphicon-list"></i>
+			                    <img src="{% static 'dpmfa/icons/aggregated.png' %}" style="width:40px;height:40px;">
 			                    Aggregated Transfers</a>
 			                  </h4>
 			                </div>
@@ -736,7 +735,9 @@
 				       					{% for experiment in experiments %}
 				                           	<tr>
 				                               	<td class="dpmfa-td-20-top">
+				                               		<a href="{% url 'dpmfa:experiment-detail' experiment.pk %}">
 				                               			{{ experiment.name }}
+				                               		</a>
 				                               	</td>
 				                               	<td class="dpmfa-td-20-top">
 				                               		<a href="{% url 'dpmfa:model-instance-read-only' experiment.model_instance.pk %}">
