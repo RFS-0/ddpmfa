@@ -395,6 +395,10 @@ class ExperimentCreateView(generic.CreateView):
         experiment.prototype_model = prototype_model
         experiment.model_instance = model_instance
         return super(ExperimentCreateView, self).form_valid(form)
+    
+class ExperimentDetailView(generic.DetailView):
+    model = models.experiment
+    template_name = 'dpmfa/experiment/experiment_detail.html'
 
 class ExperimentDeleteView(generic.DeleteView):
     model = models.experiment

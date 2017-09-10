@@ -1,0 +1,63 @@
+{% extends "dpmfa/page.html" %}
+
+{% block title %}Experiment &quot;{{experiment.name}}&quot;{% endblock %}
+
+{% block body %}
+<header>
+</header>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' experiment.prototype_model.project.pk %}">{{ experiment.prototype_model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' experiment.prototype_model.pk %}">{{ experiment.prototype_model.name }}</a></li>
+              <li class="breadcrumb-item active">{{flow_compartment.name}}</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Experiment &quot;{{ experiment.name }}&quot;</h1>
+
+            <h2>Properties</h2>
+
+            <table class="table table-striped">
+                <tr>
+                    <th scope="row">Name</th>
+                    <td>{{ experiment.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Runs</th>
+                    <td>{{ experiment.runs }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Periods</th>
+                    <td>{{ experiment.periods }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Prototype model</th>
+                    <td>{{ experiment.prototype_model.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Prototype model</th>
+                    <td>{{ experiment.model_instance.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Model instance</th>
+                    <td>{{ experiment.evt_created }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Changed at</th>
+                    <td>{{ experiment.evt_changed }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

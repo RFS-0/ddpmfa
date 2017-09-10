@@ -1,4 +1,2 @@
 - add a read only view for model instance
-- add an create view for experiment
-- add a delete view for experiment
 - add a read only view for experiment

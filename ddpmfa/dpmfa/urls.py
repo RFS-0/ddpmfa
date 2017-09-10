@@ -75,6 +75,9 @@ urlpatterns = [
 
     # ex: /experiment/123/create
     url(r'^experiment/(?P<prototype_pk>[0-9]+)/create$', views.ExperimentCreateView.as_view(), name='experiment-create'),
+    
+    # ex: /experiment/12/detail
+    url(r'^experiment/(?P<pk>[0-9]+)/detail$', views.ExperimentDetailView.as_view(), name='experiment-detail'),
 
     # ex: /experiment/123/delete
     url(r'^experiment/(?P<pk>[0-9]+)/delete$', views.ExperimentDeleteView.as_view(), name='experiment-delete'),
