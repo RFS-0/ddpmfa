@@ -1,5 +1,9 @@
 - add functionality to run an experiment
-	- add success url
+- correct model instance read only view
+	- add breadcrumb to model
+	- remove action colum
+	- change all the links to direct to ready only or detail views
+- add view for results
 - add functionality to convert from json to db
 - add functionality to convert from db to json
 
