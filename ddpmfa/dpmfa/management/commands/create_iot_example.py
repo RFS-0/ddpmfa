@@ -103,7 +103,7 @@ class Command(BaseCommand):
             name='Function release for second state flow compartment', 
             delay = 0,
             release_function='EX',
-            function_parameters='-.524, -592.541')
+            function_parameters='4, 4, 4, 4')
         
         function_release_for_third_stage_use_compartment.save()
         
@@ -144,6 +144,7 @@ class Command(BaseCommand):
             model=iot_model, 
             name="Third Stage Use", 
             log_inflows = True,
+            log_outflows = True,
             local_release = function_release_for_third_stage_use_compartment)
         
         third_stage_use_compartment.save()

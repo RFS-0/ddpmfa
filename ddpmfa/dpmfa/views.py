@@ -1,18 +1,19 @@
+import dpmfa.converter as converter
+import dpmfa.forms as forms
+import dpmfa.models as models
+import json
+
 from django.contrib import messages
 from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect, JsonResponse
+from dpmfa.modelcopier import ModelCopier
+from dpmfa.modeljson import ModelJson
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy, reverse
-
 from itertools import chain
-import json
 
-import dpmfa.forms as forms
-import dpmfa.models as models
-from dpmfa.modelcopier import ModelCopier
-from dpmfa.modeljson import ModelJson
 
 
 # ==============================================================================
@@ -95,8 +96,20 @@ class ModelDetailView(generic.DetailView):
     model = models.model
     template_name = 'dpmfa/model/model_detail.html'
 
+    def find_flow_compartments_by_model(self, model_pk):
+        return models.flow_compartment.objects.filter(model=model_pk)
+    
+    def find_stocks_by_model(self, model_pk):
+        return models.stock.objects.filter(model=model_pk)
+    
+    def find_sinks_by_model(self, model_pk):
+        return models.sink.objects.filter(model=model_pk)
+    
     def find_external_list_inflows_by_model(self, model_pk):
         return models.external_list_inflow.objects.filter(target__model=model_pk)
+    
+    def find_external_function_inflows_by_model(self, model_pk):
+        return models.external_function_inflow.objects.filter(target__model=model_pk)
     
     def find_single_period_inflows_by_external_list_inflow(self, model_pk):
         external_list_inflows = models.external_list_inflow.objects.filter(target__model=model_pk)
@@ -109,9 +122,6 @@ class ModelDetailView(generic.DetailView):
             single_period_inflows.sort(key=lambda x: x.period)
             single_period_inflows_of_external_list_inflow[external_list_inflow.pk] = single_period_inflows
         return single_period_inflows_of_external_list_inflow
-
-    def find_external_function_inflows_by_model(self, model_pk):
-        return models.external_function_inflow.objects.filter(target__model=model_pk)
 
     def find_constant_transfers_by_model(self, model_pk, not_in_aggregated):
         if not_in_aggregated:
@@ -136,9 +146,6 @@ class ModelDetailView(generic.DetailView):
             return models.aggregated_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
             return models.aggregated_transfer.objects.filter(target__model=model_pk)
-
-    def find_flow_compartments_by_model(self, model_pk):
-        return models.flow_compartment.objects.filter(model=model_pk)
     
     def find_transfers_by_flow_compartment(self, model_pk):
         flow_compartments = models.flow_compartment.objects.filter(model=model_pk)
@@ -151,9 +158,6 @@ class ModelDetailView(generic.DetailView):
             transfers.sort(key=lambda t: t.priority)
             transfers_of_flow_compartment[flow_compartment.pk] = transfers
         return transfers_of_flow_compartment
-
-    def find_stocks_by_model(self, model_pk):
-        return models.stock.objects.filter(model=model_pk)
     
     def find_transfers_by_stock(self, model_pk):
         stocks = models.stock.objects.filter(model=model_pk)
@@ -162,9 +166,6 @@ class ModelDetailView(generic.DetailView):
             qs = stock.transfers.get_queryset()
             stock_transfers[stock.pk] = qs
         return stock_transfers
-
-    def find_sinks_by_model(self, model_pk):
-        return models.sink.objects.filter(model=model_pk)
     
     def find_transfers_by_sink(self, model_pk):
         sinks = models.sink.objects.filter(model=model_pk)
@@ -173,7 +174,6 @@ class ModelDetailView(generic.DetailView):
             qs = sink.transfers.get_queryset()
             sink_transfers[sink.pk] = qs
         return sink_transfers
-    
     
     def find_simulation_by_model(self, model_pk):
         try:
@@ -390,10 +390,10 @@ class ExperimentCreateView(generic.CreateView):
 
     def form_valid(self, form):
         experiment = form.save(commit=False)
-        prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
-        model_instance = ModelCopier.copy_model(prototype_model)
-        experiment.prototype_model = prototype_model
-        experiment.model_instance = model_instance
+        self.prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
+        self.model_instance = ModelCopier.copy_model(self.prototype_model)
+        experiment.prototype_model = self.prototype_model
+        experiment.model_instance = self.model_instance
         return super(ExperimentCreateView, self).form_valid(form)
     
 class ExperimentDetailView(generic.DetailView):

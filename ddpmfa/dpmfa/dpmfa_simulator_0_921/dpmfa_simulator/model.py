@@ -196,14 +196,17 @@ class Model(object):
             if isinstance(comp, cp.FlowCompartment):
                 transferList = comp.transfers
                 if not transferList:
+                    print(transferList)
                     print('Err: no transfers assined')
                 for trans in transferList:
                     if not isinstance(trans, cp.Transfer):
+                        print(type(trans))
                         print('invalid transfer')
 
             if isinstance(comp, cp.Stock):
                 release = comp.localRelease
                 if not isinstance(release, cp.LocalRelease):
+                    print(type(release))
                     print('local release from stock not assigned')
 
         if not self.inflows:

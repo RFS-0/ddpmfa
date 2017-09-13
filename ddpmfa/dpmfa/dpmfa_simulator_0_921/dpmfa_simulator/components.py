@@ -640,7 +640,7 @@ class ExternalListInflow(ExternalInflow):
         self.inflowList = inflowList
         
         for i in range(len(self.inflowList)):            
-            if isinstance(self.inflowList[i], (int, long, float, list)):
+            if isinstance(self.inflowList[i], (int, float, list)):
 #                self.inflowList[i] = SinglePeriodInflow(self.inflowList[i])
                 self.inflowList[i] = FixedValueInflow(self.inflowList[i])
 

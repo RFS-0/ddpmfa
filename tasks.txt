@@ -1,2 +1,6 @@
 - add a read only view for model instance
-- add a read only view for experiment
+- add functionality to run an experiment
+	- add success url
+- add functionality to convert from json to db
+- add functionality to convert from db to json
+

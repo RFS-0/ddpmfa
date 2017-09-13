@@ -6,7 +6,7 @@ def function_by_name(name, args):
     if name == 'LI':
         return LinearFunction(*args)
     elif name == 'PO':
-        return PolynomialFunction(args)
+        return PolynomialFunction(*args)
     elif name == 'EX':
         return ExponentialFunction(*args)
     elif name == 'LG':

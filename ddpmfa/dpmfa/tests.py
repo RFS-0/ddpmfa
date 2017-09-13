@@ -4,6 +4,8 @@ from dpmfa import models as dpmfa_models
 from dpmfa import converter as converters
 from dpmfa.management.commands import create_iot_example as example
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components
+from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model
+
 
 
 #==============================================================================
@@ -469,3 +471,28 @@ class ExternalFunctionInflowConverterTest(TestCase):
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
+        
+#==============================================================================
+#  Model
+#==============================================================================
+
+class ModelConverterTest(TestCase):
+    
+    def test_model_converter(self):
+        # entity specific stuff
+        db_model = dpmfa_models.model
+        converter = converters.ModelInstanceConverter
+        dpmfa_class = model.Model
+        
+        # set up db
+        command = example.Command()
+        command.handle()
+        
+        # set entities of test
+        db_entity = db_model.objects.all()[0]
+        converter_class = converter(db_entity)
+        dpmfa_instance = converter_class.getDpmfaEntity()
+        
+        # assertion 
+        self.assertIsInstance(dpmfa_instance, dpmfa_class)
+        
