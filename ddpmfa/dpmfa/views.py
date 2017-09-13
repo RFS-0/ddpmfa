@@ -310,7 +310,7 @@ class ModelInstanceReadOnlyView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(ModelInstanceReadOnlyView, self).get_context_data(**kwargs)
 
-        context['flow_compartments'] = self.find_external_list_inflows_by_model_instance(self.object.pk)
+        context['flow_compartments'] = self.find_flow_compartments_by_model(self.object.pk)
         context['transfers_of_flow_compartment'] = self.find_transfers_by_flow_compartment(self.object.pk)
         context['stocks'] = self.find_stocks_by_model(self.object.pk)
         context['transfers_of_stock'] = self.find_transfers_by_stock(self.object.pk)
@@ -322,12 +322,11 @@ class ModelInstanceReadOnlyView(generic.DetailView):
         context['stochastic_transfers'] = self.find_stochastic_transfers_by_model(self.object.pk, False)
         context['aggregated_transfers'] = self.find_aggregated_transfers_by_model(self.object.pk, False)
         
-        context['external_list_inflows'] = self.find_external_list_inflows_by_model(self.object.pk)
+        context['external_list_inflows'] = self.find_external_list_inflows_by_model_instance(self.object.pk)
         context['single_period_inflows'] = self.find_single_period_inflows_by_external_list_inflow(self.object.pk)
         context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
         
         return context
-
 
 
 class ModelCreateView(generic.CreateView):
