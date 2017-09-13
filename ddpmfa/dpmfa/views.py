@@ -14,8 +14,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy, reverse
 from itertools import chain
 
-
-
 # ==============================================================================
 #  Home
 # ==============================================================================
@@ -388,11 +386,13 @@ class ExperimentCreateView(generic.CreateView):
         return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.kwargs['prototype_pk'] })
 
     def form_valid(self, form):
-        experiment = form.save(commit=False)
+        self.experiment = form.save(commit=False)
         self.prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
         self.model_instance = ModelCopier.copy_model(self.prototype_model)
-        experiment.prototype_model = self.prototype_model
-        experiment.model_instance = self.model_instance
+        self.experiment.prototype_model = self.prototype_model
+        self.experiment.model_instance = self.model_instance
+        self.experiment.save()
+        converter.ExperimentConverter(self.experiment).getDpmfaEntity().runSimulation()
         return super(ExperimentCreateView, self).form_valid(form)
     
 class ExperimentDetailView(generic.DetailView):

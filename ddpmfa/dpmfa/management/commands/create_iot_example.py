@@ -486,16 +486,16 @@ class Command(BaseCommand):
         transfer_for_second_stage_use_compartment.save()
         
         # total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
-        transfer_for_first_third_use_compartment = constant_transfer(
+        transfer_for_third_stage_use_compartment = constant_transfer(
             target=third_stage_flow_compartment, 
-            source_flow_compartment = second_stage_use_compartment,
+            source_flow_compartment = third_stage_use_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
             current_tc=0, 
             weight=0, 
             value=1)
         
-        transfer_for_first_third_use_compartment.save()
+        transfer_for_third_stage_use_compartment.save()
 
 #==============================================================================
 #  Simulation
@@ -523,9 +523,9 @@ class Command(BaseCommand):
             weight=1,
             weights='0.3, 0.4, 0.3'
             )
-        
+         
         aggregated_transfer_for_conversion.save()
-        
+         
         transfer_for_aggregated_transfer = constant_transfer(
             target=third_stage_disposal_compartment,
             belongs_to_aggregated_transfer=aggregated_transfer_for_conversion,  
@@ -534,7 +534,7 @@ class Command(BaseCommand):
             current_tc=0, 
             weight=0, 
             value=1)
-        
+         
         transfer_for_aggregated_transfer.save()
         
         iot_model_instance = model_instance(

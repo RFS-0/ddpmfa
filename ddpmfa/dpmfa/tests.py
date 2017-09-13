@@ -5,6 +5,7 @@ from dpmfa import converter as converters
 from dpmfa.management.commands import create_iot_example as example
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model
+from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import simulator
 
 
 
@@ -495,4 +496,27 @@ class ModelConverterTest(TestCase):
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
+
+#==============================================================================
+# Experiment
+#==============================================================================
+
+class ExperimentConverterTest(TestCase):
+    
+    def test_experiment_converter(self): 
+        # entity specific stuff
+        db_model = dpmfa_models.experiment
+        converter = converters.ExperimentConverter
+        dpmfa_class = simulator.Simulator
         
+        # set up db
+        command = example.Command()
+        command.handle()
+        
+        # set entities of test
+        db_entity = db_model.objects.all()[0]
+        converter_class = converter(db_entity)
+        dpmfa_instance = converter_class.getDpmfaEntity()
+        
+        # assertion 
+        self.assertIsInstance(dpmfa_instance, dpmfa_class)       

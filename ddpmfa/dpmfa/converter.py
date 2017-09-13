@@ -200,12 +200,12 @@ class ListReleaseConverter(LocalReleaseConverter):
     
     def __init__(self, db_list_release=django_models.list_release):
         super(ListReleaseConverter, self).__init__(db_list_release)
-        
-        self.releaseRatesList = db_list_release.release_rate_list
+
+        self.releaseRatesList = [float(x.strip()) for x in db_list_release.release_rate_list.split(',')]
             
         try:
             self.list_release_dpmfa = package_components.ListRelease(
-                releaseRatesList = [],
+                releaseRatesList = self.releaseRatesList,
                 delay = self.delay
                 )
         
@@ -470,7 +470,7 @@ class ExternalListInflowConverter(ExternalInflowConverter):
                 self.inflowList.append(StochasticFunctionInflowConverter(db_stochastic_function_inflow))
             elif len(django_models.random_choice_inflow.objects.filter(pk=self.db_entity.id)) > 0:
                 qs_random_choice_inflow = django_models.random_choice_inflow.objects.filter(pk=self.db_entity.id)
-                db_random_choice_inflow = qs_stochastic_function_inflow[0]
+                db_random_choice_inflow = qs_random_choice_inflow[0]
                 self.inflowList.append(RandomChoiceInflowConverter(db_random_choice_inflow))
             else:
                 print("Could not retrieve a inflow for single period inflow: %s (%i)" %(db_entity.name, db_entity.id))
@@ -596,9 +596,9 @@ class ModelInstanceConverter(object):
 #  DPMFA Simulator Converters
 #==============================================================================
 
-class SimulatorConverter(object):
+class ExperimentConverter(object):
     
-    def __init__(self, db_experiment=django_models.model_instance):
+    def __init__(self, db_experiment=django_models.experiment):
         self.db_entity = db_experiment
         self.name = db_experiment.name
         self.project = db_experiment.model_instance.project
@@ -608,7 +608,7 @@ class SimulatorConverter(object):
         self.periods = db_experiment.periods
 
         # 1. create the model
-        self.model = ModelInstanceConverter(self.model_instance).getDpmfaEntity()
+        self.model_dpmfa = ModelInstanceConverter(self.model_instance).getDpmfaEntity()
         
         # 2. create the simulator
         self.simulator_dpmfa = package_simulator.Simulator(
@@ -617,7 +617,7 @@ class SimulatorConverter(object):
             )
 
         # 3. set up the model
-        self.simulator_dpmfa.setModel(self.model)
+        self.simulator_dpmfa.setModel(self.model_dpmfa)
             
     def getDpmfaEntity(self):
         return self.simulator_dpmfa

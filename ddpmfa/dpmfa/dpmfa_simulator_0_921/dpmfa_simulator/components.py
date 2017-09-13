@@ -129,6 +129,7 @@ class FlowCompartment(Compartment):
         the TC with next higher priority and so on...
         """
         tcSum = sum(t.currentTC for t in self.transfers)
+        print(self.transfers)
         currentPriority = min(t.priority for t in self.transfers)
        
         while tcSum!=1:
@@ -228,6 +229,7 @@ class Stock(FlowCompartment, Sink):
         
         
     def updateImmediateReleaseRate(self):
+        print(self.localRelease)
         self.immediateReleaseRate = self.localRelease.getImmediateReleaseRate()
 
 
@@ -285,7 +287,7 @@ class LocalRelease(object):
 
         
     def getImmediateReleaseRate(self):
-            return self.releaseRatesList[0]
+        return self.releaseRatesList[0]
             
     def scheduleFutureRelease(self, currentRun, currentPeriod, storedAmt):
         remainder = 1- self.releaseRatesList[0]
