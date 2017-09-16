@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from dpmfa.models import *
 from django.contrib.auth.models import User
+from dpmfa.models import *
+from dpmfa.modelcopier import ModelCopier
 
 class Command(BaseCommand):
     
@@ -202,7 +203,8 @@ class Command(BaseCommand):
             target = first_stage_use_compartment, 
             name = 'External list inflow of AD to first stage use compartment', 
             start_delay = 0, 
-            derivation_distribution = 'Some Pdf', 
+            derivation_distribution = 'NORM',
+            derivation_parameters = '1000, 250',
             derivation_factor = 1.0)
         
         import_of_ad_inflow.save()
@@ -269,7 +271,8 @@ class Command(BaseCommand):
             target = first_stage_use_compartment, 
             name = 'External list inflow of SenD to first stage use compartment', 
             start_delay = 0, 
-            derivation_distribution = 'Some Pdf', 
+            derivation_distribution = 'NORM',
+            derivation_parameters = '1000, 250',
             derivation_factor = 1.0)
         
         import_of_send_inflow.save()
@@ -352,8 +355,9 @@ class Command(BaseCommand):
         # creation of the external function inflow of StD (devices) into the first stage use compartment
         import_of_std_inflow = external_function_inflow(
             target=first_stage_use_compartment, 
-            name='External list inflow of SenD to first stage use compartment', 
-            start_delay=0, derivation_distribution='Some Pdf', 
+            name='External function inflow of SenD to first stage use compartment', 
+            start_delay=0, 
+            derivation_distribution='NORM', 
             derivation_factor=1.0, 
             inflow_function='NORM', 
             basic_inflow=fvif_for_efi, 
@@ -496,18 +500,28 @@ class Command(BaseCommand):
             value=1)
         
         transfer_for_third_stage_use_compartment.save()
-
+        
 #==============================================================================
-#  Simulation
+#  Model Instance
+#==============================================================================
+
+        iot_model_instance = ModelCopier.copy_model(iot_model)
+
+        iot_model_instance.save()
+        
+#==============================================================================
+#  Experiment
 #==============================================================================
         
-        iot_simulation = simulation(
-            model = iot_model, 
-            runs = 100,
-            periods = 7,
+        iot_experiment = experiment(
+            prototype_model=iot_model,
+            model_instance = iot_model_instance,
+            name='IoT Experiment',
+            runs=100,
+            periods=50 
             )
         
-        iot_simulation.save()
+        iot_experiment.save()
         
 #==============================================================================
 #  Entities only for test purposes
@@ -536,25 +550,6 @@ class Command(BaseCommand):
             value=1)
          
         transfer_for_aggregated_transfer.save()
-        
-        iot_model_instance = model_instance(
-            project=iot_project,
-            prototype_model=iot_model,
-            name='IoT Model Instance',
-            description='This describes the model instance'
-            )
-        
-        iot_model_instance.save()
-        
-        iot_experiment = experiment(
-            prototype_model=iot_model,
-            model_instance = iot_model_instance,
-            name='IoT Experiment',
-            runs=100,
-            periods=50 
-            )
-        
-        iot_experiment.save()
         
         iot_result = result(
             model_instance=iot_model_instance,

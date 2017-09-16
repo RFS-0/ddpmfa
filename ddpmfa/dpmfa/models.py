@@ -258,7 +258,6 @@ class fixed_rate_release(local_release):
       
 class list_release(local_release):
     
-    # TODO [all]: we will have to implement a float list validator
     release_rate_list = models.CharField(
         verbose_name='Release rate list', 
         validators=[int_list_validator()], 
@@ -359,7 +358,6 @@ class constant_transfer(transfer):
     
 class random_choice_transfer(transfer):
     
-    # TODO [all]: we will have to implement a float list validator 
     sample = models.CharField(
         verbose_name='Sample', 
         validators=[int_list_validator()], 
@@ -379,7 +377,6 @@ class stochastic_transfer(transfer):
         max_length=250, 
         null=True)
     
-    # TODO [all]: we will have to implement a function field to store functions
     function = models.CharField(
         verbose_name='Function', 
         max_length=250)
@@ -392,9 +389,13 @@ class stochastic_transfer(transfer):
     
 class aggregated_transfer(transfer):
     
-    # TODO: implement a float list validator
     weights = models.CharField(
-        verbose_name='Sample', 
+        verbose_name='Weights', 
+        validators=[int_list_validator()], 
+        max_length=250, null=True)
+    
+    priorities = models.CharField(
+        verbose_name='Priorities', 
         validators=[int_list_validator()], 
         max_length=250, null=True)
         
@@ -441,7 +442,6 @@ class external_inflow(models.Model):
         on_delete=models.CASCADE, 
         null=True)
     
-    
     name = models.CharField(
         verbose_name='Name', 
         max_length=250, 
@@ -451,7 +451,6 @@ class external_inflow(models.Model):
         verbose_name='Start delay', 
         null=True)
     
-    # TODO [all]: we will have to implement a function field to store functions
     derivation_distribution = models.CharField(
         choices = DISTRIBUTION_TYPES,
         verbose_name='Probability density function', 
@@ -513,7 +512,6 @@ class external_function_inflow(external_inflow):
         validators=[float_list_validator],
         max_length = 250,
         null = True)
-    
       
     basic_inflow = models.OneToOneField(
         to='single_period_inflow', 
@@ -559,7 +557,6 @@ class fixed_value_inflow(single_period_inflow):
     
 class stochastic_function_inflow(single_period_inflow):
     
-    # TODO [all]: we will have to implement a function field to store functions
     pdf = models.CharField(
         verbose_name='Pdf', 
         max_length=250, 
@@ -574,7 +571,6 @@ class stochastic_function_inflow(single_period_inflow):
     
 class random_choice_inflow(single_period_inflow):
     
-    # TODO [all]: we will have to implement a float list validator
     sample = models.CharField(
         verbose_name='Sample', 
         max_length=250, 

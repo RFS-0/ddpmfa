@@ -6,33 +6,7 @@ from dpmfa.management.commands import create_iot_example as example
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import simulator
-
-
-
-#==============================================================================
-#  Compartment
-#==============================================================================
-
-class CompartmentConverterTest(TestCase):
-        
-    def test_compartment_converter(self):
-        # entity specific stuff
-        db_model = dpmfa_models.compartment
-        converter = converters.CompartmentConverter
-        dpmfa_class = components.Compartment
-        
-        # set up db
-        command = example.Command()
-        command.handle()
-        
-        # set entities of test
-        db_entity = db_model.objects.all()[0]
-        converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
-        
-        # assertion 
-        self.assertIsInstance(dpmfa_instance, dpmfa_class)
-        
+    
 #==============================================================================
 #  Flow Compartment
 #==============================================================================
@@ -52,7 +26,7 @@ class FlowCompartmentConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getFlowCompartmentAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -76,7 +50,7 @@ class SinkConverterConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getSinkAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -100,7 +74,7 @@ class StockConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getStockAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -108,28 +82,6 @@ class StockConverterTest(TestCase):
 #==============================================================================
 #  Releases
 #==============================================================================
-
-# Local Release
-
-class LocalReleaseConverterTest(TestCase):
-    
-    def test_local_release_converter(self):
-        # entity specific stuff
-        db_model = dpmfa_models.local_release
-        converter = converters.LocalReleaseConverter
-        dpmfa_class = components.LocalRelease
-        
-        # set up db
-        command = example.Command()
-        command.handle()
-        
-        # set entities of test
-        db_entity = db_model.objects.all()[0]
-        converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
-        
-        # assertion 
-        self.assertIsInstance(dpmfa_instance, dpmfa_class)
 
 # Fixed Rate Release
 
@@ -148,7 +100,7 @@ class FixedRateReleaseConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getFixedRateReleaseAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -170,7 +122,7 @@ class ListReleaseConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getListReleaseAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -192,7 +144,7 @@ class FunctionReleaseConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getFunctionReleaseAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -200,28 +152,6 @@ class FunctionReleaseConverterTest(TestCase):
 #==============================================================================
 #  Transfers
 #==============================================================================
-
-# Transfer
-
-class TransferConverterTest(TestCase):
-    
-    def test_transfer_converter(self):
-        # entity specific stuff
-        db_model = dpmfa_models.transfer
-        converter = converters.TransferConverter
-        dpmfa_class = components.Transfer
-        
-        # set up db
-        command = example.Command()
-        command.handle()
-        
-        # set entities of test
-        db_entity = db_model.objects.all()[0]
-        converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
-        
-        # assertion 
-        self.assertIsInstance(dpmfa_instance, dpmfa_class)
 
 # Constant Transfer
 
@@ -240,7 +170,7 @@ class ConstTransferConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getConstantTransferAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -262,7 +192,7 @@ class StochasticTransferConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getStochasticTransferAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -284,7 +214,7 @@ class RandomChoiceTransferConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getRandomChoiceTransferAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -306,7 +236,7 @@ class AggregatedTransferConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getAggregatedTransferAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -314,28 +244,6 @@ class AggregatedTransferConverterTest(TestCase):
 #==============================================================================
 #  Single Period Inflow                                                                    
 #==============================================================================  
-
-# Single Period Inflow
-
-class SinglePeriodInflowConverterTest(TestCase):
-    
-    def test_single_period_inflow_converter(self):
-        # entity specific stuff
-        db_model = dpmfa_models.single_period_inflow
-        converter = converters.SinglePeriodInflowConverter
-        dpmfa_class = components.SinglePeriodInflow
-        
-        # set up db
-        command = example.Command()
-        command.handle()
-        
-        # set entities of test
-        db_entity = db_model.objects.all()[0]
-        converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
-        
-        # assertion 
-        self.assertIsInstance(dpmfa_instance, dpmfa_class)
         
 # Stochastic Function Inflow
 
@@ -354,7 +262,7 @@ class StochasticFunctionInflowConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getStochasticFunctionInflowAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -376,7 +284,7 @@ class RandomChoiceInflowConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getRandomChoiceInflowAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -398,7 +306,7 @@ class FixedValueInflowConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getFixedValueInflowAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -406,28 +314,6 @@ class FixedValueInflowConverterTest(TestCase):
 #==============================================================================
 #  External Inflow
 #==============================================================================
-
-# External Inflow
-
-class ExternalInflowConverterTest(TestCase):
-    
-    def test_external_inflow_converter(self):
-        # entity specific stuff
-        db_model = dpmfa_models.external_inflow
-        converter = converters.ExternalInflowConverter
-        dpmfa_class = components.ExternalInflow
-        
-        # set up db
-        command = example.Command()
-        command.handle()
-        
-        # set entities of test
-        db_entity = db_model.objects.all()[0]
-        converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
-        
-        # assertion 
-        self.assertIsInstance(dpmfa_instance, dpmfa_class)
         
 # External List Inflow
 
@@ -435,9 +321,9 @@ class ExternalListInflowConverterTest(TestCase):
     
     def test_external_list_inflow_converter(self):
         # entity specific stuff
-        db_model = dpmfa_models.external_inflow
-        converter = converters.ExternalInflowConverter
-        dpmfa_class = components.ExternalInflow
+        db_model = dpmfa_models.external_list_inflow
+        converter = converters.ExternalListInflowConverter
+        dpmfa_class = components.ExternalListInflow
         
         # set up db
         command = example.Command()
@@ -446,7 +332,7 @@ class ExternalListInflowConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getExternalListInflowAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -468,7 +354,7 @@ class ExternalFunctionInflowConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getExternalFunctionInflowAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -477,11 +363,11 @@ class ExternalFunctionInflowConverterTest(TestCase):
 #  Model
 #==============================================================================
 
-class ModelConverterTest(TestCase):
+class ModelInstanceConverterTest(TestCase):
     
     def test_model_converter(self):
         # entity specific stuff
-        db_model = dpmfa_models.model
+        db_model = dpmfa_models.model_instance
         converter = converters.ModelInstanceConverter
         dpmfa_class = model.Model
         
@@ -492,7 +378,7 @@ class ModelConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getModelInstanceAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)
@@ -516,7 +402,7 @@ class ExperimentConverterTest(TestCase):
         # set entities of test
         db_entity = db_model.objects.all()[0]
         converter_class = converter(db_entity)
-        dpmfa_instance = converter_class.getDpmfaEntity()
+        dpmfa_instance = converter_class.getSimulatorAsDpmfaEntity()
         
         # assertion 
         self.assertIsInstance(dpmfa_instance, dpmfa_class)       
