@@ -261,7 +261,8 @@ class list_release(local_release):
     release_rate_list = models.CharField(
         verbose_name='Release rate list', 
         validators=[int_list_validator()], 
-        max_length=250, null=True)
+        max_length=250, 
+        null=True)
     
 class function_release(local_release):
     
@@ -280,9 +281,6 @@ class function_release(local_release):
     (SINE, 'Sine'),
     (COSINE, 'Cosine')
     )
-    
-    
-
 
     release_function = models.CharField(
         verbose_name='Release function type', 
@@ -292,7 +290,6 @@ class function_release(local_release):
 
     function_parameters = models.CharField(
         verbose_name='Release function parameters',
-        validators=[float_list_validator],
         max_length = 250,
         null = True)
 
@@ -509,7 +506,6 @@ class external_function_inflow(external_inflow):
 
     function_parameters = models.CharField(
         verbose_name='Inflow function parameters',
-        validators=[float_list_validator],
         max_length = 250,
         null = True)
       

@@ -21,6 +21,7 @@ class ModelCopier(object):
         model_copy.save()
 
         compartment_by_ref_pk = {}
+        inflow_by_ref_pk = {}
 
         for flow_compartment_ref in dbm.flow_compartment.objects.filter(model=model_ref):
             if dbm.stock.objects.filter(pk=flow_compartment_ref.pk).count() == 0:
@@ -140,8 +141,6 @@ class ModelCopier(object):
             )
             transfer_copy.save()
 
-
-
         for release_ref in dbm.fixed_rate_release.objects.filter(stock__model=model_ref):
             release_copy = dbm.fixed_rate_release(
                 name=release_ref.name,
@@ -238,6 +237,8 @@ class ModelCopier(object):
                     value=period_inflow_ref.value
                 )
                 period_inflow_copy.save()
+                inflow_copy.basic_inflow = period_inflow_copy
+                inflow_copy.save()
 
             for period_inflow_ref in dbm.stochastic_function_inflow.objects.filter(external_function_inflow=inflow_ref):
                 period_inflow_copy = dbm.stochastic_function_inflow(
@@ -248,6 +249,8 @@ class ModelCopier(object):
                     parameter_values=period_inflow_ref.parameter_values
                 )
                 period_inflow_copy.save()
+                inflow_copy.basic_inflow = period_inflow_copy
+                inflow_copy.save()
 
             for period_inflow_ref in dbm.random_choice_inflow.objects.filter(external_function_inflow=inflow_ref):
                 period_inflow_copy = dbm.random_choice_inflow(
@@ -257,5 +260,7 @@ class ModelCopier(object):
                     sample=period_inflow_ref.sample
                 )
                 period_inflow_copy.save()
+                inflow_copy.basic_inflow = period_inflow_copy
+                inflow_copy.save()
 
         return model_copy

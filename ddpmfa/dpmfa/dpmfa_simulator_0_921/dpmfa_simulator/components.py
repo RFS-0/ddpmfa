@@ -129,9 +129,6 @@ class FlowCompartment(Compartment):
         the TC with next higher priority and so on...
         """
         tcSum = sum(t.currentTC for t in self.transfers)
-        print("tcSum: " + tcSum)
-        print("Transfers: ")
-        print(self.transfers)
         currentPriority = min(t.priority for t in self.transfers)
        
         while tcSum!=1:
@@ -231,7 +228,6 @@ class Stock(FlowCompartment, Sink):
         
         
     def updateImmediateReleaseRate(self):
-        print(self.localRelease)
         self.immediateReleaseRate = self.localRelease.getImmediateReleaseRate()
 
 
@@ -464,9 +460,6 @@ class StochasticTransfer(Transfer):
         """ samples a random value from the probability distribution as current 
         TC
         """
-        print("Parameters: ")
-        print(type(self.parameters))
-        print(self.parameters)
         self.currentTC = self.function(*self.parameters)
 
 
@@ -489,7 +482,6 @@ class RandomChoiceTransfer(Transfer):
         self.sample = sample
     def sampleTC(self):
         """ Randomly assigns one value from the sample as current TC"""
-        print(self.sample)
         self.currentTC = np.random.choice(self.sample)
   
               
@@ -521,7 +513,6 @@ class AggregatedTransfer(Transfer):
             self.weights = [1]*len(singleTransfers)
         
     def sampleTC(self):
-        print("weights: " + self.weights)
         cs = np.cumsum(self.weights) #An array of the weights, cumulatively summed.
         total = sum(self.weights)            
         ind = sum(cs < np.random.uniform(0, total)) #Find the index of the first weight over a random value.  

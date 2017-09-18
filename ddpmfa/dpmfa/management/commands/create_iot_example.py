@@ -541,7 +541,7 @@ class Command(BaseCommand):
         aggregated_transfer_for_conversion.save()
          
         transfer_for_aggregated_transfer = constant_transfer(
-            target=third_stage_disposal_compartment,
+            target=None,
             belongs_to_aggregated_transfer=aggregated_transfer_for_conversion,  
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 

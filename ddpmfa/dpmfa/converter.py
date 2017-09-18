@@ -6,7 +6,6 @@ from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model as package_model
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import simulator as package_simulator
 import django
 from django.db.models.sql.constants import SINGLE
-from matplotlib.delaunay.testfuncs import constant
 
 # Make sure to always convert the compartments before the transfers
 
@@ -168,10 +167,6 @@ def getDpmfaEntityOfExternalFunctionInflow(primaryKey):
 
 def setDpmfaEntityOfExternalFunctionInflow(primaryKey, dpmfaEntity):
     external_function_inflows_dpmfa[primaryKey] = dpmfaEntity
-    
-
-    
-
 
 # Distributions
     
@@ -249,14 +244,15 @@ class FlowCompartmentConverter(CompartmentConverter):
         for transfer in self.db_entity.outgoing_transfers.all():
             if getDpmfaEntityOfConstantTransfer(transfer.pk):
                 self.transfers.append(getDpmfaEntityOfConstantTransfer(transfer.pk))
-            elif getDpmfaEntityOfRandomChoiceInflow(transfer.pk):
-                self.transfers.append(getDpmfaEntityOfRandomChoiceInflow(transfer.pk))
+            elif getDpmfaEntityOfRandomChoiceTransfer(transfer.pk):
+                self.transfers.append(getDpmfaEntityOfRandomChoiceTransfer(transfer.pk))
             elif getDpmfaEntityOfStochasticTransfer(transfer.pk):
                 self.transfers.append(getDpmfaEntityOfStochasticTransfer(transfer.pk))
             elif getDpmfaEntityOfAggregatedTransfer(transfer.pk):
                 self.transfers.append(getDpmfaEntityOfAggregatedTransfer(transfer.pk))
             else:
                 print("Could not set transfer with name %s to flow compartment with name %s" %(transfer.name, self.db_entity.name))
+                print("PK of transfer: " + str(transfer.pk))
             
         self.getFlowCompartmentAsDpmfaEntity().transfers = self.transfers
         
@@ -303,8 +299,8 @@ class StockConverter(FlowCompartmentConverter):
         for transfer in self.db_entity.outgoing_transfers.all():
             if getDpmfaEntityOfConstantTransfer(transfer.pk):
                 self.transfers.append(getDpmfaEntityOfConstantTransfer(transfer.pk))
-            elif getDpmfaEntityOfRandomChoiceInflow(transfer.pk):
-                self.transfers.append(getDpmfaEntityOfRandomChoiceInflow(transfer.pk))
+            elif getDpmfaEntityOfRandomChoiceTransfer(transfer.pk):
+                self.transfers.append(getDpmfaEntityOfRandomChoiceTransfer(transfer.pk))
             elif getDpmfaEntityOfStochasticTransfer(transfer.pk):
                 self.transfers.append(getDpmfaEntityOfStochasticTransfer(transfer.pk))
             elif getDpmfaEntityOfAggregatedTransfer(transfer.pk):
@@ -395,14 +391,15 @@ class FunctionReleaseConverter(LocalReleaseConverter):
 
         release_function_name = db_function_release.release_function
         
-        self.function_parameter = []
-        if db_function_release.function_parameters:
-            function_parameters = [float(x.strip()) for x in db_function_release.function_parameters.split(',')]
-        self.releaseFunction = fs.function_by_name(release_function_name, function_parameters)
+        self.functionParameters = []
+        if self.db_entity.function_parameters:
+            params = self.db_entity.function_parameters
+            self.functionParameters = [float(x.strip()) for x in params.split(',')]
+        self.releaseFunction = fs.function_by_name(release_function_name, self.functionParameters)
 
         self.function_release_dpmfa = package_components.FunctionRelease(
-            releaseFunction = self.releaseFunction,
-            delay = self.delay
+            delay = self.delay,
+            releaseFunction = self.releaseFunction
             )
         
         setDpmfaEntityOfFunctionRelease(db_function_release.pk, self.getFunctionReleaseAsDpmfaEntity())
@@ -499,7 +496,7 @@ class StochasticTransferConverter(TransferConverter):
 class RandomChoiceTransferConverter(TransferConverter):
     
     def __init__(self, db_random_choice_transfer=django_models.random_choice_transfer):
-        super(n, self).__init__(db_random_choice_transfer)
+        super(RandomChoiceTransferConverter, self).__init__(db_random_choice_transfer)
         
         self.sample = db_random_choice_transfer.sample
     
@@ -548,7 +545,7 @@ class AggregatedTransferConverter(TransferConverter):
         
         setDpmfaEntityOfAggregatedTransfer(db_aggregated_transfer.pk, self.getAggregatedTransferAsDpmfaEntity())
         
-    def setSingleTransfersOfDpmfaEntity(self):
+    def setSingleTransfersOfAggregatedTransfer(self):
         self.singleTransfers = []
         for singleTransfer in self.db_aggregated_transfer.transfers:
             if getDpmfaEntityOfSink(singleTransfer.pk):
@@ -716,7 +713,7 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
     
     def __init__(self, db_external_function_inflow=django_models.external_function_inflow):
         super(ExternalFunctionInflowConverter, self).__init__(db_external_function_inflow)
-    
+        
         self.basicInflow = db_external_function_inflow.basic_inflow
         self.inflowFunction = getDistributionFunction(db_external_function_inflow.inflow_function)
         
@@ -744,8 +741,6 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
         self.getExternalFunctionInflowAsDpmfaEntity().target = self.target
     
     def setBasicInflowOfExternalFunctionInflow(self):
-        print(self.basicInflow)
-        print(self.basicInflow.pk)
         pk = self.basicInflow.pk
         if getDpmfaEntityOfFixedValueInflow(pk):
             self.basicInflow = getDpmfaEntityOfFixedValueInflow(pk)
@@ -754,6 +749,7 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
         elif getDpmfaEntityOfRandomChoiceInflow(pk):
             self.basicInflow = getDpmfaEntityOfRandomChoiceInflow(pk)
         else:
+            print("Set basic inflow")
             print("Could not set single period inflow with pk %i for external list inflow with name %s" %(pk, self.db_entity.name))
         
         self.getExternalFunctionInflowAsDpmfaEntity().basicInflow = self.basicInflow
@@ -785,6 +781,7 @@ class ModelInstanceConverter(object):
         self.randomChoiceTransfers = []
         self.stochasticTransfers = []
         self.aggregatedTransfers = []
+        self.localReleases = []
         
         self.compartments = []
         self.inflows = []
@@ -793,7 +790,7 @@ class ModelInstanceConverter(object):
         # create instances
         #==============================================================================
         
-        # model
+        # model instance
         self.model_instance_dpmfa = package_model.Model(
             name = self.name,
             )
@@ -812,6 +809,22 @@ class ModelInstanceConverter(object):
             self.stocks.append(s)
             self.compartments.append(s.getStockAsDpmfaEntity())
             
+            # local release
+            if len(django_models.fixed_rate_release.objects.filter(pk=stock.local_release.pk)) > 0:
+                db_fixed_rate_release = django_models.fixed_rate_release.objects.get(pk=stock.local_release.pk)
+                frr = FixedRateReleaseConverter(db_fixed_rate_release).getFixedRateReleaseAsDpmfaEntity()
+                self.localReleases.append(frr)
+            elif len(django_models.list_release.objects.filter(pk=stock.local_release.pk)) > 0:
+                db_list_release =django_models.list_release.objects.get(pk=stock.local_release.pk)
+                lr = ListReleaseConverter(db_list_release).getListReleaseAsDpmfaEntity()
+                self.localReleases.append(lr)
+            elif len(django_models.function_release.objects.filter(pk=stock.local_release.pk)) > 0:
+                db_function_release = django_models.function_release.objects.get(pk=stock.local_release.pk)
+                fr = FunctionReleaseConverter(db_function_release).getFunctionReleaseAsDpmfaEntity()
+                self.localReleases.append(fr)
+            else:
+                print("Could not convert local release with pk " + str(localRelease.pk) + "for stock %s" %stock.name)        
+        
         # sinks
         sinks_qs = django_models.sink.objects.filter(model=db_model_instance.pk)
         for sink in sinks_qs:
@@ -848,26 +861,26 @@ class ModelInstanceConverter(object):
         external_function_inflow_qs = django_models.external_function_inflow.objects.filter(target__model=db_model_instance.pk)
         for externalFunctionInflow in external_function_inflow_qs:
             efi = ExternalFunctionInflowConverter(externalFunctionInflow)
+            
             self.externalFunctionInflows.append(efi)
             self.inflows.append(efi.getExternalFunctionInflowAsDpmfaEntity())
             
-            # single period inflows
-            qs = externalListInflow.single_period_inflows.get_queryset()
-            for singlePeriodInflow in qs:
-                if len(django_models.fixed_value_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
-                    db_fixed_value_inflow = django_models.fixed_value_inflow.objects.get(pk=singlePeriodInflow.pk)
-                    fvi = FixedValueInflowConverter(db_fixed_value_inflow).getFixedValueInflowAsDpmfaEntity()
-                    self.singlePeriodInflows.append(fvi)
-                elif len(django_models.stochastic_function_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
-                    db_stochastic_function_inflow = django_models.stochastic_function_inflow.objects.get(pk=singlePeriodInflow.pk)
-                    sfi = StochasticFunctionInflowConverter(db_stochastic_function_inflow).getStochasticFunctionInflowAsDpmfaEntity()
-                    self.singlePeriodInflows.append(sfi)
-                elif len(django_models.random_choice_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
-                    db_random_choice_inflow = django_models.random_choice_inflow.objects.get(pk=singlePeriodInflow.pk)
-                    rci = RandomChoiceInflowConverter(db_random_choice_inflow).getRandomChoiceInflowAsDpmfaEntity()
-                    self.singlePeriodInflows.append(rci)
-                else:
-                    print("Could not construct single period inflow for external list inflow %s" %externalListInflow.name)
+            # single period inflow
+            basicInfow = externalFunctionInflow.basic_inflow
+            if len(django_models.fixed_value_inflow.objects.filter(pk=basicInfow.pk)) > 0:
+                db_fixed_value_inflow = django_models.fixed_value_inflow.objects.get(pk=basicInfow.pk)
+                fvi = FixedValueInflowConverter(db_fixed_value_inflow).getFixedValueInflowAsDpmfaEntity()
+                self.singlePeriodInflows.append(fvi)
+            elif len(django_models.stochastic_function_inflow.objects.filter(pk=basicInfow.pk)) > 0:
+                db_stochastic_function_inflow = django_models.stochastic_function_inflow.objects.get(pk=basicInfow.pk)
+                sfi = StochasticFunctionInflowConverter(db_stochastic_function_inflow).getStochasticFunctionInflowAsDpmfaEntity()
+                self.singlePeriodInflows.append(sfi)
+            elif len(django_models.random_choice_inflow.objects.filter(pk=basicInfow.pk)) > 0:
+                db_random_choice_inflow = django_models.random_choice_inflow.objects.get(pk=basicInfow.pk)
+                rci = RandomChoiceInflowConverter(db_random_choice_inflow).getRandomChoiceInflowAsDpmfaEntity()
+                self.singlePeriodInflows.append(rci)
+            else:
+                print("Could not construct single period inflow for external list inflow %s" %externalListInflow.name)
            
         # transfers
         
@@ -879,8 +892,6 @@ class ModelInstanceConverter(object):
         
         # random choice transfers
         for randomChoiceTransfer in django_models.random_choice_transfer.objects.filter(target__model=db_model_instance.pk):
-            print("Random Choic Transfer: ")
-            print(randomChoiceTransfer)
             rct = RandomChoiceTransferConverter(randomChoiceTransfer)
             self.randomChoiceTransfers.append(rct)
             self.transfers.append(rct.getRandomChoiceTransferAsDpmfaEntity())
@@ -939,15 +950,14 @@ class ModelInstanceConverter(object):
         
         # aggregated transfers
         for aggregateTransfer in self.aggregatedTransfers:
-            aggregatedTransfer.setSingleTransfersOfDpmfaEntity()
+            print(str(aggregatedTransfer))
+            aggregatedTransfer.setSingleTransfersOfAggregatedTransfer()
             
         #==============================================================================  
         # set up model
         #==============================================================================
                
         self.getModelInstanceAsDpmfaEntity().setCompartments(self.compartments)
-        print("inflows to model: ")
-        print(len(self.inflows))
         self.getModelInstanceAsDpmfaEntity().setInflows(self.inflows)
         
         self.getModelInstanceAsDpmfaEntity().checkModelValidity()
