@@ -282,7 +282,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 1,
-            pdf = 'Some Pdf',
+            pdf = 'NORM',
             parameter_values = '1000, 250')
         
         si_1.save()
@@ -291,7 +291,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 2,
-            pdf = 'Some Pdf',
+            pdf = 'NORM',
             parameter_values = '1000, 250')
         
         si_2.save()
@@ -300,7 +300,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 3,
-            pdf = 'Some Pdf',
+            pdf = 'NORM',
             parameter_values = '1000, 250')
         
         si_3.save()
@@ -309,7 +309,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 4,
-            pdf = 'Some Pdf',
+            pdf = 'NORM',
             parameter_values = '1000, 250')
         
         si_4.save()
@@ -318,7 +318,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 5,
-            pdf = 'Some Pdf',
+            pdf = 'NORM',
             parameter_values = '1000, 250')
         
         si_5.save()
@@ -327,7 +327,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 6,
-            pdf = 'Some Pdf',
+            pdf = 'NORM',
             parameter_values = '1000, 250')
         
         si_6.save()
@@ -336,7 +336,7 @@ class Command(BaseCommand):
             external_list_inflow = import_of_send_inflow,
             current_value = 0,
             period = 7,
-            pdf = 'Some Pdf',
+            pdf = 'NORM',
             parameter_values = '1000, 250')
         
         si_7.save()
@@ -378,8 +378,8 @@ class Command(BaseCommand):
             priority = 3, 
             current_tc = 0, 
             weight = 0, 
-            parameters = '0.5, 0.7, 0.9',
-            function='LI')
+            parameters = '1000, 250',
+            function='NORM')
         
         stochastic_transfer_for_first_stage_flow_compartment.save()
         
@@ -413,8 +413,8 @@ class Command(BaseCommand):
             priority=2, 
             current_tc=0, 
             weight=0, 
-            parameters = '0.5, 0.7, 0.9',
-            function='LI')
+            parameters = '1000, 250',
+            function='NORM')
         
         stochastic_transfer_for_second_stage_flow_compartment.save()
         
@@ -437,8 +437,8 @@ class Command(BaseCommand):
             priority=2, 
             current_tc=0, 
             weight=0, 
-            parameters = '0.5, 0.7, 0.9',
-            function='LI')
+            parameters = '1000, 250',
+            function='NORM')
         
         stochastic_transfer_for_third_stage_flow_compartment.save()
         
@@ -530,7 +530,7 @@ class Command(BaseCommand):
 # Aggregated Transfer
 
         aggregated_transfer_for_conversion = aggregated_transfer(
-            target=third_stage_disposal_compartment,
+            target=None, # because otherwise it will be considered by model converter
             name='Aggregated Transfer for Conversion Test',
             priority=1,
             current_tc=1,
@@ -541,7 +541,7 @@ class Command(BaseCommand):
         aggregated_transfer_for_conversion.save()
          
         transfer_for_aggregated_transfer = constant_transfer(
-            target=None,
+            target=None, # because otherwise it will be considered by model converter
             belongs_to_aggregated_transfer=aggregated_transfer_for_conversion,  
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 

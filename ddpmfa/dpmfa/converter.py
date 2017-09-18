@@ -190,7 +190,9 @@ def getDistributionFunction(distribution_type):
     elif distribution_type == 'POI':
         return nr.poisson
     elif distribution_type == 'CHI':
-        return nr.chisquare  
+        return nr.chisquare
+    else:
+        return None
 
 #==============================================================================
 #  DPMFA Components Converters
@@ -203,9 +205,11 @@ class CompartmentConverter(object):
         self.compNumber = db_compartment.pk
         self.name = db_compartment.name
         self.logInflows = db_compartment.log_inflows
+        
         if db_compartment.categories:
             self.categories = [str(x.strip()) for x in db_compartment.categories.split(',')]
         else:
+            # no warning for categories
             self.categories = []
             
         self.compartment_dpmfa = package_components.Compartment(
@@ -227,7 +231,6 @@ class FlowCompartmentConverter(CompartmentConverter):
         self.transfers = [] 
         self.adjustOutgoingTCs = db_flow_compartment.adjust_outgoing_tcs
         self.logOutflows = db_flow_compartment.log_outflows
-        self.immediateReleaseRate = 1
             
         self.flow_compartment_dpmfa = package_components.FlowCompartment(
             name = self.name, 
@@ -280,7 +283,6 @@ class StockConverter(FlowCompartmentConverter):
     def __init__(self, db_stock=django_models.stock):
         super(StockConverter, self).__init__(db_stock)
     
-        self.db_local_release = db_stock.local_release
         self.localRelease = None
 
         self.stock_dpmfa = package_components.Stock(
@@ -373,6 +375,8 @@ class ListReleaseConverter(LocalReleaseConverter):
         self.releaseRatesList = []
         if db_list_release.release_rate_list:
             self.releaseRatesList = [float(x.strip()) for x in db_list_release.release_rate_list.split(',')]
+        else:
+            print("entity: List Release; Attribute: releaseRateList; Problem: Could not set release rates list; argument: %s" %str(db_list_release.release_rate_list))
             
         self.list_release_dpmfa = package_components.ListRelease(
             releaseRatesList = self.releaseRatesList,
@@ -395,6 +399,9 @@ class FunctionReleaseConverter(LocalReleaseConverter):
         if self.db_entity.function_parameters:
             params = self.db_entity.function_parameters
             self.functionParameters = [float(x.strip()) for x in params.split(',')]
+        else:
+            print("entity: Function Release; Attribute: functionParameters; Problem: Could not set function parameters; argument: %s" %str(self.db_entity.function_parameters))
+        
         self.releaseFunction = fs.function_by_name(release_function_name, self.functionParameters)
 
         self.function_release_dpmfa = package_components.FunctionRelease(
@@ -466,8 +473,17 @@ class StochasticTransferConverter(TransferConverter):
     def __init__(self, db_stochastic_transfer=django_models.stochastic_transfer):
         super(StochasticTransferConverter, self).__init__(db_stochastic_transfer)
         
-        self.function = db_stochastic_transfer.function
-        self.parameters = db_stochastic_transfer.parameters
+        self.function = None
+        if db_stochastic_transfer.function and getDistributionFunction(db_stochastic_transfer.function) != None:
+            self.function = getDistributionFunction(db_stochastic_transfer.function)
+        else:
+            print("entity: Stochastic Transfer Converter; Attribute: function; Problem: Could not set function; argument: %s" %str(db_stochastic_transfer.function))
+        self.parameters = []
+        if db_stochastic_transfer.parameters:
+            self.parameters = [float(x.strip()) for x in db_stochastic_transfer.parameters.split(',')]
+        else:
+            print("entity: Stochastic Transfer Converter; Attribute: parameters; Problem: Could not set parameters; argument: %s" %str(db_stochastic_transfer.parameters))
+        
         
         self.stochastic_transfer_dpmfa = package_components.StochasticTransfer(
             target = self.target,
@@ -498,7 +514,11 @@ class RandomChoiceTransferConverter(TransferConverter):
     def __init__(self, db_random_choice_transfer=django_models.random_choice_transfer):
         super(RandomChoiceTransferConverter, self).__init__(db_random_choice_transfer)
         
-        self.sample = db_random_choice_transfer.sample
+        self.sample = []
+        if db_random_choice_transfer.sample:
+            self.sample = [float(x.strip()) for x in db_random_choice_transfer.sample.split(',')]
+        else:
+            print("Could not set sample for random choice transfer; argument: %s" %str(db_random_choice_transfer.sample))
     
         self.random_choice_transfer_dpmfa = package_components.RandomChoiceTransfer(
             target = self.target, 
@@ -532,9 +552,13 @@ class AggregatedTransferConverter(TransferConverter):
         self.weights = None
         if db_aggregated_transfer.weights:
             self.weights = [float(x.strip()) for x in db_aggregated_transfer.weights.split(',')]
+        else:
+            print("entity: Aggregated Transfer Converter; Attribute: weights; Problem: Could not set weights; argument: %s" %str(db_aggregated_transfer.weights))
         self.priorities = None
         if db_aggregated_transfer.priorities:
             self.priorities = [float(x.strip()) for x in db_aggregated_transfer.priorities.split(',')]
+        else:
+            print("entity: Aggregated Transfer Converter; Attribute: priorities; Problem: Could not set priorities; argument: %s" %str(db_aggregated_transfer.weights))
         
         self.aggregated_transfer_dpmfa = package_components.AggregatedTransfer(
             target = self.target,
@@ -587,8 +611,17 @@ class StochasticFunctionInflowConverter(SinglePeriodInflowConverter):
     def __init__(self, db_stochastic_function_inflow=django_models.stochastic_function_inflow):
         super(StochasticFunctionInflowConverter, self).__init__(db_stochastic_function_inflow)
         
-        self.probabilityDistribution = db_stochastic_function_inflow.pdf
-        self.parameters = db_stochastic_function_inflow.parameter_values
+        
+        self.probabilityDistribution = None
+        if db_stochastic_function_inflow.pdf and getDistributionFunction(db_stochastic_function_inflow.pdf) != None:
+            self.probabilityDistribution = getDistributionFunction(db_stochastic_function_inflow.pdf)
+        else:
+            print("entity: Stochastic Function Inflow; Attribute: probabilityDensityFunction; Problem: Could not set probability density function; argument: %s" %str(db_stochastic_function_inflow.pdf))
+        if db_stochastic_function_inflow.parameter_values:
+            self.parameters = [float(x.strip()) for x in db_stochastic_function_inflow.parameter_values.split(',')]
+        else:
+            print("entity: Stochastic Function Inflow; Attribute: parameter values; Problem: Could not set parameter values; argument: %s" %str(db_stochastic_function_inflow.parameter_values))
+        
         
         self.stochastic_function_inflow_dpmfa = package_components.StochasticFunctionInflow(
             probabilityDistribution = self.probabilityDistribution, 
@@ -605,7 +638,11 @@ class RandomChoiceInflowConverter(SinglePeriodInflowConverter):
     def __init__(self, db_random_choice_inflow=django_models.random_choice_inflow):
         super(RandomChoiceInflowConverter, self).__init__(db_random_choice_inflow)
         
-        self.sample = db_random_choice_inflow.sample
+        if db_random_choice_inflow.sample:
+            self.sample = [float(x.strip()) for x in db_random_choice_inflow.sample.split(',')]
+        else:
+            print("entity: Random Choice Inflow; Attribute: sample; Problem: Could not set sample; argument: %s" %str(db_random_choice_inflow.sample))
+        
         
         self.random_choice_inflow_dpmfa = package_components.RandomChoiceInflow(
             sample = self.sample
@@ -645,10 +682,15 @@ class ExternalInflowConverter(object):
         
         self.name = db_external_inflow.name
         self.startDelay = db_external_inflow.start_delay
-        self.derivationDistribution = getDistributionFunction(db_external_inflow.derivation_distribution)
+        if db_external_inflow.derivation_distribution and getDistributionFunction(db_external_inflow.derivation_distribution) != None:
+            self.derivationDistribution = getDistributionFunction(db_external_inflow.derivation_distribution)
+        else:
+            print("entity: External Inflow; Attribute: derivationDistribution; Problem: Could not set derivation distribution; argument: %s" %str(db_external_inflow.derivation_distribution))
         self.derivationParameters = []
         if db_external_inflow.derivation_parameters:
             self.derivationParameters = [float(x.strip()) for x in db_external_inflow.derivation_parameters.split(',')]
+        else:
+            print("entity: External Inflow; Attribute: derivationParameters; Problem: Could not set derivation parameters; argument: %s" %str(db_external_inflow.derivation_parameters))
         self.derivationFactor = db_external_inflow.derivation_factor
         
         self.external_inflow_dpmfa = package_components.ExternalInflow(
@@ -663,7 +705,7 @@ class ExternalInflowConverter(object):
     def getExternalInflowAsDpmfaEntity(self):
         return self.external_inflow_dpmfa
 
-class ExternalListInflowConverter(ExternalInflowConverter):
+class ExternalListInflowConverter(ExteralInflowConverter):
     
     def __init__(self, db_external_list_inflow=django_models.external_list_inflow):
         super(ExternalListInflowConverter, self).__init__(db_external_list_inflow)
@@ -903,10 +945,10 @@ class ModelInstanceConverter(object):
             self.transfers.append(st.getStochasticTransferAsDpmfaEntity())
             
         # aggregated transfers
-        for aggregatedTransfer in django_models.aggregated_transfer.objects.filter(target__model=db_model_instance.pk):
-            at = AggregatedTransferConverter(aggregatedTransfer)
-            self.aggregatedTransfers.append(at)
-            self.transfers.append(at.getAggregatedTransferAsDpmfaEntity())
+#         for aggregatedTransfer in django_models.aggregated_transfer.objects.filter(target__model=db_model_instance.pk):
+#             at = AggregatedTransferConverter(aggregatedTransfer)
+#             self.aggregatedTransfers.append(at)
+#             self.transfers.append(at.getAggregatedTransferAsDpmfaEntity())
         
         #==============================================================================  
         # set up all the relationships

@@ -392,7 +392,7 @@ class ExperimentCreateView(generic.CreateView):
         self.experiment.prototype_model = self.prototype_model
         self.experiment.model_instance = self.model_instance
         self.experiment.save()
-        converter.ExperimentConverter(self.experiment).getDpmfaEntity().runSimulation()
+        converter.ExperimentConverter(self.experiment).getSimulatorAsDpmfaEntity().runSimulation()
         return super(ExperimentCreateView, self).form_valid(form)
     
 class ExperimentDetailView(generic.DetailView):

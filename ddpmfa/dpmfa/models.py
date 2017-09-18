@@ -368,6 +368,30 @@ class random_choice_transfer(transfer):
     
 class stochastic_transfer(transfer):
     
+    NORMAL = 'NORM'
+    GEOMETRIC = 'GEO'
+    BINOMIAL = 'BINOM'
+    EXPONENTIAL = 'EXPO'
+    TRIANGULAR = 'TRI'
+    UNIFORM = 'UNI'
+    GAMMA = 'GAM'
+    PARETO = 'PAR'
+    POISSON = 'POI'
+    CHISQUARE = 'CHI'
+
+    DISTRIBUTION_TYPES = (
+    (NORMAL, 'Normal distribution'),
+    (GEOMETRIC, 'Geometric distribution'),
+    (BINOMIAL, 'Binomial distribution'),
+    (EXPONENTIAL, 'Exponential distribution'),
+    (TRIANGULAR, 'Triangular distribution'),
+    (UNIFORM, 'Uniform distribution'),
+    (GAMMA, 'Gamma distribution'),
+    (PARETO, 'Pareto distribution'),
+    (POISSON, 'Poisson distribution'),
+    (CHISQUARE, 'Chisquare distribution'),    
+    )
+    
     parameters = models.CharField(
         verbose_name='Parameters', 
         validators=[int_list_validator()], 
@@ -375,8 +399,10 @@ class stochastic_transfer(transfer):
         null=True)
     
     function = models.CharField(
+        choices = DISTRIBUTION_TYPES,
         verbose_name='Function', 
-        max_length=250)
+        max_length=250,
+        null=True)
     
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
@@ -553,7 +579,32 @@ class fixed_value_inflow(single_period_inflow):
     
 class stochastic_function_inflow(single_period_inflow):
     
+    NORMAL = 'NORM'
+    GEOMETRIC = 'GEO'
+    BINOMIAL = 'BINOM'
+    EXPONENTIAL = 'EXPO'
+    TRIANGULAR = 'TRI'
+    UNIFORM = 'UNI'
+    GAMMA = 'GAM'
+    PARETO = 'PAR'
+    POISSON = 'POI'
+    CHISQUARE = 'CHI'
+
+    DISTRIBUTION_TYPES = (
+    (NORMAL, 'Normal distribution'),
+    (GEOMETRIC, 'Geometric distribution'),
+    (BINOMIAL, 'Binomial distribution'),
+    (EXPONENTIAL, 'Exponential distribution'),
+    (TRIANGULAR, 'Triangular distribution'),
+    (UNIFORM, 'Uniform distribution'),
+    (GAMMA, 'Gamma distribution'),
+    (PARETO, 'Pareto distribution'),
+    (POISSON, 'Poisson distribution'),
+    (CHISQUARE, 'Chisquare distribution'),    
+    )
+    
     pdf = models.CharField(
+        choices = DISTRIBUTION_TYPES,
         verbose_name='Pdf', 
         max_length=250, 
         null=True)
