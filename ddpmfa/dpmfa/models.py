@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields import CharField
 
 from django.core.validators import int_list_validator
 from django.utils import timezone
@@ -131,7 +130,8 @@ class model_parameters(models.Model):
     status = models.CharField(
         max_length=2,
         choices=STATUS_VARIABLES,
-        default=NOT_DEFINED
+        default=NOT_DEFINED,
+        null=True
         )
     
     evt_created = models.DateTimeField(
@@ -238,9 +238,10 @@ class sink(compartment):
 
 class local_release(models.Model):
     
-    name = CharField(
+    name = models.CharField(
         verbose_name='Local release', 
         default='local release', 
+        null=True,
         max_length=250)
     
     delay = models.SmallIntegerField(
@@ -358,7 +359,8 @@ class random_choice_transfer(transfer):
     sample = models.CharField(
         verbose_name='Sample', 
         validators=[int_list_validator()], 
-        max_length=250, null=True)
+        max_length=250, 
+        null=True)
     
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
@@ -611,7 +613,8 @@ class stochastic_function_inflow(single_period_inflow):
     
     parameter_values = models.CharField(
         verbose_name='Pdf parameter values', 
-        max_length=250, null=True)
+        max_length=250, 
+        null=True)
     
     def get_absolute_url(self):
         return reverse('dpmfa:stochastic-function-inflow-update', args=[self.id]) 
@@ -839,9 +842,37 @@ class result(models.Model):
         null = True
         )
     
+    FLOW_COMPARTEMENT = 'FLOW_COMPARTMENT'
+    SINK = 'SINK'
+    STOCK = 'STOCK'
+
+    ENTITY_TYPES = (
+    (FLOW_COMPARTEMENT, 'Flow Compartment'),
+    (SINK, 'Sink'),
+    (STOCK, 'Stock'),
+    )
+    
+    entity_type_of_result = models.CharField(
+        choices = ENTITY_TYPES,
+        verbose_name = 'Entity type',
+        max_length = 250,
+        null = True
+        )
+    
+    name_of_entity = models.CharField(
+        verbose_name = 'Name',
+        max_length = 250,
+        null = True
+        )
+    
+    primary_key_of_entity = models.IntegerField(
+        verbose_name = 'Primary Key of Entity',
+        null = True
+        )
+    
     file = models.FileField(
         verbose_name = 'File',
-        upload_to = 'models/%model_instance_pk/',
+        upload_to = 'experiments/%Y/%m/%d/',
         null = True
         )
     

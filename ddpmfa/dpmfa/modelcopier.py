@@ -137,7 +137,8 @@ class ModelCopier(object):
                 priority=transfer_ref.priority,
                 current_tc=transfer_ref.current_tc,
                 weight=transfer_ref.weight,
-                parameters=transfer_ref.parameters
+                parameters=transfer_ref.parameters,
+                function=transfer_ref.function
             )
             transfer_copy.save()
 

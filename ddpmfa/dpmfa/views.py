@@ -1,6 +1,7 @@
 import dpmfa.converter as converter
 import dpmfa.forms as forms
 import dpmfa.models as models
+import csv
 import json
 
 from django.contrib import messages
@@ -384,15 +385,58 @@ class ExperimentCreateView(generic.CreateView):
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.kwargs['prototype_pk'] })
-
-    def form_valid(self, form):
-        self.experiment = form.save(commit=False)
+    
+    def setupExperiment(self):
         self.prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
         self.model_instance = ModelCopier.copy_model(self.prototype_model)
         self.experiment.prototype_model = self.prototype_model
         self.experiment.model_instance = self.model_instance
         self.experiment.save()
-        converter.ExperimentConverter(self.experiment).getSimulatorAsDpmfaEntity().runSimulation()
+                
+    def runSimulation(self):
+        self.experimentConverter = converter.ExperimentConverter(self.experiment)
+        self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
+        self.simulationDpmfa.runSimulation()
+        
+    def storeResults(self):
+        self.storeResultsOfSinks()
+        
+    # sinks only have inflows
+    def storeResultsOfSinks(self):
+
+        for sink in self.getSimulatorAsDpmfaEntity().getSinks():
+            # create the csv file
+            inflowRecord = sink.getInflowRecords()
+            
+            # fallback for name
+            nameOfEntity = 'Entity_' + str(index)
+            index += 1
+            
+            for primaryKey, dpmfaSink in converter.sinks_dpmfa:
+                if dpmfaSink is sink:
+                    sdb = django_models.sink.objects.get(pk=primaryKey)
+                    nameOfEntity = sdb.name
+            
+            with open(sinkConverter.name, 'w', newline='') as csvfile:
+                result_writer = csv.writer(
+                    csvfile, 
+                    delimiter = ' ',
+                    quote_char = '|',
+                    quoting=csv.QUOTE_MINIMAL)
+                result_writer.writerows(sink.getInflowRecords())
+            
+            # save it to the the db
+            r = models.result(
+                model_instance = self.model_instance,
+                experiment = self.experiment,
+                entity_type_of_result = models.result.SINK,
+                file = result_writer
+                )
+
+    def form_valid(self, form):
+        self.experiment = form.save(commit=False)
+        self.setupExperiment()
+        self.runSimulation()
         return super(ExperimentCreateView, self).form_valid(form)
     
 class ExperimentDetailView(generic.DetailView):

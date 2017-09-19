@@ -425,7 +425,7 @@ class TransferConverter(object):
         self.belongs_to_aggregated_transfer = db_transfer.belongs_to_aggregated_transfer
         
         self.target = None
-        self.priority = db_transfer
+        self.priority = db_transfer.priority
         self.currentTC = db_transfer
         
         self.transfer_dpmfa = package_components.Transfer(
@@ -575,7 +575,7 @@ class AggregatedTransferConverter(TransferConverter):
             if getDpmfaEntityOfSink(singleTransfer.pk):
                 self.singleTransfers.append(getDpmfaEntityOfSink(singleTransfer.pk))
             elif getDpmfaEntityOfStock(singleTransfer.pk):
-                self.singleTransfers.append(getDpmfaEntityOfSink(singleTransfer.pk))
+                self.singleTransfers.append(getDpmfaEntityOfStock(singleTransfer.pk))
             elif getDpmfaEntityOfFlowCompartment(singleTransfer.pk):
                 self.singleTransfers.append(getDpmfaEntityOfFlowCompartment(singleTransfer.pk))
             else:
@@ -726,7 +726,7 @@ class ExternalListInflowConverter(ExternalInflowConverter):
         if getDpmfaEntityOfSink(self.db_entity.target.pk):
             self.target = getDpmfaEntityOfSink(self.db_entity.target.pk)
         elif getDpmfaEntityOfStock(self.db_entity.target.pk):
-            self.target = getDpmfaEntityOfSink(self.db_entity.target.pk)
+            self.target = getDpmfaEntityOfStock(self.db_entity.target.pk)
         elif getDpmfaEntityOfFlowCompartment(self.db_entity.target.pk):
             self.target = getDpmfaEntityOfFlowCompartment(self.db_entity.target.pk)
         else:
@@ -745,8 +745,8 @@ class ExternalListInflowConverter(ExternalInflowConverter):
                 self.inflowList.append(getDpmfaEntityOfRandomChoiceInflow(singlePeriodInflow.pk))
             else:
                 print("Could not set single period inflow with pk %i for external list inflow with name %s" %(singlePeriodInflow.pk, self.db_entity.name))
-        
-        self.getExternalListInflowAsDpmfaEntity().inflowList = self.inflowList
+            
+        self.getExternalListInflowAsDpmfaEntity().setInflowList(self.inflowList)
             
     def getExternalListInflowAsDpmfaEntity(self):
         return self.external_list_inflow_dpmfa
@@ -774,7 +774,7 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
         if getDpmfaEntityOfSink(self.db_entity.target.pk):
             self.target = getDpmfaEntityOfSink(self.db_entity.target.pk)
         elif getDpmfaEntityOfStock(self.db_entity.target.pk):
-            self.target = getDpmfaEntityOfSink(self.db_entity.target.pk)
+            self.target = getDpmfaEntityOfStock(self.db_entity.target.pk)
         elif getDpmfaEntityOfFlowCompartment(self.db_entity.target.pk):
             self.target = getDpmfaEntityOfFlowCompartment(self.db_entity.target.pk)
         else:
@@ -838,18 +838,22 @@ class ModelInstanceConverter(object):
             )
         
         # flow compartments
+        self.mapDpmfaFlowCompartmentToConverter = {}
         flow_compartments_qs = django_models.flow_compartment.objects.filter(model=db_model_instance.pk)
         for flowCompartment in flow_compartments_qs:
-            fc = FlowCompartmentConverter(flowCompartment)
-            self.flowCompartments.append(fc)
-            self.compartments.append(fc.getFlowCompartmentAsDpmfaEntity())            
+            fcc = FlowCompartmentConverter(flowCompartment)
+            self.flowCompartments.append(fcc)
+            self.compartments.append(fcc.getFlowCompartmentAsDpmfaEntity())
+            self.mapDpmfaFlowCompartmentToConverter[fcc.getFlowCompartmentAsDpmfaEntity] = fcc            
         
         # stocks
+        self.mapDpmfaStockToConverter = {}
         stocks_qs = django_models.stock.objects.filter(model=db_model_instance.pk)
         for stock in stocks_qs:
             s = StockConverter(stock)
             self.stocks.append(s)
             self.compartments.append(s.getStockAsDpmfaEntity())
+            self.mapDpmfaStockToConverter[s.getStockAsDpmfaEntity()] = s
             
             # local release
             if len(django_models.fixed_rate_release.objects.filter(pk=stock.local_release.pk)) > 0:
@@ -868,11 +872,13 @@ class ModelInstanceConverter(object):
                 print("Could not convert local release with pk " + str(localRelease.pk) + "for stock %s" %stock.name)        
         
         # sinks
+        self.mapDpmfaSinkToConverter = {}
         sinks_qs = django_models.sink.objects.filter(model=db_model_instance.pk)
         for sink in sinks_qs:
             s = SinkConverter(sink)
             self.sinks.append(s)
             self.compartments.append(s.getSinkAsDpmfaEntity())
+            self.mapDpmfaSinkToConverter[s.getSinkAsDpmfaEntity()] = s
             
         # external list inflows
         external_list_inflows_qs = django_models.external_list_inflow.objects.filter(target__model=db_model_instance.pk)
@@ -951,12 +957,13 @@ class ModelInstanceConverter(object):
 #             self.transfers.append(at.getAggregatedTransferAsDpmfaEntity())
         
         #==============================================================================  
-        # set up all the relationships
+        # set up all the relationships and references
         #==============================================================================
         
         # flow compartments
         for flowCompartment in self.flowCompartments:
             flowCompartment.setTransfersOfFlowCompartment()
+            
         
         # stocks
         for stock in self.stocks:
@@ -1006,6 +1013,19 @@ class ModelInstanceConverter(object):
             
     def getModelInstanceAsDpmfaEntity(self):
         return self.model_instance_dpmfa
+    
+    def getAllCompartmentConvertersOfModel(self):
+        return self.allCompartmentConvertersOfModel
+    
+    def getFlowCompartmentMap(self):
+        return self.mapDpmfaFlowCompartmentToConverter
+    
+    def getStockMap(self):
+        return self.mapDpmfaStockToConverter
+    
+    def getSinkMap(self):
+        return self.mapDpmfaSinkToConverter
+        
 
 #==============================================================================
 #  DPMFA Simulator
@@ -1023,7 +1043,8 @@ class ExperimentConverter(object):
         self.periods = db_experiment.periods
 
         # create the model
-        self.model_instance_dpmfa = ModelInstanceConverter(self.model_instance).getModelInstanceAsDpmfaEntity()
+        self.model_instance_converter = ModelInstanceConverter(self.model_instance)
+        self.model_instance_dpmfa = self.model_instance_converter.getModelInstanceAsDpmfaEntity()
         
         # create the simulator
         self.simulator_dpmfa = package_simulator.Simulator(
@@ -1037,3 +1058,12 @@ class ExperimentConverter(object):
     def getSimulatorAsDpmfaEntity(self):
         return self.simulator_dpmfa
     
+    def getModelInstanceConverter(self):
+        return self.model_instance_converter
+    
+    def runSimulationAndStoreResults(self):
+        self.runSimulation()
+        self.storeResults()
+        
+    def runSimulation(self):
+        self.getSimulatorAsDpmfaEntity().runSimulation()

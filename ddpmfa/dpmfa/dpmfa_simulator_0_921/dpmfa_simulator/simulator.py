@@ -39,7 +39,6 @@ class Simulator(object):
 
 
     """
-    # ToDo: Model im Konstruktor übergeben?
     def __init__(self, runs, periods, seed = None, useGlobalTCSettings = True,
     normalizeTCs = True):
         self.numRuns = runs
@@ -95,6 +94,8 @@ class Simulator(object):
         currentStepRun = math.ceil(stepSize)
 
         for run in range(self.numRuns):
+            
+            print("Run: " + str(run))
 
             for comp in self.flowCompartments:
                 comp.determineTCs(self.useGlobalTCSettings, self.normalizeTCs)
@@ -107,18 +108,24 @@ class Simulator(object):
             allInflows = np.zeros((len(self.compartments), self.numPeriods))
 
             for period in range (self.numPeriods):
+                
+                print("Period: " + str(period))
 
                 for sink in self.sinks:
+                    print("Sink: " + str(sink))
                     sink.updateInventory(run, period)
 
                 for inflow in self.inflows:
-                    allInflows[self.compartments.index(inflow.target), period]= \
-                    allInflows[self.compartments.index(inflow.target), period] + inflow.getCurrentInflow(period)
+                    print("Inflow: " + str(inflow))
+                    print("Inflow target: " + str(inflow.target))
+                    print("Current inflow: " + str(inflow.getCurrentInflow(period)))
+                    allInflows[self.compartments.index(inflow.target), period] += inflow.getCurrentInflow(period)
 
                 for stock in self.stocks:
+                    print("Stock: " + str(stock))
                     localReleases = stock.releaseMaterial(run, period)
                     for locRel in localReleases.keys():
-                        allInflows [locRel.compNumber, period]= allInflows[locRel.compNumber, period] + localReleases [locRel]
+                        allInflows [locRel.compNumber, period] += localReleases[locRel]
 
                 inflowVector = allInflows[:,period]
                 flowMatrix = np.zeros(shape=(len(self.compartments), len(self.compartments)))
@@ -338,5 +345,3 @@ class Simulator(object):
         category list of the model
         '''
         return self.model.categoriesList
-
-

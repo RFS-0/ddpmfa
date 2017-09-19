@@ -45,7 +45,10 @@ class Compartment(object):
         logs the inflow to the compartment
         """    
         if self.logInflows:            
-            self.inflowRecord[run, period]= amt
+            self.inflowRecord[run, period] = amt
+            
+    def getInflowRecords(self):
+        return self.inflowRecord
 
 
 class FlowCompartment(Compartment):
@@ -120,7 +123,10 @@ class FlowCompartment(Compartment):
             
         if self.logOutflows:
             for t in self.transfers:
-                self.outflowRecord[t.target.name][run, period] = t.getCurrentTC()*amt            
+                self.outflowRecord[t.target.name][run, period] = t.getCurrentTC()*amt
+                
+    def getOutflowRecords(self):
+        return self.outflowRecord            
  
     def adjustTCs(self):
         """ Adjusts TCs outgoing from one compartment to sum up to one.      
@@ -149,8 +155,10 @@ class FlowCompartment(Compartment):
 
 
     def __normListSumTo(self, L, sumTo=1):  
-        '''normalize values of a list to a certain value'''   
-        sum = reduce(lambda x,y:x+y, L)
+        '''normalize values of a list to a certain value''' 
+        sum = 0  
+        for summand in L:
+            sum += summand
         return [ x/(sum*1.0)*sumTo for x in L]
 
         
