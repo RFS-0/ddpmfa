@@ -705,7 +705,7 @@ class ExternalInflowConverter(object):
     def getExternalInflowAsDpmfaEntity(self):
         return self.external_inflow_dpmfa
 
-class ExternalListInflowConverter(ExteralInflowConverter):
+class ExternalListInflowConverter(ExternalInflowConverter):
     
     def __init__(self, db_external_list_inflow=django_models.external_list_inflow):
         super(ExternalListInflowConverter, self).__init__(db_external_list_inflow)
