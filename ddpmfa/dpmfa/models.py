@@ -852,7 +852,7 @@ class result(models.Model):
     (STOCK, 'Stock'),
     )
     
-    entity_type_of_result = models.CharField(
+    entity_type = models.CharField(
         choices = ENTITY_TYPES,
         verbose_name = 'Entity type',
         max_length = 250,
@@ -865,7 +865,7 @@ class result(models.Model):
         null = True
         )
     
-    primary_key_of_entity = models.IntegerField(
+    pk_of_entity = models.IntegerField(
         verbose_name = 'Primary Key of Entity',
         null = True
         )

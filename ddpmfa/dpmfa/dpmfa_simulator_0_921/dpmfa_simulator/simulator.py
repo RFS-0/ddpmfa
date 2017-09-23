@@ -112,13 +112,9 @@ class Simulator(object):
                 print("Period: " + str(period))
 
                 for sink in self.sinks:
-                    print("Sink: " + str(sink))
                     sink.updateInventory(run, period)
 
                 for inflow in self.inflows:
-                    print("Inflow: " + str(inflow))
-                    print("Inflow target: " + str(inflow.target))
-                    print("Current inflow: " + str(inflow.getCurrentInflow(period)))
                     allInflows[self.compartments.index(inflow.target), period] += inflow.getCurrentInflow(period)
 
                 for stock in self.stocks:

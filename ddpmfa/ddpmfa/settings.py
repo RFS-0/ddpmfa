@@ -125,6 +125,7 @@ STATIC_URL = '/static/'
 
 # Media files (CSV)
 
-MEDIA_ROOT = "/ddpmfa/dpmfa/results/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'results')
+MEDIA_URL = '/results/'
 
 

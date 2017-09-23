@@ -3,6 +3,8 @@ import dpmfa.forms as forms
 import dpmfa.models as models
 import csv
 import json
+import os
+
 
 from django.contrib import messages
 from django.http import HttpResponse
@@ -14,6 +16,9 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy, reverse
 from itertools import chain
+from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_components
+from django.core.files import File
+from django.conf import settings
 
 # ==============================================================================
 #  Home
@@ -396,6 +401,10 @@ class ExperimentCreateView(generic.CreateView):
     def runSimulation(self):
         self.experimentConverter = converter.ExperimentConverter(self.experiment)
         self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
+        self.modelInstanceConverter = self.experimentConverter.getModelInstanceConverter()
+        self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
+        self.stockMap = self.modelInstanceConverter.getStockMap()
+        self.sinkMap = self.modelInstanceConverter.getSinkMap()
         self.simulationDpmfa.runSimulation()
         
     def storeResults(self):
@@ -403,40 +412,52 @@ class ExperimentCreateView(generic.CreateView):
         
     # sinks only have inflows
     def storeResultsOfSinks(self):
-
-        for sink in self.getSimulatorAsDpmfaEntity().getSinks():
-            # create the csv file
-            inflowRecord = sink.getInflowRecords()
+        index = 0
+        for sink in self.simulationDpmfa.getSinks():
             
-            # fallback for name
-            nameOfEntity = 'Entity_' + str(index)
+            # remove anything that is not actually a sink
+            if type(sink) is package_components.Stock or type(sink) is package_components.FlowCompartment:
+                continue
+            
+            # default values
+            nameOfEntity = 'Entity_' + str(index) + ".csv"
+            primaryKey = None
             index += 1
             
-            for primaryKey, dpmfaSink in converter.sinks_dpmfa:
-                if dpmfaSink is sink:
-                    sdb = django_models.sink.objects.get(pk=primaryKey)
-                    nameOfEntity = sdb.name
+            # get the converter for this sink
+            converter = self.sinkMap[sink]
             
-            with open(sinkConverter.name, 'w', newline='') as csvfile:
-                result_writer = csv.writer(
-                    csvfile, 
-                    delimiter = ' ',
-                    quote_char = '|',
-                    quoting=csv.QUOTE_MINIMAL)
-                result_writer.writerows(sink.getInflowRecords())
+            if converter.db_entity.pk:
+                primaryKey = converter.db_entity.pk
+            if converter.name:
+                nameOfEntity = converter.name + " " + str(primaryKey) + ".csv"
             
-            # save it to the the db
+            # path to result folder
+            path = os.path.join(settings.MEDIA_ROOT, 'results', nameOfEntity)
+            
+            # create the csv file
+            with open(path, 'w', newline='') as f:
+                result_file = File(f)
+                result_file.writelines(sink.getInflowRecords())
+            
+            # create the result entity
             r = models.result(
                 model_instance = self.model_instance,
                 experiment = self.experiment,
-                entity_type_of_result = models.result.SINK,
-                file = result_writer
+                entity_type = models.result.SINK,
+                name_of_entity = nameOfEntity,
+                pk_of_entity = primaryKey,
                 )
+            # save it to the the db
+            r.file.save(nameOfEntity, result_file)
+            r.save()
+            f.close()
 
     def form_valid(self, form):
         self.experiment = form.save(commit=False)
         self.setupExperiment()
         self.runSimulation()
+        self.storeResults()
         return super(ExperimentCreateView, self).form_valid(form)
     
 class ExperimentDetailView(generic.DetailView):
