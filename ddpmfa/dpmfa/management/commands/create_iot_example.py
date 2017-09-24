@@ -49,7 +49,10 @@ class Command(BaseCommand):
             model=iot_model, 
             name="First Stage Flow Compartment", 
             log_inflows = True, 
-            log_outflows = True)
+            log_outflows = True,
+            categories='Category 1,Category 2',
+            x=5220,
+            y=5120)
         
         first_stage_flow_compartment.save()
         
@@ -57,7 +60,9 @@ class Command(BaseCommand):
             model=iot_model, 
             name="Second Stage Flow Compartment", 
             log_inflows = True, 
-            log_outflows = True)
+            log_outflows = True,
+            x=5220,
+            y=5220)
         
         second_stage_flow_compartment.save()
         
@@ -65,7 +70,9 @@ class Command(BaseCommand):
             model=iot_model, 
             name="Third Stage Flow Compartment", 
             log_inflows = True, 
-            log_outflows = True)
+            log_outflows = True,
+            x=5220,
+            y=5320)
         
         third_stage_flow_compartment.save()
         
@@ -205,7 +212,9 @@ class Command(BaseCommand):
             start_delay = 0, 
             derivation_distribution = 'NORM',
             derivation_parameters = '1000, 250',
-            derivation_factor = 1.0)
+            derivation_factor = 1.0,
+            x=5040,
+            y=5040)
         
         import_of_ad_inflow.save()
         
@@ -273,7 +282,9 @@ class Command(BaseCommand):
             start_delay = 0, 
             derivation_distribution = 'NORM',
             derivation_parameters = '1000, 250',
-            derivation_factor = 1.0)
+            derivation_factor = 1.0,
+            x=5040,
+            y=5140)
         
         import_of_send_inflow.save()
         

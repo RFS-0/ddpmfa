@@ -1,7 +1,35 @@
+import dpmfa.models as dmb
+
+class NormalDistributionScaffold(object):
+    mean = 0
+    variance = 1
+
+    def set_mean(self, mean):
+        self.mean = mean
+        return self
+
+    def set_variance(self, variance):
+        self.variance = variance
+        return self
+
 class ModelJson(object):
 
+
+
     @staticmethod
-    def get_json_scaffold():
+    def model_to_dict(model):
+        # Step 1: Assemble dictionaries for all entities that are displayed as node
+
+        node_dicts = []
+
+        for external_list_inflow in dmb.external_list_inflow.objects.filter(target__model=model):
+            print(external_list_inflow)
+
+        print(node_dicts)
+
+
+    @staticmethod
+    def get_model_scaffold():
         data = {
             'id': None,
             'valid': True,
@@ -13,727 +41,7 @@ class ModelJson(object):
             'connections': [],
 
             'nodeTypes': [
-                { # start: externalListInflow
-                    'title': None,
-                    'titleLabelPath': ['name', 'valueData'],
-                    'typeName': 'externalListInflow',
-                    'typeLabel': 'External List Inflow',
-                    'id': None,
-                    'tempId': None,
-                    'position': None,
-                    'classes': ['inflow', 'external-list-inflow'],
-                    'maxOutgoing': 1,
-                    'minOutgoing': 1,
-                    'maxIncoming': 0,
-                    'minIncoming': 0,
-                    'outConnectionTypes': ['inflowTarget'],
-                    'dirty': True,
-                    'fields': [ # start: externalListInflow/fields
-                        { # start: externalListInflow/fields/name
-                            'fieldType': 'TEXT',
-                            'fieldArgs': {
-                                'displayAsTextArea': False,
-                                'notEmpty': True,
-                                'maxLength': 250,
-                                'numberConfig': None
-                            },
-                            'propName': 'name',
-                            'label': 'Name',
-                            'valueData': 'New External List Inflow',
-                            'dirty': True
-                        }, # end: externalListInflow/fields/name
-                        { # start: externalListInflow/fields/startDelay
-                            'fieldType': 'TEXT',
-                            'fieldArgs': {
-                                'displayAsTextArea': False,
-                                'notEmpty': True,
-                                'maxLength': 250,
-                                'numberConfig': {
-                                    'decimals': 0,
-                                    'min': {
-                                        'value': 0,
-                                        'inclusive': True
-                                    },
-                                    'max': None
-                                }
-                            },
-                            'propName': 'startDelay',
-                            'label': 'Start Delay',
-                            'valueData': '0',
-                            'dirty': True
-                        }, # end: externalListInflow/fields/startDelay
-                        { # start: externalListInflow/fields/derivationDistribution
-                            'fieldType': 'FORMS',
-                            'fieldArgs': {
-                                'minForms': 0,
-                                'maxForms': 1,
-                                'forms': [ # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms
-                                    { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution
-                                        'id': None,
-                                        'tempId': None,
-                                        'label': 'Normal Distribution',
-                                        'type': 'normalDistribution',
-                                        'titleTemplate': ['', 'label'],
-                                        'dirty': True,
-                                        'fields': [ # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution/fields
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution/fields/mean
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': None,
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'mean',
-                                                'label': 'Mean',
-                                                'valueData': '0',
-                                                'dirty': True
-                                            }, # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution/fields/mean
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution/fields/variance
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': {
-                                                            'value': 0,
-                                                            'inclusive': True
-                                                        },
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'variance',
-                                                'label': 'Variance',
-                                                'valueData': '1',
-                                                'dirty': True
-                                            } # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution/fields/variance
-                                        ] # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution/fields
-                                    }, # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/normalDistribution
-                                    { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution
-                                        'id': None,
-                                        'tempId': None,
-                                        'label': 'Triangular Distribution',
-                                        'type': 'triangularDistribution',
-                                        'titleTemplate': ['', 'label'],
-                                        'dirty': True,
-                                        'fields': [ # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields/left
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': None,
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'left',
-                                                'label': 'Left',
-                                                'valueData': '0',
-                                                'dirty': True
-                                            }, # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields/left
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields/mode
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': None,
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'mode',
-                                                'label': 'Mode',
-                                                'valueData': '0.5',
-                                                'dirty': True
-                                            }, # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields/mode
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields/right
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': None,
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'right',
-                                                'label': 'Right',
-                                                'valueData': '1',
-                                                'dirty': True
-                                            } # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields/right
-                                        ] # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution/fields
-                                    },  # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/triangularDistribution
-                                    { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution
-                                        'id': None,
-                                        'tempId': None,
-                                        'label': 'Uniform Distribution',
-                                        'type': 'uniformDistribution',
-                                        'titleTemplate': ['', 'label'],
-                                        'dirty': True,
-                                        'fields': [ # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution/fields
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution/fields/low
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': None,
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'low',
-                                                'label': 'Low',
-                                                'valueData': '0',
-                                                'dirty': True
-                                            }, # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution/fields/low
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution/fields/high
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': None,
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'high',
-                                                'label': 'High',
-                                                'valueData': '1',
-                                                'dirty': True
-                                            } # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution/fields/high
-                                        ] # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution/fields
-                                    }, # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/uniformDistribution
-                                    { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/exponentialDistribution
-                                        'id': None,
-                                        'tempId': None,
-                                        'label': 'Exponential Distribution',
-                                        'type': 'exponentialDistribution',
-                                        'titleTemplate': ['', 'label'],
-                                        'dirty': True,
-                                        'fields': [ # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/exponentialDistribution/fields
-                                            { # start: externalListInflow/fields/derivationDistribution/fieldArgs/forms/exponentialDistribution/fields/scale
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': {
-                                                            'value': 0,
-                                                            'inclusive': False
-                                                        },
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'scale',
-                                                'label': 'Scale (1 / lambda)',
-                                                'valueData': '1',
-                                                'dirty': True
-                                            },
-                                            # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/exponentialDistribution/fields/scale
-                                        ]  # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/exponentialDistribution/fields
-                                    } # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms/exponentialDistribution
-
-                                    # TODO: more distributions
-                                ] # end: externalListInflow/fields/derivationDistribution/fieldArgs/forms
-                            }, # end: externalListInflow/fields/derivationDistribution/fieldArgs
-                            'propName': 'derivationDistribution',
-                            'label': 'Derivation Distribution',
-                            'valueData': [],
-                            'dirty': True
-                        }, # end: externalListInflow/fields/derivationDistribution
-                        { # start: externalListInflow/fields/derivationFactor
-                            'fieldType': 'TEXT',
-                            'fieldArgs': {
-                                'displayAsTextArea': False,
-                                'notEmpty': True,
-                                'maxLength': 250,
-                                'numberConfig': {
-                                    'decimals': -1,
-                                    'min': None,
-                                    'max': None
-                                    # TODO: limits for derivationFactor
-                                }
-                            },
-                            'propName': 'derivationFactor',
-                            'label': 'Derivation Factor',
-                            'valueData': '1',
-                            'dirty': True
-                        }, # end: externalListInflow/fields/derivationFactor
-                        {  # start: externalListInflow/fields/singlePeriodInflows
-                            'fieldType': 'FORMS',
-                            'fieldArgs': {  # start: externalListInflow/fields/singlePeriodInflows/fieldArgs
-                                'minForms': 1,
-                                'maxForms': -1,
-                                'forms': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms
-                                    { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow
-                                        'id': None,
-                                        'tempId': None,
-                                        'label': 'Fixed Value Inflow',
-                                        'type': 'fixedValueInflow',
-                                        'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
-                                        'dirty': True,
-                                        'fields': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields
-                                            { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields/value
-                                                'fieldType': 'TEXT',
-                                                'fieldArgs': {
-                                                    'displayAsTextArea': False,
-                                                    'notEmpty': True,
-                                                    'maxLength': 250,
-                                                    'numberConfig': {
-                                                        'decimals': -1,
-                                                        'min': {
-                                                            'value': 0,
-                                                            'inclusive': True
-                                                        },
-                                                        'max': None
-                                                    }
-                                                },
-                                                'propName': 'value',
-                                                'label': 'Value',
-                                                'valueData': '1',
-                                                'dirty': True
-                                            } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields/value
-                                        ] # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields
-                                    },  # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow
-                                    { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow
-                                        'id': None,
-                                        'tempId': None,
-                                        'label': 'Random Choice Inflow',
-                                        'type': 'randomChoiceInflow',
-                                        'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
-                                        'dirty': True,
-                                        'fields': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields
-                                            { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples
-                                                'fieldType': 'FORMS',
-                                                'fieldArgs': { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs
-                                                    'minForms': 1,
-                                                    'maxForms': -1,
-                                                    'forms': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms
-                                                        { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample
-                                                            'id': None,
-                                                            'tempId': None,
-                                                            'label': 'Sample',
-                                                            'type': 'sample',
-                                                            'titleTemplate': ['Sample ', 'positionOneBased'],
-                                                            'dirty': True,
-                                                            'fields': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields
-                                                                { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields/value
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': {
-                                                                                'value': 0,
-                                                                                'inclusive': True
-                                                                            },
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'value',
-                                                                    'label': 'Value',
-                                                                    'valueData': '0',
-                                                                    'dirty': True
-                                                                } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields/value
-                                                            ] # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields
-                                                        } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample
-                                                    ] # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms
-                                                }, # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs
-                                                'propName': 'samples',
-                                                'label': 'Samples',
-                                                'valueData': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData
-                                                    { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample
-                                                        'id': None,
-                                                        'tempId': None,
-                                                        'label': 'Sample',
-                                                        'type': 'sample',
-                                                        'titleTemplate': ['Sample ', 'positionOneBased'],
-                                                        'dirty': True,
-                                                        'fields': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields
-                                                            { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields/value
-                                                                'fieldType': 'TEXT',
-                                                                'fieldArgs': {
-                                                                    'displayAsTextArea': False,
-                                                                    'notEmpty': True,
-                                                                    'maxLength': 250,
-                                                                    'numberConfig': {
-                                                                        'decimals': -1,
-                                                                        'min': {
-                                                                            'value': 0,
-                                                                            'inclusive': True
-                                                                        },
-                                                                        'max': None
-                                                                    }
-                                                                },
-                                                                'propName': 'value',
-                                                                'label': 'Value',
-                                                                'valueData': '0',
-                                                                'dirty': True
-                                                            } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields/value
-
-                                                        ] # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields
-                                                    } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample
-                                                ], # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData
-                                                'dirty': True
-                                            } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples
-                                        ] # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoice/fields
-                                    },  # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow
-                                    { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow
-
-                                        'id': None,
-                                        'tempId': None,
-                                        'label': 'Stochastic Function Inflow',
-                                        'type': 'stochasticFunctionInflow',
-                                        'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
-                                        'dirty': True,
-                                        'fields': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields
-                                            # TODO: More distributions
-                                            { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf
-                                                'fieldType': 'FORMS',
-                                                'fieldArgs': { # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs
-                                                    'minForms': 1,
-                                                    'maxForms': 1,
-                                                    'forms': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms
-                                                        {
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution
-                                                            'id': None,
-                                                            'tempId': None,
-                                                            'label': 'Normal Distribution',
-                                                            'type': 'normalDistribution',
-                                                            'titleTemplate': ['', 'label'],
-                                                            'dirty': True,
-                                                            'fields': [
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/mean
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': None,
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'mean',
-                                                                    'label': 'Mean',
-                                                                    'valueData': '100',
-                                                                    'dirty': True
-                                                                },
-                                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/mean
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/variance
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': {
-                                                                                'value': 0,
-                                                                                'inclusive': True
-                                                                            },
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'variance',
-                                                                    'label': 'Variance',
-                                                                    'valueData': '10',
-                                                                    'dirty': True
-                                                                }
-                                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/variance
-                                                            ]
-                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields
-                                                        },
-                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution
-                                                        {
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution
-                                                            'id': None,
-                                                            'tempId': None,
-                                                            'label': 'Triangular Distribution',
-                                                            'type': 'triangularDistribution',
-                                                            'titleTemplate': ['', 'label'],
-                                                            'dirty': True,
-                                                            'fields': [
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/left
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': None,
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'left',
-                                                                    'label': 'Left',
-                                                                    'valueData': '0',
-                                                                    'dirty': True
-                                                                },
-                                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/left
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/mode
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': None,
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'mode',
-                                                                    'label': 'Mode',
-                                                                    'valueData': '0.5',
-                                                                    'dirty': True
-                                                                },
-                                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/mode
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/right
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': None,
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'right',
-                                                                    'label': 'Right',
-                                                                    'valueData': '1',
-                                                                    'dirty': True
-                                                                }
-                                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/right
-                                                            ]
-                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields
-                                                        },
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution
-                                                        {
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution
-                                                            'id': None,
-                                                            'tempId': None,
-                                                            'label': 'Uniform Distribution',
-                                                            'type': 'uniformDistribution',
-                                                            'titleTemplate': ['', 'label'],
-                                                            'dirty': True,
-                                                            'fields': [
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/low
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': None,
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'low',
-                                                                    'label': 'Low',
-                                                                    'valueData': '0',
-                                                                    'dirty': True
-                                                                },
-                                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/low
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/high
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': None,
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'high',
-                                                                    'label': 'High',
-                                                                    'valueData': '1',
-                                                                    'dirty': True
-                                                                }
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/high
-                                                            ]
-                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields
-                                                        },
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution
-                                                        {
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution
-                                                            'id': None,
-                                                            'tempId': None,
-                                                            'label': 'Exponential Distribution',
-                                                            'type': 'exponentialDistribution',
-                                                            'titleTemplate': ['', 'label'],
-                                                            'dirty': True,
-                                                            'fields': [
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields
-                                                                {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields/scale
-                                                                    'fieldType': 'TEXT',
-                                                                    'fieldArgs': {
-                                                                        'displayAsTextArea': False,
-                                                                        'notEmpty': True,
-                                                                        'maxLength': 250,
-                                                                        'numberConfig': {
-                                                                            'decimals': -1,
-                                                                            'min': {
-                                                                                'value': 0,
-                                                                                'inclusive': False
-                                                                            },
-                                                                            'max': None
-                                                                        }
-                                                                    },
-                                                                    'propName': 'scale',
-                                                                    'label': 'Scale (1 / lambda)',
-                                                                    'valueData': '1',
-                                                                    'dirty': True
-                                                                },
-                                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields/scale
-                                                            ]
-                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields
-                                                        }
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution
-                                                        # TODO: more distributions
-                                                    ]
-                                                },
-                                                'propName': 'pdf',
-                                                'label': 'Probability Density Function',
-                                                'valueData': [ # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData
-                                                    {
-                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution
-                                                        'id': None,
-                                                        'tempId': None,
-                                                        'label': 'Normal Distribution',
-                                                        'type': 'normalDistribution',
-                                                        'titleTemplate': ['', 'label'],
-                                                        'dirty': True,
-                                                        'fields': [
-                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields
-                                                            {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/mean
-                                                                'fieldType': 'TEXT',
-                                                                'fieldArgs': {
-                                                                    'displayAsTextArea': False,
-                                                                    'notEmpty': True,
-                                                                    'maxLength': 250,
-                                                                    'numberConfig': {
-                                                                        'decimals': -1,
-                                                                        'min': None,
-                                                                        'max': None
-                                                                    }
-                                                                },
-                                                                'propName': 'mean',
-                                                                'label': 'Mean',
-                                                                'valueData': '100',
-                                                                'dirty': True
-                                                            },
-                                                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/mean
-                                                            {
-                                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/variance
-                                                                'fieldType': 'TEXT',
-                                                                'fieldArgs': {
-                                                                    'displayAsTextArea': False,
-                                                                    'notEmpty': True,
-                                                                    'maxLength': 250,
-                                                                    'numberConfig': {
-                                                                        'decimals': -1,
-                                                                        'min': {
-                                                                            'value': 0,
-                                                                            'inclusive': True
-                                                                        },
-                                                                        'max': None
-                                                                    }
-                                                                },
-                                                                'propName': 'variance',
-                                                                'label': 'Variance',
-                                                                'valueData': '10',
-                                                                'dirty': True
-                                                            }
-                                                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/variance
-                                                        ]
-                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields
-                                                    } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution
-                                                ], # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData
-                                                'dirty': True
-                                            } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf
-                                        ] # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields
-                                    } # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow
-                                ] # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms
-                            }, # end: externalListInflow/fields/singlePeriodInflows/fieldArgs
-                            'propName': 'singlePeriodInflows',
-                            'label': 'Single Period Inflows',
-                            'valueData': [ # start: externalListInflow/fields/singlePeriodInflows/valueData
-                                {  # start: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow
-                                    'id': None,
-                                    'tempId': None,
-                                    'label': 'Fixed Value Inflow',
-                                    'type': 'fixedValueInflow',
-                                    'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
-                                    'dirty': True,
-                                    'fields': [  # start: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields
-                                        { # start: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields/value
-                                            'fieldType': 'TEXT',
-                                            'fieldArgs': {
-                                                'displayAsTextArea': False,
-                                                'notEmpty': True,
-                                                'maxLength': 250,
-                                                'numberConfig': {
-                                                    'decimals': -1,
-                                                    'min': {
-                                                        'value': 0,
-                                                        'inclusive': True
-                                                    },
-                                                    'max': None
-                                                }
-                                            },
-                                            'propName': 'value',
-                                            'label': 'Value',
-                                            'valueData': '1',
-                                            'dirty': True
-                                        } # end: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields/value
-                                    ] # end: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields
-                                }  # end: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow
-                            ], # end: externalListInflow/fields/singlePeriodInflows/valueData
-                            'dirty': True
-                        } # end: externalListInflow/fields/singlePeriodInflows
-                    ] # end: externalFunctionInflow/fields
-                }, # end: externalFunctionInflow
+                ModelJson.get_external_list_inflow_scaffold(True, True),
                 {  # start: externalFunctionInflow
                     'title': None,
                     'titleLabelPath': ['name', 'valueData'],
@@ -3195,3 +2503,803 @@ class ModelJson(object):
             ] # end of connectionTypes
         } # end of data
         return data
+
+    @staticmethod
+    def get_external_list_inflow_scaffold(add_defaults_to_forms_fields, dirty):
+        return {  # start: externalListInflow
+            'title': None,
+            'titleLabelPath': ['name', 'valueData'],
+            'typeName': 'externalListInflow',
+            'typeLabel': 'External List Inflow',
+            'id': None,
+            'tempId': None,
+            'position': None,
+            'classes': ['inflow', 'external-list-inflow'],
+            'maxOutgoing': 1,
+            'minOutgoing': 1,
+            'maxIncoming': 0,
+            'minIncoming': 0,
+            'outConnectionTypes': ['inflowTarget'],
+            'dirty': dirty,
+            'fields': [  # start: externalListInflow/fields
+                {  # start: externalListInflow/fields/name
+                    'fieldType': 'TEXT',
+                    'fieldArgs': {
+                        'displayAsTextArea': False,
+                        'notEmpty': True,
+                        'maxLength': 250,
+                        'numberConfig': None
+                    },
+                    'propName': 'name',
+                    'label': 'Name',
+                    'valueData': 'New External List Inflow',
+                    'dirty': dirty
+                },  # end: externalListInflow/fields/name
+                {  # start: externalListInflow/fields/startDelay
+                    'fieldType': 'TEXT',
+                    'fieldArgs': {
+                        'displayAsTextArea': False,
+                        'notEmpty': True,
+                        'maxLength': 250,
+                        'numberConfig': {
+                            'decimals': 0,
+                            'min': {
+                                'value': 0,
+                                'inclusive': True
+                            },
+                            'max': None
+                        }
+                    },
+                    'propName': 'startDelay',
+                    'label': 'Start Delay',
+                    'valueData': '0',
+                    'dirty': dirty
+                },  # end: externalListInflow/fields/startDelay
+                ModelJson.get_distribution_field_scaffold(0, 1, 'derivationDistribution', 'Derivation Distribution', True, True),
+                {  # start: externalListInflow/fields/derivationFactor
+                    'fieldType': 'TEXT',
+                    'fieldArgs': {
+                        'displayAsTextArea': False,
+                        'notEmpty': True,
+                        'maxLength': 250,
+                        'numberConfig': {
+                            'decimals': -1,
+                            'min': None,
+                            'max': None
+                            # TODO: limits for derivationFactor
+                        }
+                    },
+                    'propName': 'derivationFactor',
+                    'label': 'Derivation Factor',
+                    'valueData': '1',
+                    'dirty': dirty
+                },  # end: externalListInflow/fields/derivationFactor
+                {  # start: externalListInflow/fields/singlePeriodInflows
+                    'fieldType': 'FORMS',
+                    'fieldArgs': {  # start: externalListInflow/fields/singlePeriodInflows/fieldArgs
+                        'minForms': 1,
+                        'maxForms': -1,
+                        'forms': [  # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms
+                            {  # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow
+                                'id': None,
+                                'tempId': None,
+                                'label': 'Fixed Value Inflow',
+                                'type': 'fixedValueInflow',
+                                'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
+                                'dirty': True,
+                                'fields': [
+                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields
+                                    {
+                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields/value
+                                        'fieldType': 'TEXT',
+                                        'fieldArgs': {
+                                            'displayAsTextArea': False,
+                                            'notEmpty': True,
+                                            'maxLength': 250,
+                                            'numberConfig': {
+                                                'decimals': -1,
+                                                'min': {
+                                                    'value': 0,
+                                                    'inclusive': True
+                                                },
+                                                'max': None
+                                            }
+                                        },
+                                        'propName': 'value',
+                                        'label': 'Value',
+                                        'valueData': '1',
+                                        'dirty': True
+                                    }
+                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields/value
+                                ]
+                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow/fields
+                            },  # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/fixedValueInflow
+                            {  # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow
+                                'id': None,
+                                'tempId': None,
+                                'label': 'Random Choice Inflow',
+                                'type': 'randomChoiceInflow',
+                                'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
+                                'dirty': True,
+                                'fields': [
+                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields
+                                    {
+                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples
+                                        'fieldType': 'FORMS',
+                                        'fieldArgs': {
+                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs
+                                            'minForms': 1,
+                                            'maxForms': -1,
+                                            'forms': [
+                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms
+                                                {
+                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample
+                                                    'id': None,
+                                                    'tempId': None,
+                                                    'label': 'Sample',
+                                                    'type': 'sample',
+                                                    'titleTemplate': ['Sample ', 'positionOneBased'],
+                                                    'dirty': True,
+                                                    'fields': [
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields
+                                                        {
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields/value
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': {
+                                                                        'value': 0,
+                                                                        'inclusive': True
+                                                                    },
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'value',
+                                                            'label': 'Value',
+                                                            'valueData': '0',
+                                                            'dirty': True
+                                                        }
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields/value
+                                                    ]
+                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample/fields
+                                                }
+                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms/sample
+                                            ]
+                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs/forms
+                                        },
+                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/fieldArgs
+                                        'propName': 'samples',
+                                        'label': 'Samples',
+                                        'valueData': [
+                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData
+                                            {
+                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample
+                                                'id': None,
+                                                'tempId': None,
+                                                'label': 'Sample',
+                                                'type': 'sample',
+                                                'titleTemplate': ['Sample ', 'positionOneBased'],
+                                                'dirty': True,
+                                                'fields': [
+                                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields
+                                                    {
+                                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields/value
+                                                        'fieldType': 'TEXT',
+                                                        'fieldArgs': {
+                                                            'displayAsTextArea': False,
+                                                            'notEmpty': True,
+                                                            'maxLength': 250,
+                                                            'numberConfig': {
+                                                                'decimals': -1,
+                                                                'min': {
+                                                                    'value': 0,
+                                                                    'inclusive': True
+                                                                },
+                                                                'max': None
+                                                            }
+                                                        },
+                                                        'propName': 'value',
+                                                        'label': 'Value',
+                                                        'valueData': '0',
+                                                        'dirty': True
+                                                    }
+                                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields/value
+
+                                                ]
+                                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample/fields
+                                            }
+                                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData/sample
+                                        ],
+                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples/valueData
+                                        'dirty': True
+                                    }
+                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow/fields/samples
+                                ]
+                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoice/fields
+                            },  # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/randomChoiceInflow
+                            {
+                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow
+
+                                'id': None,
+                                'tempId': None,
+                                'label': 'Stochastic Function Inflow',
+                                'type': 'stochasticFunctionInflow',
+                                'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
+                                'dirty': True,
+                                'fields': [
+                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields
+                                    # TODO: More distributions
+                                    {
+                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf
+                                        'fieldType': 'FORMS',
+                                        'fieldArgs': {
+                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs
+                                            'minForms': 1,
+                                            'maxForms': 1,
+                                            'forms': [
+                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms
+                                                {
+                                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution
+                                                    'id': None,
+                                                    'tempId': None,
+                                                    'label': 'Normal Distribution',
+                                                    'type': 'normalDistribution',
+                                                    'titleTemplate': ['', 'label'],
+                                                    'dirty': True,
+                                                    'fields': [
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/mean
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': None,
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'mean',
+                                                            'label': 'Mean',
+                                                            'valueData': '100',
+                                                            'dirty': True
+                                                        },
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/mean
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/variance
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': {
+                                                                        'value': 0,
+                                                                        'inclusive': True
+                                                                    },
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'variance',
+                                                            'label': 'Variance',
+                                                            'valueData': '10',
+                                                            'dirty': True
+                                                        }
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields/variance
+                                                    ]
+                                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution/fields
+                                                },
+                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/normalDistribution
+                                                {
+                                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution
+                                                    'id': None,
+                                                    'tempId': None,
+                                                    'label': 'Triangular Distribution',
+                                                    'type': 'triangularDistribution',
+                                                    'titleTemplate': ['', 'label'],
+                                                    'dirty': True,
+                                                    'fields': [
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/left
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': None,
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'left',
+                                                            'label': 'Left',
+                                                            'valueData': '0',
+                                                            'dirty': True
+                                                        },
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/left
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/mode
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': None,
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'mode',
+                                                            'label': 'Mode',
+                                                            'valueData': '0.5',
+                                                            'dirty': True
+                                                        },
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/mode
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/right
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': None,
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'right',
+                                                            'label': 'Right',
+                                                            'valueData': '1',
+                                                            'dirty': True
+                                                        }
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields/right
+                                                    ]
+                                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution/fields
+                                                },
+                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/triangularDistribution
+                                                {
+                                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution
+                                                    'id': None,
+                                                    'tempId': None,
+                                                    'label': 'Uniform Distribution',
+                                                    'type': 'uniformDistribution',
+                                                    'titleTemplate': ['', 'label'],
+                                                    'dirty': True,
+                                                    'fields': [
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/low
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': None,
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'low',
+                                                            'label': 'Low',
+                                                            'valueData': '0',
+                                                            'dirty': True
+                                                        },
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/low
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/high
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': None,
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'high',
+                                                            'label': 'High',
+                                                            'valueData': '1',
+                                                            'dirty': True
+                                                        }
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields/high
+                                                    ]
+                                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution/fields
+                                                },
+                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/uniformDistribution
+                                                {
+                                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution
+                                                    'id': None,
+                                                    'tempId': None,
+                                                    'label': 'Exponential Distribution',
+                                                    'type': 'exponentialDistribution',
+                                                    'titleTemplate': ['', 'label'],
+                                                    'dirty': True,
+                                                    'fields': [
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields
+                                                        {
+                                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields/scale
+                                                            'fieldType': 'TEXT',
+                                                            'fieldArgs': {
+                                                                'displayAsTextArea': False,
+                                                                'notEmpty': True,
+                                                                'maxLength': 250,
+                                                                'numberConfig': {
+                                                                    'decimals': -1,
+                                                                    'min': {
+                                                                        'value': 0,
+                                                                        'inclusive': False
+                                                                    },
+                                                                    'max': None
+                                                                }
+                                                            },
+                                                            'propName': 'scale',
+                                                            'label': 'Scale (1 / lambda)',
+                                                            'valueData': '1',
+                                                            'dirty': True
+                                                        },
+                                                        # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields/scale
+                                                    ]
+                                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution/fields
+                                                }
+                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/fieldArgs/forms/exponentialDistribution
+                                                # TODO: more distributions
+                                            ]
+                                        },
+                                        'propName': 'pdf',
+                                        'label': 'Probability Density Function',
+                                        'valueData': [
+                                            # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData
+                                            {
+                                                # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution
+                                                'id': None,
+                                                'tempId': None,
+                                                'label': 'Normal Distribution',
+                                                'type': 'normalDistribution',
+                                                'titleTemplate': ['', 'label'],
+                                                'dirty': True,
+                                                'fields': [
+                                                    # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields
+                                                    {
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/mean
+                                                        'fieldType': 'TEXT',
+                                                        'fieldArgs': {
+                                                            'displayAsTextArea': False,
+                                                            'notEmpty': True,
+                                                            'maxLength': 250,
+                                                            'numberConfig': {
+                                                                'decimals': -1,
+                                                                'min': None,
+                                                                'max': None
+                                                            }
+                                                        },
+                                                        'propName': 'mean',
+                                                        'label': 'Mean',
+                                                        'valueData': '100',
+                                                        'dirty': True
+                                                    },
+                                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/mean
+                                                    {
+                                                        # start: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/variance
+                                                        'fieldType': 'TEXT',
+                                                        'fieldArgs': {
+                                                            'displayAsTextArea': False,
+                                                            'notEmpty': True,
+                                                            'maxLength': 250,
+                                                            'numberConfig': {
+                                                                'decimals': -1,
+                                                                'min': {
+                                                                    'value': 0,
+                                                                    'inclusive': True
+                                                                },
+                                                                'max': None
+                                                            }
+                                                        },
+                                                        'propName': 'variance',
+                                                        'label': 'Variance',
+                                                        'valueData': '10',
+                                                        'dirty': True
+                                                    }
+                                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields/variance
+                                                ]
+                                                # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution/fields
+                                            }
+                                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData/normalDistribution
+                                        ],
+                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf/valueData
+                                        'dirty': True
+                                    }
+                                    # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields/pdf
+                                ]
+                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow/fields
+                            }
+                            # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms/stochasticFunctionInflow
+                        ]  # end: externalListInflow/fields/singlePeriodInflows/fieldArgs/forms
+                    },  # end: externalListInflow/fields/singlePeriodInflows/fieldArgs
+                    'propName': 'singlePeriodInflows',
+                    'label': 'Single Period Inflows',
+                    'valueData': [  # start: externalListInflow/fields/singlePeriodInflows/valueData
+                        {  # start: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow
+                            'id': None,
+                            'tempId': None,
+                            'label': 'Fixed Value Inflow',
+                            'type': 'fixedValueInflow',
+                            'titleTemplate': ['Period ', 'positionOneBased', ': ', 'label'],
+                            'dirty': True,
+                            'fields': [
+                                # start: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields
+                                {
+                                # start: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields/value
+                                    'fieldType': 'TEXT',
+                                    'fieldArgs': {
+                                        'displayAsTextArea': False,
+                                        'notEmpty': True,
+                                        'maxLength': 250,
+                                        'numberConfig': {
+                                            'decimals': -1,
+                                            'min': {
+                                                'value': 0,
+                                                'inclusive': True
+                                            },
+                                            'max': None
+                                        }
+                                    },
+                                    'propName': 'value',
+                                    'label': 'Value',
+                                    'valueData': '1',
+                                    'dirty': True
+                                }
+                                # end: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields/value
+                            ]  # end: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow/fields
+                        }  # end: externalListInflow/fields/singlePeriodInflows/valueData/fixedValueInflow
+                    ],  # end: externalListInflow/fields/singlePeriodInflows/valueData
+                    'dirty': dirty
+                }  # end: externalListInflow/fields/singlePeriodInflows
+            ]  # end: externalFunctionInflow/fields
+        }  # end: externalFunctionInflow
+
+
+    @staticmethod
+    def get_distribution_field_scaffold(min_forms, max_forms, prop_name, label, add_default, dirty):
+        return {
+            'fieldType': 'FORMS',
+            'fieldArgs': {
+                'minForms': min_forms,
+                'maxForms': max_forms,
+                'forms': [  # start: forms
+                    {
+                        # start: forms/normalDistribution
+                        'id': None,
+                        'tempId': None,
+                        'label': 'Normal Distribution',
+                        'type': 'normalDistribution',
+                        'titleTemplate': ['', 'label'],
+                        'dirty': True,
+                        'fields': [
+                            # start: forms/normalDistribution/fields
+                            {
+                                # start: forms/normalDistribution/fields/mean
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': None,
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'mean',
+                                'label': 'Mean',
+                                'valueData': '0',
+                                'dirty': True
+                            },
+                            # end: forms/normalDistribution/fields/mean
+                            {
+                                # start: forms/normalDistribution/fields/variance
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': {
+                                            'value': 0,
+                                            'inclusive': True
+                                        },
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'variance',
+                                'label': 'Variance',
+                                'valueData': '1',
+                                'dirty': True
+                            }
+                            # end: forms/normalDistribution/fields/variance
+                        ]
+                        # end: forms/normalDistribution/fields
+                    },
+                    # end: forms/normalDistribution
+                    {
+                        # start: forms/triangularDistribution
+                        'id': None,
+                        'tempId': None,
+                        'label': 'Triangular Distribution',
+                        'type': 'triangularDistribution',
+                        'titleTemplate': ['', 'label'],
+                        'dirty': True,
+                        'fields': [
+                            # start: forms/triangularDistribution/fields
+                            {
+                                # start: forms/triangularDistribution/fields/left
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': None,
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'left',
+                                'label': 'Left',
+                                'valueData': '0',
+                                'dirty': True
+                            },
+                            # end: forms/triangularDistribution/fields/left
+                            {
+                                # start: forms/triangularDistribution/fields/mode
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': None,
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'mode',
+                                'label': 'Mode',
+                                'valueData': '0.5',
+                                'dirty': True
+                            },
+                            # end: forms/triangularDistribution/fields/mode
+                            {
+                                # start: forms/triangularDistribution/fields/right
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': None,
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'right',
+                                'label': 'Right',
+                                'valueData': '1',
+                                'dirty': True
+                            }
+                            # end: forms/triangularDistribution/fields/right
+                        ]
+                        # end: forms/triangularDistribution/fields
+                    },
+                    # start: forms/triangularDistribution
+                    {
+                        # start: forms/uniformDistribution
+                        'id': None,
+                        'tempId': None,
+                        'label': 'Uniform Distribution',
+                        'type': 'uniformDistribution',
+                        'titleTemplate': ['', 'label'],
+                        'dirty': True,
+                        'fields': [
+                            # start: forms/uniformDistribution/fields
+                            {
+                                # start: forms/uniformDistribution/fields/low
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': None,
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'low',
+                                'label': 'Low',
+                                'valueData': '0',
+                                'dirty': True
+                            },
+                            # end: forms/uniformDistribution/fields/low
+                            {
+                                # start: forms/uniformDistribution/fields/high
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': None,
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'high',
+                                'label': 'High',
+                                'valueData': '1',
+                                'dirty': True
+                            }
+                            # end: forms/uniformDistribution/fields/high
+                        ]
+                        # end: forms/uniformDistribution/fields
+                    },
+                    # start: forms/uniformDistribution
+                    {
+                        # start: forms/exponentialDistribution
+                        'id': None,
+                        'tempId': None,
+                        'label': 'Exponential Distribution',
+                        'type': 'exponentialDistribution',
+                        'titleTemplate': ['', 'label'],
+                        'dirty': True,
+                        'fields': [
+                            # start: forms/exponentialDistribution/fields
+                            {
+                                # start: forms/exponentialDistribution/fields/scale
+                                'fieldType': 'TEXT',
+                                'fieldArgs': {
+                                    'displayAsTextArea': False,
+                                    'notEmpty': True,
+                                    'maxLength': 250,
+                                    'numberConfig': {
+                                        'decimals': -1,
+                                        'min': {
+                                            'value': 0,
+                                            'inclusive': False
+                                        },
+                                        'max': None
+                                    }
+                                },
+                                'propName': 'scale',
+                                'label': 'Scale (1 / lambda)',
+                                'valueData': '1',
+                                'dirty': True
+                            },
+                            # end: forms/exponentialDistribution/fields/scale
+                        ]
+                        # end: forms/exponentialDistribution/fields
+                    }
+                    # end: forms/exponentialDistribution
+
+                    # TODO: more distributions
+                ]  # end: forms
+            },
+            'propName': prop_name,
+            'label': label,
+            'valueData': [],
+            'dirty': dirty
+        }

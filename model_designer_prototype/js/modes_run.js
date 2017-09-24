@@ -650,7 +650,7 @@
 										id: null,
 										tempId: null,
 										label: 'Stochastic Function Inflow',
-										type: 'stochasticFunctionInflow',
+										type: 'fixedValueInflow',
 										titleTemplate: ['Period ', 'positionOneBased', ': ', 'label'],
 										dirty: true,
 										fields: [

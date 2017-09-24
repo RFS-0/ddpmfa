@@ -157,7 +157,6 @@ class compartment(models.Model):
         null=True, 
         on_delete=models.CASCADE)
     
-    
     name = models.CharField(
         verbose_name='Compartment', 
         max_length=250, 
@@ -183,6 +182,16 @@ class compartment(models.Model):
         verbose_name='Categories', 
         validators=[alpha_numeric_list_validator], 
         max_length=250, 
+        null=True)
+
+    # horizontal position in the model designer
+    x = models.IntegerField(
+        verbose_name='x',
+        null=True)
+
+    # vertical position in the model designer
+    y = models.IntegerField(
+        verbose_name='y',
         null=True)
     
     def __str__(self):
@@ -436,7 +445,8 @@ class aggregated_transfer(transfer):
 #==============================================================================
     
 class external_inflow(models.Model):
-    
+
+    # NOTE: If you change these values, you must also change them in dpmfa.model2json.DistributionFormsField
     NORMAL = 'NORM'
     GEOMETRIC = 'GEO'
     BINOMIAL = 'BINOM'
@@ -481,7 +491,7 @@ class external_inflow(models.Model):
         verbose_name='Probability density function', 
         max_length=250, 
         null=True)
-    
+
     derivation_parameters = models.CharField(
         verbose_name='Parameter list of the probability distribution function', 
         validators=[int_list_validator()], 
@@ -490,6 +500,16 @@ class external_inflow(models.Model):
     
     derivation_factor = models.FloatField(
         verbose_name='Derivation factor',
+        null=True)
+
+    # horizontal position in the model designer
+    x = models.IntegerField(
+        verbose_name='x',
+        null=True)
+
+    # vertical position in the model designer
+    y = models.IntegerField(
+        verbose_name='y',
         null=True)
     
     def __str__(self):
@@ -501,7 +521,8 @@ class external_list_inflow(external_inflow):
         return self.name + ' (' + str(self.pk) + ')'
     
 class external_function_inflow(external_inflow):
-    
+
+    # NOTE: If you change these values, you must also change them in dpmfa.model2json.DistributionFormsField
     NORMAL = 'NORM'
     GEOMETRIC = 'GEO'
     BINOMIAL = 'BINOM'

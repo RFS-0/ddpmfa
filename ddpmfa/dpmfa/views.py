@@ -6,11 +6,12 @@ import json
 import os
 
 
+from dpmfa.modelcopier import ModelCopier
+from dpmfa.model2json.Model import Model as JsonModel
+
 from django.contrib import messages
 from django.http import HttpResponse
 from django.http import Http404, HttpResponseRedirect, JsonResponse
-from dpmfa.modelcopier import ModelCopier
-from dpmfa.modeljson import ModelJson
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
@@ -490,10 +491,10 @@ class ModelDesignerTemplateView(generic.TemplateView):
 
         model = models.model.objects.get(pk=self.kwargs['model_pk'])
 
-        model_data = ModelJson.get_json_scaffold()
+        model_dict = (JsonModel()).configure_for(model).as_dictionary()
 
         context['model'] = model
-        context['model_data_json'] = json.dumps(model_data)
+        context['model_data_json'] = json.dumps(model_dict)
         return context
 
 class ModelDesignerSaveView(generic.View):
