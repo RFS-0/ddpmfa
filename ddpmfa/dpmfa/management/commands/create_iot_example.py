@@ -373,7 +373,9 @@ class Command(BaseCommand):
             inflow_function='NORM', 
             basic_inflow=fvif_for_efi, 
             derivation_parameters='1000, 250',
-            function_parameters = '1000, 250')
+            function_parameters = '1000, 250',
+            x=5040,
+            y=5240)
         
         import_of_std_inflow.save()
         

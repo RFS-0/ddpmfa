@@ -30,6 +30,6 @@ class RandomChoiceInflowForm(Form):
 
     def configure_for(self, db_entity):
         self.set_values(
-            [s.strip() for s in db_entity.sample.split(',')] if db_entity != '' else []
+            [s.strip() for s in db_entity.sample.split(',')] if (db_entity.sample is not None and db_entity.sample != '') else []
         )
         return self

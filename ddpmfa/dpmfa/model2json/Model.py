@@ -1,4 +1,5 @@
 from dpmfa import models as dbm
+from dpmfa.model2json.ExternalFunctionInflow import ExternalFunctionInflow
 from dpmfa.model2json.ExternalListInflow import ExternalListInflow
 from dpmfa.model2json.FlowCompartment import FlowCompartment
 
@@ -27,9 +28,13 @@ class Model(object):
         self.model_id = db_entity.pk
 
         self.node_types.append(ExternalListInflow(self).apply_default_configuration())
+        self.node_types.append(FlowCompartment(self).apply_default_configuration())
 
         for db_inflow in dbm.external_list_inflow.objects.filter(target__model=db_entity):
             self.nodes.append(ExternalListInflow(self).configure_for(db_inflow))
+
+        for db_inflow in dbm.external_function_inflow.objects.filter(target__model=db_entity):
+            self.nodes.append(ExternalFunctionInflow(self).configure_for(db_inflow))
 
         for db_flow_compartment in dbm.flow_compartment.objects.filter(model=db_entity):
             db_stocks = dbm.stock.objects.filter(pk=db_flow_compartment.pk)

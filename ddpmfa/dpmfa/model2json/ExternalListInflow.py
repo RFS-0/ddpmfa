@@ -2,10 +2,10 @@ from dpmfa import models as dbm
 
 from dpmfa.model2json.DistributionFormsField import DistributionFormsField
 from dpmfa.model2json.FixedValueInflowForm import FixedValueInflowForm
+from dpmfa.model2json.Node import Node
 from dpmfa.model2json.RandomChoiceInflowForm import RandomChoiceInflowForm
 from dpmfa.model2json.SinglePeriodInflowFormsField import SinglePeriodInflowFormsField
 from dpmfa.model2json.StochasticFunctionInflowForm import StochasticFunctionInflowForm
-from dpmfa.model2json.Node import Node
 
 from itertools import chain
 
@@ -44,13 +44,14 @@ class ExternalListInflow(Node):
         return self
 
     def configure_for(self, db_entity):
+        self.set_node_id(db_entity.pk)
         self.set_position(db_entity.x, db_entity.y)
 
         self.name_field.set_value(db_entity.name)
         self.start_delay_field.set_value(db_entity.start_delay)
         self.derivation_distribution_field.enter_new_distribution_value_form(
             db_entity.derivation_distribution,
-            [s.strip() for s in db_entity.derivation_parameters.split(',')] if db_entity.derivation_parameters != '' else [],
+            [s.strip() for s in db_entity.derivation_parameters.split(',')] if (db_entity.derivation_parameters is not None and db_entity.derivation_parameters != '') else [],
         )
         self.derivation_factor_field.set_value(db_entity.derivation_factor)
 
@@ -82,3 +83,6 @@ class ExternalListInflow(Node):
 
     def enter_derivation_factor_field(self):
         return self.derivation_factor_field
+
+    def enter_single_period_inflows_field(self):
+        return self.single_period_inflows_field

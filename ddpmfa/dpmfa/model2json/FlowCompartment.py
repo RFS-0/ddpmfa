@@ -34,6 +34,7 @@ class FlowCompartment(Node):
         self.categories_field = fields.append_and_enter(CategoryFormsField(None, 'categories', 'Categories'))
 
     def configure_for(self, db_entity):
+        self.set_node_id(db_entity.pk)
         self.set_position(db_entity.x, db_entity.y)
 
         self.name_field.set_value(db_entity.name)
@@ -50,3 +51,4 @@ class FlowCompartment(Node):
         self.log_outflows_field.set_checked(True)
         self.adjust_outgoing_tcs_field.set_checked(True)
         self.categories_field.apply_default_configuration()
+        return self
