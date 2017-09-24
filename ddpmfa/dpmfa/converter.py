@@ -844,7 +844,7 @@ class ModelInstanceConverter(object):
             fcc = FlowCompartmentConverter(flowCompartment)
             self.flowCompartments.append(fcc)
             self.compartments.append(fcc.getFlowCompartmentAsDpmfaEntity())
-            self.mapDpmfaFlowCompartmentToConverter[fcc.getFlowCompartmentAsDpmfaEntity] = fcc            
+            self.mapDpmfaFlowCompartmentToConverter[fcc.getFlowCompartmentAsDpmfaEntity()] = fcc            
         
         # stocks
         self.mapDpmfaStockToConverter = {}

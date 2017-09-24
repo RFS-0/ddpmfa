@@ -1,4 +1,6 @@
 from django.conf.urls import url
+from ddpmfa import settings
+from django.conf.urls.static import static
 from . import views
 
 app_name = 'dpmfa'
@@ -364,9 +366,10 @@ urlpatterns = [
 #  Results
 #==============================================================================
 
-    # ex: /result/123
-    url(r'^result/(?P<pk>[0-9]+)/$', views.ResultsDetailView.as_view(), name='result-detail'),
-
-    # ex: /result/123/delete
-    url(r'^result/(?P<pk>[0-9]+)/delete$', views.ResultsDeleteView.as_view(), name='result-delete'),
-]
+    # ex: /results/123/template
+    url(r'^results/(?P<experiment_pk>[0-9]+)/template$', views.ResultsTemplateView.as_view(), name='results-template'),
+    
+    # ex: /result/123/detail
+    url(r'^result/(?P<pk>[0-9]+)/detail$', views.ResultDetailView.as_view(), name='result-detail'),
+    
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

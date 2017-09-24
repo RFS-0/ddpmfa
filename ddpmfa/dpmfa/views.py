@@ -18,7 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy, reverse
 from itertools import chain
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_components
-from django.core.files import File
+from django.core.files.base import ContentFile
 from django.conf import settings
 
 # ==============================================================================
@@ -28,19 +28,15 @@ from django.conf import settings
 
 class HomeTemplateView(generic.TemplateView):
     template_name = 'dpmfa/home/home.html'
-    context_object_name = 'home'
     
 class ExampleTemplateView(generic.TemplateView):
     template_name = 'dpmfa/home/example.html'
-    context_object_name = 'example'
 
 class QuickReferenceTemplateView(generic.TemplateView):
     template_name = 'dpmfa/home/quick_reference.html'
-    context_object_name = 'quick-reference'
     
 class DocumentationTemplateView(generic.TemplateView):
     template_name = 'dpmfa/home/documentation.html'
-    context_object_name = 'documentation'
     
 
 # ==============================================================================
@@ -410,6 +406,8 @@ class ExperimentCreateView(generic.CreateView):
         
     def storeResults(self):
         self.storeResultsOfSinks()
+        self.storeResultsOfFlowCompartmets()
+        self.storeResultsOfStocks()
         
     # sinks only have inflows
     def storeResultsOfSinks(self):
@@ -417,11 +415,11 @@ class ExperimentCreateView(generic.CreateView):
         for sink in self.simulationDpmfa.getSinks():
             
             # remove anything that is not actually a sink
-            if type(sink) is package_components.Stock or type(sink) is package_components.FlowCompartment:
+            if type(sink) is not package_components.Sink:
                 continue
             
             # default values
-            nameOfEntity = 'Entity_' + str(index) + ".csv"
+            nameOfInflowResult = 'Entity_' + str(index) + '_Inflow'
             primaryKey = None
             index += 1
             
@@ -431,28 +429,85 @@ class ExperimentCreateView(generic.CreateView):
             if converter.db_entity.pk:
                 primaryKey = converter.db_entity.pk
             if converter.name:
-                nameOfEntity = converter.name + " " + str(primaryKey) + ".csv"
+                nameOfInflowResult = converter.name + " " + str(primaryKey)
             
+            nameOfInflowResult += ".csv"
+            
+            self.storeArray(sink.getInflowRecords(), sink, nameOfInflowResult, primaryKey)
+    
+    # flow compartments have inflows and outflows
+    def storeResultsOfFlowCompartmets(self):
+        index = 0
+        for flowCompartment in self.simulationDpmfa.getFlowCompartmentartments():
+            
+            # remove anything that is not actually a flow compartment
+            if type(flowCompartment) is package_components.Sink  or type(flowCompartment) is package_components.Stock:
+                continue
+            
+            # default values
+            nameOfInflowResult = 'Entity_' + str(index) + '_Inflow'
+            nameOfOutflowResult = 'Entity_' + str(index) + '_Outflow'
+            primaryKey = None
+            index += 1
+            
+            converter = self.flowCompartmentMap[flowCompartment]
+            
+            if converter.db_entity.pk:
+                primaryKey = converter.db_entity.pk
+            if converter.name:
+                nameOfInflowResult = converter.name + " " + str(primaryKey) + '_Inflow'
+                nameOfOutflowResult = converter.name + " " + str(primaryKey) + '_Outflow'
+                
             # path to result folder
-            path = os.path.join(settings.MEDIA_ROOT, 'results', nameOfEntity)
+            names = []
+            nameOfInflowResult += ".csv"
+            nameOfOutflowResult += ".csv"
+            names.append(nameOfInflowResult)
+            names.append(nameOfOutflowResult)
             
-            # create the csv file
-            with open(path, 'w', newline='') as f:
-                result_file = File(f)
-                result_file.writelines(sink.getInflowRecords())
+            for name in names:
+                
+                if name == nameOfInflowResult:
+                    self.storeArray(flowCompartment.getInflowRecords(), flowCompartment, name, primaryKey)
+                else:
+                    self.storeOutflowDict(flowCompartment.getOutflowRecords(), flowCompartment, name, primaryKey)
+                    
+    # stocks have inflows and outflows
+    def storeResultsOfStocks(self):
+        index = 0
+        for stock in self.simulationDpmfa.getStocks():
             
-            # create the result entity
-            r = models.result(
-                model_instance = self.model_instance,
-                experiment = self.experiment,
-                entity_type = models.result.SINK,
-                name_of_entity = nameOfEntity,
-                pk_of_entity = primaryKey,
-                )
-            # save it to the the db
-            r.file.save(nameOfEntity, result_file)
-            r.save()
-            f.close()
+            # remove anything that is not actually a flow compartment
+            if type(stock) is not package_components.Stock:
+                continue
+            
+            # default values
+            nameOfInflowResult = 'Entity_' + str(index) + '_Inflow'
+            nameOfOutflowResult = 'Entity_' + str(index) + '_Outflow'
+            primaryKey = None
+            index += 1
+            
+            converter = self.stockMap[stock]
+            
+            if converter.db_entity.pk:
+                primaryKey = converter.db_entity.pk
+            if converter.name:
+                nameOfInflowResult = converter.name + " " + str(primaryKey) + '_Inflow'
+                nameOfOutflowResult = converter.name + " " + str(primaryKey) + '_Outflow'
+                
+            # path to result folder
+            names = []
+            nameOfInflowResult += ".csv"
+            nameOfOutflowResult += ".csv"
+            names.append(nameOfInflowResult)
+            names.append(nameOfOutflowResult)
+            
+            for name in names:   
+                # create the csv file
+                if name == nameOfInflowResult:
+                    self.storeArray(stock.getInflowRecords(), stock, name, primaryKey)
+                else:
+                    self.storeOutflowDict(stock.getOutflowRecords(), stock, name, primaryKey)
 
     def form_valid(self, form):
         self.experiment = form.save(commit=False)
@@ -460,6 +515,58 @@ class ExperimentCreateView(generic.CreateView):
         self.runSimulation()
         self.storeResults()
         return super(ExperimentCreateView, self).form_valid(form)
+                
+    def storeOutflowDict(self, outFlowDict, entity, name, primaryKey):
+        resultAsString = ""
+        for target, array in outFlowDict.items():
+            resultAsString += str(target) + '\n'
+            for row in array:
+                for amount in row:
+                    amountAsString = str(amount).strip() + ","
+                    resultAsString += amountAsString
+            
+                resultAsString += "\n"
+        
+        # create the result entity
+        r = models.result(
+            model_instance = self.model_instance,
+            experiment = self.experiment,
+            entity_type = self.getEntityConstant(entity),
+            name_of_entity = name,
+            pk_of_entity = primaryKey,
+            result = resultAsString,
+            )
+        r.file.save(name, ContentFile(resultAsString))
+    
+    def storeArray(self, array, entity, name, primaryKey):
+        resultAsString = ""
+        for row in array:
+            for amount in row:
+                amountAsString = str(amount).strip() + ","
+                resultAsString += amountAsString
+        
+            resultAsString += "\n"
+            
+        # create the result entity
+        r = models.result(
+            model_instance = self.model_instance,
+            experiment = self.experiment,
+            entity_type = self.getEntityConstant(entity),
+            name_of_entity = name,
+            pk_of_entity = primaryKey,
+            result = resultAsString,
+            )
+        r.file.save(name, ContentFile(resultAsString))
+        
+    
+    def getEntityConstant(self, entity):
+        if type(entity) is package_components.Stock:
+            return models.result.STOCK
+        elif type(entity) is package_components.Sink:
+            return models.result.SINK
+        elif type(entity) is package_components.FlowCompartement:
+            return models.result.FLOW_COMPARTEMENT
+        
     
 class ExperimentDetailView(generic.DetailView):
     model = models.experiment
@@ -1623,8 +1730,37 @@ class SimulationRunView(generic.DetailView):
 #  Results
 #==============================================================================
 
-class ResultsDetailView(generic.DetailView):
-    model = models.result
+class ResultsTemplateView(generic.TemplateView):
+    template_name = 'dpmfa/results/results.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ResultsTemplateView, self).get_context_data(**kwargs)
 
-class ResultsDeleteView(generic.DeleteView):
+
+        context['model_instance'] = self.getModelInstance(self.kwargs['experiment_pk'])
+        context['experiment'] = self.getExperiment(self.kwargs['experiment_pk'])
+        context['flow_compartment_results'] = self.getFlowCompartmentResults(self.kwargs['experiment_pk'])
+        context['stock_results'] = self.getStockResults(self.kwargs['experiment_pk'])
+        context['sink_results'] = self.getSinkResults(self.kwargs['experiment_pk'])
+        
+        return context
+    
+    def getModelInstance(self, experiment_pk):
+        experiment = models.experiment.objects.get(pk=experiment_pk)
+        return models.model_instance.objects.get(pk=experiment.model_instance)
+    
+    def getExperiment(self, experiment_pk):
+        return models.experiment.objects.get(pk=experiment_pk)
+    
+    def getFlowCompartmentResults(self, experiment_pk):
+        return models.result.objects.filter(experiment=experiment_pk, entity_type=models.result.FLOW_COMPARTEMENT)
+    
+    def getStockResults(self, experiment_pk):
+        return models.result.objects.filter(experiment=experiment_pk, entity_type=models.result.STOCK)
+    
+    def getSinkResults(self, experiment_pk):
+        return models.result.objects.filter(experiment=experiment_pk, entity_type=models.result.SINK)
+
+class ResultDetailView(generic.DetailView):
     model = models.result
+    

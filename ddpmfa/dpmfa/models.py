@@ -857,9 +857,9 @@ class result(models.Model):
         null = True
         )
     
-    experiment = models.OneToOneField(
+    experiment = models.ForeignKey(
         to = 'experiment',
-        related_name = 'result',
+        related_name = 'results',
         null = True
         )
     
@@ -893,7 +893,7 @@ class result(models.Model):
     
     file = models.FileField(
         verbose_name = 'File',
-        upload_to = 'experiments/%Y/%m/%d/',
+        upload_to = 'experiments',
         null = True
         )
     
@@ -902,7 +902,6 @@ class result(models.Model):
         auto_now_add = True, 
         null = True)
     
-    result = models.CharField(
+    result = models.TextField(
         verbose_name = 'Result', 
-        max_length = 250, 
         null = True)

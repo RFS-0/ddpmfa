@@ -80,14 +80,6 @@ class Simulator(object):
         """ performs the simulation on the model with regard to the given
         parameters
         """
-        print('')
-        print('Start Simulation')
-        print('Model: '+ str(self.model.name))
-        print('Seed Value: '+str(self.model.seed))
-        print('Number of Simulation Runs: '+str(self.numRuns))
-        print('Number of Periods: '+str(self.numPeriods))
-        print('Progress (in percent):')
-
         currentStep = 1
 
         stepSize =  math.ceil(self.numRuns/100)
@@ -95,8 +87,6 @@ class Simulator(object):
 
         for run in range(self.numRuns):
             
-            print("Run: " + str(run))
-
             for comp in self.flowCompartments:
                 comp.determineTCs(self.useGlobalTCSettings, self.normalizeTCs)
             for infl in self.inflows:
@@ -109,8 +99,6 @@ class Simulator(object):
 
             for period in range (self.numPeriods):
                 
-                print("Period: " + str(period))
-
                 for sink in self.sinks:
                     sink.updateInventory(run, period)
 
@@ -118,7 +106,6 @@ class Simulator(object):
                     allInflows[self.compartments.index(inflow.target), period] += inflow.getCurrentInflow(period)
 
                 for stock in self.stocks:
-                    print("Stock: " + str(stock))
                     localReleases = stock.releaseMaterial(run, period)
                     for locRel in localReleases.keys():
                         allInflows [locRel.compNumber, period] += localReleases[locRel]
@@ -139,17 +126,8 @@ class Simulator(object):
                     i.storeMaterial(run, period, solutionVector[i.compNumber])
 
             if run == currentStepRun:
-                print(str(currentStep)+', ')
                 currentStepRun += stepSize
                 currentStep +=1
-
-
-
-        print('')
-        print('Simulation complete')
-        print('')
-
-
 
     def getAllStockedMaterial(self):
         '''

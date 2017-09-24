@@ -1,0 +1,113 @@
+{% extends "dpmfa/page.html" %}
+{% load static %}
+
+{% block title %}Results of Experiment: &quot;{{experiment.name}}&quot;{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+<h1>Results of Experiment: &quot;{{experiment.name}}&quot;</h1>
+
+	<h2>Flow Compartments</h2>
+	
+	{% if flow_compartment_results %}
+	<table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Name</th>
+                <th scope="row">Data</th>
+                <!-- <th scope="row">CSV File</th> -->
+            </tr>
+        </thead>
+	<tbody>
+		{% for flow_compartment_result in flow_compartment_results %}
+	   	<tr>
+	       	<td class="dpmfa-td-20-top">
+	       		{{ flow_compartment_result.name_of_entity }} 
+	       	</td>
+	       	<td class="dpmfa-td-80-top">
+	       		<pre>{{ flow_compartment_result.result }}</pre>
+	       	</td>
+	       	<!--
+	       	<td class="dpmfa-td-10-top">
+	       		<a href="{{ flow_compartment_result.file.url }}" download>
+	       		Download
+	       		</a>
+	       	</td>
+	       	-->
+		</tr>
+		{% endfor %}
+        </tbody>
+    </table>
+	{% endif %}
+	
+	<h2>Stocks</h2>
+	
+	{% if stock_results %}
+	<table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Name</th>
+                <th scope="row">Data</th>
+                <!-- <th scope="row">CSV File</th> -->
+            </tr>
+        </thead>
+	<tbody>
+		{% for stock_result in stock_results %}
+	   	<tr>
+	       	<td class="dpmfa-td-20-top">
+	       		{{ stock_result.name_of_entity }} 
+	       	</td>
+	       	<td class="dpmfa-td-80-top">
+	       		<pre>{{ stock_result.result }}</pre>
+	       	</td>
+	       	<!-- 
+	       	<td class="dpmfa-td-10-top">
+	       		<a href="{{ stock_result.file.url }}" download>
+	       		Download
+	       		</a>
+	       	</td>
+	       	-->
+		</tr>
+		{% endfor %}
+        </tbody>
+    </table>
+	{% endif %}
+	
+	<h2>Sinks</h2>
+	
+	{% if sink_results %}
+	<table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="row">Name</th>
+                <th scope="row">Data</th>
+                <!-- <th scope="row">CSV File</th> -->
+            </tr>
+        </thead>
+	<tbody>
+		{% for sink_result in sink_results %}
+	   	<tr>
+	       	<td class="dpmfa-td-20-top">
+	       		{{ sink_result.name_of_entity }} 
+	       	</td>
+	       	<td class="dpmf-td-80-top">
+	       		<pre>{{ sink_result.result }}</pre>
+	       	</td>
+	       	<!--
+	       	<td class="dpmfa-td-10-top">
+	       		<a href="{{ sink_result.file.path }}" download>
+	       		Download
+	       		</a>
+	       	</td>
+	       	-->
+		</tr>
+		{% endfor %}
+        </tbody>
+    </table>
+	{% endif %}
+
+{% endblock %}
+</div>
+

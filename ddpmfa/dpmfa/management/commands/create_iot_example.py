@@ -575,7 +575,7 @@ class Command(BaseCommand):
         iot_result = result(
             model_instance=iot_model_instance,
             experiment=iot_experiment,
-            file=None)
+            )
         
         iot_result.save()
         

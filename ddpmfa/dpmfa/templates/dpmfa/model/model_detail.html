@@ -757,8 +757,8 @@
 				                               		{{ experiment.evt_changed}} 
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
-				                               		<a href="">
-					                               		{{ experiment.result }} 
+				                               		<a href="{% url 'dpmfa:results-template' experiment.pk %}">
+					                               		Go to results
 				                               		</a>
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
