@@ -165,28 +165,36 @@ class Command(BaseCommand):
         first_stage_disposal_compartment = sink(
             model=iot_model,
             name="First Stage Disposal", 
-            log_inflows = True)
+            log_inflows = True,
+            x=5580,
+            y=5120)
         
         first_stage_disposal_compartment.save()
         
         second_stage_disposal_compartment = sink(
             model=iot_model,
             name="Second Stage Disposal", 
-            log_inflows = True)
+            log_inflows = True,
+            x=5580,
+            y=5220)
         
         second_stage_disposal_compartment.save()
         
         third_stage_disposal_compartment = sink(
             model=iot_model,
             name="Third Stage Use", 
-            log_inflows = True)
+            log_inflows = True,
+            x=5580,
+            y=5320)
         
         third_stage_disposal_compartment.save()
         
         third_stage_export_compartment = sink(
             model=iot_model,
             name="Third Stage Use", 
-            log_inflows = True)
+            log_inflows = True,
+            x=5580,
+            y=5420)
         
         third_stage_export_compartment.save()
         

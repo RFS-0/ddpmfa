@@ -9,6 +9,7 @@ from dpmfa.model2json.StochasticFunctionInflowForm import StochasticFunctionInfl
 
 
 class ExternalFunctionInflow(Node):
+
     # name_field = None
     # start_delay_field = None
     # derivation_distribution_field = None
@@ -23,7 +24,7 @@ class ExternalFunctionInflow(Node):
         # self.enter_out_connection_types().append_item('inflowTarget')
 
         fields = self.enter_fields()
-        self.name_field = fields.enter_new_text_field('name', 'Name').set_value('New External List Inflow')
+        self.name_field = fields.enter_new_text_field('name', 'Name').set_value('New External Function Inflow')
         self.start_delay_field = fields.enter_new_text_field('startDelay', 'Start Delay') \
             .set_value('0') \
             .enter_number_config() \
