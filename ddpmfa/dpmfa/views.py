@@ -714,6 +714,15 @@ class FlowCompartmentDetailView(generic.DetailView):
     model = models.flow_compartment
     template_name = 'dpmfa/compartments/flow_compartment_detail.html'
     
+    def get_context_data(self, **kwargs):
+        context = super(FlowCompartmentDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.model
+        return context
+    
 class FlowCompartmentUpdateView(generic.UpdateView):
     model = models.flow_compartment
     template_name = 'dpmfa/compartments/flow_compartment_form.html'
@@ -762,6 +771,14 @@ class StockDetailView(generic.DetailView):
         'adjust_outgoing_tcs',
         'log_outflows',
         ]
+    def get_context_data(self, **kwargs):
+        context = super(StockDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.model
+        return context
 
 # class StockCreateView(generic.CreateView):
 #     model = models.stock
@@ -814,6 +831,14 @@ class SinkDetailView(generic.DetailView):
         'adjust_outgoing_tcs',
         'log_outflows',
         ]
+    def get_context_data(self, **kwargs):
+        context = super(SinkDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.model
+        return context
 
 # class SinkCreateView(generic.CreateView):
 #     model = models.sink
@@ -873,6 +898,14 @@ class LocalReleaseDetailView(generic.DetailView):
         'name',
         'delay'
         ]
+    def get_context_data(self, **kwargs):
+        context = super(LocalReleaseDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.stock.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.stock.model
+        return context
     
 class LocalReleaseUpdateView(generic.UpdateView):
     model = models.local_release
@@ -894,6 +927,14 @@ class FixedRateReleaseDetailView(generic.DetailView):
         'delay',
         'fixed_rate_release'
         ]
+    def get_context_data(self, **kwargs):
+        context = super(FixedRateReleaseDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.stock.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.stock.model
+        return context
     
 class FixedRateReleaseUpdateView(generic.UpdateView):
     model = models.fixed_rate_release
@@ -928,6 +969,14 @@ class FunctionReleaseDetailView(generic.DetailView):
         'fixed_rate_release',
         'function_release'
         ]
+    def get_context_data(self, **kwargs):
+        context = super(FunctionReleaseDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.stock.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.stock.model
+        return context
     
 class FunctionReleaseUpdateView(generic.UpdateView):
     model = models.function_release
@@ -977,6 +1026,15 @@ class ConstantTransferDetailView(generic.DetailView):
         'weight',
         'value'
         ]
+    
+    def get_context_data(self, **kwargs):
+        context = super(ConstantTransferDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.target.model
+        return context
 
 # class ConstantTransferCreateView(generic.CreateView):
 #     model = models.constant_transfer
@@ -1035,6 +1093,14 @@ class RandomChoiceTransferDetailView(generic.DetailView):
         'weight',
         'sample'
         ]
+    def get_context_data(self, **kwargs):
+        context = super(RandomChoiceTransferDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.target.model
+        return context
 
 class RandomChoiceTransferCreateView(generic.CreateView):
     model = models.random_choice_transfer
@@ -1091,6 +1157,14 @@ class AggregatedTransferDetailView(generic.DetailView):
         'current_tc',
         'weight'
         ]
+    def get_context_data(self, **kwargs):
+        context = super(AggregatedTransferDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.target.model
+        return context
     
 class AggregatedTransferCreateView(generic.CreateView):
     model = models.aggregated_transfer
@@ -1148,6 +1222,14 @@ class StochasticTransferDetailView(generic.DetailView):
         'parameters',
         'function'
         ]
+    def get_context_data(self, **kwargs):
+        context = super(StochasticTransferDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.target.model
+        return context
 
 class StochasticTransferCreateView(generic.CreateView):
     model = models.stochastic_transfer
@@ -1224,6 +1306,15 @@ class ExternalListInflowDetailView(generic.DetailView):
         context['single_period_inflows'] = single_period_inflows
 
         return context
+    
+    def get_context_data(self, **kwargs):
+        context = super(ExternalListInflowDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.target.model
+        return context
 
 
 class ExternalListInflowCreateView(generic.CreateView):
@@ -1292,6 +1383,15 @@ class ExternalFunctionInflowDetailView(generic.DetailView):
         context['single_period_inflow'] = single_period_inflows
 
         return context
+    
+    def get_context_data(self, **kwargs):
+        context = super(ExternalFunctionInflowDetailView, self).get_context_data(**kwargs)
+        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        if len(model_instances) != 0:
+            context['model'] = model_instances[0]
+        else:
+            context['model'] = self.object.target.model
+        return context
 
 class ExternalFunctionInflowCreateView(generic.CreateView):
     model = models.external_list_inflow
@@ -1334,7 +1434,7 @@ class ExternalFunctionInflowDeleteView(generic.DeleteView):
         return HttpResponseRedirect(self.get_success_url())
     
 #==============================================================================
-#  External Inflows
+#  Single Period Inflow
 #==============================================================================
 
 class SinglePeriodInflowRedirectView(generic.RedirectView):

@@ -14,7 +14,12 @@
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' stock.model.project.pk %}">{{ stock.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' stock.model.pk %}">{{ stock.model.name }}</a></li>
+                {% if model.prototype_model %}
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.prototype_model.pk %}">{{ model.prototype_model.name }}</a></li>
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-instance-read-only' stock.model.pk %}">{{ stock.model.name }} ({{stock.model.pk}})</a></li>
+                {% else %}
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' stock.model.pk %}">{{ stock.model.name }} </a></li>
+                {% endif %}
               <li class="breadcrumb-item active">{{stock.name}}</li>
             </ol>
         </div>

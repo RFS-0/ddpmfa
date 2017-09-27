@@ -5,33 +5,6 @@
 
 {% block body %}
 
-<header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-                Constant Transfer &quot;{{constant_transfer.name}}&quot;
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-            <li>
-                <a href="{% url 'dpmfa:constant-transfer-update' constant_transfer.pk %}" data-toggle="tooltip" title="Edit">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                    Edit
-                </a>
-            </li>
-            <li>
-                 <a href="{% url 'dpmfa:constant-transfer-delete' constant_transfer.pk %}" data-toggle="tooltip" title="Delete">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                    Delete
-                </a>
-            </li>
-        </ul>
-      </div>
-    </nav>
-</header>
-
-
 <div class="container">
     <div class="row">
         <div class="col-xs-12">
@@ -39,7 +12,12 @@
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' constant_transfer.target.model.project.pk %}">{{constant_transfer.target.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' constant_transfer.target.model.pk %}">{{ constant_transfer.target.model.name }}</a></li>
+                {% if model.prototype_model %}
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.prototype_model.pk %}">{{ model.prototype_model.name }}</a></li>
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-instance-read-only' constant_transfer.target.model.pk %}">{{ constant_transfer.target.model.name }} ({{constant_transfer.target.model.pk}})</a></li>
+                {% else %}
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' constant_transfer.target.model.pk %}">{{ constant_transfer.target.model.name }} </a></li>
+                {% endif %}
               <li class="breadcrumb-item active">{{constant_transfer.name}}</li>
             </ol>
         </div>

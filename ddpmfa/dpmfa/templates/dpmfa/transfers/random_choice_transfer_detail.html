@@ -16,7 +16,12 @@
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' random_choice_transfer.target.model.project.pk %}">{{random_choice_transfer.target.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' random_choice_transfer.target.model.pk %}">{{ random_choice_transfer.target.model.name }}</a></li>
+                {% if model.prototype_model %}
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' model.prototype_model.pk %}">{{ model.prototype_model.name }}</a></li>
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-instance-read-only' random_choice_transfer.target.model.pk %}">{{ random_choice_transfer.target.model.name }} ({{random_choice_transfer.target.model.pk}})</a></li>
+                {% else %}
+                	<li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' random_choice_transfer.target.model.pk %}">{{ random_choice_transfer.target.model.name }} </a></li>
+                {% endif %}
               <li class="breadcrumb-item active">{{random_choice_transfer.name}}</li>
             </ol>
         </div>
