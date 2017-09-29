@@ -386,9 +386,9 @@ class ExperimentCreateView(generic.CreateView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.kwargs['prototype_pk'] })
+        return reverse_lazy('dpmfa:results-template', kwargs={'experiment_pk': self.experiment.pk})
     
-    def setupExperiment(self):
+    def setupExperiment(self): 
         self.prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
         self.model_instance = ModelCopier.copy_model(self.prototype_model)
         self.experiment.prototype_model = self.prototype_model
@@ -564,7 +564,7 @@ class ExperimentCreateView(generic.CreateView):
             return models.result.STOCK
         elif type(entity) is package_components.Sink:
             return models.result.SINK
-        elif type(entity) is package_components.FlowCompartement:
+        elif type(entity) is package_components.FlowCompartment:
             return models.result.FLOW_COMPARTEMENT
         
     
@@ -1835,7 +1835,6 @@ class ResultsTemplateView(generic.TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super(ResultsTemplateView, self).get_context_data(**kwargs)
-
 
         context['model_instance'] = self.getModelInstance(self.kwargs['experiment_pk'])
         context['experiment'] = self.getExperiment(self.kwargs['experiment_pk'])

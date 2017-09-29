@@ -7,6 +7,17 @@
 {% block body %}
 
 <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+              	<li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' model_instance.project.pk %}">{{ model_instance.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-instance-read-only' model_instance.pk %}">{{ model_instance.name }} (Instance)</a></li>
+              <li class="breadcrumb-item active">{{model.name}}</li>
+            </ol>
+        </div>
+    </div>
 <h1>Results of Experiment: &quot;{{experiment.name}}&quot;</h1>
 
 	<h2>Flow Compartments</h2>

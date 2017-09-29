@@ -1,4 +1,4 @@
-{% extends "dpmfa/page.html" %}
+${% extends "dpmfa/page.html" %}
 {% load static %}
 
 {% block title %}Home{% endblock %}
@@ -10,7 +10,8 @@
     <!-- Jumbotron -->
     <div class="jumbotron">
       <h1>Welcome, User!</h1>
-      <p>This is the home page of our app. Here you will find infos and links. Go to your projects:</p>
+      <p>This is the home page of our app. Here you will find infos and links. <p>
+      </p>Go to your projects:</p>
       <p><a class="btn btn-primary btn-lg" href="{% url 'dpmfa:project-list' %}" role="button">My Projects</a></p>
     </div>
 

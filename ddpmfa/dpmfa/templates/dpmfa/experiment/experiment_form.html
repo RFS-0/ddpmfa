@@ -32,6 +32,13 @@
 				{{ form.as_p }}
                 <button type="submit" class="save btn btn-primary">Run experiment</button>
             </form>
+            {% if showMessage %}
+            <h2>
+            <p>The simulation is now running.</p>
+            <p>Please wait unitl it has finished.</p>
+            <p>You will be redirected to the result page once the simulation is completed.</p>
+            </h2>
+            {% endif %}
         </div>
      </div>
 </div>
