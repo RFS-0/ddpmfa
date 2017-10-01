@@ -23,6 +23,10 @@ class ExternalFunctionInflow(Node):
         self.enter_classes().append_item('inflow').append_item('external-function-inflow')
         # self.enter_out_connection_types().append_item('inflowTarget')
 
+        self.set_max_outgoing(1)
+        self.set_min_outgoing(1)
+        self.set_max_incoming(0)
+
         fields = self.enter_fields()
         self.name_field = fields.enter_new_text_field('name', 'Name').set_value('New External Function Inflow')
         self.start_delay_field = fields.enter_new_text_field('startDelay', 'Start Delay') \

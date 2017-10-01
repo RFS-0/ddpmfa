@@ -1,8 +1,9 @@
 from dpmfa.model2json.CategoryFormsField import CategoryFormsField
+from dpmfa.model2json.LocalReleaseFormsField import LocalReleaseFormsField
 from dpmfa.model2json.Node import Node
 
 
-class FlowCompartment(Node):
+class Stock(Node):
 
     #name_field = None
     #description_field = None
@@ -13,10 +14,12 @@ class FlowCompartment(Node):
 
     #categories_field = None
 
-    def __init__(self, owner):
-        super(FlowCompartment, self).__init__(owner, 'flowCompartment', 'Flow Compartment')
+    #local_release_field = None
 
-        self.enter_classes().append_item('compartment').append_item('flow-compartment')
+    def __init__(self, owner):
+        super(Stock, self).__init__(owner, 'stock', 'Stock')
+
+        self.enter_classes().append_item('compartment').append_item('stock')
         #self.enter_out_connection_types()\
         #    .append_item('constantTransfer')\
         #    .append_item('randomChoiceTransfer')\
@@ -27,13 +30,14 @@ class FlowCompartment(Node):
         self.set_min_incoming(1)
 
         fields = self.enter_fields()
-        self.name_field = fields.enter_new_text_field('name', 'Name').set_value('New Flow Compartment')
+        self.name_field = fields.enter_new_text_field('name', 'Name').set_value('New Stock')
         self.description_field = fields.enter_new_text_field('description', 'Description')\
             .set_display_as_text_area(True).set_not_empty(False)
         self.log_inflows_field = fields.enter_new_check_field('logInflows', 'Log Inflows')
         self.log_outflows_field = fields.enter_new_check_field('logOutflows', 'Log Outflows')
         self.adjust_outgoing_tcs_field = fields.enter_new_check_field('adjustOutgoingTcs', 'Adjust Outgoing Transfer Coefficients')
         self.categories_field = fields.append_and_enter(CategoryFormsField(None, 'categories', 'Categories'))
+        self.local_release_field = fields.append_and_enter(LocalReleaseFormsField(None, 'localRelease', 'Local Release'))
 
     def configure_for(self, db_entity):
         self.set_node_id(db_entity.pk)
@@ -46,6 +50,8 @@ class FlowCompartment(Node):
         self.adjust_outgoing_tcs_field.set_checked(db_entity.adjust_outgoing_tcs)
         self.categories_field.set_categories([s.strip() for s in db_entity.categories.split(',')] if (db_entity.categories is not None and db_entity.categories != '') else [])
 
+        self.local_release_field.configure_for_stock(db_entity)
+
         return self
 
     def apply_default_configuration(self):
@@ -53,6 +59,7 @@ class FlowCompartment(Node):
         self.log_outflows_field.set_checked(True)
         self.adjust_outgoing_tcs_field.set_checked(True)
         self.categories_field.apply_default_configuration()
+        self.local_release_field.apply_default_configuration()
         return self
 
     def enter_name_field(self):

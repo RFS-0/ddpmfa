@@ -15,8 +15,12 @@ class Sink(Node):
 
         self.enter_classes().append_item('compartment').append_item('sink')
 
+        self.set_max_outgoing(0)
+        self.set_min_outgoing(0)
+        self.set_min_incoming(1)
+
         fields = self.enter_fields()
-        self.name_field = fields.enter_new_text_field('name', 'Name').set_value('New Flow Compartment')
+        self.name_field = fields.enter_new_text_field('name', 'Name').set_value('New Sink')
         self.description_field = fields.enter_new_text_field('description', 'Description') \
             .set_display_as_text_area(True).set_not_empty(False)
         self.log_inflows_field = fields.enter_new_check_field('logInflows', 'Log Inflows')

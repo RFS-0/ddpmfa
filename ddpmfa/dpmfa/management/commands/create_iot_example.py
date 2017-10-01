@@ -51,7 +51,7 @@ class Command(BaseCommand):
             log_inflows = True, 
             log_outflows = True,
             categories='Category 1,Category 2',
-            x=5220,
+            x=5260,
             y=5120)
         
         first_stage_flow_compartment.save()
@@ -61,7 +61,7 @@ class Command(BaseCommand):
             name="Second Stage Flow Compartment", 
             log_inflows = True, 
             log_outflows = True,
-            x=5220,
+            x=5260,
             y=5220)
         
         second_stage_flow_compartment.save()
@@ -71,7 +71,7 @@ class Command(BaseCommand):
             name="Third Stage Flow Compartment", 
             log_inflows = True, 
             log_outflows = True,
-            x=5220,
+            x=5260,
             y=5320)
         
         third_stage_flow_compartment.save()
@@ -125,7 +125,9 @@ class Command(BaseCommand):
             name="First Stage Use",
             log_inflows = True, 
             log_outflows = True,
-            local_release = list_release_for_first_stage_use_compartment)
+            local_release = list_release_for_first_stage_use_compartment,
+            x=5480,
+            y=5040)
         
         first_stage_use_compartment.save()
         
@@ -135,7 +137,9 @@ class Command(BaseCommand):
             name="First Stage Recycling", 
             log_inflows = True, 
             log_outflows = True,
-            local_release = function_release_for_first_stage_recycling_compartment)
+            local_release = function_release_for_first_stage_recycling_compartment,
+            x=5480,
+            y=5140)
         
         first_stage_recycling_compartment.save()
         
@@ -144,7 +148,9 @@ class Command(BaseCommand):
             name="Second Stage Use", 
             log_inflows = True, 
             log_outflows = True,
-            local_release = function_release_for_second_stage_use_compartment)
+            local_release = function_release_for_second_stage_use_compartment,
+            x=5480,
+            y=5240)
         
         second_stage_use_compartment.save()
         
@@ -153,7 +159,9 @@ class Command(BaseCommand):
             name="Third Stage Use", 
             log_inflows = True,
             log_outflows = True,
-            local_release = function_release_for_third_stage_use_compartment)
+            local_release = function_release_for_third_stage_use_compartment,
+            x=5480,
+            y=5340)
         
         third_stage_use_compartment.save()
         
@@ -166,7 +174,7 @@ class Command(BaseCommand):
             model=iot_model,
             name="First Stage Disposal", 
             log_inflows = True,
-            x=5580,
+            x=5720,
             y=5120)
         
         first_stage_disposal_compartment.save()
@@ -175,7 +183,7 @@ class Command(BaseCommand):
             model=iot_model,
             name="Second Stage Disposal", 
             log_inflows = True,
-            x=5580,
+            x=5720,
             y=5220)
         
         second_stage_disposal_compartment.save()
@@ -184,7 +192,7 @@ class Command(BaseCommand):
             model=iot_model,
             name="Third Stage Use", 
             log_inflows = True,
-            x=5580,
+            x=5720,
             y=5320)
         
         third_stage_disposal_compartment.save()
@@ -193,7 +201,7 @@ class Command(BaseCommand):
             model=iot_model,
             name="Third Stage Use", 
             log_inflows = True,
-            x=5580,
+            x=5720,
             y=5420)
         
         third_stage_export_compartment.save()

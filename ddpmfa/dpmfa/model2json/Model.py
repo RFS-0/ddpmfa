@@ -3,6 +3,7 @@ from dpmfa.model2json.ExternalFunctionInflow import ExternalFunctionInflow
 from dpmfa.model2json.ExternalListInflow import ExternalListInflow
 from dpmfa.model2json.FlowCompartment import FlowCompartment
 from dpmfa.model2json.Sink import Sink
+from dpmfa.model2json.Stock import Stock
 
 class Model(object):
 
@@ -32,6 +33,7 @@ class Model(object):
         self.node_types.append(ExternalFunctionInflow(self).apply_default_configuration())
         self.node_types.append(FlowCompartment(self).apply_default_configuration())
         self.node_types.append(Sink(self).apply_default_configuration())
+        self.node_types.append(Stock(self).apply_default_configuration())
 
         for db_inflow in dbm.external_list_inflow.objects.filter(target__model=db_entity):
             self.nodes.append(ExternalListInflow(self).configure_for(db_inflow))
@@ -44,8 +46,7 @@ class Model(object):
             if db_stocks.count() == 0:
                 self.nodes.append(FlowCompartment(self).configure_for(db_flow_compartment))
             else:
-                #TODO: stocks
-                print('TODO')
+                self.nodes.append(Stock(self).configure_for(db_stocks[0]))
 
         for db_sink in dbm.sink.objects.filter(model=db_entity):
             self.nodes.append(Sink(self).configure_for(db_sink))
