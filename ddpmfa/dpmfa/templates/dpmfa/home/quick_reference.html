@@ -4,7 +4,30 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
+<div class="container">
+	<h1>Quick Reference</h1>
+		<p>The quick reference shows you how to use the dpmfa app.</p>
+		
+		<h2>How to create a project</h2>
+			<img src="{% static 'dpmfa/img/gif/create_new_project.gif' %}" style="width:80%;height:10%;">
+			<p>Go to <a href="{% url 'dpmfa:project-list' %}">p
+			rojects</a> and click on the button <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+               to add a new project</p>
+		
+		<h2>How to delete a project</h2>
+			<img src="{% static 'dpmfa/img/gif/delete_project.gif' %}" style="width:80%;height:10%;">
+               
+		<h2>How to add a model</h2>
+               <img src="{% static 'dpmfa/img/gif/create_new_model.gif' %}" style="width:80%;height:10%;">
 
-<h1>Here we will implement a quick reference which will explain the toplevel entites</h1>
-
+               
+        <h2>How to edit a model</h2>
+               <img src="{% static 'dpmfa/img/gif/edit_model.gif' %}" style="width:80%;height:10%;">
+        
+        <h2>How to delete a model</h2>
+               <img src="{% static 'dpmfa/img/gif/delete_model.gif' %}" style="width:80%;height:10%;">
+               
+		<h2>How to open the model designer</h2>
+               <img src="{% static 'dpmfa/img/gif/open_model_designer.gif' %}" style="width:80%;height:10%;">
+</div>
 {% endblock %}

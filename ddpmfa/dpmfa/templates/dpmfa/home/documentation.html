@@ -4,7 +4,98 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-
-<h1>Here we will implement a detailed documentation that explains all entities of the model</h1>
+<div class="container">
+	<h1>Project</h1>
+		<p>A <a href="{% url 'dpmfa:project-list' %}">project</a> is a container where you can organize all information of a specific project. 
+		In particluar it contains all the models of a project. Before you can create and configure a model you have to create a project</p>
+	
+	<h1>Model</h1>
+		<p>The model is the most important entity. Once you have created a project you can create a new model. The configuration of a model is
+		process that is done in three sequential steps:</p>
+		<ol>
+			<li>Use the Model Designer to construct the material flow you are interested in</li>
+			<li>Check the parametrization to validate your inputs.</li>
+			<li>Create an experiment to run the model configuration</li>
+		</ol> 
+		<p>You can of course iterate over this steps as many times as you want.</p>
+		<p>The model itself is actually a template for your experiments. This allows you to rearrange the entities your model consists of.
+		Each time you create a new experiment the current current state of the model designer and all the parameters of the model will be copied
+		and attached to the experiment. It is important to notice that copy created for the experiment is read only. This ensures that the results
+		of an experiment will always correspond to its design and parameters.</p>
+		<p>For more details have a look at the description of <a>experiment</a></p>
+	
+	<h1>Model designer</h1>
+		<p>The model designer is where you can design your model. Here you can add entities and link them with the various kinds of transfers</p>
+		<p>In particluar you can add the following entites to create you material flow model:</p>
+		<p>Inflows to the system:</p>
+			<ul>
+				<li>External list inflow</li>
+				<li>External function inflow</li>
+			</ul>
+		<p>Compartments of the system:</p>
+			<ul>
+				<li>Sink</li>
+				<li>Flow Compartment</li>
+				<li>Stock</li>
+			</ul>
+		<p>You can link those entites with these kinds of transfers:</p>
+			<ul>
+				<li>Constant transfer</li>
+				<li>Random choice transfer</li>
+				<li>Stochastic transfer</li>
+				<li>Aggregated transfer</li>
+			</ul>
+		<p>If you are familiar with UML class diagrams, the you might find the following diagram helpful as an overview:</p>
+			<img src="{% static 'dpmfa/img/uml_diagram.png' %}" style="width:80%;height:10%;">
+	
+	<h1>External inflows</h1>
+	
+		<p>External inflows are used to model inflow of material into the system. Ther are two distinct types of external inflows:</p>
+		<ul>
+			<li>External list inflows</li>
+			<li>External function inflows</li>
+		</ul>
+		
+		<h2>External list inflow</h2>
+			<p>The external list inflow lets you configure one sinlge period inflow for each period of your simulation. Each single period
+			inflow can be one of the following three types:</p>
+			<ul>
+				<li>Fixed value inflow</li>
+				<li>Stochastic inflow</li>
+				<li>Random choice inflow</li>
+			</ul>
+			
+			<p>In particular you can edit the following parameters for each external list inflow:</p>
+			<ul>
+				<li>Target</li>
+				<li>Name</li>
+				<li>Start delay</li>
+				<li>Derivation distribution</li>
+				<li>Derivation parameters</li>
+				<li>Derivation factor</li>
+				<li>Single periods inflows</li>
+			</ul> 
+			
+			<h3>Target</h3>
+				<p>The target represents the compartment (i.e. Flow compartment, sink or stock) the material flows to. You can specify
+				only one targe for each external list inflow. Please refer to the quick reference to see how you can specify a target.</p>
+			
+			<h3>Name</h3>
+				<p>The name of the external list inflow.</p>
+			<h3>Start delay</h3>
+				<p>The delay indicates after how many periods of you simulation the external list inflow will start to transfer material. E.g.
+				if your simulation has 10 periods and you configure the start delay to 3, the external list inflow will transfer material
+				from period 3 up to period 10.</p>
+			
+			<h3>Derivation distribution</h3>
+				<p>The derivation distribution is optional.</p>
+				<p>If a derivation distribution is definted, it is used to sample a derivation factor which in turn is used to determine
+				the derivation factor in each period. The derivation factor is then multiplied by the value the single period inflow of
+				the current period.</p>
+				
+			
+				
+		
+</div>
 
 {% endblock %}

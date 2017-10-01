@@ -8,6 +8,11 @@
 	white-space: no-wrap;
 }
 
+/* text */
+.dpmfa-txt-center {
+	vertical-align: center;
+}
+
 /* table */
 
 .dpmfa-td-5-top {

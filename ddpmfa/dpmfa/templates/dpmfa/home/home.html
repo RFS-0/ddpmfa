@@ -1,42 +1,26 @@
-${% extends "dpmfa/page.html" %}
+{% extends "dpmfa/page.html" %}
 {% load static %}
 
 {% block title %}Home{% endblock %}
 
 {% block body %}
-
 <div class="container">
-
     <!-- Jumbotron -->
-    <div class="jumbotron">
-      <h1>Welcome, User!</h1>
-      <p>This is the home page of our app. Here you will find infos and links. <p>
-      </p>Go to your projects:</p>
-      <p><a class="btn btn-primary btn-lg" href="{% url 'dpmfa:project-list' %}" role="button">My Projects</a></p>
+    <div class="jumbotron-fluid">
+    
+    <h1>How the DPMFA App works</h1>
+    	<p>In the top bar you can see the links you most likely will use frequently when working with this app.</p>
+    	<p>If you are new to the App you might want to check out the <a href="{% url 'dpmfa:documentation' %}">documentation</a> first. There you will find a detailed description of how the App works.</p>
+		<p>If you would like to take a look at a typical use case we suggest you have a look at the <a href="{% url 'dpmfa:example' %}">example</a>.</p>
+		<p>If you have a specific question about the functionality of the app we suggest you have a look at the <a href="{% url 'dpmfa:quick-reference' %}">quick reference</a>.</p>   	
+		<p>If you are familiar with the package you probably want to go to your projects:</p>	
+	    <p><a class="btn btn-primary btn-lg" href="{% url 'dpmfa:project-list' %}" role="button">My Projects</a></p>
+    
+    <h1>Underlying code of the App</h1>
+    	<p>This WebApp is based on the python package <a href="https://pypi.python.org/pypi/dpmfa-simulator">dpmfa</a> written by Klaus Bornhoft. 
+    
+    <h1>Underlying method of the App</h1>
+    	<p>The <a href="https://pypi.python.org/pypi/dpmfa-simulator">python package</a> implements the the dynamic probabilistic material flow modeling method as it was intorduced by Klaus Bornhoft in the article you can find <a href="http://www.sciencedirect.com/science/article/pii/S1364815215301018">here.</a></p>
     </div>
-
-    <!-- Alerts -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="alert alert-info">An info alert. Very informative.</div>
-            <div class="alert alert-success">A success alert. Very successful.</div>
-            <div class="alert alert-danger">A danger alert. Here would be an error message.</div>
-        </div>
-    </div>
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 col-sm-6">
-                <p>
-                    My
-                    <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
-                    is on
-                    <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-music" aria-hidden="true"></span>
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
+</div>
 {% endblock %}
