@@ -1,11 +1,11 @@
-from django.db import models
+import dpmfa.validators.validator as validator
 
+from django.db import models
 from django.core.validators import int_list_validator
 from django.utils import timezone
 from .validators.validator import *
 # install this with: pip install jsonfield
 from jsonfield import JSONField
-
 from django.urls import reverse
 from django.db.models.fields.related import OneToOneField
 
@@ -51,6 +51,7 @@ class model(models.Model):
     
     seed = models.FloatField(
         verbose_name='Seed', 
+        validators=[validator.float_list_validator()],
         null=True)
     
     evt_created = models.DateTimeField(
@@ -180,17 +181,16 @@ class compartment(models.Model):
     
     categories = models.CharField(
         verbose_name='Categories', 
-        validators=[alpha_numeric_list_validator], 
         max_length=250, 
         null=True)
 
     # horizontal position in the model designer
-    x = models.IntegerField(
+    x = models.BigIntegerField(
         verbose_name='x',
         null=True)
 
     # vertical position in the model designer
-    y = models.IntegerField(
+    y = models.BigIntegerField(
         verbose_name='y',
         null=True)
     
@@ -253,8 +253,9 @@ class local_release(models.Model):
         null=True,
         max_length=250)
     
-    delay = models.SmallIntegerField(
-        verbose_name='Delay', 
+    delay = models.BigIntegerField(
+        verbose_name='Delay',
+        validators=[int_list_validator()], 
         null=True)
        
     def __str__(self):
@@ -264,13 +265,14 @@ class fixed_rate_release(local_release):
     
     release_rate = models.FloatField(
         verbose_name='Release rate', 
+        validators=[validator.float_list_validator()],
         null=True)
       
 class list_release(local_release):
     
     release_rate_list = models.CharField(
         verbose_name='Release rate list', 
-        validators=[int_list_validator()], 
+        validators=[validator.float_list_validator()],
         max_length=250, 
         null=True)
     
@@ -300,6 +302,7 @@ class function_release(local_release):
 
     function_parameters = models.CharField(
         verbose_name='Release function parameters',
+        validators=[validator.float_list_validator()],
         max_length = 250,
         null = True)
 
@@ -336,16 +339,18 @@ class transfer(models.Model):
         max_length=250, 
         null=True)
     
-    priority = models.SmallIntegerField(
+    priority = models.BigIntegerField(
         verbose_name='Priority', 
         null=True)
     
     current_tc = models.FloatField(
         verbose_name='Current transfer coefficient', 
+        validators=[validator.float_list_validator()],
         null=True)
     
     weight = models.FloatField(
-        verbose_name='Weight', 
+        verbose_name='Weight',
+        validators=[validator.float_list_validator()], 
         null=True)   
     
     def __str__(self):
@@ -354,7 +359,8 @@ class transfer(models.Model):
 class constant_transfer(transfer):
     
     value = models.FloatField(
-        verbose_name='Value', 
+        verbose_name='Value',
+        validators=[validator.float_list_validator()], 
         null=True)
     
     def __str__(self):
@@ -367,7 +373,7 @@ class random_choice_transfer(transfer):
     
     sample = models.CharField(
         verbose_name='Sample', 
-        validators=[int_list_validator()], 
+        validators=[validator.float_list_validator()],
         max_length=250, 
         null=True)
     
@@ -425,14 +431,9 @@ class aggregated_transfer(transfer):
     
     weights = models.CharField(
         verbose_name='Weights', 
-        validators=[int_list_validator()], 
+        validators=[validator.float_list_validator()], 
         max_length=250, null=True)
-    
-    priorities = models.CharField(
-        verbose_name='Priorities', 
-        validators=[int_list_validator()], 
-        max_length=250, null=True)
-        
+
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
     
@@ -482,7 +483,7 @@ class external_inflow(models.Model):
         max_length=250, 
         null=True)
     
-    start_delay = models.SmallIntegerField(
+    start_delay = models.BigIntegerField(
         verbose_name='Start delay', 
         null=True)
     
@@ -494,21 +495,22 @@ class external_inflow(models.Model):
 
     derivation_parameters = models.CharField(
         verbose_name='Parameter list of the probability distribution function', 
-        validators=[int_list_validator()], 
+        validators=[validator.float_list_validator()], 
         max_length=250, 
         null=True)
     
     derivation_factor = models.FloatField(
         verbose_name='Derivation factor',
+        validators=[validator.float_list_validator()],
         null=True)
 
     # horizontal position in the model designer
-    x = models.IntegerField(
+    x = models.BigIntegerField(
         verbose_name='x',
         null=True)
 
     # vertical position in the model designer
-    y = models.IntegerField(
+    y = models.BigIntegerField(
         verbose_name='y',
         null=True)
     
@@ -555,6 +557,7 @@ class external_function_inflow(external_inflow):
 
     function_parameters = models.CharField(
         verbose_name='Inflow function parameters',
+        validators=[validator.float_list_validator()],
         max_length = 250,
         null = True)
       
@@ -584,7 +587,7 @@ class single_period_inflow(models.Model):
         verbose_name='current inflow value', 
         null=True)
     
-    period = models.IntegerField(
+    period = models.BigIntegerField(
         verbose_name='Period', 
         null=True)
     
@@ -594,7 +597,8 @@ class single_period_inflow(models.Model):
 class fixed_value_inflow(single_period_inflow):
     
     value = models.FloatField(
-        verbose_name='the inflow value', 
+        verbose_name='the inflow value',
+        validators=[validator.float_list_validator()], 
         null=True)
     
     def get_absolute_url(self):
@@ -633,7 +637,8 @@ class stochastic_function_inflow(single_period_inflow):
         null=True)
     
     parameter_values = models.CharField(
-        verbose_name='Pdf parameter values', 
+        verbose_name='Pdf parameter values',
+        validators=[validator.float_list_validator()], 
         max_length=250, 
         null=True)
     
@@ -643,7 +648,8 @@ class stochastic_function_inflow(single_period_inflow):
 class random_choice_inflow(single_period_inflow):
     
     sample = models.CharField(
-        verbose_name='Sample', 
+        verbose_name='Sample',
+        validators=[validator.float_list_validator()], 
         max_length=250, 
         null=True)
     
@@ -674,11 +680,11 @@ class experiment(models.Model):
         max_length=250,
         null=True)
 
-    runs = models.IntegerField(
+    runs = models.BigIntegerField(
         verbose_name='Runs',
         null=True)
 
-    periods = models.IntegerField(
+    periods = models.BigIntegerField(
         verbose_name='Periods',
         null=True)
 
@@ -707,11 +713,11 @@ class simulation(models.Model):
         verbose_name='model', 
         null=True)
     
-    runs = models.IntegerField(
+    runs = models.BigIntegerField(
         verbose_name='Runs', 
         null=True)
     
-    periods = models.IntegerField(
+    periods = models.BigIntegerField(
         verbose_name='Periods', 
         null=True)
     
@@ -748,16 +754,17 @@ class flow_compartment_outflow_record(models.Model):
         null=True)
     
     
-    run = models.IntegerField(
+    run = models.BigIntegerField(
         verbose_name="Run", 
         null=True)
     
-    period = models.IntegerField(
+    period = models.BigIntegerField(
         verbose_name="Period", 
         null=True)
     
     amount = models.FloatField(
-        verbose_name="Amount", 
+        verbose_name="Amount",
+        validators=[validator.float_list_validator()], 
         null=True)
     
     def __str__(self):
@@ -773,16 +780,17 @@ class compartment_inflow_record(models.Model):
         null=True)
     
     
-    run = models.IntegerField(
+    run = models.BigIntegerField(
         verbose_name="Run", 
         null=True)
     
-    period = models.IntegerField(
+    period = models.BigIntegerField(
         verbose_name="Period", 
         null=True)
     
     amount = models.FloatField(
-        verbose_name="Amount", 
+        verbose_name="Amount",
+        validators=[validator.float_list_validator()], 
         null=True)
     
     def __str__(self):
@@ -799,16 +807,17 @@ class compartment_inventory_record(models.Model):
         null=True)
     
     
-    run = models.IntegerField(
+    run = models.BigIntegerField(
         verbose_name="Run", 
         null=True)
     
-    period = models.IntegerField(
+    period = models.BigIntegerField(
         verbose_name="Period", 
         null=True)
     
     amount = models.FloatField(
-        verbose_name="Amount", 
+        verbose_name="Amount",
+        validators=[validator.float_list_validator()], 
         null=True)
     
     def __str__(self):
@@ -828,16 +837,17 @@ class stock_immediate_flow_record(models.Model):
         null=True)
     
     
-    run = models.IntegerField(
+    run = models.BigIntegerField(
         verbose_name="Run", 
         null=True)
     
-    period = models.IntegerField(
+    period = models.BigIntegerField(
         verbose_name="Period", 
         null=True)
     
     amount = models.FloatField(
         verbose_name="Amount", 
+        validators=[validator.float_list_validator()],
         null=True)
     
     def __str__(self):
@@ -886,14 +896,8 @@ class result(models.Model):
         null = True
         )
     
-    pk_of_entity = models.IntegerField(
+    pk_of_entity = models.BigIntegerField(
         verbose_name = 'Primary Key of Entity',
-        null = True
-        )
-    
-    file = models.FileField(
-        verbose_name = 'File',
-        upload_to = 'experiments',
         null = True
         )
     

@@ -554,17 +554,12 @@ class AggregatedTransferConverter(TransferConverter):
             self.weights = [float(x.strip()) for x in db_aggregated_transfer.weights.split(',')]
         else:
             print("entity: Aggregated Transfer Converter; Attribute: weights; Problem: Could not set weights; argument: %s" %str(db_aggregated_transfer.weights))
-        self.priorities = None
-        if db_aggregated_transfer.priorities:
-            self.priorities = [float(x.strip()) for x in db_aggregated_transfer.priorities.split(',')]
-        else:
-            print("entity: Aggregated Transfer Converter; Attribute: priorities; Problem: Could not set priorities; argument: %s" %str(db_aggregated_transfer.weights))
         
         self.aggregated_transfer_dpmfa = package_components.AggregatedTransfer(
             target = self.target,
             singleTransfers = self.singleTransfers, 
             weights = self.weights, 
-            priority = self.priorities
+            priority = self.priority
             )
         
         setDpmfaEntityOfAggregatedTransfer(db_aggregated_transfer.pk, self.getAggregatedTransferAsDpmfaEntity())

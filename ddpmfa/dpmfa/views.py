@@ -18,7 +18,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse_lazy, reverse
 from itertools import chain
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_components
-from django.core.files.base import ContentFile
 from django.conf import settings
 
 # ==============================================================================
@@ -119,7 +118,14 @@ class ModelDetailView(generic.DetailView):
             qs = external_list_inflow.single_period_inflows.get_queryset()
             single_period_inflows = []
             for single_period_inflow in qs:
-                single_period_inflows.append(single_period_inflow)
+                if len(models.fixed_value_inflow.objects.filter(pk=single_period_inflow.pk)) > 0:
+                    single_period_inflows.append(models.fixed_value_inflow.objects.get(pk=single_period_inflow.pk))
+                elif len(models.stochastic_function_inflow.objects.filter(pk=single_period_inflow.pk)) > 0:
+                    single_period_inflows.append(models.stochastic_function_inflow.objects.get(pk=single_period_inflow.pk))
+                elif len(models.random_choice_inflow.objects.filter(pk=single_period_inflow.pk)) > 0:
+                    single_period_inflows.append(models.random_choice_inflow.objects.get(pk=single_period_inflow.pk))
+                else:
+                    print("Could not retrieve a compartment for inflow")
             single_period_inflows.sort(key=lambda x: x.period)
             single_period_inflows_of_external_list_inflow[external_list_inflow.pk] = single_period_inflows
         return single_period_inflows_of_external_list_inflow
@@ -503,7 +509,7 @@ class ExperimentCreateView(generic.CreateView):
             names.append(nameOfOutflowResult)
             
             for name in names:   
-                # create the csv file
+                # store the results
                 if name == nameOfInflowResult:
                     self.storeArray(stock.getInflowRecords(), stock, name, primaryKey)
                 else:
@@ -536,7 +542,6 @@ class ExperimentCreateView(generic.CreateView):
             pk_of_entity = primaryKey,
             result = resultAsString,
             )
-        r.file.save(name, ContentFile(resultAsString))
     
     def storeArray(self, array, entity, name, primaryKey):
         resultAsString = ""
@@ -556,8 +561,6 @@ class ExperimentCreateView(generic.CreateView):
             pk_of_entity = primaryKey,
             result = resultAsString,
             )
-        r.file.save(name, ContentFile(resultAsString))
-        
     
     def getEntityConstant(self, entity):
         if type(entity) is package_components.Stock:
@@ -1688,7 +1691,7 @@ class StochasticFunctionInflowDetailView(generic.DetailView):
 
 class StochasticFunctionInflowUpdateView(generic.UpdateView):
     model = models.stochastic_function_inflow
-    template_name = 'dpmfa/compartments/stochastic_function_inflow_form.html'
+    template_name = 'dpmfa/external_inflow/stochastic_function_inflow_form.html'
     form_class = forms.StochasticFunctionInflowForm
     context_object_name = 'stochastic_function_inflow'
 
