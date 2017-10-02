@@ -38,15 +38,15 @@
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
-                        <th class="text-right">Actions</th>
+                        <th>Actions</th>
                     </tr>
                    </thead>
                    <tbody>
                     {% for project in projects %}
                         <tr>
-                            <td><a href="{% url "dpmfa:project-detail" project.pk %}">{{project.name}}</a></td>
-                            <td class="dpmfa-pre-wrap">{{project.description}}</td>
-                            <td class="text-right">
+                            <td class="dpmfa-td-30-top"><a href="{% url "dpmfa:project-detail" project.pk %}">{{project.name}}</a></td>
+                            <td class="dpmfa-td-60-top">{{project.description}}</td>
+                            <td class="dpmfa-td-10-top">
                                 <a href="{% url "dpmfa:project-update" project.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
                                     <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                 </a>

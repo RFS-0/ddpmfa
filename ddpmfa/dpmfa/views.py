@@ -437,8 +437,6 @@ class ExperimentCreateView(generic.CreateView):
             if converter.name:
                 nameOfInflowResult = converter.name + " " + str(primaryKey)
             
-            nameOfInflowResult += ".csv"
-            
             self.storeArray(sink.getInflowRecords(), sink, nameOfInflowResult, primaryKey)
     
     # flow compartments have inflows and outflows
@@ -466,8 +464,6 @@ class ExperimentCreateView(generic.CreateView):
                 
             # path to result folder
             names = []
-            nameOfInflowResult += ".csv"
-            nameOfOutflowResult += ".csv"
             names.append(nameOfInflowResult)
             names.append(nameOfOutflowResult)
             
@@ -503,8 +499,6 @@ class ExperimentCreateView(generic.CreateView):
                 
             # path to result folder
             names = []
-            nameOfInflowResult += ".csv"
-            nameOfOutflowResult += ".csv"
             names.append(nameOfInflowResult)
             names.append(nameOfOutflowResult)
             
@@ -542,6 +536,8 @@ class ExperimentCreateView(generic.CreateView):
             pk_of_entity = primaryKey,
             result = resultAsString,
             )
+        print(r)
+        r.save()
     
     def storeArray(self, array, entity, name, primaryKey):
         resultAsString = ""
@@ -561,6 +557,8 @@ class ExperimentCreateView(generic.CreateView):
             pk_of_entity = primaryKey,
             result = resultAsString,
             )
+        print(r)
+        r.save()
     
     def getEntityConstant(self, entity):
         if type(entity) is package_components.Stock:
