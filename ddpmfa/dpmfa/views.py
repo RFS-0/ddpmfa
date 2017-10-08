@@ -408,6 +408,7 @@ class ExperimentCreateView(generic.CreateView):
         self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
         self.stockMap = self.modelInstanceConverter.getStockMap()
         self.sinkMap = self.modelInstanceConverter.getSinkMap()
+        print("Running simulation...")
         self.simulationDpmfa.runSimulation()
         
     def storeResults(self):
@@ -436,6 +437,8 @@ class ExperimentCreateView(generic.CreateView):
                 primaryKey = converter.db_entity.pk
             if converter.name:
                 nameOfInflowResult = converter.name + " " + str(primaryKey)
+                
+            print(str(sink.getInflowRecords()))
             
             self.storeArray(sink.getInflowRecords(), sink, nameOfInflowResult, primaryKey)
     
@@ -470,8 +473,10 @@ class ExperimentCreateView(generic.CreateView):
             for name in names:
                 
                 if name == nameOfInflowResult:
+                    print(str(flowCompartment.getInflowRecords()))
                     self.storeArray(flowCompartment.getInflowRecords(), flowCompartment, name, primaryKey)
                 else:
+                    print(str(flowCompartment.getOutflowRecords()))
                     self.storeOutflowDict(flowCompartment.getOutflowRecords(), flowCompartment, name, primaryKey)
                     
     # stocks have inflows and outflows
@@ -505,8 +510,10 @@ class ExperimentCreateView(generic.CreateView):
             for name in names:   
                 # store the results
                 if name == nameOfInflowResult:
+                    print(str(stock.getInflowRecords()))
                     self.storeArray(stock.getInflowRecords(), stock, name, primaryKey)
                 else:
+                    print(str(stock.getOutflowRecords()))
                     self.storeOutflowDict(stock.getOutflowRecords(), stock, name, primaryKey)
 
     def form_valid(self, form):

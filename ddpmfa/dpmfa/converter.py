@@ -1004,8 +1004,6 @@ class ModelInstanceConverter(object):
         self.getModelInstanceAsDpmfaEntity().setCompartments(self.compartments)
         self.getModelInstanceAsDpmfaEntity().setInflows(self.inflows)
         
-        self.getModelInstanceAsDpmfaEntity().checkModelValidity()
-            
     def getModelInstanceAsDpmfaEntity(self):
         return self.model_instance_dpmfa
     
@@ -1038,27 +1036,22 @@ class ExperimentConverter(object):
         self.periods = db_experiment.periods
 
         # create the model
+        print("Creating model...")
         self.model_instance_converter = ModelInstanceConverter(self.model_instance)
-        self.model_instance_dpmfa = self.model_instance_converter.getModelInstanceAsDpmfaEntity()
         
         # create the simulator
+        print("Creating simulation...")
         self.simulator_dpmfa = package_simulator.Simulator(
             runs = self.runs,
             periods = self.periods,
             )
 
         # set up the simulator
-        self.simulator_dpmfa.setModel(self.model_instance_dpmfa)
+        print("Setting up the simulation...")
+        self.getSimulatorAsDpmfaEntity().setModel(self.getModelInstanceConverter().getModelInstanceAsDpmfaEntity())
             
     def getSimulatorAsDpmfaEntity(self):
         return self.simulator_dpmfa
     
     def getModelInstanceConverter(self):
         return self.model_instance_converter
-    
-    def runSimulationAndStoreResults(self):
-        self.runSimulation()
-        self.storeResults()
-        
-    def runSimulation(self):
-        self.getSimulatorAsDpmfaEntity().runSimulation()

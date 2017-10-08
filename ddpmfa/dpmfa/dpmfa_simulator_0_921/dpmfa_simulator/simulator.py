@@ -87,6 +87,8 @@ class Simulator(object):
 
         for run in range(self.numRuns):
             
+            print("Run: " + str(run))
+            
             for comp in self.flowCompartments:
                 comp.determineTCs(self.useGlobalTCSettings, self.normalizeTCs)
             for infl in self.inflows:
@@ -99,13 +101,18 @@ class Simulator(object):
 
             for period in range (self.numPeriods):
                 
+                print("Period: " + str(period))
+                
                 for sink in self.sinks:
+                    print("Updating sinks...")
                     sink.updateInventory(run, period)
 
                 for inflow in self.inflows:
+                    print("Updating inflows...")
                     allInflows[self.compartments.index(inflow.target), period] += inflow.getCurrentInflow(period)
 
                 for stock in self.stocks:
+                    print("Updating stocks...")
                     localReleases = stock.releaseMaterial(run, period)
                     for locRel in localReleases.keys():
                         allInflows [locRel.compNumber, period] += localReleases[locRel]
@@ -115,6 +122,7 @@ class Simulator(object):
                 np.fill_diagonal(flowMatrix,1)
 
                 for compartment in self.flowCompartments:
+                    print("Updating compartments...")
                     for trans in compartment.transfers:
                         flowMatrix[trans.target.compNumber, compartment.compNumber]= -trans.getCurrentTC()*compartment.immediateReleaseRate
                 solutionVector = la.solve(flowMatrix, inflowVector)
