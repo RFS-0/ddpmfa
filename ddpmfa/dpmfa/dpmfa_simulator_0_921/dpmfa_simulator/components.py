@@ -136,8 +136,9 @@ class FlowCompartment(Compartment):
         """
         tcSum = sum(t.currentTC for t in self.transfers)
         currentPriority = min(t.priority for t in self.transfers)
-       
-        while tcSum!=1:
+        maxPriority = max(t.priority for t in self.transfers)
+        
+        while tcSum!=1 and currentPriority <= maxPriority:
 
             adjustableTransfers = [t for t in self.transfers if t.priority == currentPriority]
             adjustableTCs = [t.currentTC for t in adjustableTransfers]          
@@ -149,8 +150,8 @@ class FlowCompartment(Compartment):
                     adjustableTransfers[i].currentTC = changedTCs[i]   
               
             tcSum = sum(t.currentTC for t in self.transfers)
-            tcSum = round(tcSum)            
-            currentPriority = currentPriority + 1   
+            tcSum = round(tcSum, 12)            
+            currentPriority += 1   
 
 
 
