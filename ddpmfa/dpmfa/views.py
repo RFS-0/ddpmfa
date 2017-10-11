@@ -1,4 +1,5 @@
-import dpmfa.converter as converter
+import dpmfa.converter as dpmfaConverter
+import dpmfa.json2db.SaveManager as jsonConverter
 import dpmfa.forms as forms
 import dpmfa.models as models
 import csv
@@ -402,7 +403,7 @@ class ExperimentCreateView(generic.CreateView):
         self.experiment.save()
                 
     def runSimulation(self):
-        self.experimentConverter = converter.ExperimentConverter(self.experiment)
+        self.experimentConverter = dpmfaConverter.ExperimentConverter(self.experiment)
         self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
         self.modelInstanceConverter = self.experimentConverter.getModelInstanceConverter()
         self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
@@ -619,7 +620,9 @@ class ModelDesignerSaveView(generic.View):
         return super(ModelDesignerSaveView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print(request.body);
+        
+        jsonModel=json.loads(request.body)
+        saveManager = jsonConverter.SaveManager(jsonModel)
         # TODO: save the changes and return real id map
         return JsonResponse({
             'tempId123': 'persistentId456',

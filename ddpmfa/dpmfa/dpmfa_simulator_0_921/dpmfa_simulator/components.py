@@ -149,7 +149,7 @@ class FlowCompartment(Compartment):
                     adjustableTransfers[i].currentTC = changedTCs[i]   
               
             tcSum = sum(t.currentTC for t in self.transfers)
-            tcSum = round(tcSum, 12)            
+            tcSum = round(tcSum)            
             currentPriority = currentPriority + 1   
 
 

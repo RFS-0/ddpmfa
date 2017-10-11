@@ -372,4 +372,4 @@ urlpatterns = [
     # ex: /result/123/detail
     url(r'^result/(?P<pk>[0-9]+)/detail$', views.ResultDetailView.as_view(), name='result-detail'),
     
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

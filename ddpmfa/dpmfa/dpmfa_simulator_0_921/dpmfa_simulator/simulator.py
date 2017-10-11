@@ -13,6 +13,7 @@ import numpy as np
 import numpy.linalg as la
 import dpmfa.dpmfa_simulator_0_921.dpmfa_simulator.components as cp
 import math
+import pdb
 
 
 class Simulator(object):
@@ -87,8 +88,6 @@ class Simulator(object):
 
         for run in range(self.numRuns):
             
-            print("Run: " + str(run))
-            
             for comp in self.flowCompartments:
                 comp.determineTCs(self.useGlobalTCSettings, self.normalizeTCs)
             for infl in self.inflows:
@@ -101,18 +100,13 @@ class Simulator(object):
 
             for period in range (self.numPeriods):
                 
-                print("Period: " + str(period))
-                
                 for sink in self.sinks:
-                    print("Updating sinks...")
                     sink.updateInventory(run, period)
 
                 for inflow in self.inflows:
-                    print("Updating inflows...")
                     allInflows[self.compartments.index(inflow.target), period] += inflow.getCurrentInflow(period)
 
                 for stock in self.stocks:
-                    print("Updating stocks...")
                     localReleases = stock.releaseMaterial(run, period)
                     for locRel in localReleases.keys():
                         allInflows [locRel.compNumber, period] += localReleases[locRel]
@@ -122,7 +116,6 @@ class Simulator(object):
                 np.fill_diagonal(flowMatrix,1)
 
                 for compartment in self.flowCompartments:
-                    print("Updating compartments...")
                     for trans in compartment.transfers:
                         flowMatrix[trans.target.compNumber, compartment.compNumber]= -trans.getCurrentTC()*compartment.immediateReleaseRate
                 solutionVector = la.solve(flowMatrix, inflowVector)
@@ -280,12 +273,9 @@ class Simulator(object):
                 if combinedOutflow.has_key(name):
                     combinedOutflow[name] = combinedOutflow[name]+comp.outflowRecord[name]
                 else:
-                    print(name)
                     combinedOutflow[name]= comp.outflowRecord[name]
 
         return combinedOutflow
-
-
 
     def getSinks(self):
         """
