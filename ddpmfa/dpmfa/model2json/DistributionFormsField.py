@@ -1,5 +1,7 @@
+from dpmfa.model2json.BinomialDistributionForm import BinomialDistributionForm
 from dpmfa.model2json.ExponentialDistributionForm import ExponentialDistributionForm
 from dpmfa.model2json.FormsField import FormsField
+from dpmfa.model2json.GeometricDistributionForm import GeometricDistributionForm
 from dpmfa.model2json.NormalDistributionForm import NormalDistributionForm
 from dpmfa.model2json.TriangularDistributionForm import TriangularDistributionForm
 from dpmfa.model2json.UniformDistributionForm import UniformDistributionForm
@@ -11,6 +13,8 @@ class DistributionFormsField(FormsField):
     #uniform_distribution_definition_form = None
     #triangular_distribution_definition_form = None
     #exponential_distribution_definition_form = None
+    #geometric_distribution_definition_form = None
+    #binomial_distribution_definition_form
 
     def __init__(self, owner, prop_name, label):
         super(DistributionFormsField, self).__init__(owner, prop_name, label)
@@ -26,6 +30,10 @@ class DistributionFormsField(FormsField):
             .append_and_enter(TriangularDistributionForm(None))
         self.exponential_distribution_definition_form = form_definitions\
             .append_and_enter(ExponentialDistributionForm(None))
+        self.geometric_distribution_definition_form = form_definitions \
+            .append_and_enter(GeometricDistributionForm(None))
+        self.binomial_distribution_definition_form = form_definitions \
+            .append_and_enter(BinomialDistributionForm(None))
 
     def apply_default_configuration(self):
         self.enter_new_normal_distribution_value_form()
@@ -43,6 +51,12 @@ class DistributionFormsField(FormsField):
     def enter_exponential_distribution_definition_form(self):
         return self.exponential_distribution_definition_form
 
+    def enter_geometric_distribution_definition_form(self):
+        return self.geometric_distribution_definition_form
+
+    def enter_binomial_distribution_definition_form(self):
+        return self.binomial_distribution_definition_form
+
     def enter_new_normal_distribution_value_form(self):
         return self.enter_value_forms().append_and_enter(NormalDistributionForm(None))
 
@@ -55,6 +69,12 @@ class DistributionFormsField(FormsField):
     def enter_new_exponential_distribution_value_form(self):
         return self.enter_value_forms().append_and_enter(ExponentialDistributionForm(None))
 
+    def enter_new_geometric_distribution_value_form(self):
+        return self.enter_value_forms().append_and_enter(GeometricDistributionForm(None))
+
+    def enter_new_binomial_distribution_value_form(self):
+        return self.enter_value_forms().append_and_enter(BinomialDistributionForm(None))
+
     def enter_new_distribution_value_form(self, distribution_code, parameters):
         if distribution_code == 'UNI':
             return self.enter_new_uniform_distribution().set_parameters(parameters)
@@ -62,5 +82,9 @@ class DistributionFormsField(FormsField):
             return self.enter_new_triangular_distribution_value_form().set_parameters(parameters)
         elif distribution_code == 'EXPO':
             return self.enter_new_exponential_distribution_value_form().set_parameters(parameters)
+        elif distribution_code == 'GEO':
+            return self.enter_new_geometric_distribution_value_form().set_parameters(parameters)
+        elif distribution_code == 'BINOM':
+            return self.enter_new_binomial_distribution_value_form().set_parameters(parameters)
         else:
             return self.enter_new_normal_distribution_value_form().set_parameters(parameters)

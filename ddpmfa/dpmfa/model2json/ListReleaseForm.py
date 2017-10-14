@@ -23,6 +23,7 @@ class ListReleaseForm(Form):
             .exit()
         self.release_rate_list_field = fields.enter_new_forms_field('releaseList', 'Release List') \
             .set_min_forms(1)
+        self.__add_item_form(self.release_rate_list_field.enter_form_definitions(), 0.5)
 
     def __add_item_form(self, form_list, value):
         return form_list.enter_new_form('item', 'Item')\

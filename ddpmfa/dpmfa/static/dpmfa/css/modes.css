@@ -479,17 +479,17 @@ s
 
 .rgm-modes-node-source-endpoint-constantTransfer {
 	background-image: url('../img/constant_transfer_inv.png');
-	right: 68px;
+	right: 46px;
 }
 
 .rgm-modes-node-source-endpoint-randomChoiceTransfer {
 	background-image: url('../img/random_choice_transfer_inv.png');
-	right: 46px;
+	right: 24px;
 }
 
 .rgm-modes-node-source-endpoint-aggregatedTransfer {
 	background-image: url('../img/aggregated_transfer_inv.png');
-	right: 24px;
+	right: 68px;
 }
 
 .rgm-modes-node-source-endpoint-stochasticTransfer {
