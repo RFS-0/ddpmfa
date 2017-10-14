@@ -19,5 +19,8 @@ class StochasticFunctionInflowForm(Form):
         return self
 
     def configure_for(self, db_entity):
-        self.pdf_field.enter_new_distribution_value_form(db_entity.pdf, db_entity.parameter_values)
+        self.pdf_field.enter_new_distribution_value_form(
+            db_entity.pdf,
+            [s.strip() for s in db_entity.parameter_values.split(',')] if (db_entity.parameter_values is not None and db_entity.parameter_values != '') else []
+        )
         return self
