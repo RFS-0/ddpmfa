@@ -6,7 +6,6 @@ import csv
 import json
 import os
 
-
 from dpmfa.modelcopier import ModelCopier
 from dpmfa.model2json.Model import Model as JsonModel
 
@@ -621,9 +620,7 @@ class ModelDesignerSaveView(generic.View):
 
     def post(self, request, *args, **kwargs):
         jsonModel=json.loads(request.body)
-        print(jsonModel)
-        # saveManager = jsonConverter.SaveManager(jsonModel)
-        # TODO: save the changes and return real id map
+        saveManager = jsonConverter.SaveManager(jsonModel)
         return JsonResponse({
             'tempId123': 'persistentId456',
             'tempId678': 'persistentId999'
