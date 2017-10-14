@@ -4,6 +4,7 @@ from dpmfa.model2json.ExternalFunctionInflow import ExternalFunctionInflow
 from dpmfa.model2json.ExternalListInflow import ExternalListInflow
 from dpmfa.model2json.FlowCompartment import FlowCompartment
 from dpmfa.model2json.InflowTargetConnection import InflowTargetConnection
+from dpmfa.model2json.RandomChoiceTransferConnection import RandomChoiceTransferConnection
 from dpmfa.model2json.Sink import Sink
 from dpmfa.model2json.Stock import Stock
 
@@ -39,6 +40,7 @@ class Model(object):
 
         self.connection_types.append(InflowTargetConnection(self).apply_default_configuration())
         self.connection_types.append(ConstantTransferConnection(self).apply_default_configuration())
+        self.connection_types.append(RandomChoiceTransferConnection(self).apply_default_configuration())
 
         for db_inflow in dbm.external_list_inflow.objects.filter(target__model=db_entity):
             self.nodes.append(ExternalListInflow(self).configure_for(db_inflow))
@@ -60,6 +62,9 @@ class Model(object):
 
         for db_transfer in dbm.constant_transfer.objects.filter(target__model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
             self.connections.append(ConstantTransferConnection(self).configure_for(db_transfer))
+
+        for db_transfer in dbm.random_choice_transfer.objects.filter(target__model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
+            self.connections.append(RandomChoiceTransferConnection(self).configure_for(db_transfer))
 
 
         return self

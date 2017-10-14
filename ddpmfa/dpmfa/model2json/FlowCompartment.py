@@ -18,8 +18,8 @@ class FlowCompartment(Node):
 
         self.enter_classes().append_item('compartment').append_item('flow-compartment')
         self.enter_out_connection_types()\
-            .append_item('constantTransfer')
-        #    .append_item('randomChoiceTransfer')\
+            .append_item('constantTransfer')\
+            .append_item('randomChoiceTransfer')
         #    .append_item('stochasticTransfer')\
         #    .append_item('aggregatedTransfer')
 
