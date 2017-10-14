@@ -277,7 +277,8 @@ class list_release(local_release):
         null=True)
     
 class function_release(local_release):
-    
+
+    # Note: if you change these, you also have to change them in dpmfa.model2json....
     LINEAR = 'LI'
     POLYNOMIAL = 'PO'
     EXPONENTIAL = 'EX'
@@ -525,33 +526,40 @@ class external_list_inflow(external_inflow):
 class external_function_inflow(external_inflow):
 
     # NOTE: If you change these values, you must also change them in dpmfa.model2json.DistributionFormsField
-    NORMAL = 'NORM'
-    GEOMETRIC = 'GEO'
-    BINOMIAL = 'BINOM'
-    EXPONENTIAL = 'EXPO'
-    TRIANGULAR = 'TRI'
-    UNIFORM = 'UNI'
-    GAMMA = 'GAM'
-    PARETO = 'PAR'
-    POISSON = 'POI'
-    CHISQUARE = 'CHI'
+    #NORMAL = 'NORM'
+    #GEOMETRIC = 'GEO'
+    #BINOMIAL = 'BINOM'
+    #EXPONENTIAL = 'EXPO'
+    ##TRIANGULAR = 'TRI'
+    #UNIFORM = 'UNI'
+    #GAMMA = 'GAM'
+    #PARETO = 'PAR'
+    #POISSON = 'POI'
+    #CHISQUARE = 'CHI'
 
-    DISTRIBUTION_TYPES = (
-    (NORMAL, 'Normal distribution'),
-    (GEOMETRIC, 'Geometric distribution'),
-    (BINOMIAL, 'Binomial distribution'),
-    (EXPONENTIAL, 'Exponential distribution'),
-    (TRIANGULAR, 'Triangular distribution'),
-    (UNIFORM, 'Uniform distribution'),
-    (GAMMA, 'Gamma distribution'),
-    (PARETO, 'Pareto distribution'),
-    (POISSON, 'Poisson distribution'),
-    (CHISQUARE, 'Chisquare distribution'),    
+    #DISTRIBUTION_TYPES = (
+    #(NORMAL, 'Normal distribution'),
+    #(GEOMETRIC, 'Geometric distribution'),
+    #(BINOMIAL, 'Binomial distribution'),
+    #(EXPONENTIAL, 'Exponential distribution'),
+    #(TRIANGULAR, 'Triangular distribution'),
+    #(UNIFORM, 'Uniform distribution'),
+    #(GAMMA, 'Gamma distribution'),
+    #(PARETO, 'Pareto distribution'),
+    #(POISSON, 'Poisson distribution'),
+    #(CHISQUARE, 'Chisquare distribution'),
+    #)
+
+    # NOTE: If you change these values, you must also change them in dpmfa.model2json....
+    LINEAR = 'LI'
+
+    INFLOW_FUNCTION_TYPES = (
+        (LINEAR, 'Linear Function'),
     )
-    
+
     inflow_function = models.CharField(
         verbose_name='Inflow function', 
-        choices = DISTRIBUTION_TYPES,
+        choices = INFLOW_FUNCTION_TYPES,
         max_length=250, 
         null=True)
 

@@ -16,6 +16,7 @@ class ExternalFunctionInflow(Node):
     # derivation_factor_field = None
     # inflow_function_field = None
     # basic_inflow_field = None
+    # external_function_field = None
 
     def __init__(self, owner):
         super(ExternalFunctionInflow, self).__init__(owner, 'externalFunctionInflow', 'External Function Inflow')
@@ -41,10 +42,33 @@ class ExternalFunctionInflow(Node):
             .set_value('1') \
             .enter_number_config().exit()
 
-        # TODO inflow function field
-
         self.basic_inflow_field = fields.append_and_enter(SinglePeriodInflowFormsField(None, 'basicInflow', 'Basic Inflow'))\
             .set_max_forms(1)
+
+        self.inflow_function_field = fields.enter_new_forms_field('inflowFunction', 'Inflow Function')\
+            .set_min_forms(1)\
+            .set_max_forms(1)
+        self.__add_linear_function(self.inflow_function_field.enter_form_definitions(), 0, 1, 0)
+
+
+    def __add_linear_function(self, form_definitions, a, b, c):
+        form_definitions \
+            .enter_new_form('linearFunction', 'Linear Function (a * basicInflow + b * period + c)') \
+                .enter_fields() \
+                    .enter_new_text_field('a', 'a') \
+                        .set_value(a)\
+                        .enter_number_config().exit()\
+                    .exit() \
+                    .enter_new_text_field('b', 'b') \
+                        .set_value(b)\
+                        .enter_number_config().exit()\
+                    .exit() \
+                    .enter_new_text_field('c', 'c') \
+                        .set_value(c)\
+                        .enter_number_config().exit()\
+                    .exit() \
+                .exit() \
+            .exit() \
 
     def configure_for(self, db_entity):
         self.set_node_id('inflow_' + str(db_entity.pk))
@@ -65,11 +89,17 @@ class ExternalFunctionInflow(Node):
         for db_base_inflow in dbm.stochastic_function_inflow.objects.filter(external_function_inflow=db_entity):
             self.basic_inflow_field.enter_value_forms().append_and_enter(StochasticFunctionInflowForm(None).configure_for(db_base_inflow))
 
+        params = [p.strip() for p in db_entity.function_parameters.split(',')] if (db_entity.function_parameters is not None and db_entity.function_parameters != '') else []
+        a = params[0] if len(params) > 0 else 0
+        b = params[1] if len(params) > 1 else 0
+        c = params[2] if len(params) > 2 else 0
+        self.__add_linear_function(self.inflow_function_field.enter_value_forms(), a, b, c)
         return self
 
     def apply_default_configuration(self):
         self.derivation_distribution_field.apply_default_configuration()
         self.basic_inflow_field.apply_default_configuration()
+        self.__add_linear_function(self.inflow_function_field.enter_value_forms(), 0, 1, 0)
         return self
 
     def enter_name_field(self):

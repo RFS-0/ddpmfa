@@ -93,7 +93,7 @@ class Command(BaseCommand):
             name='Fucntion release for first stage use compartment', 
             delay=0, 
             release_function='LI',
-            function_parameters='-3.7543, .67')
+            function_parameters='-3.7543, 0.67')
         
         function_release_for_first_stage_recycling_compartment.save()
 
@@ -386,10 +386,10 @@ class Command(BaseCommand):
             start_delay=0, 
             derivation_distribution='NORM', 
             derivation_factor=1.0, 
-            inflow_function='NORM', 
+            inflow_function='LI',
             basic_inflow=fvif_for_efi, 
             derivation_parameters='1000, 250',
-            function_parameters = '1000, 250',
+            function_parameters = '100,200,300',
             x=5040,
             y=5240)
         
