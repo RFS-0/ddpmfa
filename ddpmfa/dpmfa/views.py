@@ -620,9 +620,9 @@ class ModelDesignerSaveView(generic.View):
         return super(ModelDesignerSaveView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        
         jsonModel=json.loads(request.body)
-        saveManager = jsonConverter.SaveManager(jsonModel)
+        print(jsonModel)
+        # saveManager = jsonConverter.SaveManager(jsonModel)
         # TODO: save the changes and return real id map
         return JsonResponse({
             'tempId123': 'persistentId456',
