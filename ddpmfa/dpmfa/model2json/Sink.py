@@ -27,7 +27,7 @@ class Sink(Node):
         self.categories_field = fields.append_and_enter(CategoryFormsField(None, 'categories', 'Categories'))
 
     def configure_for(self, db_entity):
-        self.set_node_id(db_entity.pk)
+        self.set_node_id('compartment_' + str(db_entity.pk))
         self.set_position(db_entity.x, db_entity.y)
 
         self.name_field.set_value(db_entity.name)

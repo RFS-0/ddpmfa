@@ -22,7 +22,7 @@ class ExternalListInflow(Node):
         super(ExternalListInflow, self).__init__(owner, 'externalListInflow', 'External List Inflow')
 
         self.enter_classes().append_item('inflow').append_item('external-list-inflow')
-        #self.enter_out_connection_types().append_item('inflowTarget')
+        self.enter_out_connection_types().append_item('inflowTarget')
 
         self.set_max_outgoing(1)
         self.set_min_outgoing(1)
@@ -48,7 +48,7 @@ class ExternalListInflow(Node):
         return self
 
     def configure_for(self, db_entity):
-        self.set_node_id(db_entity.pk)
+        self.set_node_id('inflow_' + str(db_entity.pk))
         self.set_position(db_entity.x, db_entity.y)
 
         self.name_field.set_value(db_entity.name)

@@ -17,8 +17,8 @@ class FlowCompartment(Node):
         super(FlowCompartment, self).__init__(owner, 'flowCompartment', 'Flow Compartment')
 
         self.enter_classes().append_item('compartment').append_item('flow-compartment')
-        #self.enter_out_connection_types()\
-        #    .append_item('constantTransfer')\
+        self.enter_out_connection_types()\
+            .append_item('constantTransfer')
         #    .append_item('randomChoiceTransfer')\
         #    .append_item('stochasticTransfer')\
         #    .append_item('aggregatedTransfer')
@@ -36,7 +36,7 @@ class FlowCompartment(Node):
         self.categories_field = fields.append_and_enter(CategoryFormsField(None, 'categories', 'Categories'))
 
     def configure_for(self, db_entity):
-        self.set_node_id(db_entity.pk)
+        self.set_node_id('compartment_' + str(db_entity.pk))
         self.set_position(db_entity.x, db_entity.y)
 
         self.name_field.set_value(db_entity.name)

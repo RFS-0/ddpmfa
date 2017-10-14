@@ -1,7 +1,9 @@
 from dpmfa import models as dbm
+from dpmfa.model2json.ConstantTransferConnection import ConstantTransferConnection
 from dpmfa.model2json.ExternalFunctionInflow import ExternalFunctionInflow
 from dpmfa.model2json.ExternalListInflow import ExternalListInflow
 from dpmfa.model2json.FlowCompartment import FlowCompartment
+from dpmfa.model2json.InflowTargetConnection import InflowTargetConnection
 from dpmfa.model2json.Sink import Sink
 from dpmfa.model2json.Stock import Stock
 
@@ -35,11 +37,16 @@ class Model(object):
         self.node_types.append(Sink(self).apply_default_configuration())
         self.node_types.append(Stock(self).apply_default_configuration())
 
+        self.connection_types.append(InflowTargetConnection(self).apply_default_configuration())
+        self.connection_types.append(ConstantTransferConnection(self).apply_default_configuration())
+
         for db_inflow in dbm.external_list_inflow.objects.filter(target__model=db_entity):
             self.nodes.append(ExternalListInflow(self).configure_for(db_inflow))
+            self.connections.append(InflowTargetConnection(self).set_source_node_id('inflow_' + str(db_inflow.pk)).set_target_node_id('compartment_' + str(db_inflow.target.pk)))
 
         for db_inflow in dbm.external_function_inflow.objects.filter(target__model=db_entity):
             self.nodes.append(ExternalFunctionInflow(self).configure_for(db_inflow))
+            self.connections.append(InflowTargetConnection(self).set_source_node_id('inflow_' + str(db_inflow.pk)).set_target_node_id('compartment_' + str(db_inflow.target.pk)))
 
         for db_flow_compartment in dbm.flow_compartment.objects.filter(model=db_entity):
             db_stocks = dbm.stock.objects.filter(pk=db_flow_compartment.pk)
@@ -50,6 +57,9 @@ class Model(object):
 
         for db_sink in dbm.sink.objects.filter(model=db_entity):
             self.nodes.append(Sink(self).configure_for(db_sink))
+
+        for db_transfer in dbm.constant_transfer.objects.filter(target__model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
+            self.connections.append(ConstantTransferConnection(self).configure_for(db_transfer))
 
 
         return self

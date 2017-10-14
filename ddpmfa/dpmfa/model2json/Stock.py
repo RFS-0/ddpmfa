@@ -20,8 +20,8 @@ class Stock(Node):
         super(Stock, self).__init__(owner, 'stock', 'Stock')
 
         self.enter_classes().append_item('compartment').append_item('stock')
-        #self.enter_out_connection_types()\
-        #    .append_item('constantTransfer')\
+        self.enter_out_connection_types()\
+            .append_item('constantTransfer')
         #    .append_item('randomChoiceTransfer')\
         #    .append_item('stochasticTransfer')\
         #    .append_item('aggregatedTransfer')
@@ -40,7 +40,7 @@ class Stock(Node):
         self.local_release_field = fields.append_and_enter(LocalReleaseFormsField(None, 'localRelease', 'Local Release'))
 
     def configure_for(self, db_entity):
-        self.set_node_id(db_entity.pk)
+        self.set_node_id('compartment_' + str(db_entity.pk))
         self.set_position(db_entity.x, db_entity.y)
 
         self.name_field.set_value(db_entity.name)
