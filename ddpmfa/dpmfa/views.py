@@ -5,6 +5,7 @@ import dpmfa.models as models
 import csv
 import json
 import os
+import pprint
 
 from dpmfa.modelcopier import ModelCopier
 from dpmfa.model2json.Model import Model as JsonModel
@@ -605,9 +606,9 @@ class ModelDesignerTemplateView(generic.TemplateView):
         context = super(ModelDesignerTemplateView, self).get_context_data(**kwargs)
 
         model = models.model.objects.get(pk=self.kwargs['model_pk'])
-
+        
         model_dict = (JsonModel()).configure_for(model).as_dictionary()
-
+        
         context['model'] = model
         context['model_data_json'] = json.dumps(model_dict)
         return context
@@ -620,7 +621,7 @@ class ModelDesignerSaveView(generic.View):
 
     def post(self, request, *args, **kwargs):
         jsonModel=json.loads(request.body)
-        saveManager = jsonConverter.SaveManager(jsonModel)
+        saveManager = jsonConverter.SaveManager(jsonModel, self.kwargs['model_pk'])
         return JsonResponse({
             'tempId123': 'persistentId456',
             'tempId678': 'persistentId999'

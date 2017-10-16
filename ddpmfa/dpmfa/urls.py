@@ -92,7 +92,7 @@ urlpatterns = [
     url(r'^model/(?P<model_pk>[0-9]+)/designer/$', views.ModelDesignerTemplateView.as_view(), name='designer'),
 
     # ex: designer/save
-    url(r'^designer/save/$', views.ModelDesignerSaveView.as_view(), name='designer-save'),
+    url(r'^designer/(?P<model_pk>[0-9]+)/save/$', views.ModelDesignerSaveView.as_view(), name='designer-save'),
 
 #==============================================================================
 #  Model Parameters

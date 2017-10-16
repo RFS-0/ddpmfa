@@ -13,7 +13,6 @@ class ModelCopier(object):
             project=model_ref.project,
             name=model_ref.name,
             description=model_ref.description,
-            seed=model_ref.seed,
             evt_created=model_ref.evt_created,
             evt_changed=model_ref.evt_changed,
             prototype_model=model_ref
@@ -75,8 +74,6 @@ class ModelCopier(object):
                 source_flow_compartment=compartment_by_ref_pk[transfer_ref.source_flow_compartment.pk] if not transfer_ref.source_flow_compartment is None else None,
                 name=transfer_ref.name,
                 priority=transfer_ref.priority,
-                current_tc=transfer_ref.current_tc,
-                weight=transfer_ref.weight,
                 weights=transfer_ref.weights
             )
             transfer_copy.save()
@@ -95,8 +92,6 @@ class ModelCopier(object):
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
                 name=transfer_ref.name,
                 priority=transfer_ref.priority,
-                current_tc=transfer_ref.current_tc,
-                weight=transfer_ref.weight,
                 value=transfer_ref.value
             )
             transfer_copy.save()
@@ -108,8 +103,6 @@ class ModelCopier(object):
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
                 name=transfer_ref.name,
                 priority=transfer_ref.priority,
-                current_tc=transfer_ref.current_tc,
-                weight=transfer_ref.weight,
                 sample=transfer_ref.sample
             )
             transfer_copy.save()
@@ -121,8 +114,6 @@ class ModelCopier(object):
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
                 name=transfer_ref.name,
                 priority=transfer_ref.priority,
-                current_tc=transfer_ref.current_tc,
-                weight=transfer_ref.weight,
                 parameters=transfer_ref.parameters,
                 function=transfer_ref.function
             )
@@ -135,8 +126,6 @@ class ModelCopier(object):
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
                 name=transfer_ref.name,
                 priority=transfer_ref.priority,
-                current_tc=transfer_ref.current_tc,
-                weight=transfer_ref.weight,
                 parameters=transfer_ref.parameters,
                 function=transfer_ref.function
             )

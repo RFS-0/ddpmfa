@@ -49,11 +49,6 @@ class model(models.Model):
         verbose_name='Description', 
         null=True)
     
-    seed = models.FloatField(
-        verbose_name='Seed', 
-        validators=[validator.float_list_validator()],
-        null=True)
-    
     evt_created = models.DateTimeField(
         'Date created', 
         auto_now_add=True)
@@ -247,6 +242,12 @@ class sink(compartment):
 
 class local_release(models.Model):
     
+    model = models.ForeignKey(
+        to='model', 
+        related_name='local_releases', 
+        null=True, 
+        on_delete=models.CASCADE)
+    
     name = models.CharField(
         verbose_name='Local release', 
         default='local release', 
@@ -314,14 +315,20 @@ class function_release(local_release):
     
 class transfer(models.Model):
     
+    model = models.ForeignKey(
+        to='model', 
+        related_name='transfers', 
+        null=True, 
+        on_delete=models.CASCADE)
+    
     target=models.ForeignKey(
         to='compartment', 
-        on_delete=models.CASCADE, 
         related_name='transfers', 
+        on_delete=models.CASCADE, 
         null=True)
     
     source_flow_compartment = models.ForeignKey(
-        to=flow_compartment, 
+        to='flow_compartment', 
         related_name='outgoing_transfers', 
         on_delete=models.CASCADE,
         null=True)
@@ -334,7 +341,6 @@ class transfer(models.Model):
         max_length=250, 
         null=True)  
     
-    
     name = models.CharField(
         verbose_name='Name', 
         max_length=250, 
@@ -343,16 +349,6 @@ class transfer(models.Model):
     priority = models.BigIntegerField(
         verbose_name='Priority', 
         null=True)
-    
-    current_tc = models.FloatField(
-        verbose_name='Current transfer coefficient', 
-        validators=[validator.float_list_validator()],
-        null=True)
-    
-    weight = models.FloatField(
-        verbose_name='Weight',
-        validators=[validator.float_list_validator()], 
-        null=True)   
     
     def __str__(self):
         return self.name + ' (' + str(self.pk) + ')'
@@ -472,6 +468,12 @@ class external_inflow(models.Model):
     (POISSON, 'Poisson distribution'),
     (CHISQUARE, 'Chisquare distribution'),    
     )
+    
+    model = models.ForeignKey(
+        to='model', 
+        related_name='external_inflows', 
+        null=True, 
+        on_delete=models.CASCADE)
     
     target = models.ForeignKey(
         to='compartment', 
@@ -717,7 +719,7 @@ class simulation(models.Model):
     
     model = models.ForeignKey(
         to='model', 
-        related_name='simulation', 
+        related_name='simulations', 
         verbose_name='model', 
         null=True)
     
@@ -747,119 +749,6 @@ class simulation(models.Model):
     
     def __str__(self):
         return str(self.pk)
-    
-#==============================================================================
-#  Flow Compartment Records
-#==============================================================================
-
-class flow_compartment_outflow_record(models.Model):
-    
-    flow_compartment = models.ForeignKey(
-        to='flow_compartment', 
-        related_name='flow_compartment_outflow_records', 
-        verbose_name='Flow compartment', 
-        on_delete=models.CASCADE,
-        null=True)
-    
-    
-    run = models.BigIntegerField(
-        verbose_name="Run", 
-        null=True)
-    
-    period = models.BigIntegerField(
-        verbose_name="Period", 
-        null=True)
-    
-    amount = models.FloatField(
-        verbose_name="Amount",
-        validators=[validator.float_list_validator()], 
-        null=True)
-    
-    def __str__(self):
-        return 'primary key: ' + ' (' + str(self.pk) + ')'
-
-class compartment_inflow_record(models.Model):
-    
-    compartment = models.ForeignKey(
-        to='compartment', 
-        related_name='compartment_inflow_records', 
-        verbose_name='Compartment',
-        on_delete=models.CASCADE, 
-        null=True)
-    
-    
-    run = models.BigIntegerField(
-        verbose_name="Run", 
-        null=True)
-    
-    period = models.BigIntegerField(
-        verbose_name="Period", 
-        null=True)
-    
-    amount = models.FloatField(
-        verbose_name="Amount",
-        validators=[validator.float_list_validator()], 
-        null=True)
-    
-    def __str__(self):
-        return 'primary key: ' + ' (' + str(self.pk) + ')'
-    
-    
-class compartment_inventory_record(models.Model):
-    
-    compartment = models.ForeignKey(
-        to='compartment', 
-        related_name='compartment_inventory_records', 
-        verbose_name='Compartment',
-        on_delete=models.CASCADE, 
-        null=True)
-    
-    
-    run = models.BigIntegerField(
-        verbose_name="Run", 
-        null=True)
-    
-    period = models.BigIntegerField(
-        verbose_name="Period", 
-        null=True)
-    
-    amount = models.FloatField(
-        verbose_name="Amount",
-        validators=[validator.float_list_validator()], 
-        null=True)
-    
-    def __str__(self):
-        return 'primary key: ' + ' (' + str(self.pk) + ')'
-    
-#==============================================================================
-#  Stock Records
-#==============================================================================
-
-class stock_immediate_flow_record(models.Model):
-    
-    stock = models.ForeignKey(
-        to='stock', 
-        related_name='stock_immediate_flow_records', 
-        verbose_name='Stock',
-        on_delete=models.CASCADE, 
-        null=True)
-    
-    
-    run = models.BigIntegerField(
-        verbose_name="Run", 
-        null=True)
-    
-    period = models.BigIntegerField(
-        verbose_name="Period", 
-        null=True)
-    
-    amount = models.FloatField(
-        verbose_name="Amount", 
-        validators=[validator.float_list_validator()],
-        null=True)
-    
-    def __str__(self):
-        return 'primary key: ' + ' (' + str(self.pk) + ')'
     
 #==============================================================================
 # Result

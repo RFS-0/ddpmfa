@@ -35,7 +35,6 @@ class Command(BaseCommand):
         iot_model = model(
             name = 'IoT Model',
             description = 'This is a very detailed description of the IoT example model. It describes everything. It is awesome.',
-            seed = 1,
             project = iot_project)
         
         iot_model.save()
@@ -405,8 +404,6 @@ class Command(BaseCommand):
             source_flow_compartment = first_stage_flow_compartment,
             name = 'Stochastic transfer from first stage flow compartment to second stage use compartment', 
             priority = 3, 
-            current_tc = 0, 
-            weight = 0, 
             parameters = '1000, 250',
             function='NORM')
         
@@ -417,8 +414,6 @@ class Command(BaseCommand):
             source_flow_compartment = first_stage_flow_compartment,
             name='Random choice transfer from first stage flow compartment to first stage recycling compartment',
             priority=2, 
-            current_tc=0, 
-            weight=0, 
             sample='0.3, 0.4, 0.5')
         
         random_choice_transfer_for_first_stage_flow_compartment.save()
@@ -428,8 +423,6 @@ class Command(BaseCommand):
             source_flow_compartment = first_stage_flow_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
         
         const_transfer_for_first_stage_flow_compartment.save()
@@ -440,8 +433,6 @@ class Command(BaseCommand):
             source_flow_compartment = second_stage_flow_compartment,
             name='Stochastic transfer from second stage flow compartment to third stage use compartment', 
             priority=2, 
-            current_tc=0, 
-            weight=0, 
             parameters = '1000, 250',
             function='NORM')
         
@@ -452,8 +443,6 @@ class Command(BaseCommand):
             source_flow_compartment = second_stage_flow_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
         
         const_transfer_for_second_stage_flow_compartment.save()
@@ -464,8 +453,6 @@ class Command(BaseCommand):
             source_flow_compartment = third_stage_flow_compartment,
             name='Stochastic transfer from third stage flow compartment to third export compartment', 
             priority=2, 
-            current_tc=0, 
-            weight=0, 
             parameters = '1000, 250',
             function='NORM')
         
@@ -476,8 +463,6 @@ class Command(BaseCommand):
             source_flow_compartment = third_stage_flow_compartment,
             name='Stochastic transfer from third stage flow compartment to third stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
         
         const_transfer_for_third_stage_flow_compartment.save()
@@ -488,8 +473,6 @@ class Command(BaseCommand):
             source_flow_compartment = first_stage_use_compartment, 
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
         
         transfer_for_first_stage_use_compartment.save()
@@ -500,8 +483,6 @@ class Command(BaseCommand):
             source_flow_compartment = first_stage_recycling_compartment, 
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
         
         transfer_for_first_stage_use_recycling.save()
@@ -512,8 +493,6 @@ class Command(BaseCommand):
             source_flow_compartment = second_stage_use_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
         
         transfer_for_second_stage_use_compartment.save()
@@ -524,8 +503,6 @@ class Command(BaseCommand):
             source_flow_compartment = third_stage_use_compartment,
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
         
         transfer_for_third_stage_use_compartment.save()
@@ -562,8 +539,6 @@ class Command(BaseCommand):
             target=None, # because otherwise it will be considered by model converter
             name='Aggregated Transfer for Conversion Test',
             priority=1,
-            current_tc=1,
-            weight=1,
             weights='0.3, 0.4, 0.3'
             )
          
@@ -574,8 +549,6 @@ class Command(BaseCommand):
             belongs_to_aggregated_transfer=aggregated_transfer_for_conversion,  
             name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
             priority=1, 
-            current_tc=0, 
-            weight=0, 
             value=1)
          
         transfer_for_aggregated_transfer.save()

@@ -426,7 +426,6 @@ class TransferConverter(object):
         
         self.target = None
         self.priority = db_transfer.priority
-        self.currentTC = db_transfer
         
         self.transfer_dpmfa = package_components.Transfer(
             target = self.target,
@@ -805,7 +804,6 @@ class ModelInstanceConverter(object):
         self.name = db_model_instance.name
         self.project = db_model_instance.project
         self.description = db_model_instance.description
-        self.seed = db_model_instance.seed
         
         self.flowCompartments = []
         self.stocks = []

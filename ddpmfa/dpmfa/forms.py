@@ -237,7 +237,6 @@ class ConstantTransferForm(forms.ModelForm):
         model = django_models.constant_transfer
         fields = ('name',
                   'priority',
-                  'weight',
                   'value')
         
         widgets = {
@@ -247,9 +246,6 @@ class ConstantTransferForm(forms.ModelForm):
             'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
                                                    'id': 'constantTransferPriority',
                                                    'placeholder' : 'Enter a priority'}),
-            'weight': forms.widgets.NumberInput(attrs={'class': 'form-control',
-                                                   'id': 'constantTransferWeight',
-                                                   'placeholder' : 'Enter a weight'}),
             'value': forms.widgets.NumberInput(attrs={'class': 'form-control',
                                                    'id': 'constantTransferWeight',
                                                    'placeholder' : 'Enter a value'})
@@ -262,7 +258,6 @@ class RandomChoiceTransferForm(forms.ModelForm):
         model = django_models.random_choice_transfer
         fields = ('name',
                   'priority',
-                  'weight',
                   'sample')
         
         widgets = {
@@ -272,9 +267,6 @@ class RandomChoiceTransferForm(forms.ModelForm):
             'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
                                                    'id': 'randomChoiceTransferrPriority',
                                                    'placeholder' : 'Enter a priority'}),
-            'weight': forms.widgets.NumberInput(attrs={'class': 'form-control',
-                                                   'id': 'randomChoiceTransferrWeight',
-                                                   'placeholder' : 'Enter a weight'}),
             'sample': forms.widgets.NumberInput(attrs={'class': 'form-control',
                                                    'id': 'randomChoiceTransferrWeight',
                                                    'placeholder' : 'Enter a sample'})
@@ -287,7 +279,6 @@ class AggregatedTransferForm(forms.ModelForm):
         model = django_models.aggregated_transfer
         fields = ('name',
                   'priority',
-                  'weight',
                   'weights')
         
         widgets = {
@@ -312,7 +303,6 @@ class StochasticTransferForm(forms.ModelForm):
         model = django_models.stochastic_transfer
         fields = ('name',
                   'priority',
-                  'weight',
                   'function',
                   'parameters')
         
@@ -323,9 +313,6 @@ class StochasticTransferForm(forms.ModelForm):
             'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
                                                    'id': 'stochasticTransferrPriority',
                                                    'placeholder' : 'Enter a priority'}),
-            'weight': forms.widgets.NumberInput(attrs={'class': 'form-control',
-                                                   'id': 'stochasticTransferrWeight',
-                                                   'placeholder' : 'Enter a weight'}),
             'function': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                    'id': 'stochasticTransferrWeights',
                                                    'placeholder' : 'Enter weights'}),
