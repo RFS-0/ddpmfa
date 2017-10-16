@@ -46,7 +46,7 @@ class Command(BaseCommand):
         # creation of the flow compartments
         first_stage_flow_compartment = flow_compartment(
             model=iot_model, 
-            name="First Stage Flow Compartment", 
+            name="First Stage", 
             log_inflows = True, 
             log_outflows = True,
             categories='Category 1,Category 2',
@@ -57,7 +57,7 @@ class Command(BaseCommand):
         
         second_stage_flow_compartment = flow_compartment(
             model=iot_model, 
-            name="Second Stage Flow Compartment", 
+            name="Second Stage", 
             log_inflows = True, 
             log_outflows = True,
             x=5260,
@@ -67,7 +67,7 @@ class Command(BaseCommand):
         
         third_stage_flow_compartment = flow_compartment(
             model=iot_model, 
-            name="Third Stage Flow Compartment", 
+            name="Third Stage", 
             log_inflows = True, 
             log_outflows = True,
             x=5260,
@@ -81,7 +81,8 @@ class Command(BaseCommand):
         
         # release strategy, defining the delay time and the release rates based on material transferred to first stage use compartment
         list_release_for_first_stage_use_compartment = list_release(
-            name='List release for first stage use compartment', 
+            model=iot_model,
+            name='LR -> FSUC', 
             delay=0, 
             release_rate_list='0.5, 0.5')
         
@@ -89,7 +90,8 @@ class Command(BaseCommand):
         
         # release strategy, defining the delay time and the release rates based on material transferred to second stage use compartment
         function_release_for_first_stage_recycling_compartment = function_release(
-            name='Fucntion release for first stage use compartment', 
+            model=iot_model,
+            name='FFR -> FSRC', 
             delay=0, 
             release_function='LI',
             function_parameters='-3.7543, 0.67')
@@ -97,17 +99,19 @@ class Command(BaseCommand):
         function_release_for_first_stage_recycling_compartment.save()
 
         # release strategy, defining the delay time and the release rates based on material transferred to second stage use compartment
-        function_release_for_second_stage_use_compartment = fixed_rate_release(
-            name='Fixed rate release for first stage use compartment', 
+        fixed_rate_release_for_second_stage_use_compartment = fixed_rate_release(
+            model=iot_model,
+            name='FR -> SSUC', 
             delay=0, 
             release_rate=0.2)
         
-        function_release_for_second_stage_use_compartment.save()
+        fixed_rate_release_for_second_stage_use_compartment.save()
         
         
         # release strategy, defining the delay time and the release rates based on material transferred to second stage flow compartment
         function_release_for_third_stage_use_compartment = function_release(
-            name='Function release for second state flow compartment', 
+            model=iot_model,
+            name='FFR -> TSUC', 
             delay = 0,
             release_function='EX',
             function_parameters='4, 4, 4, 4')
@@ -147,7 +151,7 @@ class Command(BaseCommand):
             name="Second Stage Use", 
             log_inflows = True, 
             log_outflows = True,
-            local_release = function_release_for_second_stage_use_compartment,
+            local_release = fixed_rate_release_for_second_stage_use_compartment,
             x=5480,
             y=5240)
         
@@ -198,7 +202,7 @@ class Command(BaseCommand):
         
         third_stage_export_compartment = sink(
             model=iot_model,
-            name="Third Stage Use", 
+            name="Third Stage Export", 
             log_inflows = True,
             x=5720,
             y=5420)
@@ -222,8 +226,9 @@ class Command(BaseCommand):
         
         # creation of the external list inflow for AD into fist stage use compartment
         import_of_ad_inflow = external_list_inflow(
+            model=iot_model,
             target = first_stage_use_compartment, 
-            name = 'External list inflow of AD to first stage use compartment', 
+            name = 'Inflow of AD', 
             start_delay = 0, 
             derivation_distribution = 'NORM',
             derivation_parameters = '1000, 250',
@@ -235,56 +240,56 @@ class Command(BaseCommand):
         
         # fixed value inflows and random choice inflow representing the inflows of ad (devices) into the first stage use compartment
         fvif_1 = fixed_value_inflow(
+            model=iot_model,
             external_list_inflow = import_of_ad_inflow,
-            current_value = 0,
             period = 1,
             value = 100)
         
         fvif_1.save()
         
         fvif_2 = fixed_value_inflow(
+            model=iot_model,
             external_list_inflow = import_of_ad_inflow,
-            current_value = 0,
             period = 2,
             value = 100)
         
         fvif_2.save()
         
         fvif_3 = fixed_value_inflow(
+            model=iot_model,
             external_list_inflow = import_of_ad_inflow,
-            current_value = 0,
             period = 3,
             value = 100)
         
         fvif_3.save()
         
         fvif_4 = fixed_value_inflow(
+            model=iot_model,
             external_list_inflow = import_of_ad_inflow,
-            current_value = 0,
             period = 4,
             value = 100)
         
         fvif_4.save()
         
         fvif_5 = fixed_value_inflow(
+            model=iot_model,
             external_list_inflow = import_of_ad_inflow,
-            current_value = 0,
             period = 5,
             value = 100)
         
         fvif_5.save()
         
         fvif_6 = fixed_value_inflow(
+            model=iot_model,
             external_list_inflow = import_of_ad_inflow,
-            current_value = 0,
             period = 6,
             value = 100)
         
         fvif_6.save()
         
         rcif_7 = random_choice_inflow(
+            model=iot_model,
             external_list_inflow = import_of_ad_inflow,
-            current_value = 0,
             period = 7,
             sample = '0, 10, 100, 1000, 1000')
         
@@ -292,8 +297,9 @@ class Command(BaseCommand):
         
         # creation of the external list inflow for SenD into fist stage use compartment
         import_of_send_inflow = external_list_inflow(
+            model=iot_model,
             target = first_stage_use_compartment, 
-            name = 'External list inflow of SenD to first stage use compartment', 
+            name = 'Inflow of SenD', 
             start_delay = 0, 
             derivation_distribution = 'NORM',
             derivation_parameters = '1000, 250',
@@ -305,8 +311,8 @@ class Command(BaseCommand):
         
         # fixed stochastic inflows representing the inflows of StD (devices) into the first stage use compartment
         si_1 = stochastic_function_inflow(
+            model=iot_model,
             external_list_inflow = import_of_send_inflow,
-            current_value = 0,
             period = 1,
             pdf = 'NORM',
             parameter_values = '1000, 250')
@@ -314,8 +320,8 @@ class Command(BaseCommand):
         si_1.save()
         
         si_2 = stochastic_function_inflow(
+            model=iot_model,
             external_list_inflow = import_of_send_inflow,
-            current_value = 0,
             period = 2,
             pdf = 'NORM',
             parameter_values = '1000, 250')
@@ -323,8 +329,8 @@ class Command(BaseCommand):
         si_2.save()
         
         si_3 = stochastic_function_inflow(
+            model=iot_model,
             external_list_inflow = import_of_send_inflow,
-            current_value = 0,
             period = 3,
             pdf = 'NORM',
             parameter_values = '1000, 250')
@@ -332,8 +338,8 @@ class Command(BaseCommand):
         si_3.save()
         
         si_4 = stochastic_function_inflow(
+            model=iot_model,
             external_list_inflow = import_of_send_inflow,
-            current_value = 0,
             period = 4,
             pdf = 'NORM',
             parameter_values = '1000, 250')
@@ -341,8 +347,8 @@ class Command(BaseCommand):
         si_4.save()
         
         si_5 = stochastic_function_inflow(
+            model=iot_model,
             external_list_inflow = import_of_send_inflow,
-            current_value = 0,
             period = 5,
             pdf = 'NORM',
             parameter_values = '1000, 250')
@@ -350,8 +356,8 @@ class Command(BaseCommand):
         si_5.save()
         
         si_6 = stochastic_function_inflow(
+            model=iot_model,
             external_list_inflow = import_of_send_inflow,
-            current_value = 0,
             period = 6,
             pdf = 'NORM',
             parameter_values = '1000, 250')
@@ -359,8 +365,8 @@ class Command(BaseCommand):
         si_6.save()
         
         si_7 = stochastic_function_inflow(
+            model=iot_model,
             external_list_inflow = import_of_send_inflow,
-            current_value = 0,
             period = 7,
             pdf = 'NORM',
             parameter_values = '1000, 250')
@@ -370,8 +376,8 @@ class Command(BaseCommand):
         
         # fixed value inflow
         fvif_for_efi = fixed_value_inflow(
+            model=iot_model,
             external_list_inflow = None,
-            current_value = 0,
             period = 1,
             value = 100)
         
@@ -380,8 +386,9 @@ class Command(BaseCommand):
         
         # creation of the external function inflow of StD (devices) into the first stage use compartment
         import_of_std_inflow = external_function_inflow(
+            model=iot_model,
             target=first_stage_use_compartment, 
-            name='External function inflow of SenD to first stage use compartment', 
+            name='Inflow of SenD', 
             start_delay=0, 
             derivation_distribution='NORM', 
             derivation_factor=1.0, 
@@ -400,9 +407,10 @@ class Command(BaseCommand):
 
         # material transfer from first stage flow compartment to frist stage disposal, first stage recycling and second stage use
         stochastic_transfer_for_first_stage_flow_compartment = stochastic_transfer(
+            model=iot_model,
             target = second_stage_use_compartment,
             source_flow_compartment = first_stage_flow_compartment,
-            name = 'Stochastic transfer from first stage flow compartment to second stage use compartment', 
+            name = 'ST: FSFC -> SSUC', 
             priority = 3, 
             parameters = '1000, 250',
             function='NORM')
@@ -410,18 +418,20 @@ class Command(BaseCommand):
         stochastic_transfer_for_first_stage_flow_compartment.save()
         
         random_choice_transfer_for_first_stage_flow_compartment = random_choice_transfer(
+            model=iot_model,
             target=first_stage_recycling_compartment, 
             source_flow_compartment = first_stage_flow_compartment,
-            name='Random choice transfer from first stage flow compartment to first stage recycling compartment',
+            name='RCT: FSFC -> FSRC',
             priority=2, 
             sample='0.3, 0.4, 0.5')
         
         random_choice_transfer_for_first_stage_flow_compartment.save()
         
         const_transfer_for_first_stage_flow_compartment = constant_transfer(
+            model=iot_model,
             target=first_stage_disposal_compartment, 
             source_flow_compartment = first_stage_flow_compartment,
-            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            name='CT: FSFC -> FSDC', 
             priority=1, 
             value=1)
         
@@ -429,9 +439,10 @@ class Command(BaseCommand):
         
         # material transfer from second stage flow compartment to second stage disposal and third stage use
         stochastic_transfer_for_second_stage_flow_compartment = stochastic_transfer(
+            model=iot_model,
             target=third_stage_use_compartment,
             source_flow_compartment = second_stage_flow_compartment,
-            name='Stochastic transfer from second stage flow compartment to third stage use compartment', 
+            name='ST: SSFC -> TSUC', 
             priority=2, 
             parameters = '1000, 250',
             function='NORM')
@@ -439,9 +450,10 @@ class Command(BaseCommand):
         stochastic_transfer_for_second_stage_flow_compartment.save()
         
         const_transfer_for_second_stage_flow_compartment = constant_transfer(
+            model=iot_model,
             target=second_stage_disposal_compartment,
             source_flow_compartment = second_stage_flow_compartment,
-            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            name='CT: SSFC -> SSDC', 
             priority=1, 
             value=1)
         
@@ -449,9 +461,10 @@ class Command(BaseCommand):
         
         # material transfer from third stage flow compartment to third stage disposal and export
         stochastic_transfer_for_third_stage_flow_compartment = stochastic_transfer(
+            model=iot_model,
             target=third_stage_export_compartment, 
             source_flow_compartment = third_stage_flow_compartment,
-            name='Stochastic transfer from third stage flow compartment to third export compartment', 
+            name='ST: TSFC -> TSEC', 
             priority=2, 
             parameters = '1000, 250',
             function='NORM')
@@ -459,9 +472,10 @@ class Command(BaseCommand):
         stochastic_transfer_for_third_stage_flow_compartment.save()
         
         const_transfer_for_third_stage_flow_compartment = constant_transfer(
+            model=iot_model,
             target=third_stage_disposal_compartment, 
             source_flow_compartment = third_stage_flow_compartment,
-            name='Stochastic transfer from third stage flow compartment to third stage disposal compartment', 
+            name='CT: TSFC -> TSDC', 
             priority=1, 
             value=1)
         
@@ -469,9 +483,10 @@ class Command(BaseCommand):
         
         # total release from First Stage Use Compartment in transferred to First Stage Flow Compartment
         transfer_for_first_stage_use_compartment = constant_transfer(
+            model=iot_model,
             target=first_stage_flow_compartment,
             source_flow_compartment = first_stage_use_compartment, 
-            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            name='CT: FSUC -> FSFC', 
             priority=1, 
             value=1)
         
@@ -479,9 +494,10 @@ class Command(BaseCommand):
         
         # total release from First Recycling Use Compartment in transferred to First Stage Flow Compartment
         transfer_for_first_stage_use_recycling = constant_transfer(
+            model=iot_model,
             target=second_stage_flow_compartment, 
             source_flow_compartment = first_stage_recycling_compartment, 
-            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            name='CT: FSRC -> SSFC', 
             priority=1, 
             value=1)
         
@@ -489,9 +505,10 @@ class Command(BaseCommand):
         
         # total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
         transfer_for_second_stage_use_compartment = constant_transfer(
+            model=iot_model,
             target=second_stage_flow_compartment, 
             source_flow_compartment = second_stage_use_compartment,
-            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            name='CT: SSUC -> SSFC', 
             priority=1, 
             value=1)
         
@@ -499,9 +516,10 @@ class Command(BaseCommand):
         
         # total release from Second Stage Use Compartment in transferred to Second Stage Flow Compartment
         transfer_for_third_stage_use_compartment = constant_transfer(
+            model=iot_model,
             target=third_stage_flow_compartment, 
             source_flow_compartment = third_stage_use_compartment,
-            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            name='CT: TSUC -> TSFC', 
             priority=1, 
             value=1)
         
@@ -547,7 +565,7 @@ class Command(BaseCommand):
         transfer_for_aggregated_transfer = constant_transfer(
             target=None, # because otherwise it will be considered by model converter
             belongs_to_aggregated_transfer=aggregated_transfer_for_conversion,  
-            name='Stochastic transfer from first stage flow compartment to first stage disposal compartment', 
+            name='CT', 
             priority=1, 
             value=1)
          

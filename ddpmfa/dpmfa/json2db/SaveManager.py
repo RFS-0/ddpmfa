@@ -319,7 +319,7 @@ class SaveManager(object):
     
     def __init__(self, jsonModel, model_pk):
         self.jsonModel = jsonModel
-        self.MODEL_DB = self.getDBModel(model_pk) 
+        self.MODEL_DB = self.recreateDBModel(model_pk) 
         
         self.nodes = self.jsonModel['nodes']
         self.connections = self.jsonModel['connections']
@@ -340,8 +340,26 @@ class SaveManager(object):
         self.createDBEntitiesRandomChoiceTransfers()
         self.createDBEntitiesStochasticTransfers()
         
-    def getDBModel(self, model_pk):
-        return django_models.model.objects.get(pk=model_pk)
+    def recreateDBModel(self, model_pk):
+        old_model = django_models.model.objects.get(pk=model_pk)
+        
+        pk = old_model.pk
+        project = old_model.project
+        name = old_model.name
+        description = old_model.description
+        
+        old_model.delete()
+        
+        new_model = django_models.model(
+            pk = pk,
+            project = project,
+            name = name,
+            description = description)
+        
+        new_model.save()
+        
+        return new_model
+        
            
     def separateNodes(self):
         for node in self.nodes:
@@ -395,18 +413,23 @@ class SaveManager(object):
         for primaryKey, externalListInflow in getExternalListInflows().items():
             self.attributes = {}
             
-            self.extractAttributesExternalListInflow(externalListInflow)
-            external_list_inflow = django_models.external_list_inflow(
-                target=self.getAttributeOrNone('target'),
-                name=self.getAttributeOrNone('name'),
-                start_delay=self.getAttributeOrNone('start_delay'),
-                derivation_distribution=self.getAttributeOrNone('derivation_distribution'),
-                derivation_parameters=self.getAttributeOrNone('derivation_parameters'),
-                derivation_factor=self.getAttributeOrNone('derivation_factor'),
-                x=self.getAttributeOrNone('x'),
-                y=self.getAttributeOrNone('y')
-                )
+            external_list_inflow = django_models.external_list_inflow()
             external_list_inflow.save()
+            
+            self.extractAttributesExternalListInflow(externalListInflow, external_list_inflow)
+            
+            external_list_inflow.model = self.MODEL_DB
+            external_list_inflow.target = self.getAttributeOrNone('target')
+            external_list_inflow.name = self.getAttributeOrNone('name')
+            external_list_inflow.start_delay = self.getAttributeOrNone('start_delay')
+            external_list_inflow.derivation_distribution = self.getAttributeOrNone('derivation_distribution')
+            external_list_inflow.derivation_parameters = self.getAttributeOrNone('derivation_parameters')
+            external_list_inflow.derivation_factor = self.getAttributeOrNone('derivation_factor')
+            external_list_inflow.x = self.getAttributeOrNone('x')
+            external_list_inflow.y = self.getAttributeOrNone('y')
+                
+            external_list_inflow.save()
+            
             addDBEntityExternalListInflow(primaryKey, external_list_inflow)
             addDBEntityExternalInflow(primaryKey, external_list_inflow)
 
@@ -419,6 +442,7 @@ class SaveManager(object):
             
             self.extractAttributesExternalFunctionInflow(externalFunctionInflow, external_function_inflow)
             
+            external_function_inflow.model = self.MODEL_DB
             external_function_inflow.target = self.getAttributeOrNone('target')
             external_function_inflow.name = self.getAttributeOrNone('name')
             external_function_inflow.start_delay = self.getAttributeOrNone('start_delay')
@@ -507,7 +531,7 @@ class SaveManager(object):
             addDBEntityStock(primaryKey, stock_db)
             addDBEntityCompartment(primaryKey, stock_db)
 
-    def extractAttributesExternalListInflow(self, externalListInflow):
+    def extractAttributesExternalListInflow(self, externalListInflow, external_list_inflow):
         for field in externalListInflow['fields']:
             if field['propName'] == 'target':
                 self.attributes['target'] = field['valueData']
@@ -525,6 +549,21 @@ class SaveManager(object):
                 self.attributes['derivation_parameters'] = ",".join(params)
             elif field['propName'] == 'derivationFactor':
                 self.attributes['derivation_factor'] = field['valueData']
+            elif field['propName'] == 'singlePeriodInflows':
+                singlePeriodInflows = field['valueData']
+                index = 0
+                for singlePeriodInflow in singlePeriodInflows:
+                    data = field['valueData'][index]
+                    type = data['type'] 
+                    if type == 'fixedValueInflow':
+                        self.createFixedValueInflow(data, external_list_inflow)
+                    elif type == 'stochasticFunctionInflow':
+                        self.createStochasticInflow(data, external_list_inflow)
+                    elif type == 'randomChoiceInflow':
+                        self.createRandomChoiceInflow(data, external_list_inflow)
+                    else:
+                        print("Could not set basic inflow of external function inflow")
+                    index += 1
         
         for key, value in externalListInflow['position'].items():
             if key == 'x':
@@ -555,11 +594,11 @@ class SaveManager(object):
                 data = field['valueData'][0]
                 type = data['type'] 
                 if type == 'fixedValueInflow':
-                    self.attributes['basic_inflow'] = self.createFixedValueInflow(data, external_function_inflow)
+                    self.attributes['basic_inflow'] = self.createFixedValueInflow(data, None)
                 elif type == 'stochasticFunctionInflow':
-                    self.attributes['basic_inflow'] = self.createStochasticInflow(data, external_function_inflow)
+                    self.attributes['basic_inflow'] = self.createStochasticInflow(data, None)
                 elif type == 'randomChoiceInflow':
-                    self.attributes['basic_inflow'] = self.createRandomChoiceInflow(data, external_function_inflow)
+                    self.attributes['basic_inflow'] = self.createRandomChoiceInflow(data, None)
                 else:
                     print("Could not set basic inflow of external function inflow")
                 
@@ -629,6 +668,7 @@ class SaveManager(object):
                 categories = []
                 for dictionary in dictionaries:
                     categories.append(dictionary['fields'][0]['valueData'])
+                print(str(categories))
                 self.attributes['categories'] = ",".join(categories)
             elif field['propName'] == 'adjustOutgoingTcs':
                 self.attributes['adjust_outgoing_tcs'] = field['valueData']
@@ -655,6 +695,7 @@ class SaveManager(object):
     
     def createFixedRateRelease(self, fixedRateRelease):
         fixed_rate_release = django_models.fixed_rate_release(
+            model = self.MODEL_DB,
             name = fixedRateRelease['fields'][0]['valueData'],
             delay = fixedRateRelease['fields'][1]['valueData'],
             release_rate = fixedRateRelease['fields'][2]['valueData']
@@ -669,9 +710,9 @@ class SaveManager(object):
         tempItems = []
         for dictionary in items:
             tempItems.append(dictionary['fields'][0]['valueData'])
-        print("tempItems: ")
-        print(tempItems)
+        
         list_release = django_models.list_release(
+            model = self.MODEL_DB,
             name = listRelease['fields'][0]['valueData'],
             delay = listRelease['fields'][1]['valueData'],
             release_rate_list = ",".join(tempItems)
@@ -691,6 +732,7 @@ class SaveManager(object):
             parameterValues.append(dictionary['valueData'])
         
         function_release = django_models.function_release(
+            model = self.MODEL_DB,
             name = functionRelease['fields'][0]['valueData'],
             delay = functionRelease['fields'][1]['valueData'],
             release_function = self.getFunction(type),
@@ -701,9 +743,10 @@ class SaveManager(object):
         
         return function_release
         
-    def createFixedValueInflow(self, fixedValueInflow, external_function_inflow):
+    def createFixedValueInflow(self, fixedValueInflow, external_list_inflow):
         fixed_value_inflow = django_models.fixed_value_inflow(
-            external_list_inflow = external_function_inflow,
+            model = self.MODEL_DB,
+            external_list_inflow = external_list_inflow,
             current_value = 0,
             period = 0,
             value = fixedValueInflow['fields'][0]['valueData']
@@ -725,6 +768,7 @@ class SaveManager(object):
         pdf = self.getDerivationDistribution(type)
         
         stochastic_function_inflow = django_models.stochastic_function_inflow(
+            model = self.MODEL_DB,
             external_list_inflow = external_function_inflow,
             current_value = 0,
             period = 0,
@@ -745,6 +789,7 @@ class SaveManager(object):
             for innerField in innerFields:
                 samples.append(innerField['valueData'])
         random_choice_inflow = django_models.random_choice_inflow(
+            model = self.MODEL_DB,
             external_list_inflow = external_function_inflow,
             current_value = 0,
             period = 0,
@@ -774,9 +819,10 @@ class SaveManager(object):
         for primaryKey, constantTransfer in getConstantTransfers().items():
             self.attributes = {}
             
-            self.extractAttributesConstantTransfer()
+            self.extractAttributesConstantTransfer(constantTransfer)
             
             constant_transfer_db = django_models.constant_transfer(
+                model = self.MODEL_DB,
                 target = self.getAttributeOrNone('target'),
                 source_flow_compartment = self.getAttributeOrNone('source_flow_compartment'),
                 belongs_to_aggregated_transfer = None,
@@ -796,6 +842,7 @@ class SaveManager(object):
             self.extractAttributesRandomChoiceTranfers(randomChoiceTransfer)
             
             random_choice_transfer_db = django_models.random_choice_transfer(
+                model = self.MODEL_DB,
                 target = self.getAttributeOrNone('target'),
                 source_flow_compartment = self.getAttributeOrNone('source_flow_compartment'),
                 belongs_to_aggregated_transfer = None,
@@ -815,7 +862,8 @@ class SaveManager(object):
             self.extractAttributesStochasticTransfers(stochasticTransfer)
             
             stochastic_transfer_db = django_models.stochastic_transfer(
-                target = self.getAttributeOrNone('key'),
+                model = self.MODEL_DB,
+                target = self.getAttributeOrNone('target'),
                 source_flow_compartment = self.getAttributeOrNone('source_flow_compartment'),
                 belongs_to_aggregated_transfer = None,
                 name = self.getAttributeOrNone('name'),
@@ -857,19 +905,20 @@ class SaveManager(object):
             elif field['propName'] == 'priority':
                 self.attributes['priority'] = field['valueData']
             elif field['propName'] == 'sample':
-                data = field['valueData'][0]
+                
+                data = field['valueData']
+                
                 samples = []
-                for dictonary in data:
-                    innerFields = dictonary['fields']
-                    for innerField in innerFields:
-                        samples.append(innerField['valueData'])
+                for dictionary in data:
+                    samples.append(dictionary['fields'][0]['valueData'])
+
                 self.attributes['sample'] = ",".join(samples)
-        
-        sourceNode = constantTransfer['sourceNode']
-        targetNode = constantTransfer['targetNode']
+                
+        sourceNode = randomChoiceTransfer['sourceNode']
+        targetNode = randomChoiceTransfer['targetNode']
         
         pkSourceNode = self.getPkOfInflowTarget(sourceNode)
-        pkTargetNode = self.   getPkOfInflowTarget(targetNode)
+        pkTargetNode = self.getPkOfInflowTarget(targetNode)
         
         sourceCompartment = getDBEntityCompartment(pkSourceNode)
         targetCompartment = getDBEntityCompartment(pkTargetNode)
@@ -885,7 +934,6 @@ class SaveManager(object):
                 self.attributes['priority'] = field['valueData']
             elif field['propName'] == 'distributionFunction':
                 distribution = field['valueData'][0]
-                pprint.pprint(distribution)
 
                 innerFields = distribution['fields']
                 
@@ -895,7 +943,20 @@ class SaveManager(object):
                 parameterValues = []
                 for dictionary in innerFields:
                     parameterValues.append(dictionary['valueData'])
+                
                 self.attributes['parameters'] = ",".join(parameterValues)
+        
+        sourceNode = stochasticTransfer['sourceNode']
+        targetNode = stochasticTransfer['targetNode']
+        
+        pkSourceNode = self.getPkOfInflowTarget(sourceNode)
+        pkTargetNode = self.getPkOfInflowTarget(targetNode)
+        
+        sourceCompartment = getDBEntityCompartment(pkSourceNode)
+        targetCompartment = getDBEntityCompartment(pkTargetNode)
+        
+        self.attributes['source_flow_compartment'] = sourceCompartment
+        self.attributes['target'] = targetCompartment
             
     def getPkOfInflowTarget(self, node):
         pk = ""

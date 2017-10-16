@@ -61,85 +61,13 @@ class model(models.Model):
         return self.name + ' (' + str(self.pk) + ')'
 
 class model_instance(model):
-
+ 
     prototype_model = models.ForeignKey(
         to= 'model',
         related_name='model_instances',
         verbose_name='prototype',
         null=True,
-        on_delete=models.CASCADE)
-    
-#==============================================================================
-#  Model Designer
-#==============================================================================
-    
-class model_designer(models.Model):
-    
-    model = models.OneToOneField(
-        to=model, 
-        related_name='model_desinger', 
-        on_delete=models.CASCADE,
-        null=True)
-    
-    
-    designer_configuration = JSONField()
-    
-    evt_created = models.DateTimeField(
-        'Date created', 
-        auto_now_add=True)
-    
-    evt_changed = models.DateTimeField(
-        verbose_name='Time of last change',
-         auto_now=True)
-    
-    def __str__(self):
-        return self.name + ' (' + self.pk + ')'
-    
-    def get_absolute_url(self):
-        return reverse('dpmfa:designer-update', args=[self.id])
-    
-#==============================================================================
-#  Model Parameters
-#==============================================================================
-
-class model_parameters(models.Model):
-    
-    NOT_DEFINED =  'ND'
-    NEW = 'NW'
-    TO_BE_CONFIGURED = 'TC'
-    VALID = 'VA'
-    
-    STATUS_VARIABLES = (
-        (NOT_DEFINED, 'Not defined yet'),
-        (NEW, 'New'),
-        (TO_BE_CONFIGURED, 'To be configured'),
-        (VALID, 'Valid'),
-    )
-    
-    model = models.OneToOneField(
-        to=model, 
-        related_name='model_parameters', 
-        on_delete=models.CASCADE,
-        null=True)
-    
-    
-    status = models.CharField(
-        max_length=2,
-        choices=STATUS_VARIABLES,
-        default=NOT_DEFINED,
-        null=True
-        )
-    
-    evt_created = models.DateTimeField(
-        'Date created', 
-        auto_now_add=True)
-    
-    evt_changed = models.DateTimeField(
-        verbose_name='Time of last change',
-         auto_now=True)
-    
-    def __str__(self):
-        return self.name + ' (' + self.pk + ')'
+        on_delete=models.DO_NOTHING)
     
 #==============================================================================
 #  Compartment
@@ -579,13 +507,19 @@ class external_function_inflow(external_inflow):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return str(self.pk)
     
 #==============================================================================
 #  Single Period Inflow
 #==============================================================================  
 
 class single_period_inflow(models.Model):
+    
+    model = models.ForeignKey(
+        to='model', 
+        related_name='sinlge_period_inflows', 
+        null=True, 
+        on_delete=models.CASCADE)
     
     external_list_inflow = models.ForeignKey(
         to='external_list_inflow', 
@@ -760,14 +694,15 @@ class result(models.Model):
         to = 'model_instance',
         related_name = 'results',
         verbose_name = 'Results',
-        on_delete = models.CASCADE,
+        on_delete = models.DO_NOTHING,
         null = True
         )
     
     experiment = models.ForeignKey(
         to = 'experiment',
         related_name = 'results',
-        null = True
+        null = True,
+        on_delete = models.DO_NOTHING
         )
     
     FLOW_COMPARTEMENT = 'FLOW_COMPARTMENT'

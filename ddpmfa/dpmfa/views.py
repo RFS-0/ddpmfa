@@ -626,28 +626,6 @@ class ModelDesignerSaveView(generic.View):
             'tempId123': 'persistentId456',
             'tempId678': 'persistentId999'
         })
-        
-
-
-#==============================================================================
-#  Model Parameters
-#==============================================================================
-
-class ParametersDetailView(generic.DetailView):
-    model = models.model_parameters
-    
-    fields = [
-        'model',
-        'status'
-        ]
-
-class ParameterRedirectView(generic.RedirectView):
-    model = models.model_parameters
-    
-    fields = [
-        'model',
-        'status'
-        ]
     
 #==============================================================================
 #  Compartment

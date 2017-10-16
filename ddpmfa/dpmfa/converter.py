@@ -1033,19 +1033,13 @@ class ExperimentConverter(object):
         self.runs = db_experiment.runs
         self.periods = db_experiment.periods
 
-        # create the model
-        print("Creating model...")
         self.model_instance_converter = ModelInstanceConverter(self.model_instance)
         
-        # create the simulator
-        print("Creating simulation...")
         self.simulator_dpmfa = package_simulator.Simulator(
             runs = self.runs,
             periods = self.periods,
             )
 
-        # set up the simulator
-        print("Setting up the simulation...")
         self.getSimulatorAsDpmfaEntity().setModel(self.getModelInstanceConverter().getModelInstanceAsDpmfaEntity())
             
     def getSimulatorAsDpmfaEntity(self):
