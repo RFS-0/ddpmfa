@@ -610,7 +610,7 @@ class experiment(models.Model):
     prototype_model = models.ForeignKey(
         to='model',
         related_name='experiments',
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         null=True)
     
     model_instance = models.OneToOneField(

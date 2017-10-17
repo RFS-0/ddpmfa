@@ -4,10 +4,77 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
+
+
+
+
 <div class="container">
+	<div id="toc_container">
+		<p class="toc_title">Contents</p>
+		<ul class="toc_list"">
+			  <li><a href="#project">Project</a>
+			  <li><a href="#model">Model</a>
+			  <li><a href="#model-designer">Model designer</a>
+				  <ul>
+					    <li><a href="#uml-diagram">UML Diagram</a></li>
+				  </ul>
+			  <li><a href="#external-inflows">External inflow</a>
+				  <ul>
+					<li><a href="#external-list-inflow">External list inflow</a></li>
+					    	<ul>
+								<li><a href="#eli-target">Target</a></li>
+								<li><a href="#eli-name">Name</a></li>
+								<li><a href="#eli-start-delay">Start delay</a></li>
+								<li><a href="#eli-derivation-distribution">Derivation distribution</a></li>
+								<li><a href="#eli-derivation-parameters">Derivation parameters</a></li>
+								<li><a href="#eli-derivation-factor">Derivation factor</a></li>
+								<li><a href="#eli-single-period-inflows">Sinlge period inflows</a></li>
+							</ul> 
+					<li><a href="#external-function-inflow">External function inflow</a></li>
+					    <ul>
+								<li><a href="#efi-target">Target</a></li>
+								<li><a href="#efi-name">Name</a></li>
+								<li><a href="#efi-basic-inflow">Basic inflow</a></li>
+								<li><a href="#efi-inflow-function">Inflow function</a></li>
+								<li><a href="#efi-derivation-distribution">Derivation distribution</a></li>
+								<li><a href="#efi-derivation-parameters">Derivation parameters</a></li>
+								<li><a href="#efi-start-delay">Start delay</a></li>
+						</ul> 
+				 </ul>
+				<li><a href="#single-period-inflow">Single period inflow</a></li>
+			    	<ul>
+						<li><a href="#spi-fixed-value-inflow">Fixed value inflow</a></li>
+							<ul>
+								<li><a href="#spi-value">Value</a></li>
+							</ul>
+						<li><a href="#spi-stochastic-inflow">Stochastic inflow</a></li>
+							<ul>
+								<li><a href="#spi-probability-distribution">Probability distribution function</a></li>
+								<li><a href="#spi-probability-distribution-parameters">Probability distribution function parameters</a></li>
+							</ul>
+						
+						<li><a href="#spi-random-choice-inflow">Random choice inflow</a></li>
+					</ul> 
+				<li><a href="#compartment">Compartment</a></li>
+			    	<ul>
+						<li><a href="#flow-compartment">Flow compartment</a></li>
+						<li><a href="#stock">Stock</a></li>
+						<li><a href="#sink">Sink</a></li>
+					</ul> 
+				<li><a href="#transfer">Transfer</a></li>
+			    	<ul>
+						<li><a href="#constant-transfer">Constant transfer</a></li>
+						<li><a href="#random-choice-transfer">Random choice transfer</a></li>
+						<li><a href="#stochastic-transfer">Stochastic transfer</a></li>
+						<li><a href="#aggregated-transfer">Aggregated transfer</a></li>
+					</ul> 
+			</li>
+		</ul>
+	</div>
+
 	<h1 id="project">Project</h1>
-		<p>A <a href="{% url 'dpmfa:project-list' %}">project</a> is a container where you can organize all information of a specific project. 
-		In particluar it contains all the models of a project. Before you can create and configure a model you have to create a project</p>
+		<p>A is a container where you can organize all information of a specific project. 
+		In particluar it contains all the <a href="#model">models</a> of a project. Before you can create and configure a model you have to create a project</p>
 	
 	<h1 id="model">Model</h1>
 		<p>The model is the most important entity. Once you have created a project you can create a new model. The configuration of a model is
@@ -45,10 +112,10 @@
 				<li>Stochastic transfer</li>
 				<li>Aggregated transfer</li>
 			</ul>
-		<p>If you are familiar with UML class diagrams, the you might find the following diagram helpful as an overview:</p>
+		<p id="uml-diagram">If you are familiar with UML class diagrams, the you might find the following diagram helpful as an overview:</p>
 			<img src="{% static 'dpmfa/img/uml_diagram.png' %}" style="width:80%;height:10%;">
 	
-	<h1 id="external-inflows">External inflows</h1>
+	<h1 id="external-inflows">External inflow</h1>
 	
 		<p>External inflows are used to model inflow of material into the system. Ther are two distinct types of external inflows:</p>
 		<ul>
@@ -110,7 +177,7 @@
 						<li>Stochastic inflow</li>
 						<li>Random choice inflow</li>
 					</ul>
-				<p>Please refert to single period inflow for more details.</p>
+				<p>Please refer to single period inflow for more details.</p>
 				
 		<h2 id="external-function-inflow">External function inflow</h2>
 			<p>The external function inflow lets you define the inflow to the system as a function. For this you have to provide a basic inflow i.e.
@@ -118,6 +185,7 @@
 			<p>In particular you can edit the following parameters for each external list inflow:</p>
 				<ul>
 					<li>Target</li>
+					<li>Name</li>
 					<li>Basic inflow</li>
 					<li>Inflow function</li>
 					<li>Derivation distribution</li>
@@ -128,6 +196,9 @@
 			<h3 id="efi-target">Target</h3>
 				<p>The target represents the compartment (i.e. Flow compartment, sink or stock) the material flows to. You can specify
 				only one targe for each external list inflow. Please refer to the quick reference to see how you can specify a target.</p>
+				
+			<h3 id="efi-name">Name</h3>
+				<p>The name of the external list inflow.</p>
 			
 			<h3 id="efi-basic-inflow">Basic inflow</h3>
 				<p>The basic inflow represents the initial inflow to the system. It is only used in the first period of the simualton. 
@@ -136,10 +207,152 @@
 				that represents the amount material	that flows into the system.</p>
 					
 			<h3 id="efi-inflow-function">Inflow function</h3>
-				<p>returns a material amount as inflow for a specific period; gets basic value and period number as input. If no input
-				function is defined, the basic value is used for all periods.
+				<p>The inflow function returns a material amount as inflow for a specific period. The inputs to this function are a basic value 
+				and the current period number. If no input function is defined, the basic value is used for all periods.
+				
+				<p>In particular you can choose between the following inflow function:</p>
+					<ul>
+						<li>Linear function</li>
+					</ul>
+				
+			<h3 id="efi-derivation-distribution">Derivation distribution</h3>
+				<p>The derivation distribution is a probability distribution (from scipy.stats) that is used 
+				to represent uncertain knowledge about the true value of the model inflows. The derivation
+				is calculated once per simulation run and applied to the whole inflow list</p>
+				
+				<p>In particular you can choose between the following probability distributions:</p>
+					<ul>
+						<li>Normal distribution</li>
+						<li>Geometric distribution</li>
+						<li>Binomial distribution</li>
+						<li>Exponential distribution</li>
+						<li>Triangular distribution</li>
+						<li>Uniform distributio</li>
+						<li>Gamma distribution</li>
+						<li>Pareto distribution</li>
+						<li>Poisson distribution</li>
+						<li>Chisquare distribution</li>
+					</ul>
 			
+			<h3 id="efi-derivation-parameters">Derivation parameters</h3>
+				<p>The derivation parameters represent the input values needed to specify the choosen probability distribution (e.g. for
+				a normal distribution: mean, variance).</p>
+				
+			<h3 id="efi-start-delay">Start delay</h3>
+				<p>The start delay represents a time lage between the simulation start and the first release from the source</p>
+			
+	<h1 id="single-period-inflow">Single period inflow</h1>
+		<p>A single inflow represents the inflow of material to the model in one single period. You can not acctually add a single period inflow
+		to the model since this is an abstract concept that represents the different kinds of inflows you can add to the model. These are in particular:</p>
+		<ul>
+			<li>Fixed value inflow</li>
+			<li>Stochastic inflow</li>
+			<li>Random choice inflow</li>
+		</ul>
+			
+			<h2 id="spi-fixed-value-inflow">Fixed value inflow</h2>
+				<p>The fixed value inflow represents an inflow amount to a compartment for one specific period.This kind of inflow is used to represent certainty
+				about the true value of this inflow. The fixed value inflow has one parameter:</p>
+			<ul>
+				<li>Value</li>
+			</ul>
+			
+			<h3 id="spi-value">Value</h3>
+				<p>The value represents the inflow value</p>
+					
+			<h2 id="spi-stochastic-inflow">Stochastic inflow</h2>
+				<p>A stochastic inflow represents an inflow to a compartment of one period. This kind of inflow
+				is used to represent uncertainty about the true value of this inflow. The uncertainty is modeled by
+				a probability distribution function. The stochastic inflow has the following parameters:</p>
+				
+				<ul>
+					<li>Probability distribution</li>
+					<li>Probability distribution parameters</li>
+				</ul>
+				
+			<h3 id="spi-probability-distribution">Probability distribution</h3>
+				<p>Probability distribution to represent uncertain knowledge about the true value of the inflow</p>
+				
+				<p>In particular you can choose between the following distributions:</p>
+				
+				<ul>
+					<li>Normal distribution</li>
+					<li>Geometric distribution</li>
+					<li>Binomial distribution</li>
+					<li>Exponential distribution</li>
+					<li>Triangular distribution</li>
+					<li>Uniform distributio</li>
+					<li>Gamma distribution</li>
+					<li>Pareto distribution</li>
+					<li>Poisson distribution</li>
+					<li>Chisquare distribution</li>
+				</ul>
+			
+			<h3 id="spi-probability-distribution-parameters">Probability distribution parameters</h3>
+				<p>Parameter list of the distribution function.</p>
 		
+		<h2 id="spi-random-choice-inflow">Random choice inflow</h2>
+			<p>A random choice inflow represents an inflow to a compartment of one period. This kind of inflow
+			is used to represent uncertainty about the true value of this inflow. The uncertainty is modeled
+			as a sample representing the assumptions about the true value. For each run one element of the sample
+			is randomly drawn and used as inflow for the current period.
+			</p>
+			
+	<h1 id="compartment">Compartment</h1>
+		<p>A compartment is a distinct area of the investigated system. Depending on the scientific question to be 
+		aswered with the model a compartment can be an environmental media, a geographic region or a logical partition
+		in the fate of a material</p>
+		
+		<p>You can not acctually add a compartment to the model since this is an abstract concept that represents the different 
+		kinds of compartments you can add to the model. These are in particular:</p>
+		
+		<ul>
+			<li>Flow Compartment</li>
+			<li>Stock</li>
+			<li>Sink</li>
+		</ul>
+		
+		<h2 id="flow-compartment">Flow compartment</h2>
+			<p>A flow compartment represents a system compartment without residence time of observed material. 
+			The further transfer of material to subsequent compartments is defined using Transfer objects. 
+			</p>
+			
+			<p>In particular you can choose between the following transfers:</p>
+			
+				<ul>
+					<li>Constant transfer</li>
+					<li>Random choice transfer</li>
+					<li>Stochastic transfer</li>
+					<li>Aggregated transfer</li>
+				</ul>
+				
+			<p>Please refer to the transfer section for more details</p>
+			
+		<h2 id="stock">Stock</h2>
+			<p>A Stock is a Compartment that accumulates material like sinks do, but it also releases a part of
+			the stored material in later periods. You can specify the material release by configuring a local release. 
+			</p>
+			
+			<p>In particular you can configure the following different types of release:</p>
+			
+				<ul>
+					<li>Fixed rate release</li>
+					<li>List release</li>
+					<li>Function release</li>
+				</ul>
+			
+			<h3 id="fixed-rate-release">Fixed rate release</h3>
+				<p> 
+				</p>
+				
+		<h2 id="sink">Stock</h2>
+			
+	<h1 id="transfer">Transfer</h1>
+		<h2 id="constant-transfer">Constant transfer</h2>
+		<h2 id="random-choice-transfer">Random choice transfer</h2>
+		<h2 id="stochastic-transfer">Stochastic transfer</h2>
+		<h2 id="aggregated-transfer">Aggregated transfer</h2>
+			
 </div>
 
 {% endblock %}
