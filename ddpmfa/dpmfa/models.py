@@ -16,16 +16,16 @@ from django.db.models.fields.related import OneToOneField
 class project(models.Model):
     
     name = models.CharField(
-        verbose_name='Name', 
-        max_length=250, 
-        null=True)
+        verbose_name = 'Name', 
+        max_length = 250, 
+        null = True)
     
     description = models.TextField(
-        verbose_name='Description', 
-        null=True)
+        verbose_name = 'Description', 
+        null = True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
 #==============================================================================
 #  Model
@@ -34,40 +34,40 @@ class project(models.Model):
 class model(models.Model):
 
     project = models.ForeignKey(
-        to='project', 
-        related_name='models', 
-        verbose_name='project', 
-        on_delete=models.CASCADE)
+        to = 'project', 
+        related_name = 'models', 
+        verbose_name = 'project', 
+        on_delete = models.CASCADE)
     
     
     name = models.CharField(
-        verbose_name='Name',
-        max_length=250, 
-        null=True)
+        verbose_name = 'Name',
+        max_length = 250, 
+        null = True)
     
     description = models.TextField(
-        verbose_name='Description', 
-        null=True)
+        verbose_name = 'Description', 
+        null = True)
     
     evt_created = models.DateTimeField(
-        'Date created', 
-        auto_now_add=True)
+        verbose_name = 'Date created', 
+        auto_now_add = True)
     
     evt_changed = models.DateTimeField(
-        verbose_name='Time of last change',
-         auto_now=True)
+        verbose_name = 'Time of last change',
+        auto_now = True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
 
 class model_instance(model):
  
     prototype_model = models.ForeignKey(
-        to= 'model',
-        related_name='model_instances',
-        verbose_name='prototype',
+        to = 'model',
+        related_name = 'model_instances',
+        verbose_name = 'prototype',
         null=True,
-        on_delete=models.DO_NOTHING)
+        on_delete = models.DO_NOTHING)
     
 #==============================================================================
 #  Compartment
@@ -76,49 +76,49 @@ class model_instance(model):
 class compartment(models.Model):
     
     model = models.ForeignKey(
-        to='model', 
-        related_name='compartments', 
-        null=True, 
-        on_delete=models.CASCADE)
+        to = 'model', 
+        related_name = 'compartments', 
+        null = True, 
+        on_delete = models.CASCADE)
     
     name = models.CharField(
-        verbose_name='Compartment', 
-        max_length=250, 
-        null=True)
+        verbose_name = 'Compartment', 
+        max_length = 250, 
+        null = True)
     
     description = models.TextField(
-        verbose_name='description of this model',
-        null=True)
+        verbose_name = 'description of this model',
+        null = True)
     
     evt_created = models.DateTimeField(
-        verbose_name='Time of creation', 
-        auto_now_add=True)
+        verbose_name = 'Time of creation', 
+        auto_now_add = True)
     
     evt_changed = models.DateTimeField(
-        verbose_name='Time of last change', 
-        auto_now=True)
+        verbose_name = 'Time of last change', 
+        auto_now = True)
     
     log_inflows = models.BooleanField(
-        verbose_name='Log inflows', 
-        default=True)
+        verbose_name = 'Log inflows', 
+        default = True)
     
     categories = models.CharField(
-        verbose_name='Categories', 
-        max_length=250, 
-        null=True)
+        verbose_name = 'Categories', 
+        max_length = 250, 
+        null = True)
 
     # horizontal position in the model designer
     x = models.BigIntegerField(
-        verbose_name='x',
-        null=True)
+        verbose_name = 'x',
+        null = True)
 
     # vertical position in the model designer
     y = models.BigIntegerField(
-        verbose_name='y',
-        null=True)
+        verbose_name = 'y',
+        null = True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
 #==============================================================================
 #  Flow Compartment
@@ -159,7 +159,7 @@ class stock(flow_compartment):
 class sink(compartment):
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
     def get_absolute_url(self):
         return reverse('dpmfa:sink-update', args=[self.id])
@@ -188,7 +188,7 @@ class local_release(models.Model):
         null=True)
        
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
 class fixed_rate_release(local_release):
     
@@ -279,7 +279,7 @@ class transfer(models.Model):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
 class constant_transfer(transfer):
     
@@ -289,7 +289,7 @@ class constant_transfer(transfer):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
     def get_absolute_url(self):
         return reverse('dpmfa:constant-transfer-update', args=[self.id])
@@ -303,7 +303,7 @@ class random_choice_transfer(transfer):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
     def get_absolute_url(self):
         return reverse('dpmfa:random-choice-transfer-update', args=[self.id])
@@ -347,7 +347,7 @@ class stochastic_transfer(transfer):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
     def get_absolute_url(self):
         return reverse('dpmfa:stochastic-transfer-update', args=[self.id])
@@ -360,7 +360,7 @@ class aggregated_transfer(transfer):
         max_length=250, null=True)
 
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
     def get_absolute_url(self):
         return reverse('dpmfa:aggregated-transfer-update', args=[self.id])
@@ -446,12 +446,12 @@ class external_inflow(models.Model):
         null=True)
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
         
 class external_list_inflow(external_inflow):
     
     def __str__(self):
-        return self.name + ' (' + str(self.pk) + ')'
+        return 'PK: (' + str(self.pk) + ')'
     
 class external_function_inflow(external_inflow):
 
@@ -507,7 +507,7 @@ class external_function_inflow(external_inflow):
         null=True)
     
     def __str__(self):
-        return str(self.pk)
+        return 'PK: (' + str(self.pk) + ')'
     
 #==============================================================================
 #  Single Period Inflow
@@ -536,7 +536,7 @@ class single_period_inflow(models.Model):
         null=True)
     
     def __str__(self):
-        return str(self.pk)
+        return 'PK: (' + str(self.pk) + ')'
     
 class fixed_value_inflow(single_period_inflow):
     
@@ -616,7 +616,7 @@ class experiment(models.Model):
     model_instance = models.OneToOneField(
         to='model_instance',
         related_name='experiment',
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
         null=True)
 
     name = models.CharField(
@@ -643,7 +643,7 @@ class experiment(models.Model):
         null=True)
 
     def __str__(self):
-        return str(self.pk)
+        return 'PK: (' + str(self.pk) + ')'
 
 #==============================================================================
 #  Simulation
@@ -652,37 +652,38 @@ class experiment(models.Model):
 class simulation(models.Model):
     
     model = models.ForeignKey(
-        to='model', 
-        related_name='simulations', 
-        verbose_name='model', 
+        to = 'model', 
+        related_name = 'simulations', 
+        on_delete = models.DO_NOTHING,
+        verbose_name = 'model', 
         null=True)
     
     runs = models.BigIntegerField(
-        verbose_name='Runs', 
-        null=True)
+        verbose_name = 'Runs', 
+        null = True)
     
     periods = models.BigIntegerField(
-        verbose_name='Periods', 
-        null=True)
+        verbose_name = 'Periods', 
+        null = True)
     
     evt_created = models.DateTimeField(
         'Date created', 
-        auto_now_add=True, 
-        null=True)
+        auto_now_add = True, 
+        null = True)
     
     results = OneToOneField(
-        to='result', 
-        related_name='r', 
-        verbose_name='model', 
+        to = 'result', 
+        related_name = 'simulation', 
+        verbose_name = 'Simulation', 
         null=True)
     
     evt_changed = models.DateTimeField(
-        verbose_name='Time of last change', 
-        auto_now=True, 
-        null=True)
+        verbose_name = 'Time of last change', 
+        auto_now = True, 
+        null = True)
     
     def __str__(self):
-        return str(self.pk)
+        return 'PK: (' + str(self.pk) + ')'
     
 #==============================================================================
 # Result

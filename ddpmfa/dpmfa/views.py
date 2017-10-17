@@ -622,6 +622,10 @@ class ModelDesignerSaveView(generic.View):
     def post(self, request, *args, **kwargs):
         jsonModel=json.loads(request.body)
         saveManager = jsonConverter.SaveManager(jsonModel, self.kwargs['model_pk'])
+        saveManager.separateEntities()
+        saveManager.createNodes()
+        saveManager.createConnections()
+        
         return JsonResponse({
             'tempId123': 'persistentId456',
             'tempId678': 'persistentId999'

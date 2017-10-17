@@ -323,22 +323,6 @@ class SaveManager(object):
         
         self.nodes = self.jsonModel['nodes']
         self.connections = self.jsonModel['connections']
-
-        self.separateNodes()
-        self.separateConnections()
-        
-        # create all db entities
-        self.createDBEntitiesExternalListInflows()
-        self.createDBEntitiesExternalFunctionInflows()
-        self.createDBEntitiesSink()
-        self.createDBEntitiesFlowCompartment()
-        self.createDBEntitiesStock()
-        
-        # setup all connections
-        self.setupInflowTargets()
-        self.createDBEntitiesConstantTransfers()
-        self.createDBEntitiesRandomChoiceTransfers()
-        self.createDBEntitiesStochasticTransfers()
         
     def recreateDBModel(self, model_pk):
         old_model = django_models.model.objects.get(pk=model_pk)
@@ -359,6 +343,25 @@ class SaveManager(object):
         new_model.save()
         
         return new_model
+    
+    def separateEntities(self):
+        self.separateNodes()
+        self.separateConnections()
+        
+    def createNodes(self):
+        self.createDBEntitiesExternalListInflows()
+        self.createDBEntitiesExternalFunctionInflows()
+        self.createDBEntitiesSink()
+        self.createDBEntitiesFlowCompartment()
+        self.createDBEntitiesStock()
+    
+    def createConnections(self):
+        self.setupInflowTargets()
+        self.createDBEntitiesConstantTransfers()
+        self.createDBEntitiesRandomChoiceTransfers()
+        self.createDBEntitiesStochasticTransfers()
+        
+        
         
            
     def separateNodes(self):
