@@ -1,6 +1,10 @@
+#python
 import pprint
 
+# django
 import dpmfa.models as django_models
+
+# dpmfa
 from dpmfa_simulator.components import ExternalListInflow
 
 #==============================================================================
@@ -23,271 +27,11 @@ STOCHASTIC_TRANSFER = 'stochasticTransfer'
 
 INFLOW_TARGET = 'inflowTarget'
 
-
-# JSON
-
-externalListInflows = {}
-externalFunctionInflows = {}
-
-flowCompartments = {}
-stocks = {}
-sinks = {}
-
-constantTransfers = {}
-randomChoiceTransfers = {}
-aggregatedTransfers = {}
-stochasticTransfers = {}
-
-inflowTargets = {}
-
-# DB
-
-compartments_DB = {}
-flow_compartments_DB = {}
-sinks_DB = {}
-stocks_DB = {}
-transfers_DB = {}
-constant_transfers_DB = {}
-stochastic_transfers_DB = {}
-random_choice_transfers_DB = {}
-aggregated_transfers_DB = {}
-local_releases_DB = {}
-fixed_rate_releases_DB = {}
-list_releases_DB = {}
-function_releases_DB = {}
-single_period_inflows_DB = {}
-stochastic_function_inflows_DB = {}
-random_choice_inflows_DB = {}
-fixed_value_inflows_DB = {}
-external_inflows_DB = {}
-external_list_inflows_DB = {}
-external_function_inflows_DB = {}
-
 #==============================================================================
 #  Package functions
 #==============================================================================
 
-# JSON
 
-def addExternalListInflow(primaryKey, externalListInflow):
-    externalListInflows[primaryKey] = externalListInflow
-
-def getExternalListInflow(primaryKey):
-    return externalListInflows.get(primaryKey)
-
-def getExternalListInflows():
-    return externalListInflows
-
-def addExternalFunctionInflow(primaryKey, externalFunctionInflow):
-    externalFunctionInflows[primaryKey] = externalFunctionInflow
-
-def getExternalFunctionInflow(primaryKey):
-    return externalFunctionInflows.get(primaryKey)
-
-def getExternalFunctionInflows():
-    return externalFunctionInflows
-
-def addFlowCompartment(primaryKey, flowCompartment):
-    flowCompartments[primaryKey] = flowCompartment
-
-def getFlowCompartment(primaryKey):
-    return flowCompartments.get(primaryKey)
-
-def getFlowCompartments():
-    return flowCompartments
-
-def addStock(primaryKey, stock):
-    stocks[primaryKey] = stock
-
-def getStock(primaryKey):
-    return stocks.get(primaryKey)
-
-def getStocks():
-    return stocks
-
-def addSink(primaryKey, sink):
-    sinks[primaryKey] = sink
-
-def getSink(primaryKey):
-    return sinks.get(primaryKey)
-
-def getSinks():
-    return sinks
-
-def addConstantTransfer(primaryKey, constantTransfer):
-    constantTransfers[primaryKey] = constantTransfer
-
-def getConstantTransfer(primaryKey):
-    return constantTransfers.get(primaryKey)
-
-def getConstantTransfers():
-    return constantTransfers
-
-def addRandomChoiceTransfer(primaryKey, randomChoiceTransfer):
-    randomChoiceTransfers[primaryKey] = randomChoiceTransfer
-
-def getRandomChoiceTransfer(primaryKey):
-    return randomChoiceTransfers.get(primaryKey)
-
-def getRandomChoiceTransfers():
-    return randomChoiceTransfers
-
-def addAggregatedTransfer(primaryKey, aggregatedTransfer):
-    aggregatedTransfers[primaryKey] = aggregatedTransfer
-
-def getAggregatedTransfer(primaryKey):
-    return aggregatedTransfers.get(primaryKey)
-
-def getAggregatedTransfers():
-    return aggregatedTransfers
-
-def addStochasticTransfers(primaryKey, stochasticTransfer):
-    stochasticTransfers[primaryKey] = stochasticTransfer
-
-def getStochasticTransfer(primaryKey):
-    return stochasticTransfers.get(primaryKey)
-
-def getStochasticTransfers():
-    return stochasticTransfers
-
-def addInflowTarget(primaryKey, inflowTarget):
-    inflowTargets[primaryKey] = inflowTarget
-    
-def getInflowTargets():
-    return inflowTargets
-
-def getInflowTarget(primaryKey):
-    return inflowTargets[primaryKey]
-
-# Compartments
-
-def getDBEntityCompartment(primaryKey):
-    return compartments_DB.get(primaryKey)
-
-def addDBEntityCompartment(primaryKey, DBEntity):
-    compartments_DB[primaryKey] = DBEntity
-
-def getDBEntityFlowCompartment(primaryKey):
-    return flow_compartments_DB.get(primaryKey)
-
-def addDBEntityFlowCompartment(primaryKey, DBEntity):
-    flow_compartments_DB[primaryKey] = DBEntity
-
-def getDBEntitySink(primaryKey):
-    return sinks_DB.get(primaryKey)
-
-def addDBEntitySink(primaryKey, DBEntity):
-    sinks_DB[primaryKey] = DBEntity
-
-def getDBEntityStock(primaryKey):
-    return stocks_DB.get(primaryKey)
-
-def addDBEntityStock(primaryKey, DBEntity):
-    stocks_DB[primaryKey] = DBEntity
-
-# Transfers
-
-def getDBEntityTransfer(primaryKey):
-    return transfers_DB.get(primaryKey)
-
-def addDBEntityTransfer(primaryKey, DBEntity):
-    transfers_DB[primaryKey] = DBEntity
-    
-def getDBEntityConstantTransfer(primaryKey):
-    return constant_transfers_DB.get(primaryKey)
-
-def addDBEntityConstantTransfer(primaryKey, DBEntity):
-    constant_transfers_DB[primaryKey] = DBEntity
-    
-def getDBEntityStochasticTransfer(primaryKey):
-    return stochastic_transfers_DB.get(primaryKey)
-
-def addDBEntityStochasticTransfer(primaryKey, DBEntity):
-    stochastic_transfers_DB[primaryKey] = DBEntity
-    
-def getDBEntityRandomChoiceTransfer(primaryKey):
-    return random_choice_transfers_DB.get(primaryKey)
-
-def addDBEntityRandomChoiceTransfer(primaryKey, DBEntity):
-    random_choice_transfers_DB[primaryKey] = DBEntity
-    
-def getDBEntityAggregatedTransfer(primaryKey):
-    return aggregated_transfers_DB.get(primaryKey)
-
-def addDBEntityAggregatedTransfer(primaryKey, DBEntity):
-    aggregated_transfers_DB[primaryKey] = DBEntity
-
-# Releases
-
-def getDBEntityLocalRelease(primaryKey):
-    return local_releases_DB.get(primaryKey)
-
-def addDBEntityLocalRelease(primaryKey, DBEntity):
-    local_releases_DB[primaryKey] = DBEntity
-
-def getDBEntityFixedRateRelease(primaryKey):
-    return fixed_rate_releases_DB.get(primaryKey)
-
-def addDBEntityFixedRateRelease(primaryKey, DBEntity):
-    fixed_rate_releases_DB[primaryKey] = DBEntity
-
-def getDBEntityListRelease(primaryKey):
-    return list_releases_DB.get(primaryKey)
-
-def addDBEntityListRelease(primaryKey, DBEntity):
-    list_releases_DB[primaryKey] = DBEntity
-
-def getDBEntityFunctionRelease(primaryKey):
-    return function_releases_DB.get(primaryKey)
-
-def addDBEntityFunctionRelease(primaryKey, DBEntity):
-    function_releases_DB[primaryKey] = DBEntity
-
-# Single Period Inflows
-
-def getDBEntitySinglePeriodInflow(primaryKey):
-    return single_period_inflows_DB.get(primaryKey)
-
-def addDBEntitySinglePeriodInflow(primaryKey, DBEntity):
-    single_period_inflows_DB[primaryKey] = DBEntity
-
-def getDBEntityStochasticFunctionInflow(primaryKey):
-    return stochastic_function_inflows_DB.get(primaryKey)
-
-def addDBEntityStochasticFunctionInflow(primaryKey, DBEntity):
-    stochastic_function_inflows_DB[primaryKey] = DBEntity
-
-def getDBEntityRandomChoiceInflow(primaryKey):
-    return random_choice_inflows_DB.get(primaryKey)
-
-def addDBEntityRandomChoiceInflow(primaryKey, DBEntity):
-    random_choice_inflows_DB[primaryKey] = DBEntity
-
-def getDBEntityFixedValueInflow(primaryKey):
-    return fixed_value_inflows_DB.get(primaryKey)
-
-def addDBEntityFixedValueInflow(primaryKey, DBEntity):
-    fixed_value_inflows_DB[primaryKey] = DBEntity
-    
-# External Inflows
-    
-def getDBEntityExternalInflow(primaryKey):
-    return external_inflows_DB.get(primaryKey)
-
-def addDBEntityExternalInflow(primaryKey, DBEntity):
-    external_inflows_DB[primaryKey] = DBEntity
-    
-def getDBEntityExternalListInflow(primaryKey):
-    return external_list_inflows_DB.get(primaryKey)
-
-def addDBEntityExternalListInflow(primaryKey, DBEntity):
-    external_list_inflows_DB[primaryKey] = DBEntity
-    
-def getDBEntityExternalFunctionInflow(primaryKey):
-    return external_function_inflows_DB.get(primaryKey)
-
-def addDBEntityExternalFunctionInflow(primaryKey, DBEntity):
-    external_function_inflows_DB[primaryKey] = DBEntity
 
 # Distributions
     
@@ -319,14 +63,48 @@ class SaveManager(object):
     
     def __init__(self, jsonModel, model_pk):
         self.jsonModel = jsonModel
+
         self.MODEL_DB = self.recreateDBModel(model_pk) 
         
         self.nodes = self.jsonModel['nodes']
         self.connections = self.jsonModel['connections']
         
-    def recreateDBModel(self, model_pk):
+        self.externalListInflows = {}
+        self.externalFunctionInflows = {}
         
-        print("Recreating db model...")
+        self.flowCompartments = {}
+        self.stocks = {}
+        self.sinks = {}
+        
+        self.constantTransfers = {}
+        self.randomChoiceTransfers = {}
+        self.aggregatedTransfers = {}
+        self.stochasticTransfers = {}
+        
+        self.inflowTargets = {}
+        
+        self.compartments_DB = {}
+        self.flow_compartments_DB = {}
+        self.sinks_DB = {}
+        self.stocks_DB = {}
+        self.transfers_DB = {}
+        self.constant_transfers_DB = {}
+        self.stochastic_transfers_DB = {}
+        self.random_choice_transfers_DB = {}
+        self.aggregated_transfers_DB = {}
+        self.local_releases_DB = {}
+        self.fixed_rate_releases_DB = {}
+        self.list_releases_DB = {}
+        self.function_releases_DB = {}
+        self.single_period_inflows_DB = {}
+        self.stochastic_function_inflows_DB = {}
+        self.random_choice_inflows_DB = {}
+        self.fixed_value_inflows_DB = {}
+        self.external_inflows_DB = {}
+        self.external_list_inflows_DB = {}
+        self.external_function_inflows_DB = {}
+        
+    def recreateDBModel(self, model_pk):
         
         old_model = django_models.model.objects.get(pk=model_pk)
         
@@ -335,36 +113,24 @@ class SaveManager(object):
         name = old_model.name
         description = old_model.description
         
-        print("PK of old model: " + str(pk))
-        
-        
-        
         # delete all everything that relates to the old model except model instances, experiments and results
-        print("Deleting entities of model...")
         for compartment in django_models.compartment.objects.filter(model = old_model):
-            print("Deleting compartment: " + str(compartment))
             compartment.delete()
             
         for localRelease in django_models.local_release.objects.filter(model = old_model):
-            print("Deleting local release: " + str(localRelease))
             localRelease.delete()
             
         for transfer in django_models.transfer.objects.filter(model = old_model):
-            print("Deleting transfer: " + str(transfer))
             transfer.delete()
             
         for externalInflow in django_models.external_inflow.objects.filter(model = old_model):
-            print("Deleting external inflow: " + str(externalInflow))
             externalInflow.delete()
             
         for singlePeriodInflow in django_models.single_period_inflow.objects.filter(model = old_model):
-            print("Deleting single period inflow: " + str(singlePeriodInflow))
             singlePeriodInflow.delete()
         
-        print("Deleting old model...")
         old_model.delete()
         
-        print("Creating new model...")
         
         new_model = django_models.model(
             pk = pk,
@@ -373,8 +139,6 @@ class SaveManager(object):
             description = description)
         
         new_model.save()
-        
-        print("Saved new model...")
         
         return new_model
     
@@ -394,9 +158,6 @@ class SaveManager(object):
         self.createDBEntitiesConstantTransfers()
         self.createDBEntitiesRandomChoiceTransfers()
         self.createDBEntitiesStochasticTransfers()
-        
-        
-        
            
     def separateNodes(self):
         for node in self.nodes:
@@ -406,21 +167,21 @@ class SaveManager(object):
             id = node['id']
             
             primaryKey = ""
-            if tempId != None:
-                primaryKey += tempId
             if id != None:
                 primaryKey += id
+            elif tempId != None:
+                primaryKey += tempId
                 
             if type == EXTERNAL_LIST_INFLOW:
-                addExternalListInflow(primaryKey, node)
+                self.addExternalListInflow(primaryKey, node)
             elif type == EXTERNAL_FUNCTION_INFLOW:
-                addExternalFunctionInflow(primaryKey, node)
+                self.addExternalFunctionInflow(primaryKey, node)
             elif type == FLOW_COMPARTMENT:
-                addFlowCompartment(primaryKey, node)
+                self.addFlowCompartment(primaryKey, node)
             elif type == STOCK:
-                addStock(primaryKey, node)
+                self.addStock(primaryKey, node)
             elif type == SINK:
-                addSink(primaryKey, node)
+                self.addSink(primaryKey, node)
                 
     def separateConnections(self):
         for connection in self.connections:
@@ -430,25 +191,24 @@ class SaveManager(object):
             id = connection['id']
             
             primaryKey = ""
-            if tempId != None:
-                primaryKey += tempId
             if id != None:
                 primaryKey += id
+            elif tempId != None:
+                primaryKey += tempId
                 
             if type == CONSTANT_TRANSFER:
-                addConstantTransfer(primaryKey, connection)
+                self.addConstantTransfer(primaryKey, connection)
             elif type == RANDOM_CHOICE_TRANSFER:
-                addRandomChoiceTransfer(primaryKey, connection)
+                self.addRandomChoiceTransfer(primaryKey, connection)
             elif type == AGGREGATED_TRANSFER:
-                addAggregatedTransfer(primaryKey, connection)
+                self.addAggregatedTransfer(primaryKey, connection)
             elif type == STOCHASTIC_TRANSFER:
-                addStochasticTransfers(primaryKey, connection)
+                self.addStochasticTransfers(primaryKey, connection)
             elif type == INFLOW_TARGET:
-                addInflowTarget(primaryKey, connection)
+                self.addInflowTarget(primaryKey, connection)
                 
     def createDBEntitiesExternalListInflows(self):
-        for primaryKey, externalListInflow in getExternalListInflows().items():
-            print("PK/ELI: " + str(primaryKey))
+        for primaryKey, externalListInflow in self.getExternalListInflows().items():
             self.attributes = {}
             
             external_list_inflow = django_models.external_list_inflow()
@@ -468,12 +228,11 @@ class SaveManager(object):
                 
             external_list_inflow.save()
             
-            addDBEntityExternalListInflow(primaryKey, external_list_inflow)
-            addDBEntityExternalInflow(primaryKey, external_list_inflow)
+            self.addDBEntityExternalListInflow(primaryKey, external_list_inflow)
+            self.addDBEntityExternalInflow(primaryKey, external_list_inflow)
 
     def createDBEntitiesExternalFunctionInflows(self):
-        for primaryKey, externalFunctionInflow in getExternalFunctionInflows().items():
-            print("PK/EFI: " + str(primaryKey))
+        for primaryKey, externalFunctionInflow in self.getExternalFunctionInflows().items():
             self.attributes = {}
             
             external_function_inflow = django_models.external_function_inflow()
@@ -498,12 +257,11 @@ class SaveManager(object):
             
             external_function_inflow.save()
             
-            addDBEntityExternalFunctionInflow(primaryKey, external_function_inflow)
-            addDBEntityExternalInflow(primaryKey, external_function_inflow)
+            self.addDBEntityExternalFunctionInflow(primaryKey, external_function_inflow)
+            self.addDBEntityExternalInflow(primaryKey, external_function_inflow)
             
     def createDBEntitiesSink(self):
-        for primaryKey, sink in getSinks().items():
-            print("PK/SINK: " + str(primaryKey))
+        for primaryKey, sink in self.getSinks().items():
             self.attributes = {}
             
             sink_db = django_models.sink()
@@ -521,12 +279,11 @@ class SaveManager(object):
             
             sink_db.save()
             
-            addDBEntitySink(primaryKey, sink_db)
-            addDBEntityCompartment(primaryKey, sink_db)
+            self.addDBEntitySink(primaryKey, sink_db)
+            self.addDBEntityCompartment(primaryKey, sink_db)
 
     def createDBEntitiesFlowCompartment(self):
-        for primaryKey, flowCompartment in getFlowCompartments().items():
-            print("PK/FC: " + str(primaryKey))
+        for primaryKey, flowCompartment in self.getFlowCompartments().items():
             self.attributes = {}
             
             flow_compartment_db = django_models.flow_compartment()
@@ -546,12 +303,11 @@ class SaveManager(object):
             
             flow_compartment_db.save()
             
-            addDBEntityFlowCompartment(primaryKey, flow_compartment_db)
-            addDBEntityCompartment(primaryKey, flow_compartment_db)
+            self.addDBEntityFlowCompartment(primaryKey, flow_compartment_db)
+            self.addDBEntityCompartment(primaryKey, flow_compartment_db)
             
     def createDBEntitiesStock(self):
-        for primaryKey, stock in getStocks().items():
-            print("PK/STOCKS: " + str(primaryKey))
+        for primaryKey, stock in self.getStocks().items():
             self.attributes = {}
             
             stock_db = django_models.stock()
@@ -570,8 +326,8 @@ class SaveManager(object):
             
             stock_db.save()
             
-            addDBEntityStock(primaryKey, stock_db)
-            addDBEntityCompartment(primaryKey, stock_db)
+            self.addDBEntityStock(primaryKey, stock_db)
+            self.addDBEntityCompartment(primaryKey, stock_db)
 
     def extractAttributesExternalListInflow(self, externalListInflow, external_list_inflow):
         for field in externalListInflow['fields']:
@@ -710,7 +466,6 @@ class SaveManager(object):
                 categories = []
                 for dictionary in dictionaries:
                     categories.append(dictionary['fields'][0]['valueData'])
-                print(str(categories))
                 self.attributes['categories'] = ",".join(categories)
             elif field['propName'] == 'adjustOutgoingTcs':
                 self.attributes['adjust_outgoing_tcs'] = field['valueData']
@@ -843,22 +598,22 @@ class SaveManager(object):
         return random_choice_inflow
     
     def setupInflowTargets(self):
-        for id, inflowTarget in getInflowTargets().items():
+        for id, inflowTarget in self.getInflowTargets().items():
             
             sourceNode = inflowTarget['sourceNode']
             targetNode = inflowTarget['targetNode']
             
             pkSourceNode = self.getPkOfInflowTarget(sourceNode)
-            pkTargetNode = self.   getPkOfInflowTarget(targetNode)
+            pkTargetNode = self.getPkOfInflowTarget(targetNode)
 
-            externalInflowDB = getDBEntityExternalInflow(pkSourceNode)
+            externalInflowDB = self.getDBEntityExternalInflow(pkSourceNode)
             
-            externalInflowDB.target = getDBEntityCompartment(pkTargetNode)
+            externalInflowDB.target = self.getDBEntityCompartment(pkTargetNode)
             
             externalInflowDB.save()
             
     def createDBEntitiesConstantTransfers(self):
-        for primaryKey, constantTransfer in getConstantTransfers().items():
+        for primaryKey, constantTransfer in self.getConstantTransfers().items():
             self.attributes = {}
             
             self.extractAttributesConstantTransfer(constantTransfer)
@@ -875,10 +630,10 @@ class SaveManager(object):
             
             constant_transfer_db.save()
             
-            addDBEntityConstantTransfer(primaryKey, constant_transfer_db)
+            self.addDBEntityConstantTransfer(primaryKey, constant_transfer_db)
             
     def createDBEntitiesRandomChoiceTransfers(self):
-        for primaryKey, randomChoiceTransfer in getRandomChoiceTransfers().items():
+        for primaryKey, randomChoiceTransfer in self.getRandomChoiceTransfers().items():
             self. attributes = {}
             
             self.extractAttributesRandomChoiceTranfers(randomChoiceTransfer)
@@ -895,10 +650,10 @@ class SaveManager(object):
             
             random_choice_transfer_db.save()
             
-            addDBEntityRandomChoiceTransfer(primaryKey, random_choice_transfer_db)
+            self.addDBEntityRandomChoiceTransfer(primaryKey, random_choice_transfer_db)
             
     def createDBEntitiesStochasticTransfers(self):
-        for primaryKey, stochasticTransfer in getStochasticTransfers().items():
+        for primaryKey, stochasticTransfer in self.getStochasticTransfers().items():
             self.attributes = {}
             
             self.extractAttributesStochasticTransfers(stochasticTransfer)
@@ -916,7 +671,7 @@ class SaveManager(object):
             
             stochastic_transfer_db.save()
             
-            addDBEntityStochasticTransfer(primaryKey, stochastic_transfer_db)
+            self.addDBEntityStochasticTransfer(primaryKey, stochastic_transfer_db)
         
     
     def extractAttributesConstantTransfer(self, constantTransfer):
@@ -932,10 +687,10 @@ class SaveManager(object):
         targetNode = constantTransfer['targetNode']
         
         pkSourceNode = self.getPkOfInflowTarget(sourceNode)
-        pkTargetNode = self.   getPkOfInflowTarget(targetNode)
+        pkTargetNode = self.getPkOfInflowTarget(targetNode)
         
-        sourceCompartment = getDBEntityCompartment(pkSourceNode)
-        targetCompartment = getDBEntityCompartment(pkTargetNode)
+        sourceCompartment = self.getDBEntityCompartment(pkSourceNode)
+        targetCompartment = self.getDBEntityCompartment(pkTargetNode)
         
         self.attributes['source_flow_compartment'] = sourceCompartment
         self.attributes['target'] = targetCompartment
@@ -962,8 +717,8 @@ class SaveManager(object):
         pkSourceNode = self.getPkOfInflowTarget(sourceNode)
         pkTargetNode = self.getPkOfInflowTarget(targetNode)
         
-        sourceCompartment = getDBEntityCompartment(pkSourceNode)
-        targetCompartment = getDBEntityCompartment(pkTargetNode)
+        sourceCompartment = self.getDBEntityCompartment(pkSourceNode)
+        targetCompartment = self.getDBEntityCompartment(pkTargetNode)
         
         self.attributes['source_flow_compartment'] = sourceCompartment
         self.attributes['target'] = targetCompartment
@@ -994,8 +749,8 @@ class SaveManager(object):
         pkSourceNode = self.getPkOfInflowTarget(sourceNode)
         pkTargetNode = self.getPkOfInflowTarget(targetNode)
         
-        sourceCompartment = getDBEntityCompartment(pkSourceNode)
-        targetCompartment = getDBEntityCompartment(pkTargetNode)
+        sourceCompartment = self.getDBEntityCompartment(pkSourceNode)
+        targetCompartment = self.getDBEntityCompartment(pkTargetNode)
         
         self.attributes['source_flow_compartment'] = sourceCompartment
         self.attributes['target'] = targetCompartment
@@ -1044,10 +799,230 @@ class SaveManager(object):
         elif type == 'cosineFunction':
             return 'CO'
         
-            
+    # JSON
+    def addExternalListInflow(self, primaryKey, externalListInflow):
+        self.externalListInflows[primaryKey] = externalListInflow
+    
+    def getExternalListInflow(self, primaryKey):
+        return self.externalListInflows.get(primaryKey)
+    
+    def getExternalListInflows(self):
+        return self.externalListInflows
+    
+    def addExternalFunctionInflow(self, primaryKey, externalFunctionInflow):
+        self.externalFunctionInflows[primaryKey] = externalFunctionInflow
+    
+    def getExternalFunctionInflow(self, primaryKey):
+        return self.externalFunctionInflows.get(primaryKey)
+    
+    def getExternalFunctionInflows(self):
+        return self.externalFunctionInflows
+    
+    def addFlowCompartment(self, primaryKey, flowCompartment):
+        self.flowCompartments[primaryKey] = flowCompartment
+    
+    def getFlowCompartment(self, primaryKey):
+        return self.flowCompartments.get(primaryKey)
+    
+    def getFlowCompartments(self):
+        return self.flowCompartments
+    
+    def addStock(self, primaryKey, stock):
+        self.stocks[primaryKey] = stock
+    
+    def getStock(self, primaryKey):
+        return self.stocks.get(primaryKey)
+    
+    def getStocks(self):
+        return self.stocks
+    
+    def addSink(self, primaryKey, sink):
+        self.sinks[primaryKey] = sink
+    
+    def getSink(self, primaryKey):
+        return self.sinks.get(primaryKey)
+    
+    def getSinks(self):
+        return self.sinks
+    
+    def addConstantTransfer(self, primaryKey, constantTransfer):
+        self.constantTransfers[primaryKey] = constantTransfer
+    
+    def getConstantTransfer(self, primaryKey):
+        return self.constantTransfers.get(primaryKey)
+    
+    def getConstantTransfers(self):
+        return self.constantTransfers
+    
+    def addRandomChoiceTransfer(self, primaryKey, randomChoiceTransfer):
+        self.randomChoiceTransfers[primaryKey] = randomChoiceTransfer
+    
+    def getRandomChoiceTransfer(self, primaryKey):
+        return self.randomChoiceTransfers.get(primaryKey)
+    
+    def getRandomChoiceTransfers(self):
+        return self.randomChoiceTransfers
+    
+    def addAggregatedTransfer(self, primaryKey, aggregatedTransfer):
+        self.aggregatedTransfers[primaryKey] = aggregatedTransfer
+    
+    def getAggregatedTransfer(self, primaryKey):
+        return self.aggregatedTransfers.get(primaryKey)
+    
+    def getAggregatedTransfers(self):
+        return self.aggregatedTransfers
+    
+    def addStochasticTransfers(self, primaryKey, stochasticTransfer):
+        self.stochasticTransfers[primaryKey] = stochasticTransfer
+    
+    def getStochasticTransfer(self, primaryKey):
+        return self.stochasticTransfers.get(primaryKey)
+    
+    def getStochasticTransfers(self):
+        return self.stochasticTransfers
+    
+    def addInflowTarget(self, primaryKey, inflowTarget):
+        self.inflowTargets[primaryKey] = inflowTarget
+        
+    def getInflowTargets(self):
+        return self.inflowTargets
+    
+    def getInflowTarget(self, primaryKey):
+        return self.inflowTargets[primaryKey]
+    
+    # Compartments
+    
+    def getDBEntityCompartment(self, primaryKey):
+        return self.compartments_DB.get(primaryKey)
+    
+    def addDBEntityCompartment(self, primaryKey, DBEntity):
+        self.compartments_DB[primaryKey] = DBEntity
+    
+    def getDBEntityFlowCompartment(self, primaryKey):
+        return self.flow_compartments_DB.get(primaryKey)
+    
+    def addDBEntityFlowCompartment(self, primaryKey, DBEntity):
+        self.flow_compartments_DB[primaryKey] = DBEntity
+    
+    def getDBEntitySink(self, primaryKey):
+        return self.sinks_DB.get(primaryKey)
+    
+    def addDBEntitySink(self, primaryKey, DBEntity):
+        self.sinks_DB[primaryKey] = DBEntity
+    
+    def getDBEntityStock(self, primaryKey):
+        return self.stocks_DB.get(primaryKey)
+    
+    def addDBEntityStock(self, primaryKey, DBEntity):
+        self.stocks_DB[primaryKey] = DBEntity
+    
+    # Transfers
+    
+    def getDBEntityTransfer(self, primaryKey):
+        return self.transfers_DB.get(primaryKey)
+    
+    def addDBEntityTransfer(self, primaryKey, DBEntity):
+        self.transfers_DB[primaryKey] = DBEntity
+        
+    def getDBEntityConstantTransfer(self, primaryKey):
+        return self.constant_transfers_DB.get(primaryKey)
+    
+    def addDBEntityConstantTransfer(self, primaryKey, DBEntity):
+        self.constant_transfers_DB[primaryKey] = DBEntity
+        
+    def getDBEntityStochasticTransfer(self, primaryKey):
+        return self.stochastic_transfers_DB.get(primaryKey)
+    
+    def addDBEntityStochasticTransfer(self, primaryKey, DBEntity):
+        self.stochastic_transfers_DB[primaryKey] = DBEntity
+        
+    def getDBEntityRandomChoiceTransfer(self, primaryKey):
+        return self.random_choice_transfers_DB.get(primaryKey)
+    
+    def addDBEntityRandomChoiceTransfer(self, primaryKey, DBEntity):
+        self.random_choice_transfers_DB[primaryKey] = DBEntity
+        
+    def getDBEntityAggregatedTransfer(self, primaryKey):
+        return self.aggregated_transfers_DB.get(primaryKey)
+    
+    def addDBEntityAggregatedTransfer(self, primaryKey, DBEntity):
+        self.aggregated_transfers_DB[primaryKey] = DBEntity
+    
+    # Releases
+    
+    def getDBEntityLocalRelease(self, primaryKey):
+        return self.local_releases_DB.get(primaryKey)
+    
+    def addDBEntityLocalRelease(self, primaryKey, DBEntity):
+        self.local_releases_DB[primaryKey] = DBEntity
+    
+    def getDBEntityFixedRateRelease(self, primaryKey):
+        return self.fixed_rate_releases_DB.get(primaryKey)
+    
+    def addDBEntityFixedRateRelease(self, primaryKey, DBEntity):
+        self.fixed_rate_releases_DB[primaryKey] = DBEntity
+    
+    def getDBEntityListRelease(self, primaryKey):
+        return self.list_releases_DB.get(primaryKey)
+    
+    def addDBEntityListRelease(self, primaryKey, DBEntity):
+        self.list_releases_DB[primaryKey] = DBEntity
+    
+    def getDBEntityFunctionRelease(self, primaryKey):
+        return self.function_releases_DB.get(primaryKey)
+    
+    def addDBEntityFunctionRelease(self, primaryKey, DBEntity):
+        self.function_releases_DB[primaryKey] = DBEntity
+    
+    # Single Period Inflows
+    
+    def getDBEntitySinglePeriodInflow(self, primaryKey):
+        return self.single_period_inflows_DB.get(primaryKey)
+    
+    def addDBEntitySinglePeriodInflow(self, primaryKey, DBEntity):
+        self.single_period_inflows_DB[primaryKey] = DBEntity
+    
+    def getDBEntityStochasticFunctionInflow(self, primaryKey):
+        return self.stochastic_function_inflows_DB.get(primaryKey)
+    
+    def addDBEntityStochasticFunctionInflow(self, primaryKey, DBEntity):
+        self.stochastic_function_inflows_DB[primaryKey] = DBEntity
+    
+    def getDBEntityRandomChoiceInflow(self, primaryKey):
+        return self.random_choice_inflows_DB.get(primaryKey)
+    
+    def addDBEntityRandomChoiceInflow(self, primaryKey, DBEntity):
+        self.random_choice_inflows_DB[primaryKey] = DBEntity
+    
+    def getDBEntityFixedValueInflow(self, primaryKey):
+        return self.fixed_value_inflows_DB.get(primaryKey)
+    
+    def addDBEntityFixedValueInflow(self, primaryKey, DBEntity):
+        self.fixed_value_inflows_DB[primaryKey] = DBEntity
+        
+    # External Inflows
+        
+    def getDBEntityExternalInflow(self, primaryKey):
+        return self.external_inflows_DB.get(primaryKey)
+    
+    def addDBEntityExternalInflow(self, primaryKey, DBEntity):
+        self.external_inflows_DB[primaryKey] = DBEntity
+        
+    def getDBEntityExternalListInflow(self, primaryKey):
+        return self.external_list_inflows_DB.get(primaryKey)
+    
+    def addDBEntityExternalListInflow(self, primaryKey, DBEntity):
+        self.external_list_inflows_DB[primaryKey] = DBEntity
+        
+    def getDBEntityExternalFunctionInflow(self, primaryKey):
+        return self.external_function_inflows_DB.get(primaryKey)
+    
+    def addDBEntityExternalFunctionInflow(self, primaryKey, DBEntity):
+        self.external_function_inflows_DB[primaryKey] = DBEntity
+        
     def printData(self):
         print("data:")
-        pprint.ppritn(str(self.jsonModel))
+        pprint.pprint(str(self.jsonModel))
         
     def printEntries(self):
         for entry in self.jsonModel:

@@ -200,7 +200,7 @@ class ModelCopier(object):
 
             for period_inflow_ref in models.stochastic_function_inflow.objects.filter(external_list_inflow=inflow_ref):
                 period_inflow_copy = models.stochastic_function_inflow(
-                    model_copy = model_copy,
+                    model = model_copy,
                     external_list_inflow=inflow_copy,
                     current_value=period_inflow_ref.current_value,
                     period=period_inflow_ref.period,

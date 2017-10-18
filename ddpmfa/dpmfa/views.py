@@ -626,6 +626,7 @@ class ModelDesignerSaveView(generic.View):
 
     def post(self, request, *args, **kwargs):
         jsonModel=json.loads(request.body)
+        saveManager = None
         saveManager = ModelDesignerToDdpmfaConverter.SaveManager(jsonModel, self.kwargs['model_pk'])
         saveManager.separateEntities()
         saveManager.createNodes()

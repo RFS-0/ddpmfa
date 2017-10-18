@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth.models import User
 from dpmfa.models import *
-from dpmfa.modelcopier import ModelCopier
+from dpmfa.copiers.ModelCopier import ModelCopier
 
 class Command(BaseCommand):
     
