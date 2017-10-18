@@ -1,24 +1,28 @@
-import dpmfa.converter as dpmfaConverter
-import dpmfa.json2db.SaveManager as jsonConverter
-import dpmfa.forms as forms
-import dpmfa.models as models
+# python
 import csv
+import itertools as itertools
 import json
 import os
 import pprint
 
-from dpmfa.modelcopier import ModelCopier
-from dpmfa.model2json.Model import Model as JsonModel
+# django
+import django.http as http
+import django.views.generic as generic
+import django.views.decorators as decorators
+import django.urls as urls
 
-from django.contrib import messages
-from django.http import HttpResponse
-from django.http import Http404, HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views import generic
-from django.views.decorators.csrf import csrf_exempt
-from django.urls import reverse_lazy, reverse
-from itertools import chain
+# ddpmfa
+import dpmfa.converters.DdpmfaToDpmfaConverter as DdpmfaToDpmfaConverter
+import dpmfa.converters.ModelDesignerToDdpmfaConverter as ModelDesignerToDdpmfaConverter
+import dpmfa.converters.DdpmfaToModelDesignerConverter as DdpmfaToModelDesignerConverter
+import dpmfa.copiers as copiers
+import dpmfa.forms as forms
+import dpmfa.models as models
+
+# dpmfa
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_components
+
+
 from django.conf import settings
 
 # ==============================================================================
@@ -67,20 +71,20 @@ class ProjectCreateView(generic.CreateView):
     model = models.project
     form_class = forms.ProjectForm
     template_name = 'dpmfa/project/project_form.html'
-    success_url = reverse_lazy('dpmfa:project-list')
+    success_url = urls.reverse_lazy('dpmfa:project-list')
 
 
 class ProjectUpdateView(generic.UpdateView):
     model = models.project
     form_class = forms.ProjectForm
     template_name = 'dpmfa/project/project_form.html'
-    success_url = reverse_lazy('dpmfa:project-list')
+    success_url = urls.reverse_lazy('dpmfa:project-list')
     
 class ProjectDeleteView(generic.DeleteView):
     model = models.project
     form_class = forms.ProjectForm
     template_name = 'dpmfa/project/project_confirm_delete.html'
-    success_url = reverse_lazy('dpmfa:project-list')
+    success_url = urls.reverse_lazy('dpmfa:project-list')
 
 
 # ==============================================================================
@@ -98,7 +102,7 @@ class ModelDetailView(generic.DetailView):
     template_name = 'dpmfa/model/model_detail.html'
 
     def find_flow_compartments_by_model(self, model_pk):
-        return models.flow_compartment.objects.filter(model=model_pk)
+        return models.flow_compartment.objects.filter(model=model_pk, stock=None)
     
     def find_stocks_by_model(self, model_pk):
         return models.stock.objects.filter(model=model_pk)
@@ -343,7 +347,7 @@ class ModelCreateView(generic.CreateView):
     template_name = 'dpmfa/model/model_form.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.kwargs['project_pk']})
+        return urls.reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.kwargs['project_pk']})
 
     def form_valid(self, form):
         model = form.save(commit=False)
@@ -362,7 +366,7 @@ class ModelUpdateView(generic.UpdateView):
     template_name = 'dpmfa/model/model_form.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk })
+        return urls.reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk })
 
     def get_context_data(self, **kwargs):
         context = super(ModelUpdateView, self).get_context_data(**kwargs)
@@ -375,7 +379,7 @@ class ModelDeleteView(generic.DeleteView):
     template_name = 'dpmfa/model/model_confirm_delete.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk})
+        return urls.reverse_lazy('dpmfa:project-detail', kwargs={'pk': self.object.project.pk})
 
 
 # ==============================================================================
@@ -393,17 +397,17 @@ class ExperimentCreateView(generic.CreateView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:results-template', kwargs={'experiment_pk': self.experiment.pk})
+        return urls.reverse_lazy('dpmfa:results-template', kwargs={'experiment_pk': self.experiment.pk})
     
     def setupExperiment(self): 
         self.prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
-        self.model_instance = ModelCopier.copy_model(self.prototype_model)
+        self.model_instance = copiers.ModelCopier.copy_model(self.prototype_model)
         self.experiment.prototype_model = self.prototype_model
         self.experiment.model_instance = self.model_instance
         self.experiment.save()
                 
     def runSimulation(self):
-        self.experimentConverter = dpmfaConverter.ExperimentConverter(self.experiment)
+        self.experimentConverter = DdpmfaToDpmfaConverter.ExperimentConverter(self.experiment)
         self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
         self.modelInstanceConverter = self.experimentConverter.getModelInstanceConverter()
         self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
@@ -586,13 +590,13 @@ class ExperimentDeleteView(generic.DeleteView):
     template_name = 'dpmfa/experiment/experiment_confirm_delete.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.prototype_model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.prototype_model.pk })
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.model_instance.delete()
         self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url())
 
 # ==============================================================================
 #  Model Designer
@@ -607,7 +611,7 @@ class ModelDesignerTemplateView(generic.TemplateView):
 
         model = models.model.objects.get(pk=self.kwargs['model_pk'])
         
-        model_dict = (JsonModel()).configure_for(model).as_dictionary()
+        model_dict = (DdpmfaToModelDesignerConverter.DdpmfaToModelDesignerConverter()).configure_for(model).as_dictionary()
         
         context['model'] = model
         context['model_data_json'] = json.dumps(model_dict)
@@ -615,18 +619,18 @@ class ModelDesignerTemplateView(generic.TemplateView):
 
 class ModelDesignerSaveView(generic.View):
 
-    @csrf_exempt
+    @decorators.csrf.csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(ModelDesignerSaveView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         jsonModel=json.loads(request.body)
-        saveManager = jsonConverter.SaveManager(jsonModel, self.kwargs['model_pk'])
+        saveManager = ModelDesignerToDdpmfaConverter.SaveManager(jsonModel, self.kwargs['model_pk'])
         saveManager.separateEntities()
         saveManager.createNodes()
         saveManager.createConnections()
         
-        return JsonResponse({
+        return http.JsonResponse({
             'tempId123': 'persistentId456',
             'tempId678': 'persistentId999'
         })
@@ -721,7 +725,7 @@ class FlowCompartmentUpdateView(generic.UpdateView):
     context_object_name = 'flow_compartment'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:flow-compartment-detail', kwargs={'pk': self.object.pk})
+        return urls.reverse_lazy('dpmfa:flow-compartment-detail', kwargs={'pk': self.object.pk})
 
 class FlowCompartmentDeleteView(generic.DeleteView):
     model = models.flow_compartment
@@ -740,7 +744,7 @@ class FlowCompartmentDeleteView(generic.DeleteView):
         ]
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
     
 #==============================================================================
 #  Stock
@@ -794,14 +798,14 @@ class StockUpdateView(generic.UpdateView):
     context_object_name = 'stock'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:stock-detail', kwargs={'pk': self.object.pk})
+        return urls.reverse_lazy('dpmfa:stock-detail', kwargs={'pk': self.object.pk})
     
 class StockDeleteView(generic.DeleteView):
     model = models.stock
     template_name = 'dpmfa/compartments/stock_confirm_delete.html'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
 
 #==============================================================================
 #  Sink
@@ -853,7 +857,7 @@ class SinkUpdateView(generic.UpdateView):
     context_object_name = 'sink'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:sink-detail', kwargs={'pk': self.object.pk})
+        return urls.reverse_lazy('dpmfa:sink-detail', kwargs={'pk': self.object.pk})
 
 class SinkDeleteView(generic.DeleteView):
     model = models.sink
@@ -872,7 +876,7 @@ class SinkDeleteView(generic.DeleteView):
         ]
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk})
     
 #==============================================================================
 #  Releases
@@ -905,7 +909,7 @@ class LocalReleaseUpdateView(generic.UpdateView):
     context_object_name = 'local_release'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:local-release-detail', kwargs={'pk': self.object.pk})
+        return urls.reverse_lazy('dpmfa:local-release-detail', kwargs={'pk': self.object.pk})
     
 # Fixed Rate Release
 
@@ -934,7 +938,7 @@ class FixedRateReleaseUpdateView(generic.UpdateView):
     context_object_name = 'fixed_rate_release'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:fixed-rate-release-detail', kwargs={'pk': self.object.pk})
+        return urls.reverse_lazy('dpmfa:fixed-rate-release-detail', kwargs={'pk': self.object.pk})
     
 # List Release
 
@@ -976,7 +980,7 @@ class FunctionReleaseUpdateView(generic.UpdateView):
     context_object_name = 'fixed_rate_release'
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:fixed-rate-release-detail', kwargs={'pk': self.object.pk})
+        return urls.reverse_lazy('dpmfa:fixed-rate-release-detail', kwargs={'pk': self.object.pk})
     
 #==============================================================================
 #  Transfers
@@ -1052,7 +1056,7 @@ class ConstantTransferUpdateView(generic.UpdateView):
         return context
     
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
    
         
 class ConstantTransferDeleteView(generic.DeleteView):
@@ -1118,7 +1122,7 @@ class RandomChoiceTransferUpdateView(generic.UpdateView):
         return context
     
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:random-choice-transfer-detail', kwargs={'pk': self.object.pk })
+        return urls.reverse_lazy('dpmfa:random-choice-transfer-detail', kwargs={'pk': self.object.pk })
 
 
 class RandomChoiceTransferDeleteView(generic.UpdateView):
@@ -1181,7 +1185,7 @@ class AggregatedTransferUpdateView(generic.UpdateView):
         return context
     
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:aggregated-transfer-detail', kwargs={'pk': self.object.pk })
+        return urls.reverse_lazy('dpmfa:aggregated-transfer-detail', kwargs={'pk': self.object.pk })
    
     
     
@@ -1248,7 +1252,7 @@ class StochasticTransferUpdateView(generic.UpdateView):
         return context
     
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:stochastic-transfer-detail', kwargs={'pk': self.object.pk })
+        return urls.reverse_lazy('dpmfa:stochastic-transfer-detail', kwargs={'pk': self.object.pk })
 
     
 class StochasticTransferDeleteView(generic.DeleteView):
@@ -1291,7 +1295,7 @@ class ExternalListInflowDetailView(generic.DetailView):
         stochastic_function_inflows = self.find_stochastic_function_inflows_by_external_function_inflow(self.object.pk)
         random_choice_inflows = self.find_random_choice_inflows_by_external_function_inflow(self.object.pk)
 
-        single_period_inflows = list(chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows))
+        single_period_inflows = list(itertools.chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows))
         single_period_inflows.sort(key=lambda x: x.period)
 
         context['single_period_inflows'] = single_period_inflows
@@ -1327,14 +1331,14 @@ class ExternalListInflowUpdateView(generic.UpdateView):
     context_object_name = 'external_list_inflow'
     
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
     
 class ExternalListInflowDeleteView(generic.DeleteView):
     model = models.external_list_inflow
     template_name = 'dpmfa/external_inflow/external_list_inflow_confirm_delete.html'
     
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
     
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -1342,7 +1346,7 @@ class ExternalListInflowDeleteView(generic.DeleteView):
         check_for_last_inflow = models.external_inflow.objects.filter(target__model = self.object.target.model).count()
         if check_for_last_inflow > 2:
             self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url())
 
 # External Function Inflow
 
@@ -1366,7 +1370,7 @@ class ExternalFunctionInflowDetailView(generic.DetailView):
         stochastic_function_inflows = self.find_stochastic_function_inflows_by_external_function_inflow(self.object.pk)
         random_choice_inflows = self.find_random_choice_inflows_by_external_function_inflow(self.object.pk)
 
-        single_period_inflows = list(chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows))
+        single_period_inflows = list(itertools.chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows))
         single_period_inflows.sort(key=lambda x: x.period)
 
         context['project'] = self.object.target.model.project
@@ -1414,7 +1418,7 @@ class ExternalFunctionInflowDeleteView(generic.DeleteView):
     template_name = 'dpmfa/external_inflow/external_function_inflow_confirm_delete.html'
     
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
     
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -1422,7 +1426,7 @@ class ExternalFunctionInflowDeleteView(generic.DeleteView):
         check_for_last_inflow = models.external_inflow.objects.filter(target__model = self.object.target.model).count()
         if check_for_last_inflow > 1:
             self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url())
     
 #==============================================================================
 #  Single Period Inflow
@@ -1490,7 +1494,7 @@ class FixedValueInflowUpdateView(generic.UpdateView):
         return super(FixedValueInflowUpdateView, self).form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.target.model.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.target.model.pk})
 
 class FixedValueInflowDetailView(generic.DetailView):
     model = models.fixed_value_inflow
@@ -1518,7 +1522,7 @@ class FixedValueInflowDeleteView(generic.DeleteView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
+        return urls.reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -1529,7 +1533,7 @@ class FixedValueInflowDeleteView(generic.DeleteView):
             following_single_period_inflow.save()
 
         self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url())
 
 class FixedValueInflowCreateView(generic.CreateView):
     model = models.fixed_value_inflow
@@ -1560,7 +1564,7 @@ class FixedValueInflowCreateView(generic.CreateView):
         return super(FixedValueInflowCreateView, self).form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
+        return urls.reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
 
 
 #  Random Choice Inflow
@@ -1597,10 +1601,10 @@ class RandomChoiceInflowUpdateView(generic.UpdateView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.target.model.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.target.model.pk})
     
     def get_absolute_url(self):
-        return reverse('dpmfa:random-choice-inflow-update', args=[self.id])
+        return urls.reverse('dpmfa:random-choice-inflow-update', args=[self.id])
 
 
 class RandomChoiceInflowDeleteView(generic.DeleteView):
@@ -1614,7 +1618,7 @@ class RandomChoiceInflowDeleteView(generic.DeleteView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
+        return urls.reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -1625,7 +1629,7 @@ class RandomChoiceInflowDeleteView(generic.DeleteView):
             following_single_period_inflow.save()
 
         self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url())
 
 
 class RandomChoiceInflowCreateView(generic.CreateView):
@@ -1658,7 +1662,7 @@ class RandomChoiceInflowCreateView(generic.CreateView):
         return super(RandomChoiceInflowCreateView, self).form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
+        return urls.reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
 
 
 
@@ -1685,10 +1689,10 @@ class StochasticFunctionInflowUpdateView(generic.UpdateView):
 
     def get_success_url(self, **kwargs):
         stochastic_function_inflow = self.object.stochastic_function_inflow.get_queryset()[0]
-        return reverse_lazy('dpmfa:model-detail', kwargs={'pk': stochastic_function_inflow.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': stochastic_function_inflow.pk})
     
     def get_absolute_url(self):
-        return reverse('dpmfa:stochastic-function-inflow-update', args=[self.id])
+        return urls.reverse('dpmfa:stochastic-function-inflow-update', args=[self.id])
 
 
 class StochasticFunctionInflowDeleteView(generic.DeleteView):
@@ -1703,7 +1707,7 @@ class StochasticFunctionInflowDeleteView(generic.DeleteView):
         return context
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
+        return urls.reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.object.external_list_inflow.pk})
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -1714,7 +1718,7 @@ class StochasticFunctionInflowDeleteView(generic.DeleteView):
             following_single_period_inflow.save()
 
         self.object.delete()
-        return HttpResponseRedirect(self.get_success_url())
+        return http.HttpResponseRedirect(self.get_success_url())
 
 class StochasticFunctionInflowCreateView(generic.CreateView):
     model = models.stochastic_function_inflow
@@ -1749,7 +1753,7 @@ class StochasticFunctionInflowCreateView(generic.CreateView):
 
 
     def get_success_url(self, **kwargs):
-        return reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
+        return urls.reverse_lazy('dpmfa:external-list-inflow-detail', kwargs={'pk': self.kwargs['external_list_inflow_pk']})
 
 
 #==============================================================================

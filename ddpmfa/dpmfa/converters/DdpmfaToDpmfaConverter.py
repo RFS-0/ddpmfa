@@ -1,13 +1,16 @@
-import dpmfa.models as django_models
-import dpmfa.functions as fs
+# numpy
 import numpy.random as nr
+
+#django
+
+# ddpmfa
+import dpmfa.models as models
+import dpmfa.functions as fs
+
+# dpmfa
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import components as package_components
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import model as package_model
 from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator import simulator as package_simulator
-import django
-from django.db.models.sql.constants import SINGLE
-
-# Make sure to always convert the compartments before the transfers
 
 #==============================================================================
 #  Package variables
@@ -200,7 +203,7 @@ def getDistributionFunction(distribution_type):
 
 class CompartmentConverter(object):
     
-    def __init__(self, db_compartment=django_models.compartment):
+    def __init__(self, db_compartment=models.compartment):
         self.db_entity = db_compartment
         self.compNumber = db_compartment.pk
         self.name = db_compartment.name
@@ -225,7 +228,7 @@ class CompartmentConverter(object):
     
 class FlowCompartmentConverter(CompartmentConverter):
     
-    def __init__(self, db_flow_compartment=django_models.flow_compartment):
+    def __init__(self, db_flow_compartment=models.flow_compartment):
         super(FlowCompartmentConverter, self).__init__(db_flow_compartment)
         
         self.transfers = [] 
@@ -264,7 +267,7 @@ class FlowCompartmentConverter(CompartmentConverter):
     
 class SinkConverter(CompartmentConverter):
     
-    def __init__(self, db_sink=django_models.sink):
+    def __init__(self, db_sink=models.sink):
         super(SinkConverter, self).__init__(db_sink)
         
         self.sink_dpmfa = package_components.Sink(
@@ -280,7 +283,7 @@ class SinkConverter(CompartmentConverter):
             
 class StockConverter(FlowCompartmentConverter):
     
-    def __init__(self, db_stock=django_models.stock):
+    def __init__(self, db_stock=models.stock):
         super(StockConverter, self).__init__(db_stock)
     
         self.localRelease = None
@@ -335,7 +338,7 @@ class StockConverter(FlowCompartmentConverter):
 
 class LocalReleaseConverter(object):
     
-    def __init__(self, db_local_release=django_models.local_release):
+    def __init__(self, db_local_release=models.local_release):
         self.db_entity = db_local_release
             
         self.name = db_local_release.name
@@ -352,7 +355,7 @@ class LocalReleaseConverter(object):
 
 class FixedRateReleaseConverter(LocalReleaseConverter):
     
-    def __init__(self, db_fixed_rate_release=django_models.fixed_rate_release):
+    def __init__(self, db_fixed_rate_release=models.fixed_rate_release):
         super(FixedRateReleaseConverter, self).__init__(db_fixed_rate_release)
         
         self.releaseRate = db_fixed_rate_release.release_rate
@@ -369,7 +372,7 @@ class FixedRateReleaseConverter(LocalReleaseConverter):
             
 class ListReleaseConverter(LocalReleaseConverter):
     
-    def __init__(self, db_list_release=django_models.list_release):
+    def __init__(self, db_list_release=models.list_release):
         super(ListReleaseConverter, self).__init__(db_list_release)
         
         self.releaseRatesList = []
@@ -390,7 +393,7 @@ class ListReleaseConverter(LocalReleaseConverter):
 
 class FunctionReleaseConverter(LocalReleaseConverter):
      
-     def __init__(self, db_function_release=django_models.function_release):
+     def __init__(self, db_function_release=models.function_release):
         super(FunctionReleaseConverter, self).__init__(db_function_release)
 
         release_function_name = db_function_release.release_function
@@ -420,7 +423,7 @@ class FunctionReleaseConverter(LocalReleaseConverter):
 
 class TransferConverter(object):
     
-    def __init__(self, db_transfer=django_models.transfer):
+    def __init__(self, db_transfer=models.transfer):
         self.db_entity = db_transfer
         self.belongs_to_aggregated_transfer = db_transfer.belongs_to_aggregated_transfer
         
@@ -439,7 +442,7 @@ class TransferConverter(object):
             
 class ConstTransferConverter(TransferConverter):
     
-    def __init__(self, db_const_transfer=django_models.constant_transfer):
+    def __init__(self, db_const_transfer=models.constant_transfer):
         super(ConstTransferConverter, self).__init__(db_const_transfer)
         
         self.value = db_const_transfer.value
@@ -469,7 +472,7 @@ class ConstTransferConverter(TransferConverter):
 
 class StochasticTransferConverter(TransferConverter):
     
-    def __init__(self, db_stochastic_transfer=django_models.stochastic_transfer):
+    def __init__(self, db_stochastic_transfer=models.stochastic_transfer):
         super(StochasticTransferConverter, self).__init__(db_stochastic_transfer)
         
         self.function = None
@@ -510,7 +513,7 @@ class StochasticTransferConverter(TransferConverter):
             
 class RandomChoiceTransferConverter(TransferConverter):
     
-    def __init__(self, db_random_choice_transfer=django_models.random_choice_transfer):
+    def __init__(self, db_random_choice_transfer=models.random_choice_transfer):
         super(RandomChoiceTransferConverter, self).__init__(db_random_choice_transfer)
         
         self.sample = []
@@ -543,7 +546,7 @@ class RandomChoiceTransferConverter(TransferConverter):
     
 class AggregatedTransferConverter(TransferConverter):
     
-    def __init__(self, db_aggregated_transfer=django_models.aggregated_transfer):
+    def __init__(self, db_aggregated_transfer=models.aggregated_transfer):
         super(AggregatedTransferConverter, self).__init__(db_aggregated_transfer)
         
         self.singleTransfers = None 
@@ -586,7 +589,7 @@ class AggregatedTransferConverter(TransferConverter):
 
 class SinglePeriodInflowConverter(object):
     
-    def __init__(self, db_single_period_inflow=django_models.single_period_inflow):
+    def __init__(self, db_single_period_inflow=models.single_period_inflow):
         self.db_entity = db_single_period_inflow
         
         self.external_list_inflow = None
@@ -602,7 +605,7 @@ class SinglePeriodInflowConverter(object):
     
 class StochasticFunctionInflowConverter(SinglePeriodInflowConverter):
     
-    def __init__(self, db_stochastic_function_inflow=django_models.stochastic_function_inflow):
+    def __init__(self, db_stochastic_function_inflow=models.stochastic_function_inflow):
         super(StochasticFunctionInflowConverter, self).__init__(db_stochastic_function_inflow)
         
         
@@ -629,7 +632,7 @@ class StochasticFunctionInflowConverter(SinglePeriodInflowConverter):
             
 class RandomChoiceInflowConverter(SinglePeriodInflowConverter):
     
-    def __init__(self, db_random_choice_inflow=django_models.random_choice_inflow):
+    def __init__(self, db_random_choice_inflow=models.random_choice_inflow):
         super(RandomChoiceInflowConverter, self).__init__(db_random_choice_inflow)
         
         if db_random_choice_inflow.sample:
@@ -649,7 +652,7 @@ class RandomChoiceInflowConverter(SinglePeriodInflowConverter):
             
 class FixedValueInflowConverter(SinglePeriodInflowConverter):
     
-    def __init__(self, db_fixed_value_inflow=django_models.fixed_value_inflow):
+    def __init__(self, db_fixed_value_inflow=models.fixed_value_inflow):
         super(FixedValueInflowConverter, self).__init__(db_fixed_value_inflow)
         
         self.currentValue = db_fixed_value_inflow.value
@@ -669,7 +672,7 @@ class FixedValueInflowConverter(SinglePeriodInflowConverter):
 
 class ExternalInflowConverter(object):
     
-    def __init__(self, db_external_inflow=django_models.external_inflow):
+    def __init__(self, db_external_inflow=models.external_inflow):
         self.db_entity = db_external_inflow
         
         self.target = None
@@ -701,7 +704,7 @@ class ExternalInflowConverter(object):
 
 class ExternalListInflowConverter(ExternalInflowConverter):
     
-    def __init__(self, db_external_list_inflow=django_models.external_list_inflow):
+    def __init__(self, db_external_list_inflow=models.external_list_inflow):
         super(ExternalListInflowConverter, self).__init__(db_external_list_inflow)
         
         self.inflowList = None        
@@ -747,7 +750,7 @@ class ExternalListInflowConverter(ExternalInflowConverter):
             
 class ExternalFunctionInflowConverter(ExternalInflowConverter):
     
-    def __init__(self, db_external_function_inflow=django_models.external_function_inflow):
+    def __init__(self, db_external_function_inflow=models.external_function_inflow):
         super(ExternalFunctionInflowConverter, self).__init__(db_external_function_inflow)
         
         self.basicInflow = db_external_function_inflow.basic_inflow
@@ -799,7 +802,7 @@ class ExternalFunctionInflowConverter(ExternalInflowConverter):
 
 class ModelInstanceConverter(object):
     
-    def __init__(self, db_model_instance=django_models.model_instance):
+    def __init__(self, db_model_instance=models.model_instance):
         self.db_entity = db_model_instance
         self.name = db_model_instance.name
         self.project = db_model_instance.project
@@ -832,7 +835,7 @@ class ModelInstanceConverter(object):
         
         # flow compartments
         self.mapDpmfaFlowCompartmentToConverter = {}
-        flow_compartments_qs = django_models.flow_compartment.objects.filter(model=db_model_instance.pk)
+        flow_compartments_qs = models.flow_compartment.objects.filter(model=db_model_instance.pk)
         for flowCompartment in flow_compartments_qs:
             fcc = FlowCompartmentConverter(flowCompartment)
             self.flowCompartments.append(fcc)
@@ -841,7 +844,7 @@ class ModelInstanceConverter(object):
         
         # stocks
         self.mapDpmfaStockToConverter = {}
-        stocks_qs = django_models.stock.objects.filter(model=db_model_instance.pk)
+        stocks_qs = models.stock.objects.filter(model=db_model_instance.pk)
         for stock in stocks_qs:
             s = StockConverter(stock)
             self.stocks.append(s)
@@ -849,16 +852,16 @@ class ModelInstanceConverter(object):
             self.mapDpmfaStockToConverter[s.getStockAsDpmfaEntity()] = s
             
             # local release
-            if len(django_models.fixed_rate_release.objects.filter(pk=stock.local_release.pk)) > 0:
-                db_fixed_rate_release = django_models.fixed_rate_release.objects.get(pk=stock.local_release.pk)
+            if len(models.fixed_rate_release.objects.filter(pk=stock.local_release.pk)) > 0:
+                db_fixed_rate_release = models.fixed_rate_release.objects.get(pk=stock.local_release.pk)
                 frr = FixedRateReleaseConverter(db_fixed_rate_release).getFixedRateReleaseAsDpmfaEntity()
                 self.localReleases.append(frr)
-            elif len(django_models.list_release.objects.filter(pk=stock.local_release.pk)) > 0:
-                db_list_release =django_models.list_release.objects.get(pk=stock.local_release.pk)
+            elif len(models.list_release.objects.filter(pk=stock.local_release.pk)) > 0:
+                db_list_release =models.list_release.objects.get(pk=stock.local_release.pk)
                 lr = ListReleaseConverter(db_list_release).getListReleaseAsDpmfaEntity()
                 self.localReleases.append(lr)
-            elif len(django_models.function_release.objects.filter(pk=stock.local_release.pk)) > 0:
-                db_function_release = django_models.function_release.objects.get(pk=stock.local_release.pk)
+            elif len(models.function_release.objects.filter(pk=stock.local_release.pk)) > 0:
+                db_function_release = models.function_release.objects.get(pk=stock.local_release.pk)
                 fr = FunctionReleaseConverter(db_function_release).getFunctionReleaseAsDpmfaEntity()
                 self.localReleases.append(fr)
             else:
@@ -866,7 +869,7 @@ class ModelInstanceConverter(object):
         
         # sinks
         self.mapDpmfaSinkToConverter = {}
-        sinks_qs = django_models.sink.objects.filter(model=db_model_instance.pk)
+        sinks_qs = models.sink.objects.filter(model=db_model_instance.pk)
         for sink in sinks_qs:
             s = SinkConverter(sink)
             self.sinks.append(s)
@@ -874,7 +877,7 @@ class ModelInstanceConverter(object):
             self.mapDpmfaSinkToConverter[s.getSinkAsDpmfaEntity()] = s
             
         # external list inflows
-        external_list_inflows_qs = django_models.external_list_inflow.objects.filter(target__model=db_model_instance.pk)
+        external_list_inflows_qs = models.external_list_inflow.objects.filter(target__model=db_model_instance.pk)
         for externalListInflow in external_list_inflows_qs:
             eli = ExternalListInflowConverter(externalListInflow)
             self.externalListInflows.append(eli)
@@ -883,23 +886,23 @@ class ModelInstanceConverter(object):
             # single period inflows
             qs = externalListInflow.single_period_inflows.get_queryset()
             for singlePeriodInflow in qs:
-                if len(django_models.fixed_value_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
-                    db_fixed_value_inflow = django_models.fixed_value_inflow.objects.get(pk=singlePeriodInflow.pk)
+                if len(models.fixed_value_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
+                    db_fixed_value_inflow = models.fixed_value_inflow.objects.get(pk=singlePeriodInflow.pk)
                     fvi = FixedValueInflowConverter(db_fixed_value_inflow).getFixedValueInflowAsDpmfaEntity()
                     self.singlePeriodInflows.append(fvi)
-                elif len(django_models.stochastic_function_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
-                    db_stochastic_function_inflow = django_models.stochastic_function_inflow.objects.get(pk=singlePeriodInflow.pk)
+                elif len(models.stochastic_function_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
+                    db_stochastic_function_inflow = models.stochastic_function_inflow.objects.get(pk=singlePeriodInflow.pk)
                     sfi = StochasticFunctionInflowConverter(db_stochastic_function_inflow).getStochasticFunctionInflowAsDpmfaEntity()
                     self.singlePeriodInflows.append(sfi)
-                elif len(django_models.random_choice_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
-                    db_random_choice_inflow = django_models.random_choice_inflow.objects.get(pk=singlePeriodInflow.pk)
+                elif len(models.random_choice_inflow.objects.filter(pk=singlePeriodInflow.pk)) > 0:
+                    db_random_choice_inflow = models.random_choice_inflow.objects.get(pk=singlePeriodInflow.pk)
                     rci = RandomChoiceInflowConverter(db_random_choice_inflow).getRandomChoiceInflowAsDpmfaEntity()
                     self.singlePeriodInflows.append(rci)
                 else:
                     print("Could not construct single period inflow for external list inflow %s" %externalListInflow.name)
             
         # external function inflows
-        external_function_inflow_qs = django_models.external_function_inflow.objects.filter(target__model=db_model_instance.pk)
+        external_function_inflow_qs = models.external_function_inflow.objects.filter(target__model=db_model_instance.pk)
         for externalFunctionInflow in external_function_inflow_qs:
             efi = ExternalFunctionInflowConverter(externalFunctionInflow)
             
@@ -908,16 +911,16 @@ class ModelInstanceConverter(object):
             
             # single period inflow
             basicInfow = externalFunctionInflow.basic_inflow
-            if len(django_models.fixed_value_inflow.objects.filter(pk=basicInfow.pk)) > 0:
-                db_fixed_value_inflow = django_models.fixed_value_inflow.objects.get(pk=basicInfow.pk)
+            if len(models.fixed_value_inflow.objects.filter(pk=basicInfow.pk)) > 0:
+                db_fixed_value_inflow = models.fixed_value_inflow.objects.get(pk=basicInfow.pk)
                 fvi = FixedValueInflowConverter(db_fixed_value_inflow).getFixedValueInflowAsDpmfaEntity()
                 self.singlePeriodInflows.append(fvi)
-            elif len(django_models.stochastic_function_inflow.objects.filter(pk=basicInfow.pk)) > 0:
-                db_stochastic_function_inflow = django_models.stochastic_function_inflow.objects.get(pk=basicInfow.pk)
+            elif len(models.stochastic_function_inflow.objects.filter(pk=basicInfow.pk)) > 0:
+                db_stochastic_function_inflow = models.stochastic_function_inflow.objects.get(pk=basicInfow.pk)
                 sfi = StochasticFunctionInflowConverter(db_stochastic_function_inflow).getStochasticFunctionInflowAsDpmfaEntity()
                 self.singlePeriodInflows.append(sfi)
-            elif len(django_models.random_choice_inflow.objects.filter(pk=basicInfow.pk)) > 0:
-                db_random_choice_inflow = django_models.random_choice_inflow.objects.get(pk=basicInfow.pk)
+            elif len(models.random_choice_inflow.objects.filter(pk=basicInfow.pk)) > 0:
+                db_random_choice_inflow = models.random_choice_inflow.objects.get(pk=basicInfow.pk)
                 rci = RandomChoiceInflowConverter(db_random_choice_inflow).getRandomChoiceInflowAsDpmfaEntity()
                 self.singlePeriodInflows.append(rci)
             else:
@@ -926,25 +929,25 @@ class ModelInstanceConverter(object):
         # transfers
         
         # constant transfers
-        for constantTransfer in django_models.constant_transfer.objects.filter(target__model=db_model_instance.pk):
+        for constantTransfer in models.constant_transfer.objects.filter(target__model=db_model_instance.pk):
             ct = ConstTransferConverter(constantTransfer)
             self.constantTransfers.append(ct)
             self.transfers.append(ct.getConstantTransferAsDpmfaEntity())
         
         # random choice transfers
-        for randomChoiceTransfer in django_models.random_choice_transfer.objects.filter(target__model=db_model_instance.pk):
+        for randomChoiceTransfer in models.random_choice_transfer.objects.filter(target__model=db_model_instance.pk):
             rct = RandomChoiceTransferConverter(randomChoiceTransfer)
             self.randomChoiceTransfers.append(rct)
             self.transfers.append(rct.getRandomChoiceTransferAsDpmfaEntity())
         
         # stochastic transfers
-        for stochasticTransfer in django_models.stochastic_transfer.objects.filter(target__model=db_model_instance.pk):
+        for stochasticTransfer in models.stochastic_transfer.objects.filter(target__model=db_model_instance.pk):
             st = StochasticTransferConverter(stochasticTransfer)
             self.stochasticTransfers.append(st)
             self.transfers.append(st.getStochasticTransferAsDpmfaEntity())
             
         # aggregated transfers
-#         for aggregatedTransfer in django_models.aggregated_transfer.objects.filter(target__model=db_model_instance.pk):
+#         for aggregatedTransfer in models.aggregated_transfer.objects.filter(target__model=db_model_instance.pk):
 #             at = AggregatedTransferConverter(aggregatedTransfer)
 #             self.aggregatedTransfers.append(at)
 #             self.transfers.append(at.getAggregatedTransferAsDpmfaEntity())
@@ -1024,7 +1027,7 @@ class ModelInstanceConverter(object):
 
 class ExperimentConverter(object):
     
-    def __init__(self, db_experiment=django_models.experiment):
+    def __init__(self, db_experiment=models.experiment):
         self.db_entity = db_experiment
         self.name = db_experiment.name
         self.project = db_experiment.model_instance.project
