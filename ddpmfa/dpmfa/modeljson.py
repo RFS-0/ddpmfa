@@ -14,8 +14,6 @@ class NormalDistributionScaffold(object):
 
 class ModelJson(object):
 
-
-
     @staticmethod
     def model_to_dict(model):
         # Step 1: Assemble dictionaries for all entities that are displayed as node

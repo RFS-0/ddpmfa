@@ -1,9 +1,11 @@
+# django
 from django.conf.urls import url
-from ddpmfa import settings
-from django.conf.urls.static import static
+
+# ddpmfa
 from . import views
 
 app_name = 'dpmfa'
+
 urlpatterns = [
     
 # ==============================================================================

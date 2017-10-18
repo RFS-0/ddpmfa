@@ -15,7 +15,7 @@ import django.urls as urls
 import dpmfa.converters.DdpmfaToDpmfaConverter as DdpmfaToDpmfaConverter
 import dpmfa.converters.ModelDesignerToDdpmfaConverter as ModelDesignerToDdpmfaConverter
 import dpmfa.converters.DdpmfaToModelDesignerConverter as DdpmfaToModelDesignerConverter
-import dpmfa.copiers as copiers
+import dpmfa.copiers.ModelCopier as ModelCopier
 import dpmfa.forms as forms
 import dpmfa.models as models
 
@@ -401,7 +401,7 @@ class ExperimentCreateView(generic.CreateView):
     
     def setupExperiment(self): 
         self.prototype_model = models.model.objects.get(pk=self.kwargs['prototype_pk'])
-        self.model_instance = copiers.ModelCopier.copy_model(self.prototype_model)
+        self.model_instance = ModelCopier.ModelCopier.copy_model(self.prototype_model)
         self.experiment.prototype_model = self.prototype_model
         self.experiment.model_instance = self.model_instance
         self.experiment.save()
@@ -411,6 +411,7 @@ class ExperimentCreateView(generic.CreateView):
         self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
         self.modelInstanceConverter = self.experimentConverter.getModelInstanceConverter()
         self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
+        pprint.pprint(self.flowCompartmentMap)
         self.stockMap = self.modelInstanceConverter.getStockMap()
         self.sinkMap = self.modelInstanceConverter.getSinkMap()
         print("Running simulation...")

@@ -325,6 +325,9 @@ class SaveManager(object):
         self.connections = self.jsonModel['connections']
         
     def recreateDBModel(self, model_pk):
+        
+        print("Recreating db model...")
+        
         old_model = django_models.model.objects.get(pk=model_pk)
         
         pk = old_model.pk
@@ -332,7 +335,36 @@ class SaveManager(object):
         name = old_model.name
         description = old_model.description
         
+        print("PK of old model: " + str(pk))
+        
+        
+        
+        # delete all everything that relates to the old model except model instances, experiments and results
+        print("Deleting entities of model...")
+        for compartment in django_models.compartment.objects.filter(model = old_model):
+            print("Deleting compartment: " + str(compartment))
+            compartment.delete()
+            
+        for localRelease in django_models.local_release.objects.filter(model = old_model):
+            print("Deleting local release: " + str(localRelease))
+            localRelease.delete()
+            
+        for transfer in django_models.transfer.objects.filter(model = old_model):
+            print("Deleting transfer: " + str(transfer))
+            transfer.delete()
+            
+        for externalInflow in django_models.external_inflow.objects.filter(model = old_model):
+            print("Deleting external inflow: " + str(externalInflow))
+            externalInflow.delete()
+            
+        for singlePeriodInflow in django_models.single_period_inflow.objects.filter(model = old_model):
+            print("Deleting single period inflow: " + str(singlePeriodInflow))
+            singlePeriodInflow.delete()
+        
+        print("Deleting old model...")
         old_model.delete()
+        
+        print("Creating new model...")
         
         new_model = django_models.model(
             pk = pk,
@@ -341,6 +373,8 @@ class SaveManager(object):
             description = description)
         
         new_model.save()
+        
+        print("Saved new model...")
         
         return new_model
     
@@ -414,6 +448,7 @@ class SaveManager(object):
                 
     def createDBEntitiesExternalListInflows(self):
         for primaryKey, externalListInflow in getExternalListInflows().items():
+            print("PK/ELI: " + str(primaryKey))
             self.attributes = {}
             
             external_list_inflow = django_models.external_list_inflow()
@@ -438,6 +473,7 @@ class SaveManager(object):
 
     def createDBEntitiesExternalFunctionInflows(self):
         for primaryKey, externalFunctionInflow in getExternalFunctionInflows().items():
+            print("PK/EFI: " + str(primaryKey))
             self.attributes = {}
             
             external_function_inflow = django_models.external_function_inflow()
@@ -467,6 +503,7 @@ class SaveManager(object):
             
     def createDBEntitiesSink(self):
         for primaryKey, sink in getSinks().items():
+            print("PK/SINK: " + str(primaryKey))
             self.attributes = {}
             
             sink_db = django_models.sink()
@@ -489,6 +526,7 @@ class SaveManager(object):
 
     def createDBEntitiesFlowCompartment(self):
         for primaryKey, flowCompartment in getFlowCompartments().items():
+            print("PK/FC: " + str(primaryKey))
             self.attributes = {}
             
             flow_compartment_db = django_models.flow_compartment()
@@ -513,6 +551,7 @@ class SaveManager(object):
             
     def createDBEntitiesStock(self):
         for primaryKey, stock in getStocks().items():
+            print("PK/STOCKS: " + str(primaryKey))
             self.attributes = {}
             
             stock_db = django_models.stock()

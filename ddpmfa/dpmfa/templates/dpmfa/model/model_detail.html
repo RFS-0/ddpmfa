@@ -389,7 +389,7 @@
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
 				                               		<a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}">
-				                               		{{ external_function_inflow.basic_inflow.period}}</a>
+				                               		{{ external_function_inflow.basic_inflow|get_class|underline_to_ws|title }}</a>
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
 				                               		{{ external_function_inflow.inflow_function}}

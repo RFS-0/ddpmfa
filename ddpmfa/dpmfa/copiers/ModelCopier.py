@@ -1,4 +1,5 @@
-from dpmfa import models as dbm
+# ddpmfa
+import dpmfa.models as models
 
 class ModelCopier(object):
 
@@ -9,7 +10,7 @@ class ModelCopier(object):
     """
     @staticmethod
     def copy_model(model_ref):
-        model_copy = dbm.model_instance(
+        model_copy = models.model_instance(
             project=model_ref.project,
             name=model_ref.name,
             description=model_ref.description,
@@ -22,9 +23,9 @@ class ModelCopier(object):
         compartment_by_ref_pk = {}
         inflow_by_ref_pk = {}
 
-        for flow_compartment_ref in dbm.flow_compartment.objects.filter(model=model_ref):
-            if dbm.stock.objects.filter(pk=flow_compartment_ref.pk).count() == 0:
-                flow_compartment_copy = dbm.flow_compartment(
+        for flow_compartment_ref in models.flow_compartment.objects.filter(model=model_ref):
+            if models.stock.objects.filter(pk=flow_compartment_ref.pk).count() == 0:
+                flow_compartment_copy = models.flow_compartment(
                     model=model_copy,
                     name=flow_compartment_ref.name,
                     description=flow_compartment_ref.description,
@@ -38,8 +39,8 @@ class ModelCopier(object):
                 flow_compartment_copy.save()
                 compartment_by_ref_pk[flow_compartment_ref.pk] = flow_compartment_copy
 
-        for sink_ref in dbm.sink.objects.filter(model=model_ref):
-            sink_copy = dbm.sink(
+        for sink_ref in models.sink.objects.filter(model=model_ref):
+            sink_copy = models.sink(
                 model=model_copy,
                 name=sink_ref.name,
                 description=sink_ref.description,
@@ -51,8 +52,8 @@ class ModelCopier(object):
             sink_copy.save()
             compartment_by_ref_pk[sink_ref.pk] = sink_copy
 
-        for stock_ref in dbm.stock.objects.filter(model=model_ref):
-            stock_copy = dbm.stock(
+        for stock_ref in models.stock.objects.filter(model=model_ref):
+            stock_copy = models.stock(
                 model=model_copy,
                 name=stock_ref.name,
                 description=stock_ref.description,
@@ -67,9 +68,10 @@ class ModelCopier(object):
             compartment_by_ref_pk[stock_ref.pk] = stock_copy
 
         aggregated_transfer_by_ref_pk = {}
-        aggregated_transfer_refs = dbm.aggregated_transfer.objects.filter(target__model=model_ref)
+        aggregated_transfer_refs = models.aggregated_transfer.objects.filter(target__model=model_ref)
         for transfer_ref in aggregated_transfer_refs:
-            transfer_copy = dbm.aggregated_transfer(
+            transfer_copy = models.aggregated_transfer(
+                model=model_copy,
                 target=compartment_by_ref_pk[transfer_ref.target.pk] if not transfer_ref.target is None else None,
                 source_flow_compartment=compartment_by_ref_pk[transfer_ref.source_flow_compartment.pk] if not transfer_ref.source_flow_compartment is None else None,
                 name=transfer_ref.name,
@@ -85,8 +87,9 @@ class ModelCopier(object):
                 transfer_copy.belongs_to_aggregated_transfer = aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk]
                 transfer_copy.save()
 
-        for transfer_ref in dbm.constant_transfer.objects.filter(target__model=model_ref):
-            transfer_copy = dbm.constant_transfer(
+        for transfer_ref in models.constant_transfer.objects.filter(target__model=model_ref):
+            transfer_copy = models.constant_transfer(
+                model = model_copy,
                 target=compartment_by_ref_pk[transfer_ref.target.pk] if not transfer_ref.target is None else None,
                 source_flow_compartment=compartment_by_ref_pk[transfer_ref.source_flow_compartment.pk] if not transfer_ref.source_flow_compartment is None else None,
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
@@ -96,8 +99,9 @@ class ModelCopier(object):
             )
             transfer_copy.save()
 
-        for transfer_ref in dbm.random_choice_transfer.objects.filter(target__model=model_ref):
-            transfer_copy = dbm.random_choice_transfer(
+        for transfer_ref in models.random_choice_transfer.objects.filter(target__model=model_ref):
+            transfer_copy = models.random_choice_transfer(
+                model = model_copy,
                 target=compartment_by_ref_pk[transfer_ref.target.pk] if not transfer_ref.target is None else None,
                 source_flow_compartment=compartment_by_ref_pk[transfer_ref.source_flow_compartment.pk] if not transfer_ref.source_flow_compartment is None else None,
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
@@ -107,8 +111,9 @@ class ModelCopier(object):
             )
             transfer_copy.save()
 
-        for transfer_ref in dbm.stochastic_transfer.objects.filter(target__model=model_ref):
-            transfer_copy = dbm.stochastic_transfer(
+        for transfer_ref in models.stochastic_transfer.objects.filter(target__model=model_ref):
+            transfer_copy = models.stochastic_transfer(
+                model = model_copy,
                 target=compartment_by_ref_pk[transfer_ref.target.pk] if not transfer_ref.target is None else None,
                 source_flow_compartment=compartment_by_ref_pk[transfer_ref.source_flow_compartment.pk] if not transfer_ref.source_flow_compartment is None else None,
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
@@ -119,8 +124,9 @@ class ModelCopier(object):
             )
             transfer_copy.save()
 
-        for transfer_ref in dbm.stochastic_transfer.objects.filter(target__model=model_ref):
-            transfer_copy = dbm.stochastic_transfer(
+        for transfer_ref in models.stochastic_transfer.objects.filter(target__model=model_ref):
+            transfer_copy = models.stochastic_transfer(
+                model = model_copy,
                 target=compartment_by_ref_pk[transfer_ref.target.pk] if not transfer_ref.target is None else None,
                 source_flow_compartment=compartment_by_ref_pk[transfer_ref.source_flow_compartment.pk] if not transfer_ref.source_flow_compartment is None else None,
                 belongs_to_aggregated_transfer=aggregated_transfer_by_ref_pk[transfer_ref.belongs_to_aggregated_transfer.pk] if not transfer_ref.belongs_to_aggregated_transfer is None else None,
@@ -131,8 +137,9 @@ class ModelCopier(object):
             )
             transfer_copy.save()
 
-        for release_ref in dbm.fixed_rate_release.objects.filter(stock__model=model_ref):
-            release_copy = dbm.fixed_rate_release(
+        for release_ref in models.fixed_rate_release.objects.filter(stock__model=model_ref):
+            release_copy = models.fixed_rate_release(
+                model = model_copy,
                 name=release_ref.name,
                 delay=release_ref.delay,
                 stock=compartment_by_ref_pk[release_ref.stock.pk],
@@ -142,8 +149,9 @@ class ModelCopier(object):
             compartment_by_ref_pk[release_ref.stock.pk].local_release = release_copy
             compartment_by_ref_pk[release_ref.stock.pk].save()
 
-        for release_ref in dbm.list_release.objects.filter(stock__model=model_ref):
-            release_copy = dbm.list_release(
+        for release_ref in models.list_release.objects.filter(stock__model=model_ref):
+            release_copy = models.list_release(
+                model = model_copy,
                 name=release_ref.name,
                 delay=release_ref.delay,
                 stock=compartment_by_ref_pk[release_ref.stock.pk],
@@ -153,8 +161,9 @@ class ModelCopier(object):
             compartment_by_ref_pk[release_ref.stock.pk].local_release = release_copy
             compartment_by_ref_pk[release_ref.stock.pk].save()
 
-        for release_ref in dbm.function_release.objects.filter(stock__model=model_ref):
-            release_copy = dbm.function_release(
+        for release_ref in models.function_release.objects.filter(stock__model=model_ref):
+            release_copy = models.function_release(
+                model = model_copy,
                 name=release_ref.name,
                 delay=release_ref.delay,
                 stock=compartment_by_ref_pk[release_ref.stock.pk],
@@ -167,8 +176,9 @@ class ModelCopier(object):
 
 
 
-        for inflow_ref in dbm.external_list_inflow.objects.filter(target__model=model_ref):
-            inflow_copy = dbm.external_list_inflow(
+        for inflow_ref in models.external_list_inflow.objects.filter(target__model=model_ref):
+            inflow_copy = models.external_list_inflow(
+                model = model_copy,
                 target=compartment_by_ref_pk[inflow_ref.target.pk],
                 name=inflow_ref.name,
                 start_delay=inflow_ref.start_delay,
@@ -178,8 +188,9 @@ class ModelCopier(object):
             )
             inflow_copy.save()
 
-            for period_inflow_ref in dbm.fixed_value_inflow.objects.filter(external_list_inflow=inflow_ref):
-                period_inflow_copy = dbm.fixed_value_inflow(
+            for period_inflow_ref in models.fixed_value_inflow.objects.filter(external_list_inflow=inflow_ref):
+                period_inflow_copy = models.fixed_value_inflow(
+                    model = model_copy,
                     external_list_inflow=inflow_copy,
                     current_value=period_inflow_ref.current_value,
                     period=period_inflow_ref.period,
@@ -187,8 +198,9 @@ class ModelCopier(object):
                 )
                 period_inflow_copy.save()
 
-            for period_inflow_ref in dbm.stochastic_function_inflow.objects.filter(external_list_inflow=inflow_ref):
-                period_inflow_copy = dbm.stochastic_function_inflow(
+            for period_inflow_ref in models.stochastic_function_inflow.objects.filter(external_list_inflow=inflow_ref):
+                period_inflow_copy = models.stochastic_function_inflow(
+                    model_copy = model_copy,
                     external_list_inflow=inflow_copy,
                     current_value=period_inflow_ref.current_value,
                     period=period_inflow_ref.period,
@@ -197,8 +209,9 @@ class ModelCopier(object):
                 )
                 period_inflow_copy.save()
 
-            for period_inflow_ref in dbm.random_choice_inflow.objects.filter(external_list_inflow=inflow_ref):
-                period_inflow_copy = dbm.random_choice_inflow(
+            for period_inflow_ref in models.random_choice_inflow.objects.filter(external_list_inflow=inflow_ref):
+                period_inflow_copy = models.random_choice_inflow(
+                    model =model_copy,
                     external_list_inflow=inflow_copy,
                     current_value=period_inflow_ref.current_value,
                     period=period_inflow_ref.period,
@@ -206,8 +219,9 @@ class ModelCopier(object):
                 )
                 period_inflow_copy.save()
 
-        for inflow_ref in dbm.external_function_inflow.objects.filter(target__model=model_ref):
-            inflow_copy = dbm.external_function_inflow(
+        for inflow_ref in models.external_function_inflow.objects.filter(target__model=model_ref):
+            inflow_copy = models.external_function_inflow(
+                model = model_copy,
                 target=compartment_by_ref_pk[inflow_ref.target.pk],
                 name=inflow_ref.name,
                 start_delay=inflow_ref.start_delay,
@@ -219,8 +233,9 @@ class ModelCopier(object):
             )
             inflow_copy.save()
 
-            for period_inflow_ref in dbm.fixed_value_inflow.objects.filter(external_function_inflow=inflow_ref):
-                period_inflow_copy = dbm.fixed_value_inflow(
+            for period_inflow_ref in models.fixed_value_inflow.objects.filter(external_function_inflow=inflow_ref):
+                period_inflow_copy = models.fixed_value_inflow(
+                    model = model_copy,
                     external_function_inflow=inflow_copy,
                     current_value=period_inflow_ref.current_value,
                     period=period_inflow_ref.period,
@@ -230,8 +245,9 @@ class ModelCopier(object):
                 inflow_copy.basic_inflow = period_inflow_copy
                 inflow_copy.save()
 
-            for period_inflow_ref in dbm.stochastic_function_inflow.objects.filter(external_function_inflow=inflow_ref):
-                period_inflow_copy = dbm.stochastic_function_inflow(
+            for period_inflow_ref in models.stochastic_function_inflow.objects.filter(external_function_inflow=inflow_ref):
+                period_inflow_copy = models.stochastic_function_inflow(
+                    model = model_copy,
                     external_function_inflow=inflow_copy,
                     current_value=period_inflow_ref.current_value,
                     period=period_inflow_ref.period,
@@ -242,8 +258,9 @@ class ModelCopier(object):
                 inflow_copy.basic_inflow = period_inflow_copy
                 inflow_copy.save()
 
-            for period_inflow_ref in dbm.random_choice_inflow.objects.filter(external_function_inflow=inflow_ref):
-                period_inflow_copy = dbm.random_choice_inflow(
+            for period_inflow_ref in models.random_choice_inflow.objects.filter(external_function_inflow=inflow_ref):
+                period_inflow_copy = models.random_choice_inflow(
+                    model = model_copy,
                     external_function_inflow=inflow_copy,
                     current_value=period_inflow_ref.current_value,
                     period=period_inflow_ref.period,

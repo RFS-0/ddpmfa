@@ -1,3 +1,6 @@
+# python
+import itertools as itertools
+
 # ddpmfa
 import dpmfa.models as models
 
@@ -1978,7 +1981,7 @@ class ExternalListInflow(Node):
         db_random_choice_inflows = models.random_choice_inflow.objects.filter(external_list_inflow=db_entity)
         db_stochastic_function_inflows = models.stochastic_function_inflow.objects.filter(external_list_inflow=db_entity)
 
-        db_single_period_inflows = list(chain(db_fixed_value_inflows, db_random_choice_inflows, db_stochastic_function_inflows))
+        db_single_period_inflows = list(itertools.chain(db_fixed_value_inflows, db_random_choice_inflows, db_stochastic_function_inflows))
         db_single_period_inflows.sort(key=lambda x : x.period)
 
         for db_single_period_inflow in db_single_period_inflows:
