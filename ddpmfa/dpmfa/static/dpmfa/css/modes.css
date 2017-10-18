@@ -213,23 +213,23 @@ header a:last-of-type:after {
 .rgm-modes-insert-node-item-sink {}
 
 .rgm-modes-insert-node-item-externalListInflow .rgm-modes-node-insert-item-icon {
-	background-image: url('../img/external_list_inflow_small.png');
+	background-image: url('../icons/list.png');
 }
 
 .rgm-modes-insert-node-item-externalFunctionInflow .rgm-modes-node-insert-item-icon {
-	background-image: url('../img/external_function_inflow_small.png');
+	background-image: url('../icons/list.png');
 }
 
 .rgm-modes-insert-node-item-flowCompartment .rgm-modes-node-insert-item-icon {
-	background-image: url('../img/flow_compartment_small.png');
+	background-image: url('../icons/flow.png');
 }
 
 .rgm-modes-insert-node-item-stock .rgm-modes-node-insert-item-icon {
-	background-image: url('../img/stock_small.png');
+	background-image: url('../icons/stock.png');
 }
 
 .rgm-modes-insert-node-item-sink .rgm-modes-node-insert-item-icon {
-	background-image: url('../img/sink_small.png');
+	background-image: url('../icons/sink.png');
 }
 
 .rgm-modes-save-controls {
@@ -374,27 +374,27 @@ s
 
 .external-list-inflow .rgm-modes-node-node-icon {
 	background-color: #b0cdc8;
-	background-image: url('../img/external_list_inflow_large.png');
+	background-image: url('../icons/list.png');
 }
 
 .external-function-inflow .rgm-modes-node-node-icon {
 	background-color: #b0cdc8;
-	background-image: url('../img/external_function_inflow_large.png');
+	background-image: url('../icons/function.png');
 }
 
 .flow-compartment .rgm-modes-node-node-icon {
 	background-color: #d1e38f;
-	background-image: url('../img/flow_compartment_large.png');
+	background-image: url('../icons/flow.png');
 }
 
 .stock .rgm-modes-node-node-icon {
 	background-color: #ffee97;
-	background-image: url('../img/stock_large.png');
+	background-image: url('../icons/stock.png');
 }
 
 .sink .rgm-modes-node-node-icon {
 	background-color: #f1ae92;
-	background-image: url('../img/sink_large.png');
+	background-image: url('../icons/sink.png');
 }
 
 .rgm-modes-node-title {
@@ -469,7 +469,7 @@ s
 	background-size: 16px 16px;
 	border-radius: 2px;
 	cursor: move;
-	background-color: #656256;
+	background-color: #ffffff;
 }
 
 .rgm-modes-node-source-endpoint-inflowTarget {
@@ -478,22 +478,22 @@ s
 }
 
 .rgm-modes-node-source-endpoint-constantTransfer {
-	background-image: url('../img/constant_transfer_inv.png');
+	background-image: url('../icons/constant.png');
 	right: 46px;
 }
 
 .rgm-modes-node-source-endpoint-randomChoiceTransfer {
-	background-image: url('../img/random_choice_transfer_inv.png');
+	background-image: url('../icons/random_.png');
 	right: 24px;
 }
 
 .rgm-modes-node-source-endpoint-aggregatedTransfer {
-	background-image: url('../img/aggregated_transfer_inv.png');
+	background-image: url('../iocns/aggregated.png');
 	right: 68px;
 }
 
 .rgm-modes-node-source-endpoint-stochasticTransfer {
-	background-image: url('../img/stochastic_transfer_inv.png');
+	background-image: url('../icons/stochastic_.png');
 	right: 2px;
 }
 
@@ -515,19 +515,19 @@ s
 }
 
 .rmg-modes-connection-overlay-constantTransfer {
-	background-image: url('../img/constant_transfer.png');
+	background-image: url('../icons/constant.png');
 }
 
 .rmg-modes-connection-overlay-randomChoiceTransfer {
-	background-image: url('../img/random_choice_transfer.png');
+	background-image: url('../icons/random_.png');
 }
 
 .rmg-modes-connection-overlay-aggregatedTransfer {
-	background-image: url('../img/aggregated_transfer.png');
+	background-image: url('../icons/aggregated.png');
 }
 
 .rmg-modes-connection-overlay-stochasticTransfer {
-	background-image: url('../img/stochastic_transfer.png');
+	background-image: url('../icons/stochastic_.png');
 }
 
 

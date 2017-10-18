@@ -11,8 +11,9 @@
 }
 
 .toc_title {
+	font-size: 150%;
     font-weight: 700;
-    text-align: center;
+    text-align: left;
 }
 
 #toc_container li, #toc_container ul, #toc_container ul li{
