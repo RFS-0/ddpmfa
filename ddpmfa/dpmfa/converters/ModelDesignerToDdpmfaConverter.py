@@ -160,6 +160,7 @@ class SaveManager(object):
         self.createDBEntitiesStochasticTransfers()
            
     def separateNodes(self):
+        generatedPrimaryKey = 0
         for node in self.nodes:
             
             type = node['typeName']
@@ -171,6 +172,9 @@ class SaveManager(object):
                 primaryKey += id
             elif tempId != None:
                 primaryKey += tempId
+            else:
+                primaryKey = generatedPrimaryKey
+                generatedPrimaryKey += 1
                 
             if type == EXTERNAL_LIST_INFLOW:
                 self.addExternalListInflow(primaryKey, node)
@@ -184,6 +188,7 @@ class SaveManager(object):
                 self.addSink(primaryKey, node)
                 
     def separateConnections(self):
+        generatedPrimaryKey = 0
         for connection in self.connections:
             
             type = connection['typeName']
@@ -195,6 +200,9 @@ class SaveManager(object):
                 primaryKey += id
             elif tempId != None:
                 primaryKey += tempId
+            else:
+                primaryKey = generatedPrimaryKey
+                generatedPrimaryKey += 1
                 
             if type == CONSTANT_TRANSFER:
                 self.addConstantTransfer(primaryKey, connection)
@@ -208,6 +216,8 @@ class SaveManager(object):
                 self.addInflowTarget(primaryKey, connection)
                 
     def createDBEntitiesExternalListInflows(self):
+        print("External List Inflows to create: ")
+        print(str(len(self.getExternalListInflows())))
         for primaryKey, externalListInflow in self.getExternalListInflows().items():
             self.attributes = {}
             
@@ -232,6 +242,8 @@ class SaveManager(object):
             self.addDBEntityExternalInflow(primaryKey, external_list_inflow)
 
     def createDBEntitiesExternalFunctionInflows(self):
+        print("External Function Inflows to create: ")
+        print(str(len(self.getExternalFunctionInflows())))
         for primaryKey, externalFunctionInflow in self.getExternalFunctionInflows().items():
             self.attributes = {}
             
@@ -261,6 +273,8 @@ class SaveManager(object):
             self.addDBEntityExternalInflow(primaryKey, external_function_inflow)
             
     def createDBEntitiesSink(self):
+        print("Sinks to create: " )
+        print(str(len(self.getSinks())))
         for primaryKey, sink in self.getSinks().items():
             self.attributes = {}
             
@@ -283,6 +297,8 @@ class SaveManager(object):
             self.addDBEntityCompartment(primaryKey, sink_db)
 
     def createDBEntitiesFlowCompartment(self):
+        print("Flow Compartments to create: ")
+        print(str(len(self.getFlowCompartments())))
         for primaryKey, flowCompartment in self.getFlowCompartments().items():
             self.attributes = {}
             
@@ -307,6 +323,8 @@ class SaveManager(object):
             self.addDBEntityCompartment(primaryKey, flow_compartment_db)
             
     def createDBEntitiesStock(self):
+        print("Stocks to create: ")
+        print(str(len(self.getStocks())))
         for primaryKey, stock in self.getStocks().items():
             self.attributes = {}
             
@@ -491,6 +509,7 @@ class SaveManager(object):
                 self.attributes['y'] = value
     
     def createFixedRateRelease(self, fixedRateRelease):
+        print("Creating Fixed Rate Release...")
         fixed_rate_release = django_models.fixed_rate_release(
             model = self.MODEL_DB,
             name = fixedRateRelease['fields'][0]['valueData'],
@@ -503,6 +522,7 @@ class SaveManager(object):
         return fixed_rate_release
     
     def createListRelease(self, listRelease):
+        print("Creating List Release...")
         items = listRelease['fields'][2]['valueData']
         tempItems = []
         for dictionary in items:
@@ -520,6 +540,7 @@ class SaveManager(object):
         return list_release
     
     def createFunctionRelease(self, functionRelease):
+        print("Creating Function Release...")
         function = functionRelease['fields'][2]['valueData'][0]
         type = function['type']
         
@@ -541,6 +562,7 @@ class SaveManager(object):
         return function_release
         
     def createFixedValueInflow(self, fixedValueInflow, external_list_inflow):
+        print("Creating Fixed Value Inflow...")
         fixed_value_inflow = django_models.fixed_value_inflow(
             model = self.MODEL_DB,
             external_list_inflow = external_list_inflow,
@@ -554,6 +576,7 @@ class SaveManager(object):
         return fixed_value_inflow
         
     def createStochasticInflow(self, stochasticInflow, external_function_inflow):
+        print("Creating Stochastic Function Inflow...")
         data = stochasticInflow['fields'][0]['valueData']
         type = data[0]['type']
         fields = data[0]['fields']
@@ -578,6 +601,7 @@ class SaveManager(object):
         return stochastic_function_inflow
         
     def createRandomChoiceInflow(self, randomChoiceInflow, external_function_inflow):
+        print("Creating Random Choice Inflow...")
         fields = randomChoiceInflow['fields'][0]
         data = fields['valueData']
         samples = []
@@ -613,7 +637,11 @@ class SaveManager(object):
             externalInflowDB.save()
             
     def createDBEntitiesConstantTransfers(self):
+        print("Constant transfers to create:")
+        print(str(len(self.getConstantTransfers())))
+        #pprint.pprint(self.getConstantTransfers())
         for primaryKey, constantTransfer in self.getConstantTransfers().items():
+            pprint.pprint(constantTransfer)
             self.attributes = {}
             
             self.extractAttributesConstantTransfer(constantTransfer)
@@ -633,6 +661,8 @@ class SaveManager(object):
             self.addDBEntityConstantTransfer(primaryKey, constant_transfer_db)
             
     def createDBEntitiesRandomChoiceTransfers(self):
+        print("Random Choice Transfers to create:")
+        print(str(len(self.getRandomChoiceTransfers())))
         for primaryKey, randomChoiceTransfer in self.getRandomChoiceTransfers().items():
             self. attributes = {}
             
@@ -653,6 +683,8 @@ class SaveManager(object):
             self.addDBEntityRandomChoiceTransfer(primaryKey, random_choice_transfer_db)
             
     def createDBEntitiesStochasticTransfers(self):
+        print("Stochastic Transfers to create:")
+        print(str(len(self.getStochasticTransfers())))
         for primaryKey, stochasticTransfer in self.getStochasticTransfers().items():
             self.attributes = {}
             
