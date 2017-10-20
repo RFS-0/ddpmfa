@@ -136,8 +136,6 @@ class FlowCompartment(Compartment):
         """
         tcSum = sum(t.currentTC for t in self.transfers)
         
-        print(str(self.transfers))
-        
         currentPriority = min(t.priority for t in self.transfers)
         maxPriority = max(t.priority for t in self.transfers)
         
