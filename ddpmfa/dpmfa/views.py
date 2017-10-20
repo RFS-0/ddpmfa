@@ -429,7 +429,6 @@ class ExperimentCreateView(generic.CreateView):
         self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
         self.modelInstanceConverter = self.experimentConverter.getModelInstanceConverter()
         self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
-        pprint.pprint(self.flowCompartmentMap)
         self.stockMap = self.modelInstanceConverter.getStockMap()
         self.sinkMap = self.modelInstanceConverter.getSinkMap()
         print("Running simulation...")
@@ -462,8 +461,6 @@ class ExperimentCreateView(generic.CreateView):
             if converter.name:
                 nameOfInflowResult = converter.name + " " + str(primaryKey)
                 
-            print(str(sink.getInflowRecords()))
-            
             self.storeArray(sink.getInflowRecords(), sink, nameOfInflowResult, primaryKey)
     
     # flow compartments have inflows and outflows
@@ -497,10 +494,8 @@ class ExperimentCreateView(generic.CreateView):
             for name in names:
                 
                 if name == nameOfInflowResult:
-                    print(str(flowCompartment.getInflowRecords()))
                     self.storeArray(flowCompartment.getInflowRecords(), flowCompartment, name, primaryKey)
                 else:
-                    print(str(flowCompartment.getOutflowRecords()))
                     self.storeOutflowDict(flowCompartment.getOutflowRecords(), flowCompartment, name, primaryKey)
                     
     # stocks have inflows and outflows
@@ -534,10 +529,8 @@ class ExperimentCreateView(generic.CreateView):
             for name in names:   
                 # store the results
                 if name == nameOfInflowResult:
-                    print(str(stock.getInflowRecords()))
                     self.storeArray(stock.getInflowRecords(), stock, name, primaryKey)
                 else:
-                    print(str(stock.getOutflowRecords()))
                     self.storeOutflowDict(stock.getOutflowRecords(), stock, name, primaryKey)
 
     def form_valid(self, form):
@@ -567,7 +560,6 @@ class ExperimentCreateView(generic.CreateView):
             pk_of_entity = primaryKey,
             result = resultAsString,
             )
-        print(r)
         r.save()
     
     def storeArray(self, array, entity, name, primaryKey):
@@ -588,7 +580,6 @@ class ExperimentCreateView(generic.CreateView):
             pk_of_entity = primaryKey,
             result = resultAsString,
             )
-        print(r)
         r.save()
     
     def getEntityConstant(self, entity):
@@ -1457,22 +1448,15 @@ class SinglePeriodInflowRedirectView(generic.RedirectView):
     query_string = False
     
     def get_redirect_url(self, *args, **kwargs):
-        #try: 
-            single_period_inflow_pk = self.kwargs['single_period_inflow_pk']
-            if len(models.fixed_value_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
-                print("trying to get fixed value inflow")
-                print("single period inflow pk:" + single_period_inflow_pk)
-                return models.fixed_value_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
-            elif len(models.stochastic_function_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
-                print("trying to get stochastic function inflow")
-                return models.stochastic_function_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
-            elif len(models.random_choice_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
-                print("trying to get random choice inflow")
-                return models.random_choice_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
-            else:
-                print("Could not retrieve a compartment for inflow")
-        #except:
-            print("Redirection of single period inflow failed")
+        single_period_inflow_pk = self.kwargs['single_period_inflow_pk']
+        if len(models.fixed_value_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
+            return models.fixed_value_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
+        elif len(models.stochastic_function_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
+            return models.stochastic_function_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
+        elif len(models.random_choice_inflow.objects.filter(pk=single_period_inflow_pk)) > 0:
+            return models.random_choice_inflow.objects.get(pk=single_period_inflow_pk).get_absolute_url()
+        else:
+            print("Could not retrieve a compartment for inflow")
 
 # Fixed Value Inflow
 
@@ -1851,6 +1835,7 @@ class ResultsTemplateView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ResultsTemplateView, self).get_context_data(**kwargs)
 
+        context['model'] = self.getModel(self.kwargs['experiment_pk'])
         context['model_instance'] = self.getModelInstance(self.kwargs['experiment_pk'])
         context['experiment'] = self.getExperiment(self.kwargs['experiment_pk'])
         context['flow_compartment_results'] = self.getFlowCompartmentResults(self.kwargs['experiment_pk'])
@@ -1858,6 +1843,10 @@ class ResultsTemplateView(generic.TemplateView):
         context['sink_results'] = self.getSinkResults(self.kwargs['experiment_pk'])
         
         return context
+    
+    def getModel(self, experiment_pk):
+        experiment = models.experiment.objects.get(pk=experiment_pk)
+        return experiment.prototype_model
     
     def getModelInstance(self, experiment_pk):
         experiment = models.experiment.objects.get(pk=experiment_pk)
