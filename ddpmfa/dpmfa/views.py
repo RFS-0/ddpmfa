@@ -134,6 +134,23 @@ class ModelDetailView(generic.DetailView):
             single_period_inflows.sort(key=lambda x: x.period)
             single_period_inflows_of_external_list_inflow[external_list_inflow.pk] = single_period_inflows
         return single_period_inflows_of_external_list_inflow
+    
+    def find_local_release_by_stock(self, model_pk):
+        stocks = models.stock.objects.filter(model=model_pk)
+        local_releases_of_stock = {}
+        for stock in stocks:
+            local_release = stock.local_release
+            if (len(models.fixed_rate_release.objects.filter(pk=local_release.pk))):
+                local_releases_of_stock[stock.pk] = models.fixed_rate_release.objects.get(pk=local_release.pk)
+            elif (len(models.list_release.objects.filter(pk=local_release.pk))):
+                local_releases_of_stock[stock.pk] = models.list_release.objects.get(pk=local_release.pk)
+            elif (len(models.function_release.objects.filter(pk=local_release.pk))):
+                local_releases_of_stock[stock.pk] = models.function_release.objects.get(pk=local_release.pk)
+            else:
+                print("Could not retrieve a local release for stock")
+        return local_releases_of_stock
+                
+                
 
     def find_constant_transfers_by_model(self, model_pk, not_in_aggregated):
         if not_in_aggregated:
@@ -217,6 +234,7 @@ class ModelDetailView(generic.DetailView):
         
         context['external_list_inflows'] = self.find_external_list_inflows_by_model(self.object.pk)
         context['single_period_inflows'] = self.find_single_period_inflows_by_external_list_inflow(self.object.pk)
+        context['local_releases'] = self.find_local_release_by_stock(self.object.pk)
         context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
         
         context['experiments'] = self.find_experiments_by_model(self.object.pk)

@@ -62,7 +62,7 @@
 				                            		<th scope="row">Log inflows</th>
 				                            		<th scope="row">Log outflows</th> 
 				                            		<th scope="row">Adjust outgoing TC's</th> 
-				                            		<th scope="row">Transfers</th> 
+				                            		<th scope="row">Incoming transfers</th> 
 				                            		<th scope="row">Action</th>
 				                        		</tr>
 				                    		</thead>
@@ -174,7 +174,7 @@
 					                               		</td>
 				                               		<td class="dpmfa-td-20-top">
 				                               			<a href="{% url 'dpmfa:local-release-update' stock.local_release.pk %}">
-				                               			{{ stock.local_release|get_class|underline_to_ws|title }}
+				                               			{{ local_releases|lookup:stock.pk|get_class|underline_to_ws|title }}
 				                               			</a>
 				                               		</td>
 					                               	<td class="dpmfa-td-10-top">
