@@ -44,7 +44,6 @@
         <ul class="nav navbar-nav">
           <li {% if view.context_object_name == 'home' %} class="active" {% endif %}><a href="{% url 'dpmfa:home' %}">Home</a></li>
           <li {% if view.context_object_name == 'projects' %} class="active" {% endif %}><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
-          <li {% if view.context_object_name == 'example' %} class="active" {% endif %}><a href="{% url 'dpmfa:example' %}">Example</a></li>
           <li {% if view.context_object_name == 'quick-reference' %} class="active" {% endif %}> <a href="{% url 'dpmfa:quick-reference' %}">Quick Reference</a></li>
           <li {% if view.context_object_name == 'documentation' %} class="active" {% endif %}><a href="{% url 'dpmfa:documentation' %}">Documentation</a></li>
         </ul>
