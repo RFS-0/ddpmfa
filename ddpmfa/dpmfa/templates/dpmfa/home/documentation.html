@@ -12,13 +12,13 @@
 	<div id="toc_container">
 		<p class="toc_title">Contents</p>
 		<ul class="toc_list"">
-			  <li><a href="#project">Project</a>
-			  <li><a href="#model">Model</a>
-			  <li><a href="#model-designer">Model designer</a>
+			  <li><a href="#project">Project</a></li>
+			  <li><a href="#model">Model</a></li>
+			  <li><a href="#model-designer">Model designer</a></li>
 				  <ul>
 					    <li><a href="#uml-diagram">UML Diagram</a></li>
 				  </ul>
-			  <li><a href="#external-inflows">External inflow</a>
+			  <li><a href="#external-inflows">External inflow</a></li>
 				  <ul>
 					<li><a href="#external-list-inflow">External list inflow</a></li>
 					    	<ul>
@@ -74,17 +74,18 @@
 
 	<h1 id="project">Project</h1>
 		<p>A is a container where you can organize all information of a specific project. 
-		In particluar it contains all the <a href="#model">models</a> of a project. Before you can create and configure a model you have to create a project</p>
+		In particluar it contains all the <a href="#model">models</a> of a project. Before you can create and configure a model you have to create a project.
+		Refer to the <a href="{% url 'dpmfa:quick-reference' %}">quick reference</a> for instructions on how to create a project</p>
 	
 	<h1 id="model">Model</h1>
 		<p>The model is the most important entity. Once you have created a project you can create a new model. The configuration of a model is
-		process that is done in three sequential steps:</p>
+		a process that is done in three sequential steps:</p>
 		<ol>
-			<li>Use the Model Designer to construct the material flow you are interested in</li>
+			<li>Use the <a href="#model-designer">Model Designer</a> to construct the material flow you are interested in</li>
 			<li>Check the parametrization to validate your inputs.</li>
-			<li>Create an experiment to run the model configuration</li>
+			<li>Create an <a href="#experiment">experiment</a> to run the model configuration</li>
 		</ol> 
-		<p>You can of course iterate over this steps as many times as you want.</p>
+		<p>You can iterate over this steps as many times as you want.</p>
 		<p>The model itself is actually a template for your experiments. This allows you to rearrange the entities your model consists of.
 		Each time you create a new experiment the current current state of the model designer and all the parameters of the model will be copied
 		and attached to the experiment. It is important to notice that copy created for the experiment is read only. This ensures that the results
@@ -96,21 +97,21 @@
 		<p>In particluar you can add the following entites to create you material flow model:</p>
 		<p>Inflows to the system:</p>
 			<ul>
-				<li>External list inflow</li>
-				<li>External function inflow</li>
+				<li><a href="#external-list-inflow">External list inflows</a></li>
+				<li><a href="#external-function-inflow">External function inflows</a></li>
 			</ul>
 		<p>Compartments of the system:</p>
 			<ul>
-				<li>Sink</li>
-				<li>Flow Compartment</li>
-				<li>Stock</li>
+				<li><a href="#sink">Sink</a></li>
+				<li><a href="#flow-compartment">Flow Compartment</a></li>
+				<li><a href="#stock">Stock</a></li>
 			</ul>
 		<p>You can link those entites with these kinds of transfers:</p>
 			<ul>
-				<li>Constant transfer</li>
-				<li>Random choice transfer</li>
-				<li>Stochastic transfer</li>
-				<li>Aggregated transfer</li>
+				<li><a href="#constant-transfer">Constant transfer</a></li>
+				<li><a href="#random-choice-transfer">Random choice transfer</a></li>
+				<li><a href="#stochastic-transfer">Stochastic transfer</a></li>
+				<li><a href="#aggregated-transfer">Aggregated transfer</a></li>
 			</ul>
 		<p id="uml-diagram">If you are familiar with UML class diagrams, the you might find the following diagram helpful as an overview:</p>
 			<img src="{% static 'dpmfa/img/uml_diagram.png' %}" style="width:80%;height:10%;">
@@ -119,28 +120,28 @@
 	
 		<p>External inflows are used to model inflow of material into the system. Ther are two distinct types of external inflows:</p>
 		<ul>
-			<li>External list inflows</li>
-			<li>External function inflows</li>
+			<li><a href="#external-list-inflow">External list inflows</a></li>
+			<li><a href="#external-function-inflow">External function inflows</a></li>
 		</ul>
 		
 		<h2 id="external-list-inflow">External list inflow</h2>
-			<p>The external list inflow lets you configure a sinlge period inflow for each period of your simulation. Each single period
+			<p>The external list inflow lets you configure a <a href="#single-period-inflow">sinlge period inflow</a> for each period of your <a href="#simulation">simulation</a>. Each single period
 			inflow can be one of the following three types:</p>
 			<ul>
-				<li>Fixed value inflow</li>
-				<li>Stochastic inflow</li>
-				<li>Random choice inflow</li>
+				<li><a href="#fixed-value-inflow">Fixed value inflow</a></li>
+				<li><a href=#stochastic-inflow">Stochastic inflow</a></li>
+				<li><a href="#random-choice-inflow">Random choice inflow</a></li>
 			</ul>
 			
 			<p>In particular you can edit the following parameters for each external list inflow:</p>
 			<ul>
-				<li>Target</li>
-				<li>Name</li>
-				<li>Start delay</li>
-				<li>Derivation distribution</li>
-				<li>Derivation parameters</li>
-				<li>Derivation factor</li>
-				<li>Single periods inflows</li>
+				<li><a href="#eli-target">Target</a></li>
+				<li><a href="#eli-name">Name</a></li>
+				<li><a href="#eli-start-delay">Start delay</a></li>
+				<li><a href="#eli-derivation-distribution">Derivation distribution</a></li>
+				<li><a herf="#eli-derivation-parameters">Derivation parameters</a></li>
+				<li><a href="#eli-derivation-factor">Derivation factor</a></li>
+				<li><a href="#eli-single-period-inflows">Single periods inflows</a></li>
 			</ul> 
 			
 			<h3 id="eli-target">Target</h3>
@@ -184,13 +185,13 @@
 			one of the types of sinlge period inlfows or a number (which then will be converted to a single period inflow).
 			<p>In particular you can edit the following parameters for each external list inflow:</p>
 				<ul>
-					<li>Target</li>
-					<li>Name</li>
-					<li>Basic inflow</li>
-					<li>Inflow function</li>
-					<li>Derivation distribution</li>
-					<li>Derivation parameters</li>
-					<li>Start delay</li>
+					<li><a href="#efi-trage">Target</a></li>
+					<li><a href="#efi-name">Name</a></li>
+					<li><a href="#efi-basic-inflow">Basic inflow</a></li>
+					<li><a href="#efi-inflow-function">Inflow function</a></li>
+					<li><a href="#efi-derivation-distribution">Derivation distribution</a></li>
+					<li><a href="#efi-derivation-parameters">Derivation parameters</a></li>
+					<li><a href="#efi-start-delay">Start delay</a></li>
 				</ul>
 				
 			<h3 id="efi-target">Target</h3>
@@ -245,16 +246,16 @@
 		<p>A single inflow represents the inflow of material to the model in one single period. You can not acctually add a single period inflow
 		to the model since this is an abstract concept that represents the different kinds of inflows you can add to the model. These are in particular:</p>
 		<ul>
-			<li>Fixed value inflow</li>
-			<li>Stochastic inflow</li>
-			<li>Random choice inflow</li>
+			<li><a href="#spi-fixed-value-inflow">Fixed value inflow</a></li>
+			<li><a href="#spi-stochastic-inflow">Stochastic inflow</a></li>
+			<li><a href="#spi-random-choice-inflow">Random choice inflow</a></li>
 		</ul>
 			
 			<h2 id="spi-fixed-value-inflow">Fixed value inflow</h2>
 				<p>The fixed value inflow represents an inflow amount to a compartment for one specific period.This kind of inflow is used to represent certainty
 				about the true value of this inflow. The fixed value inflow has one parameter:</p>
 			<ul>
-				<li>Value</li>
+				<li><a href="#spi-value">Value</a></li>
 			</ul>
 			
 			<h3 id="spi-value">Value</h3>
@@ -266,8 +267,8 @@
 				a probability distribution function. The stochastic inflow has the following parameters:</p>
 				
 				<ul>
-					<li>Probability distribution</li>
-					<li>Probability distribution parameters</li>
+					<li><a href="#spi-probability-distribution">Probability distribution</a></li>
+					<li><a href="#spi-probability-distribution-parameters">Probability distribution parameters</a></li>
 				</ul>
 				
 			<h3 id="spi-probability-distribution">Probability distribution</h3>
@@ -294,71 +295,158 @@
 		<h2 id="spi-random-choice-inflow">Random choice inflow</h2>
 			<p>A random choice inflow represents an inflow to a compartment of one period. This kind of inflow
 			is used to represent uncertainty about the true value of this inflow. The uncertainty is modeled
-			as a sample representing the assumptions about the true value. For each run one element of the sample
+			as a sample representing the assumptions about the true value. For each run, one element of the sample
 			is randomly drawn and used as inflow for the current period.
 			</p>
 			
+			<p>The random choice inflow has the following parameter:</p>
+			
+			<ul>
+				<li>Sample</li>
+			</ul>
+			
+			<h3 id="spi-sample">Sample</h3>
+				<p>Sample to draw a random value from.</p>
+			
+			
 	<h1 id="compartment">Compartment</h1>
 		<p>A compartment is a distinct area of the investigated system. Depending on the scientific question to be 
-		aswered with the model a compartment can be an environmental media, a geographic region or a logical partition
+		aswered with the model, a compartment can be an environmental media, a geographic region or a logical partition
 		in the fate of a material</p>
 		
 		<p>You can not acctually add a compartment to the model since this is an abstract concept that represents the different 
 		kinds of compartments you can add to the model. These are in particular:</p>
 		
 		<ul>
-			<li>Flow Compartment</li>
-			<li>Stock</li>
-			<li>Sink</li>
+			<li><a href="#flow-compartment">Flow Compartment</a></li>
+			<li><a href="stock">Stock</a></li>
+			<li><a href="sink">Sink</a></li>
 		</ul>
 		
 		<h2 id="flow-compartment">Flow compartment</h2>
 			<p>A flow compartment represents a system compartment without residence time of observed material. 
 			The further transfer of material to subsequent compartments is defined using Transfer objects.</p>
 			
-			<p>In particular you can edit the following parameters for flow compartment:</p>
+			<p>In particular you can edit the following parameters for a flow compartment:</p>
 			
 			<ul>
-				<li>Name</li>
-				<li>Transfers</li>
-				<li>Log inflows</li>
-				<li>Log outflows</li>
-				<li>Categories</li>
+				<li><a href="#fc-name">Name</a></li>
+				<li><a href="#fc-transfers">Transfers</a></li>
+				<li><a href="#fc-log-inflows">Log inflows</a></li>
+				<li><a href="#fc-log-outflows">Log outflows</a></li>
+				<li><a href="#fc-categories">Categories</a></li>
 			</ul>
 			
+			<h3 id="fc-name">Name</h3>
+				<p>The name of the flow compartment.</p> 
+			
 			<h3 id="fc-transfers">Transfers</h3>
-			<p>The transfers represent all outgoing transfers from the flow compartment</p>
+				<p>The transfers represent all outgoing transfers to other compartments</p>
 			
-			<p>In particular you can choose between the following transfers:</p>
-			
-				<ul>
-					<li>Constant transfer</li>
-					<li>Random choice transfer</li>
-					<li>Stochastic transfer</li>
-					<li>Aggregated transfer</li>
-				</ul>
+				<p>In particular you can choose between the following transfers:</p>
 				
-			<p>Please refer to the transfer section for more details.</p>
+					<ul>
+						<li><a href="#constant-transfer">Constant transfer</a></li>
+						<li><a href="#random-choice-transfer">Random choice transfer</a></li>
+						<li><a href="#stochastic-transfer">Stochastic transfer</a></li>
+						<li><a href="#aggregated-transfer">Aggregated transfer</a></li>
+					</ul>
+					
+				<p>Please refer to the <a href="#transfer">transfer</a> section for more details.</p>
+			
+			<h3 id="fc-log-inflows">Log inflows</h3>
+				<p>Indicates whether the inflows to this flow compartment should be stored or not. If it is not checked, the results will not contain
+				the material inflows of this flow compartment.</p>
+			
+			<h3 id="fc-log-outflows">Log outflows</h3>
+				<p>Indicates whether the outflows of this flow compartment should be stored or not. If it is not checked, the results will not contain
+				the material outflows of this flow compartment.</p>
+			
+			<h3 id="fc-categories">Categories</h3>
+				<p>You can define a list of categories the flow compartment is part of (for later evaluation)</p>
 			
 		<h2 id="stock">Stock</h2>
 			<p>A Stock is a Compartment that accumulates material like sinks do, but it also releases a part of
 			the stored material in later periods. You can specify the material release by configuring a local release. 
 			</p>
 			
-			<p>In particular you can configure the following different types of release:</p>
+			<p>In particular you can edit the following parameters for a stock:</p>
 			
 				<ul>
-					<li>Fixed rate release</li>
-					<li>List release</li>
-					<li>Function release</li>
+					<li><a href="#stock-name">Name</a></li>
+					<li><a href="#stock-transfers">Transfers</a></li>
+					<li><a href="#stock-local-release">Local release</a></li>
+					<li><a href="#stock-log-inflows">Log inflows</a></li>
+					<li><a href="#stock-log-outflows">Log outflows</a></li>
+					<li><a href="#stock-categories">Categories</a></li>
 				</ul>
 			
-			<h3 id="fixed-rate-release">Fixed rate release</h3>
-				<p> 
-				</p>
+			<h3 id="stock-name">Name</h3>
+				<p>The name of the stock.</p> 
 				
-		<h2 id="sink">Stock</h2>
+			<h3 id="stock-transfers">Transfers</h3>
+				<p>The transfers represent all outgoing transfers to other compartments</p>
+				
+				<p>In particular you can choose between the following transfers:</p>
+				
+					<ul>
+						<li><a href="#constant-transfer">Constant transfer</a></li>
+						<li><a href="#random-choice-transfer">Random choice transfer</a></li>
+						<li><a href="#stochastic-transfer">Stochastic transfer</a></li>
+						<li><a href="#aggregated-transfer">Aggregated transfer</a></li>
+					</ul>
+					
+				<p>Please refer to the <a href="#transfer">transfer</a> section for more details.</p>
+				
+			<h3 id="stock-local-release">Local release</h3>
+				<p>A local release defines which proportions of the amount of material stored in the stock
+				are released in which of the subsequent periods. Each stock has exactly one local release. </p>
+	        
+				<p>In particular you can configure the following different types of local releases:</p>
+				
+					<ul>
+						<li><a href="#fixed-rate-release">Fixed rate release</a></li>
+						<li><a href="#list-release">List release</a></li>
+						<li><a href="#function-release">Function release</a></li>
+					</ul>
+				
+				<p>Please refer to the <a href="#local-release">local release</a> section for further details about the individual release types.</p>
+				
+			<h3 id="stock-log-inflows">Log inflows</h3>
+				<p>Indicates whether the inflows to this stock should be stored or not. If it is not checked, the results will not contain
+				the material inflows of this stock.</p>
+				
+			<h3 id="stock-log-outflows">Lgo outflows</h3>
+				<p>Indicates whether the outflows of this stock should be stored or not. If it is not checked, the results will not contain
+				the material outflows of this stock.</p>
+				
+			<h3 id="stock-categories">Categories</h3>
+				<p>You can define a list of categories the flow compartment is part of (for later evaluation)</p>
 			
+		<h2 id="sink">Sink</h2>
+			<p>A model compartment where inflowing material accumulates i.e. a sink is an endpoint 
+			of the material flow.</p>
+			
+			<p>In particular you can edit the following parameters for a sink:</p>
+			
+				<ul>
+					<li><a href="#sink-name">Name</a></li>
+					<li><a href="#sink-log-inflows">Log inflows</a></li>
+					<li><a href="#sink-categories">Categories</a></li>
+				</ul>
+		
+			<h3 id="stock-name">Name</h3>
+				<p>The name of the sink.</p> 
+		
+		
+		
+			
+	<h1 id="local-release">Local release</h1>
+		<h2 id="fixed-rate-release">Fixed rate release</h2>
+		<h2 id="list-release">List release</h2>
+		<h2 id="function-release">Function release</h2>
+	
+	
 	<h1 id="transfer">Transfer</h1>
 		<h2 id="constant-transfer">Constant transfer</h2>
 		<h2 id="random-choice-transfer">Random choice transfer</h2>
