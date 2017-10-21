@@ -5,7 +5,7 @@ import pprint
 import dpmfa.models as django_models
 
 # dpmfa
-from dpmfa_simulator.components import ExternalListInflow
+from dpmfa.dpmfa_simulator_0_921.dpmfa_simulator.components import ExternalListInflow
 
 #==============================================================================
 #  Package variables
