@@ -8,12 +8,18 @@
     <!-- Jumbotron -->
     <div class="jumbotron-fluid">
     
-    <h1>How the DPMFA App works</h1>
-    	<p>In the top bar you can see the links you most likely will use frequently when working with this app.</p>
-    	<p>If you are new to the App you might want to check out the <a href="{% url 'dpmfa:documentation' %}">documentation</a> first. There you will find a detailed description of how the App works.</p>
-		<p>If you would like to take a look at a typical use case we suggest you have a look at the <a href="{% url 'dpmfa:example' %}">example</a>.</p>
-		<p>If you have a specific question about the functionality of the app we suggest you have a look at the <a href="{% url 'dpmfa:quick-reference' %}">quick reference</a>.</p>   	
-		<p>If you are familiar with the package you probably want to go to your projects:</p>	
+    <h1>First steps</h1>
+    	<p>In the top bar you can see the links you most likely will use frequently when working with this app.If you are new to the App you might
+    	want to check out the documentation or the quick reference:</p>
+    		
+    		<ul>
+    			<li><a href="{% url 'dpmfa:documentation' %}">documentation</a></li>
+    			<li><a href="{% url 'dpmfa:quick-reference' %}">quick reference</a></li>
+    	 	</ul>
+    	 	
+    	 
+    <h1>Go to projects</h1>
+    	 	
 	    <p><a class="btn btn-primary btn-lg" href="{% url 'dpmfa:project-list' %}" role="button">My Projects</a></p>
     
     <h1>Underlying code of the App</h1>
