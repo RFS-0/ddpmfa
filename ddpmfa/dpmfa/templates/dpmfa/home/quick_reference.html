@@ -8,26 +8,93 @@
 	<h1>Quick Reference</h1>
 		<p>The quick reference shows you how to use the dpmfa app.</p>
 		
-		<h2>How to create a project</h2>
-			<img src="{% static 'dpmfa/img/gif/create_new_project.gif' %}" style="width:80%;height:10%;">
+		<div id="toc_container">
+			<p class="toc_title">Contents</p>
+			<ul class="toc_list"">
+				  <li><a href="#create-project">How to create a project</a></li>
+				  <li><a href="#delete-project">How to delete a project</a></li>
+				  <li><a href="#add-model">How to add a model</a></li>
+				  <li><a href="#edit-model">How to edit a model</a></li>
+				  <li><a href="#delete-model">How to delete a model</a></li>
+				  <li><a href="#open-model-designer">How to open the model designer</a></li>
+				  <li><a href="#zoom-in-out">How to zoom in and out in the model designer</a></li>
+				  <li><a href="#save">How to save the model design</a></li>
+				  <li><a href="#add-eli">How to add an external list inflow</a></li>
+				  <li><a href="#add-efi">How to add an external function inflow</a></li>
+				  <li><a href="#add-flow-compartment">How to add a flow compartment</a></li>
+				  <li><a href="#add-sink">How to add a sink</a></li>
+				  <li><a href="#add-stock">How to add a stock</a></li>
+				  <li><a href="#configure-eli">How to configure an external list inflow</a></li>
+				  <li><a href="#configure-efi">How to configure an external function inflow</a></li>
+				  <li><a href="#configure-flow-compartment">How to configure a flow compartment</a></li>
+				  <li><a href="#configure-sink">How to configure a sink</a></li>
+				  <li><a href="#configure-stock">How to configure a stock</a></li>
+				  <li><a href="#add-transfers">How to add transfers</a></li>
+				  <li><a href="#configure-transfers">How to configure transfers</a></li>
+			</ul>
+		</div>
+		
+		<h2 id="create-project">How to create a project</h2>
+			<img src="{% static 'dpmfa/img/gif/create_new_project.gif' %}" style="width:100%;height:15%;">
 			<p>Go to <a href="{% url 'dpmfa:project-list' %}">p
 			rojects</a> and click on the button <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                to add a new project</p>
 		
-		<h2>How to delete a project</h2>
-			<img src="{% static 'dpmfa/img/gif/delete_project.gif' %}" style="width:80%;height:10%;">
+		<h2 id="delete-project">How to delete a project</h2>
+			<img src="{% static 'dpmfa/img/gif/delete_project.gif' %}" style="width:100%;height:15%;">
                
-		<h2>How to add a model</h2>
-               <img src="{% static 'dpmfa/img/gif/create_new_model.gif' %}" style="width:80%;height:10%;">
-
+		<h2 id="add-model">How to add a model</h2>
+               <img src="{% static 'dpmfa/img/gif/create_new_model.gif' %}" style="width:100%;height:15%;">
                
-        <h2>How to edit a model</h2>
-               <img src="{% static 'dpmfa/img/gif/edit_model.gif' %}" style="width:80%;height:10%;">
+        <h2 id="edit-model">How to edit a model</h2>
+               <img src="{% static 'dpmfa/img/gif/edit_model.gif' %}" style="width:100%;height:15%;">
         
-        <h2>How to delete a model</h2>
-               <img src="{% static 'dpmfa/img/gif/delete_model.gif' %}" style="width:80%;height:10%;">
+        <h2 id="delete-model">How to delete a model</h2>
+               <img src="{% static 'dpmfa/img/gif/delete_model.gif' %}" style="width:100%;height:15%;">
                
-		<h2>How to open the model designer</h2>
-               <img src="{% static 'dpmfa/img/gif/open_model_designer.gif' %}" style="width:80%;height:10%;">
+		<h2 id="open-model-designer">How to open the model designer</h2>
+               <img src="{% static 'dpmfa/img/gif/open_model_designer.gif' %}" style="width:100%;height:15%;">
+
+		<h2 id="zoom-in-out">How to zoom in and out in the model designer</h2>
+               <img src="{% static 'dpmfa/img/gif/zoom_in_out.gif' %}" style="width:100%;height:15%;">
+
+		<h2 id="save">How to save the model design</h2>
+               <img src="{% static 'dpmfa/img/gif/save.gif' %}" style="width:100%;height:15%;">
+               
+		<h2 id="add-eli">How to add an external list inflow</h2>
+               <img src="{% static 'dpmfa/img/gif/add_external_list_inflow.gif' %}" style="width:100%;height:15%;">
+		
+		<h2 id="add-efi">How to add an external function inflow</h2>
+               <img src="{% static 'dpmfa/img/gif/add_external_function_inflow.gif' %}" style="width:100%;height:15%;">
+		
+		<h2 id="add-flow-compartment">How to add a flow compartment</h2>
+               <img src="{% static 'dpmfa/img/gif/add_flow_compartment.gif' %}" style="width:100%;height:15%;">
+               
+		<h2 id="add-sink">How to add a sink</h2>
+               <img src="{% static 'dpmfa/img/gif/add_sink.gif' %}" style="width:100%;height:15%;">
+		
+		<h2 id="add-stock">How to add a stock</h2>
+               <img src="{% static 'dpmfa/img/gif/add_stock.gif' %}" style="width:100%;height:15%;">
+		
+		<h2 id="configure-eli">How to configure an external list inflow</h2>
+               <img src="{% static 'dpmfa/img/gif/configure_eli.gif' %}" style="width:100%;height:15%;">
+		
+		<h2 id="configure-efi">How to configure an external function inflow</h2>
+               <img src="{% static 'dpmfa/img/gif/configure_efi.gif' %}" style="width:100%;height:15%;">
+
+		<h2 id="configure-flow-compartment">How to configure a flow compartment</h2>
+               <img src="{% static 'dpmfa/img/gif/configure_flow_compartment.gif' %}" style="width:100%;height:15%;">
+               
+		<h2 id="configure-sink">How to configure a sink</h2>
+               <img src="{% static 'dpmfa/img/gif/configure_sink.gif' %}" style="width:100%;height:15%;">
+
+		<h2 id="configure-stock">How to configure a stock</h2>
+               <img src="{% static 'dpmfa/img/gif/configure_stock.gif' %}" style="width:100%;height:15%;">
+               
+		<h2 id="add-transfers">How to add transfers</h2>
+               <img src="{% static 'dpmfa/img/gif/add_transfers.gif' %}" style="width:100%;height:15%;">
+
+		<h2 id="configure-transfers">How to configure transfers</h2>
+               <img src="{% static 'dpmfa/img/gif/configure_transfers.gif' %}" style="width:100%;height:15%;">
 </div>
 {% endblock %}
