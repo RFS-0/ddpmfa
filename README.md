@@ -18,7 +18,7 @@ Installation
 3) Start container:
    
    ```
-   docker run -d -p 8001:8000 aurum79/ddpmfa:latest
+   docker run -d -p 8001:8000 --restart unless-stopped aurum79/ddpmfa:latest
    ```
 4) Open your browser and enter
    
