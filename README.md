@@ -23,5 +23,5 @@ Installation
 4) Open your browser and enter
    
    ```
-   http://127.0.0.1:45678/dpmfa/
+   http://127.0.0.1:8001/dpmfa/
    ```
