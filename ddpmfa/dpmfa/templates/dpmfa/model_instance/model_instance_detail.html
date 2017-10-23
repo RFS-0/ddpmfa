@@ -251,7 +251,9 @@
 							                               		{{ external_list_inflow.name }}</a>
 							                               	</td>
 							                               	<td class="dpmfa-td-10-top">
+							                               		{% if external_list_inflow.target %}
 							                               		{{ external_list_inflow.target.name }}
+							                               		{% endif %}
 							                               	</td>
 							                               	<td class="dpmfa-td-5-top">
 							                               		{{ external_list_inflow.start_delay}}
@@ -320,7 +322,9 @@
 			                               			{{ external_function_inflow.name }}</a>
 			                               		</td>
 				                               	<td class="dpmfa-td-10-top">
-				                               		{{ external_function_inflow.target }}
+				                               		{% if external_function_inflow.target %}
+				                               		{{ external_function_inflow.target.name }}
+				                               		{% endif %}
 				                               	</td>
 				                               	<td class="dpmfa-td-5-top">
 				                               		{{ external_function_inflow.start_delay}}
@@ -393,8 +397,10 @@
 						                               		{{ constant_transfer.source_flow_compartment.name }}
 														{% endif %}
 					                               	</td>
-					                               	<td class="dpmfa-td-20-top">					                               		
+					                               	<td class="dpmfa-td-20-top">
+					                               		{% if constant_transfer.target %}					                               		
 					                               		{{ constant_transfer.target.name }}
+					                               		{% endif %}
 					                               	</td>
 					                               	<td class="dpmfa-td-10-top">
 					                               		{{ constant_transfer.belongs_to_aggregated_transfer }} 

@@ -59,6 +59,9 @@ class model(models.Model):
     
     def __str__(self):
         return 'PK: (' + str(self.pk) + ')'
+    
+    def get_absolute_url(self):
+        return reverse('dpmfa:model-detail', args=[self.id])
 
 class model_instance(model):
  

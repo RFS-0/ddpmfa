@@ -36,8 +36,8 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dpmfa:home' %}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-list' %}">Projects</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' external_function_inflow.target.model.project.pk %}">{{ external_function_inflow.target.model.project.name }}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' external_function_inflow.target.model.pk %}">{{ external_function_inflow.target.model.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:project-detail' external_function_inflow.model.project.pk %}">{{ external_function_inflow.model.project.name }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'dpmfa:model-detail' external_function_inflow.model.pk %}">{{ external_function_inflow.model.name }}</a></li>
                 {% if external_function_inflow.pk %}
                     <li class="breadcrumb-item"><a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}">External Function Inflow {{ external_function_inflow.name }}</a></li>
                     <li class="breadcrumb-item active">Edit</li>

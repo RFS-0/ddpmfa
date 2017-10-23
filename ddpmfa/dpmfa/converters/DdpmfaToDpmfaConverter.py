@@ -834,7 +834,6 @@ class ModelInstanceConverter(object):
             )
         
         # flow compartments
-        print("Model instance pk: " + str(db_model_instance.pk))
         self.mapDpmfaFlowCompartmentToConverter = {}
         flow_compartments_qs = models.flow_compartment.objects.filter(model=db_model_instance.pk, stock=None)
         for flowCompartment in flow_compartments_qs:
@@ -995,9 +994,9 @@ class ModelInstanceConverter(object):
             stochasticTransfer.setTargetOfStochasticTransfer()
         
         # aggregated transfers
-        for aggregateTransfer in self.aggregatedTransfers:
-            print(str(aggregatedTransfer))
-            aggregatedTransfer.setSingleTransfersOfAggregatedTransfer()
+#         for aggregateTransfer in self.aggregatedTransfers:
+#             print(str(aggregatedTransfer))
+#             aggregatedTransfer.setSingleTransfersOfAggregatedTransfer()
             
         #==============================================================================  
         # set up model

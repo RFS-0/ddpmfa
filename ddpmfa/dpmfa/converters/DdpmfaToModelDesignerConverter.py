@@ -1497,10 +1497,10 @@ class UniformDistributionForm(Form):
         super(UniformDistributionForm, self).__init__(owner, 'uniformDistribution', 'Uniform Distribution')
         self.low_field = self.enter_fields().enter_new_text_field('low', 'Low')\
             .set_value(0)\
-            .enter_number_config()
-        self.low_field = self.enter_fields().enter_new_text_field('high', 'High') \
+            .enter_number_config().exit()
+        self.high_field = self.enter_fields().enter_new_text_field('high', 'High') \
             .set_value(1) \
-            .enter_number_config()
+            .enter_number_config().exit()
 
     def set_low(self, low):
         self.low_field.set_value(low)
@@ -1609,7 +1609,7 @@ class DistributionFormsField(FormsField):
 
     def enter_new_distribution_value_form(self, distribution_code, parameters):
         if distribution_code == 'UNI':
-            return self.enter_new_uniform_distribution().set_parameters(parameters)
+            return self.enter_new_uniform_distribution_value_form().set_parameters(parameters)
         elif distribution_code == 'TRI':
             return self.enter_new_triangular_distribution_value_form().set_parameters(parameters)
         elif distribution_code == 'EXPO':

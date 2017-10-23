@@ -747,7 +747,7 @@ class SaveManager(object):
                 
                 parameterValues = []
                 for dictionary in innerFields:
-                    parameterValues.append(dictionary['valueData'])
+                    parameterValues.append(str(dictionary['valueData']))
                 
                 self.attributes['parameters'] = ",".join(parameterValues)
         

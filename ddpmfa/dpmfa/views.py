@@ -9,6 +9,7 @@ import pprint
 import django.http as http
 import django.views.generic as generic
 import django.views.decorators as decorators
+import django.shortcuts as shortcuts
 import django.urls as urls
 
 # ddpmfa
@@ -111,13 +112,13 @@ class ModelDetailView(generic.DetailView):
         return models.sink.objects.filter(model=model_pk)
     
     def find_external_list_inflows_by_model(self, model_pk):
-        return models.external_list_inflow.objects.filter(target__model=model_pk)
+        return models.external_list_inflow.objects.filter(model=model_pk)
     
     def find_external_function_inflows_by_model(self, model_pk):
-        return models.external_function_inflow.objects.filter(target__model=model_pk)
+        return models.external_function_inflow.objects.filter(model=model_pk)
     
     def find_single_period_inflows_by_external_list_inflow(self, model_pk):
-        external_list_inflows = models.external_list_inflow.objects.filter(target__model=model_pk)
+        external_list_inflows = models.external_list_inflow.objects.filter(model=model_pk)
         single_period_inflows_of_external_list_inflow = {}
         for external_list_inflow in external_list_inflows:
             qs = external_list_inflow.single_period_inflows.get_queryset()
@@ -154,27 +155,27 @@ class ModelDetailView(generic.DetailView):
 
     def find_constant_transfers_by_model(self, model_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.constant_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.constant_transfer.objects.filter(model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.constant_transfer.objects.filter(target__model=model_pk)
+            return models.constant_transfer.objects.filter(model=model_pk)
 
     def find_random_choice_transfers_by_model(self, model_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.random_choice_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.random_choice_transfer.objects.filter(model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.random_choice_transfer.objects.filter(target__model=model_pk)
+            return models.random_choice_transfer.objects.filter(model=model_pk)
 
     def find_stochastic_transfers_by_model(self, model_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.stochastic_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.stochastic_transfer.objects.filter(model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.stochastic_transfer.objects.filter(target__model=model_pk)
+            return models.stochastic_transfer.objects.filter(model=model_pk)
 
     def find_aggregated_transfers_by_model(self, model_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.aggregated_transfer.objects.filter(target__model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.aggregated_transfer.objects.filter(model=model_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.aggregated_transfer.objects.filter(target__model=model_pk)
+            return models.aggregated_transfer.objects.filter(model=model_pk)
     
     def find_transfers_by_flow_compartment(self, model_pk):
         flow_compartments = models.flow_compartment.objects.filter(model=model_pk)
@@ -248,10 +249,10 @@ class ModelInstanceReadOnlyView(generic.DetailView):
     template_name = 'dpmfa/model_instance/model_instance_detail.html'
 
     def find_external_list_inflows_by_model_instance(self, model_instance_pk):
-        return models.external_list_inflow.objects.filter(target__model=model_instance_pk)
+        return models.external_list_inflow.objects.filter(model=model_instance_pk)
     
     def find_single_period_inflows_by_external_list_inflow(self, model_instance_pk):
-        external_list_inflows = models.external_list_inflow.objects.filter(target__model=model_instance_pk)
+        external_list_inflows = models.external_list_inflow.objects.filter(model=model_instance_pk)
         single_period_inflows_of_external_list_inflow = {}
         for external_list_inflow in external_list_inflows:
             qs = external_list_inflow.single_period_inflows.get_queryset()
@@ -263,31 +264,31 @@ class ModelInstanceReadOnlyView(generic.DetailView):
         return single_period_inflows_of_external_list_inflow
 
     def find_external_function_inflows_by_model(self, model_instance_pk):
-        return models.external_function_inflow.objects.filter(target__model=model_instance_pk)
+        return models.external_function_inflow.objects.filter(model=model_instance_pk)
 
     def find_constant_transfers_by_model(self, model_instance_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.constant_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.constant_transfer.objects.filter(model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.constant_transfer.objects.filter(target__model=model_instance_pk)
+            return models.constant_transfer.objects.filter(model=model_instance_pk)
 
     def find_random_choice_transfers_by_model(self, model_instance_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.random_choice_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.random_choice_transfer.objects.filter(model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.random_choice_transfer.objects.filter(target__model=model_instance_pk)
+            return models.random_choice_transfer.objects.filter(model=model_instance_pk)
 
     def find_stochastic_transfers_by_model(self, model_instance_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.stochastic_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.stochastic_transfer.objects.filter(model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.stochastic_transfer.objects.filter(target__model=model_instance_pk)
+            return models.stochastic_transfer.objects.filter(model=model_instance_pk)
 
     def find_aggregated_transfers_by_model(self, model_instance_pk, not_in_aggregated):
         if not_in_aggregated:
-            return models.aggregated_transfer.objects.filter(target__model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
+            return models.aggregated_transfer.objects.filter(model=model_instance_pk, belongs_to_aggregated_transfer__id__isnull=False)
         else:
-            return models.aggregated_transfer.objects.filter(target__model=model_instance_pk)
+            return models.aggregated_transfer.objects.filter(model=model_instance_pk)
 
     def find_flow_compartments_by_model(self, model_instance_pk):
         return models.flow_compartment.objects.filter(model=model_instance_pk)
@@ -427,11 +428,12 @@ class ExperimentCreateView(generic.CreateView):
     def runSimulation(self):
         self.experimentConverter = DdpmfaToDpmfaConverter.ExperimentConverter(self.experiment)
         self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
+        if not self.experimentConverter.getModelInstanceAsDpmfaEntity().checkModelValidity():
+            raise Exception("The model is not valid. Experiment is going to be destroyed!")
         self.modelInstanceConverter = self.experimentConverter.getModelInstanceConverter()
         self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
         self.stockMap = self.modelInstanceConverter.getStockMap()
         self.sinkMap = self.modelInstanceConverter.getSinkMap()
-        print("Running simulation...")
         self.simulationDpmfa.runSimulation()
         
     def storeResults(self):
@@ -535,11 +537,17 @@ class ExperimentCreateView(generic.CreateView):
 
     def form_valid(self, form):
         self.experiment = form.save(commit=False)
-        self.setupExperiment()
-        self.runSimulation()
-        self.storeResults()
-        return super(ExperimentCreateView, self).form_valid(form)
-                
+        try:
+            self.setupExperiment()
+            self.runSimulation()
+            self.storeResults()
+            return super(ExperimentCreateView, self).form_valid(form)
+        except:
+            self.model_instance.delete()
+            self.experiment.delete()
+            return shortcuts.redirect(self.experiment.prototype_model)
+        
+    
     def storeOutflowDict(self, outFlowDict, entity, name, primaryKey):
         resultAsString = ""
         for target, array in outFlowDict.items():
@@ -1035,11 +1043,11 @@ class ConstantTransferDetailView(generic.DetailView):
     
     def get_context_data(self, **kwargs):
         context = super(ConstantTransferDetailView, self).get_context_data(**kwargs)
-        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
         if len(model_instances) != 0:
             context['model'] = model_instances[0]
         else:
-            context['model'] = self.object.target.model
+            context['model'] = self.object.model
         return context
 
 # class ConstantTransferCreateView(generic.CreateView):
@@ -1063,11 +1071,11 @@ class ConstantTransferUpdateView(generic.UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(ConstantTransferUpdateView, self).get_context_data(**kwargs)
-        context['model'] = self.object.target.model 
+        context['model'] = self.object.model 
         return context
     
     def get_success_url(self, **kwargs):
-        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk })
    
         
 class ConstantTransferDeleteView(generic.DeleteView):
@@ -1101,11 +1109,11 @@ class RandomChoiceTransferDetailView(generic.DetailView):
         ]
     def get_context_data(self, **kwargs):
         context = super(RandomChoiceTransferDetailView, self).get_context_data(**kwargs)
-        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
         if len(model_instances) != 0:
             context['model'] = model_instances[0]
         else:
-            context['model'] = self.object.target.model
+            context['model'] = self.object.model
         return context
 
 class RandomChoiceTransferCreateView(generic.CreateView):
@@ -1129,7 +1137,7 @@ class RandomChoiceTransferUpdateView(generic.UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(RandomChoiceTransferUpdateView, self).get_context_data(**kwargs)
-        context['model'] = self.object.target.model 
+        context['model'] = self.object.model 
         return context
     
     def get_success_url(self, **kwargs):
@@ -1165,11 +1173,11 @@ class AggregatedTransferDetailView(generic.DetailView):
         ]
     def get_context_data(self, **kwargs):
         context = super(AggregatedTransferDetailView, self).get_context_data(**kwargs)
-        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
         if len(model_instances) != 0:
             context['model'] = model_instances[0]
         else:
-            context['model'] = self.object.target.model
+            context['model'] = self.object.model
         return context
     
 class AggregatedTransferCreateView(generic.CreateView):
@@ -1192,7 +1200,7 @@ class AggregatedTransferUpdateView(generic.UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(AggregatedTransferUpdateView, self).get_context_data(**kwargs)
-        context['model'] = self.object.target.model 
+        context['model'] = self.object.model 
         return context
     
     def get_success_url(self, **kwargs):
@@ -1230,11 +1238,11 @@ class StochasticTransferDetailView(generic.DetailView):
         ]
     def get_context_data(self, **kwargs):
         context = super(StochasticTransferDetailView, self).get_context_data(**kwargs)
-        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
         if len(model_instances) != 0:
             context['model'] = model_instances[0]
         else:
-            context['model'] = self.object.target.model
+            context['model'] = self.object.model
         return context
 
 class StochasticTransferCreateView(generic.CreateView):
@@ -1259,7 +1267,7 @@ class StochasticTransferUpdateView(generic.UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(StochasticTransferUpdateView, self).get_context_data(**kwargs)
-        context['model'] = self.object.target.model 
+        context['model'] = self.object.model 
         return context
     
     def get_success_url(self, **kwargs):
@@ -1315,11 +1323,11 @@ class ExternalListInflowDetailView(generic.DetailView):
     
     def get_context_data(self, **kwargs):
         context = super(ExternalListInflowDetailView, self).get_context_data(**kwargs)
-        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
         if len(model_instances) != 0:
             context['model'] = model_instances[0]
         else:
-            context['model'] = self.object.target.model
+            context['model'] = self.object.model
         return context
 
 
@@ -1342,19 +1350,19 @@ class ExternalListInflowUpdateView(generic.UpdateView):
     context_object_name = 'external_list_inflow'
     
     def get_success_url(self, **kwargs):
-        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk })
     
 class ExternalListInflowDeleteView(generic.DeleteView):
     model = models.external_list_inflow
     template_name = 'dpmfa/external_inflow/external_list_inflow_confirm_delete.html'
     
     def get_success_url(self, **kwargs):
-        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk })
     
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         
-        check_for_last_inflow = models.external_inflow.objects.filter(target__model = self.object.target.model).count()
+        check_for_last_inflow = models.external_inflow.objects.filter(model = self.object.model).count()
         if check_for_last_inflow > 2:
             self.object.delete()
         return http.HttpResponseRedirect(self.get_success_url())
@@ -1384,19 +1392,19 @@ class ExternalFunctionInflowDetailView(generic.DetailView):
         single_period_inflows = list(itertools.chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows))
         single_period_inflows.sort(key=lambda x: x.period)
 
-        context['project'] = self.object.target.model.project
-        context['model'] = self.object.target.model
+        context['project'] = self.object.model.project
+        context['model'] = self.object.model
         context['single_period_inflow'] = single_period_inflows
 
         return context
     
     def get_context_data(self, **kwargs):
         context = super(ExternalFunctionInflowDetailView, self).get_context_data(**kwargs)
-        model_instances = models.model_instance.objects.filter(pk = self.object.target.model.pk)
+        model_instances = models.model_instance.objects.filter(pk = self.object.model.pk)
         if len(model_instances) != 0:
             context['model'] = model_instances[0]
         else:
-            context['model'] = self.object.target.model
+            context['model'] = self.object.model
         return context
 
 class ExternalFunctionInflowCreateView(generic.CreateView):
@@ -1429,12 +1437,12 @@ class ExternalFunctionInflowDeleteView(generic.DeleteView):
     template_name = 'dpmfa/external_inflow/external_function_inflow_confirm_delete.html'
     
     def get_success_url(self, **kwargs):
-        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.target.model.pk })
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk })
     
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         
-        check_for_last_inflow = models.external_inflow.objects.filter(target__model = self.object.target.model).count()
+        check_for_last_inflow = models.external_inflow.objects.filter(model = self.object.model).count()
         if check_for_last_inflow > 1:
             self.object.delete()
         return http.HttpResponseRedirect(self.get_success_url())
@@ -1471,8 +1479,8 @@ class FixedValueInflowUpdateView(generic.UpdateView):
         
         context['external_list_inflow'] = self.object.external_list_inflow
         context['compartment'] = self.object.external_list_inflow.target
-        context['model'] = self.object.external_list_inflow.target.model
-        context['project'] = self.object.external_list_inflow.target.model.project
+        context['model'] = self.object.external_list_inflow.model
+        context['project'] = self.object.external_list_inflow.model.project
         
         return context
     
@@ -1489,16 +1497,14 @@ class FixedValueInflowUpdateView(generic.UpdateView):
         
         period = 0
         for single_period_inflow in single_period_inflows:
-            print(single_period_inflow.period)
             period += 1
             single_period_inflow.period = period
-            print(single_period_inflow.period)
             single_period_inflow.save()
             
         return super(FixedValueInflowUpdateView, self).form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.target.model.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.model.pk})
 
 class FixedValueInflowDetailView(generic.DetailView):
     model = models.fixed_value_inflow
@@ -1509,8 +1515,8 @@ class FixedValueInflowDetailView(generic.DetailView):
         
         context['external_list_inflow'] = self.object.external_list_inflow
         context['compartment'] = self.object.external_list_inflow.target
-        context['model'] = self.object.external_list_inflow.target.model
-        context['project'] = self.object.external_list_inflow.target.model.project
+        context['model'] = self.object.external_list_inflow.model
+        context['project'] = self.object.external_list_inflow.model.project
         
         return context
   
@@ -1599,13 +1605,13 @@ class RandomChoiceInflowUpdateView(generic.UpdateView):
         
         context['external_list_inflow'] = self.object.external_list_inflow
         context['compartment'] = self.object.external_list_inflow.target
-        context['model'] = self.object.external_list_inflow.target.model
-        context['project'] = self.object.external_list_inflow.target.model.project
+        context['model'] = self.object.external_list_inflow.model
+        context['project'] = self.object.external_list_inflow.model.project
         
         return context
 
     def get_success_url(self, **kwargs):
-        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.target.model.pk})
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.external_list_inflow.model.pk})
     
     def get_absolute_url(self):
         return urls.reverse('dpmfa:random-choice-inflow-update', args=[self.id])

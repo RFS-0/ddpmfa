@@ -218,4 +218,5 @@ class Model(object):
         if valid:
             print("Model is valid")
         else:
-            print("Model is not valid! Idiot")
+            print("Model is not valid!")
+        return valid
