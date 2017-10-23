@@ -58,8 +58,28 @@
 				<li><a href="#compartment">Compartment</a></li>
 			    	<ul>
 						<li><a href="#flow-compartment">Flow compartment</a></li>
+							<ul>
+								<li><a href="#fc-name">Name</a></li>
+								<li><a href="#fc-transfers">Transfers</a></li>
+								<li><a href="#fc-log-inflows">Log inflows</a></li>
+								<li><a href="#fc-log-outflows">Log outflows</a></li>
+								<li><a href="#fc-categories">Categories</a></li>
+							</ul>
 						<li><a href="#stock">Stock</a></li>
+							<ul>
+								<li><a href="#stock-name">Name</a></li>
+								<li><a href="#stock-transfers">Transfers</a></li>
+								<li><a href="#stock-local-release">Local release</a></li>
+								<li><a href="#stock-log-inflows">Log inflows</a></li>
+								<li><a href="#stock-log-outflows">Log outflows</a></li>
+								<li><a href="#stock-categories">Categories</a></li>
+							</ul>
 						<li><a href="#sink">Sink</a></li>
+							<ul>
+								<li><a href="#sink-name">Name</a></li>
+								<li><a href="#sink-log-inflows">Log inflows</a></li>
+								<li><a href="#sink-categories">Categories</a></li>
+							</ul>
 					</ul> 
 				<li><a href="#transfer">Transfer</a></li>
 			    	<ul>
@@ -414,7 +434,7 @@
 				
 			<h3 id="stock-log-inflows">Log inflows</h3>
 				<p>Indicates whether the inflows to this stock should be stored or not. If it is not checked, the results will not contain
-				the material inflows of this stock.</p>
+				the material inflows to this stock.</p>
 				
 			<h3 id="stock-log-outflows">Lgo outflows</h3>
 				<p>Indicates whether the outflows of this stock should be stored or not. If it is not checked, the results will not contain
@@ -435,14 +455,27 @@
 					<li><a href="#sink-categories">Categories</a></li>
 				</ul>
 		
-			<h3 id="stock-name">Name</h3>
+			<h3 id="sink-name">Name</h3>
 				<p>The name of the sink.</p> 
 		
+			<h3 id="sink-log-inflows">Log inflows</h3>
+				<p>Indicates whether the inflows to this sink should be stored or not. If it is not checked, the results will not contain
+				the material inflows to this sink.</p>
 		
-		
+			<h3 id="sink-categories">Categories</h3>
+				<p>You can define a list of categories the sink is part of (for later evaluation)</p>
 			
 	<h1 id="local-release">Local release</h1>
+		<p>Describes after what period how much of the material stored is released from stock. To use, implement subclasses.</p>
+		
+		<p>You can choose between the following subclasses:</p>
+			<ul>
+				<li>List release</li>
+			</ul>
+	
 		<h2 id="fixed-rate-release">Fixed rate release</h2>
+		
+		
 		<h2 id="list-release">List release</h2>
 		<h2 id="function-release">Function release</h2>
 	
