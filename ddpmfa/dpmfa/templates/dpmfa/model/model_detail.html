@@ -343,7 +343,7 @@
 			                </div>
 			                <div id="externalFunctionInflowAccordion" class="panel-collapse collapse">
 			                  <div class="panel-body">
-			                  					            {% if external_function_inflows %}
+			                  	{% if external_function_inflows %}
 				                <table class="table table-striped table-hover table-responsive">
 				                    <thead>
 				                        <tr>
@@ -368,7 +368,7 @@
 				                               	<td class="dpmfa-td-10-top">
 				                               		{% if external_function_inflow.target %}
 				                               		<a href="{% url 'dpmfa:compartment-redirect' external_function_inflow.target.pk %}" data-toggle="tooltip" title="Update">
-				                               		{{ external_function_inflow.target }}</a>
+				                               		{{ external_function_inflow.target.name }}</a>
 				                               		{% endif %}
 				                               	</td>
 				                               	<td class="dpmfa-td-5-top">
@@ -384,11 +384,11 @@
 				                               		{{ external_function_inflow.derivation_factor}}
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
-				                               		<a href="{% url 'dpmfa:external-function-inflow-detail' external_function_inflow.pk %}">
-				                               		{{ external_function_inflow.basic_inflow|get_class|underline_to_ws|title }}</a>
+				                               		<a href="{% url 'dpmfa:external-function-inflow-update' external_function_inflow.pk %}">
+				                               		{{ basic_inflows|lookup:external_function_inflow.pk|get_class|underline_to_ws|title }}</a>
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
-				                               		{{ external_function_inflow.inflow_function}}
+				                               		{{ external_function_inflow.inflow_function }}
 				                               	</td>
 				                               	<td class="dpmfa-td-10-top">
 				                             		<a href="{% url 'dpmfa:external-function-inflow-update' external_function_inflow.pk %}" class="btn btn-primary" data-toggle="tooltip" title="Edit">
@@ -627,7 +627,7 @@
 					                    </tbody>
 					                </table>
 					            {% else %}
-					                <div class="alert alert-info">There are no random choice transfers.</div>
+					                <div class="alert alert-info">There are no stochastic transfers.</div>
 					            {% endif %}
 					                    </tbody>
 					                </table>
@@ -697,7 +697,7 @@
 					                    </tbody>
 					                </table>
 					            {% else %}
-					                <div class="alert alert-info">There are no random choice transfers.</div>
+					                <div class="alert alert-info">There are no aggregated transfers.</div>
 					            {% endif %}
 					                    </tbody>
 					                </table>

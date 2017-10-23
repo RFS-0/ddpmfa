@@ -257,10 +257,8 @@ class SaveManager(object):
             external_function_inflow.derivation_factor = self.getAttributeOrNone('derivation_factor')
             external_function_inflow.x = self.getAttributeOrNone('x')
             external_function_inflow.y = self.getAttributeOrNone('y')
-            # to be implemented
-            external_function_inflow.inflow_function=None
-            # to be implemented
-            external_function_inflow.function_parameters=None
+            external_function_inflow.inflow_function = self.getAttributeOrNone('inflow_function')
+            external_function_inflow.function_parameters = self.getAttributeOrNone('function_parameters')
             external_function_inflow.basic_inflow = self.getAttributeOrNone('basic_inflow')
             
             external_function_inflow.save()
@@ -395,6 +393,19 @@ class SaveManager(object):
                 self.attributes['derivation_parameters'] = ",".join(params)
             elif field['propName'] == 'derivationFactor':
                 self.attributes['derivation_factor'] = field['valueData']
+            elif field['propName'] == 'inflowFunction':
+                #self.attributes['inflowFunction'] = field['valueData']
+                data = field['valueData'][0]
+                type = data['type']
+                fields = data['fields']
+                parameters = []
+                for dictionary in fields:
+                    parameters.append(str(dictionary['valueData']))
+                self.attributes['function_parameters'] = ",".join(parameters)
+                if type == 'linearFunction':
+                    self.attributes['inflow_function'] = 'LI'
+                else:
+                    print('Could not set inflow function')
             elif field['propName'] == 'basicInflow':
                 # create single period inflow here
                 data = field['valueData'][0]
@@ -791,7 +802,24 @@ class SaveManager(object):
             return 'TRI'
         elif type == 'exponentialDistribution':
             return 'EXPO'
+        elif type == 'binomialDistribution':
+            return 'BINOM'
+        elif type == 'geometricDistribution':
+            return 'GEO'
+        elif type == 'gammaDistribution':
+            return 'GAM'
+        elif type == 'peretoDistribution':
+            return 'PAR'
+        elif type == 'poissonDistribution':
+            return 'POI'
         print("Could not retrieve derivation distribution for external list inflow")
+        
+        
+# def getDistributionFunction(distribution_type):
+#     elif distribution_type == 'POI':
+#         return nr.poisson
+#     elif distribution_type == 'CHI':
+#         return nr.chisquare
         
     def getFunction(self, type):
         if type == 'linearFunction':

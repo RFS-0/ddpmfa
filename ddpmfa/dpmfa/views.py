@@ -135,6 +135,23 @@ class ModelDetailView(generic.DetailView):
             single_period_inflows.sort(key=lambda x: x.period)
             single_period_inflows_of_external_list_inflow[external_list_inflow.pk] = single_period_inflows
         return single_period_inflows_of_external_list_inflow
+
+    def find_single_period_inflows_by_external_function_inflow(self, model_pk):
+        external_function_inflows = models.external_function_inflow.objects.filter(model=model_pk)
+        single_period_inflow_of_external_function_inflow = {}
+        for external_function_inflow in external_function_inflows:
+            inflow = external_function_inflow.basic_inflow
+            single_period_inflow = None
+            if len(models.fixed_value_inflow.objects.filter(pk=inflow.pk)) > 0:
+                single_period_inflow = models.fixed_value_inflow.objects.get(pk=inflow.pk)
+            elif len(models.stochastic_function_inflow.objects.filter(pk=inflow.pk)) > 0:
+                single_period_inflow = models.stochastic_function_inflow.objects.get(pk=inflow.pk)
+            elif len(models.random_choice_inflow.objects.filter(pk=inflow.pk)) > 0:
+                single_period_inflow = models.random_choice_inflow.objects.get(pk=inflow.pk)
+            else:
+                print("Could not retrieve a compartment for inflow")
+            single_period_inflow_of_external_function_inflow[external_function_inflow.pk] = single_period_inflow
+        return single_period_inflow_of_external_function_inflow
     
     def find_local_release_by_stock(self, model_pk):
         stocks = models.stock.objects.filter(model=model_pk)
@@ -235,6 +252,7 @@ class ModelDetailView(generic.DetailView):
         
         context['external_list_inflows'] = self.find_external_list_inflows_by_model(self.object.pk)
         context['single_period_inflows'] = self.find_single_period_inflows_by_external_list_inflow(self.object.pk)
+        context['basic_inflows'] = self.find_single_period_inflows_by_external_function_inflow(self.object.pk)
         context['local_releases'] = self.find_local_release_by_stock(self.object.pk)
         context['external_function_inflows'] = self.find_external_function_inflows_by_model(self.object.pk)
         
@@ -428,9 +446,9 @@ class ExperimentCreateView(generic.CreateView):
     def runSimulation(self):
         self.experimentConverter = DdpmfaToDpmfaConverter.ExperimentConverter(self.experiment)
         self.simulationDpmfa = self.experimentConverter.getSimulatorAsDpmfaEntity()
-        if not self.experimentConverter.getModelInstanceAsDpmfaEntity().checkModelValidity():
-            raise Exception("The model is not valid. Experiment is going to be destroyed!")
         self.modelInstanceConverter = self.experimentConverter.getModelInstanceConverter()
+        if not self.modelInstanceConverter.getModelInstanceAsDpmfaEntity().checkModelValidity():
+            raise Exception("The model is not valid. Experiment is going to be destroyed!")
         self.flowCompartmentMap = self.modelInstanceConverter.getFlowCompartmentMap()
         self.stockMap = self.modelInstanceConverter.getStockMap()
         self.sinkMap = self.modelInstanceConverter.getSinkMap()
@@ -537,16 +555,16 @@ class ExperimentCreateView(generic.CreateView):
 
     def form_valid(self, form):
         self.experiment = form.save(commit=False)
-        try:
-            self.setupExperiment()
-            self.runSimulation()
-            self.storeResults()
-            return super(ExperimentCreateView, self).form_valid(form)
-        except:
-            self.model_instance.delete()
-            self.experiment.delete()
-            return shortcuts.redirect(self.experiment.prototype_model)
-        
+        #try:
+        self.setupExperiment()
+        self.runSimulation()
+        self.storeResults()
+        return super(ExperimentCreateView, self).form_valid(form)
+#         except:
+#             self.model_instance.delete()
+#             self.experiment.delete()
+#             return shortcuts.redirect(self.experiment.prototype_model)
+#         
     
     def storeOutflowDict(self, outFlowDict, entity, name, primaryKey):
         resultAsString = ""
@@ -1298,21 +1316,21 @@ class ExternalListInflowDetailView(generic.DetailView):
     model = models.external_list_inflow
     template_name = 'dpmfa/external_inflow/external_list_inflow_detail.html'
     
-    def find_fixed_value_inflows_by_external_function_inflow(self, ext_list_pk):
+    def find_fixed_value_inflows_by_external_list_inflow(self, ext_list_pk):
         return models.fixed_value_inflow.objects.filter(external_list_inflow__pk=ext_list_pk).order_by('period')
 
-    def find_stochastic_function_inflows_by_external_function_inflow(self, ext_list_pk):
+    def find_stochastic_function_inflows_by_external_list_inflow(self, ext_list_pk):
         return models.stochastic_function_inflow.objects.filter(external_list_inflow=ext_list_pk).order_by('period')
 
-    def find_random_choice_inflows_by_external_function_inflow(self, ext_list_pk):
+    def find_random_choice_inflows_by_external_list_inflow(self, ext_list_pk):
         return models.random_choice_inflow.objects.filter(external_list_inflow=ext_list_pk).order_by('period')
 
     def get_context_data(self, **kwargs):
         context = super(ExternalListInflowDetailView, self).get_context_data(**kwargs)
 
-        fixed_value_inflows = self.find_fixed_value_inflows_by_external_function_inflow(self.object.pk)
-        stochastic_function_inflows = self.find_stochastic_function_inflows_by_external_function_inflow(self.object.pk)
-        random_choice_inflows = self.find_random_choice_inflows_by_external_function_inflow(self.object.pk)
+        fixed_value_inflows = self.find_fixed_value_inflows_by_external_list_inflow(self.object.pk)
+        stochastic_function_inflows = self.find_stochastic_function_inflows_by_external_list_inflow(self.object.pk)
+        random_choice_inflows = self.find_random_choice_inflows_by_external_list_inflow(self.object.pk)
 
         single_period_inflows = list(itertools.chain(fixed_value_inflows, stochastic_function_inflows, random_choice_inflows))
         single_period_inflows.sort(key=lambda x: x.period)
@@ -1374,13 +1392,13 @@ class ExternalFunctionInflowDetailView(generic.DetailView):
     template_name = 'dpmfa/external_inflow/external_function_inflow_detail.html'
     
     def find_fixed_value_inflows_by_external_function_inflow(self, external_function_inflow_pk):
-        return models.fixed_value_inflow.objects.filter(external_list_inflow__pk=external_function_inflow_pk).order_by('period')
+        return models.fixed_value_inflow.objects.filter(external_function_inflow=external_function_inflow_pk)
 
     def find_stochastic_function_inflows_by_external_function_inflow(self, external_function_inflow_pk):
-        return models.stochastic_function_inflow.objects.filter(external_list_inflow=external_function_inflow_pk).order_by('period')
+        return models.stochastic_function_inflow.objects.filter(external_function_inflow=external_function_inflow_pk)
 
     def find_random_choice_inflows_by_external_function_inflow(self, external_function_inflow_pk):
-        return models.random_choice_inflow.objects.filter(external_list_inflow=external_function_inflow_pk).order_by('period')
+        return models.random_choice_inflow.objects.filter(external_function_inflow=external_function_inflow_pk)
 
     def get_context_data(self, **kwargs):
         context = super(ExternalFunctionInflowDetailView, self).get_context_data(**kwargs)
@@ -1408,7 +1426,8 @@ class ExternalFunctionInflowDetailView(generic.DetailView):
         return context
 
 class ExternalFunctionInflowCreateView(generic.CreateView):
-    model = models.external_list_inflow
+    model = models.external_function_inflow
+    template_name = 'dpmfa/external_inflow/external_function_inflow_form.html'
     
     fields = [
         'target',
@@ -1422,19 +1441,16 @@ class ExternalFunctionInflowCreateView(generic.CreateView):
         ]
     
 class ExternalFunctionInflowUpdateView(generic.UpdateView):
-    model = models.external_list_inflow
+    model = models.external_function_inflow
+    template_name = 'dpmfa/external_inflow/external_function_inflow_form.html'
+    form_class = forms.ExternalFunctionInflowForm
     
-    fields = [
-        'name',
-        'start_delay',
-        'derivation_distribution',
-        'derivation_parameters',
-        'derivation_factor'
-        ]
+    def get_success_url(self, **kwargs):
+        return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk })
 
 class ExternalFunctionInflowDeleteView(generic.DeleteView):
-    model = models.external_list_inflow
-    template_name = 'dpmfa/external_inflow/external_function_inflow_confirm_delete.html'
+    model = models.external_function_inflow
+    template_name = 'dpmfa/external_inflow/external_function_inflow_form.html'
     
     def get_success_url(self, **kwargs):
         return urls.reverse_lazy('dpmfa:model-detail', kwargs={'pk': self.object.model.pk })
