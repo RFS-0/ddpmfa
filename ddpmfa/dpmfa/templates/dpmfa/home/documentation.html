@@ -14,10 +14,13 @@
 		<ul class="toc_list"">
 			  <li><a href="#project">Project</a></li>
 			  <li><a href="#model">Model</a></li>
+			  <li><a href="#model-instance">Model instance</a></li>
 			  <li><a href="#model-designer">Model designer</a></li>
 				  <ul>
 					    <li><a href="#uml-diagram">UML Diagram</a></li>
 				  </ul>
+			  <li><a href="#experiment">Experiment</a></li>
+			  <li><a href="#result">Result</a></li>
 			  <li><a href="#external-inflows">External inflow</a></li>
 				  <ul>
 					<li><a href="#external-list-inflow">External list inflow</a></li>
@@ -81,36 +84,87 @@
 								<li><a href="#sink-categories">Categories</a></li>
 							</ul>
 					</ul> 
+				<li><a href="#local-release">Local release</a></li>
+			    	<ul>
+						<li><a href="#fixed-rate-release">Fixed rate release</a></li>
+							<ul>
+								<li><a href="#frr-release-rate">Release rate</a></li>
+								<li><a href="#frr-delay">Delay</a></li>
+							</ul>
+						<li><a href="#list-release">List release</a></li>
+							<ul>
+								<li><a href="#lr-release-rate-list">Release rate list</a></li>
+								<li><a href="#lr-delay">Delay</a></li>
+							</ul>
+						<li><a href="#function-release">Function release</a></li>
+							<ul>
+								<li><a href="#fr-release-function">Release function</a></li>
+								<li><a href="#fr-delay">Delay</a></li>
+							</ul>
+					</ul> 
+
 				<li><a href="#transfer">Transfer</a></li>
 			    	<ul>
 						<li><a href="#constant-transfer">Constant transfer</a></li>
+							<ul>
+								<li><a href="#ct-value">Value</a></li>
+								<li><a href="#ct-target">Target</a></li>
+								<li><a href="#ct-priority">Priority</a></li>
+							</ul>
 						<li><a href="#random-choice-transfer">Random choice transfer</a></li>
+						
+							<ul>
+								<li><a href="#rct-sample">Sample</a></li>
+								<li><a href="#rct-target">Target</a></li>
+								<li><a href="#rct-priority">Priority</a></li>
+							</ul>
 						<li><a href="#stochastic-transfer">Stochastic transfer</a></li>
+						
+							<ul>
+								<li><a href="#st-function">Function</a></li>
+								<li><a href="#st-parameters">Parameters</a></li>
+								<li><a href="#st-target">Target</a></li>
+								<li><a href="#st-priority">Priority</a></li>
+							</ul>
 						<li><a href="#aggregated-transfer">Aggregated transfer</a></li>
+							<ul>
+								<li><a href="#at-partial-distributions">Partial distributions</a></li>
+								<li><a href="#at-weighting-factors">Weighting factors</a></li>
+								<li><a href="#at-target">Target</a></li>
+								<li><a href="#at-priority">Priority</a></li>
+							</ul>
 					</ul> 
 			</li>
 		</ul>
 	</div>
 
 	<h1 id="project">Project</h1>
-		<p>A is a container where you can organize all information of a specific project. 
-		In particluar it contains all the <a href="#model">models</a> of a project. Before you can create and configure a model you have to create a project.
-		Refer to the <a href="{% url 'dpmfa:quick-reference' %}">quick reference</a> for instructions on how to create a project</p>
+		<p>A project is a container where you can organize all information of a specific project. 
+		It contains in particluar all the <a href="#model">models</a> related to a specific project. Before you can create and configure a material flow model you have to create a project.
+		Refer to the <a href="{% url 'dpmfa:quick-reference' %}">quick reference</a> for instructions on how to create a project.</p>
 	
 	<h1 id="model">Model</h1>
-		<p>The model is the most important entity. Once you have created a project you can create a new model. The configuration of a model is
+		<p>The model is the most important entity. Once you have created a project, you can create a new model. The configuration of a model is
 		a process that is done in three sequential steps:</p>
+		
 		<ol>
-			<li>Use the <a href="#model-designer">Model Designer</a> to construct the material flow you are interested in</li>
+			<li>Use the <a href="#model-designer">model designer</a> to construct the material flow you are interested in</li>
 			<li>Check the parametrization to validate your inputs.</li>
-			<li>Create an <a href="#experiment">experiment</a> to run the model configuration</li>
-		</ol> 
-		<p>You can iterate over this steps as many times as you want.</p>
-		<p>The model itself is actually a template for your experiments. This allows you to rearrange the entities your model consists of.
+			<li>Create an <a href="#experiment">experiment</a> to run a simulation of the currently present model configuration</li>
+		</ol>
+		 
+		<p>You can iterate over these steps as many times as you need to.</p>
+		
+		<p>The model itself is actually a <b>template</b> for your experiments. This allows you to rearrange the entities your model consists of.
 		Each time you create a new experiment the current current state of the model designer and all the parameters of the model will be copied
 		and attached to the experiment. It is important to notice that copy created for the experiment is read only. This ensures that the results
 		of an experiment will always correspond to its design and parameters.</p>
+		
 		<p>For more details have a look at the description of <a>experiment</a></p>
+
+	<h1 id="model-instance">Model instance</h1>
+		<p>A model instance is an exact copy of a template model that can not be changed anymore, i.e. it is read-only. Model instances are being created
+		during the creation of a new experiment and can only be accessed via the <a href="#experiment">experiment</a> they represent.</p>
 	
 	<h1 id="model-designer">Model designer</h1>
 		<p>The model designer is where you can design your model. Here you can add entities and link them with the various kinds of transfers</p>
@@ -135,6 +189,33 @@
 			</ul>
 		<p id="uml-diagram">If you are familiar with UML class diagrams, the you might find the following diagram helpful as an overview:</p>
 			<img src="{% static 'dpmfa/img/uml_diagram.png' %}" style="width:80%;height:10%;">
+
+	<h1 id="experiment">Experiment</h1>
+		<p>Once you have configured a valid model you can create experiments. The idea of a experiment is to take the current model configuration and create a
+		read only copy. This is necessary in order to make sure that you always can retrieve the model parameterization that was used to produce a given result.</p>
+		
+		<p>The creation of an experiment is therefore a process that consists of the following steps:</p>
+		
+		<ol>
+			<li>Click on the create "New Experiment" button</li>
+			<li>Configure the experiment according to your needs</li>
+			<li>Click "Run experiment"</li>
+			<li>The current template model is copied and stored as a model instance</li>
+			<li>The ddpmfa web app converts your configuration into a dpmfa simulation of this <a href="https://pypi.python.org/pypi/dpmfa-simulator">python package</a></li>
+			<li>This simulation is executed</li>
+			<li>The results are stored in the db of the web app</li>
+			<li>You will be redirected to the result page</li>
+		</ol>
+		
+		<p>Note that you can configure as many periods as you want for any experiment you create. However, it is important to notice that the simulation does not check that you actually
+		configured as many single period inflows as you choose for your experiment. This means that if you run a model over more periods than you specified single period inflows
+		over, the modeled system does not receive any further inflows. Depending on your project setting this might be what you want, but it is important to be aware of this.</p>
+		
+		<p>Once a experiment has been executed successfully you can always refer the corresponding results and model instance by looking at the experiment tab in your model detail view</p>
+
+	<h1 id="result">Result</h1>
+		<p>The result page displays the outcome of a given <a href="#experiment">experiment</a>. It is where you can access the amounts of material flows for each <a href="#compartment">compartment</a>.
+		During the model configuration you have to specify which results are stored during the simulation of your experiments.
 	
 	<h1 id="external-inflows">External inflow</h1>
 	
@@ -470,22 +551,162 @@
 		
 		<p>You can choose between the following subclasses:</p>
 			<ul>
-				<li>List release</li>
+				<li><a href="#fixed-rate-release">Fixed rate release</a></li>
+				<li><a href="#list-release">List release</a></li>
+				<li><a href="#aggregated-transfer">Aggregated transfer</a></li>
 			</ul>
 	
 		<h2 id="fixed-rate-release">Fixed rate release</h2>
+			<p>The fixed rate release is a material release plan with a constant release rate after an optional number of delay periods.</p>
+
+			<p>A fixed rate release has the following parameters:</p>
+			
+			<ul>
+				<li><a href="#frr-release-rate">Release rate</a></li>
+				<li><a href="#frr-delay">Delay</a></li>
+			</ul>
 		
+			<h3 id="frr-release-rate">Release rate</h3>
+				<p>Periodic release rate.</p>
 		
+			<h3 id="frr-delay">Delay</h3>
+				<p>Delay time in periods, before the release starts</p>
+			
 		<h2 id="list-release">List release</h2>
+			
+			<p>A material release plan with a defined list of partial release rates after a delay period</p>
+
+			<p>A list release has the following parameters:</p>
+
+			<ul>
+				<li><a href="#lr-release-rate-list">Release rate list</a></li>
+				<li><a href="#lr-delay">Delay</a></li>
+			</ul>
+
+			<h3 id="lr-release-rate-list">Release rate list</h3>
+				<p>A material release plan with a defined list of partial release rates after an optional number of delay periods</p>
+
+			<h3 id="lr-delay">Delay</h3>
+				<p>Delay time in periods, before the release starts</p>
+			
 		<h2 id="function-release">Function release</h2>
+			<p>A material release plan based on a distribution function that returns a release rate for every period. The time
+			instant of the relese is relative to the time of material storage in the stock. </p>
 	
+			<p>A function release has the following parameters:</p>
+
+			<ul>
+				<li><a href="#fr-release-function">Release function</a></li>
+				<li><a href="#fr-delay">Delay</a></li>
+			</ul>
+
+			<h3 id="fr-release-function">Release function</h3>
+				<p>A function that returns the relative release rate for a period</p>
+
+			<h3 id="fr-delay">Delay</h3>
+				<p>Delay time in periods, before the release starts</p>
 	
 	<h1 id="transfer">Transfer</h1>
+		<p>A transfer object determines the relative rate of a total material flow that is transfered from one Compartment to another.
+		The priority denotes the relative credibility of the assumed values and can be used for the adjustment of contradictory 
+		dependent transfer coefficients. To use, implement subclasses.</p>
+		
+		<p>You can choose between the following subclasses:</p>
+			<ul>
+				<li><a href="#constant-transfer">Constant transfer</a></li>
+				<li><a href="#random-choice-transfer">Random choice transfer</a></li>
+				<li><a href="#stochastic-transfer">Stochastic transfer</a></li>
+				<li><a href="#aggregated-transfer">Aggregated transfer</a></li>
+			</ul>
+	
 		<h2 id="constant-transfer">Constant transfer</h2>
-		<h2 id="random-choice-transfer">Random choice transfer</h2>
-		<h2 id="stochastic-transfer">Stochastic transfer</h2>
-		<h2 id="aggregated-transfer">Aggregated transfer</h2>
+			<p>A Transfer with a deterministic TC, i.e. the TC is for every period the same.</p>
+		
+			<p>A constant transfer has the following parameters:</p>
+
+			<ul>
+				<li><a href="#ct-value">Value</a></li>
+				<li><a href="#ct-target">Target</a></li>
+				<li><a href="#ct-priority">Priority</a></li>
+			</ul>
+
+			<h3 id="ct-value">Value</h3>
+				<p>Determinstic value for the transfer coefficient.</p>
+		
+			<h3 id="ct-target">Target</h3>
+				<p>Specifies the target compartment of the transfer.</p>
 			
+			<h3 id="ct-priority">Priority</h3>
+				<p>If the sum of the transfer coefficients from a compartment are normalized a higher priority excludes the value from adjustment.</p>
+			
+		<h2 id="random-choice-transfer">Random choice transfer</h2>
+			<p>In a random choice tansfer the transfer coefficient is determined by a given sample i.e. a TC is randomly drawn from a given sample of TCs.</p>
+		
+			<p>A random choice transfer has the following parameters:</p>
+		
+			<ul>
+				<li><a href="#rct-sample">Sample</a></li>
+				<li><a href="#rct-target">Target</a></li>
+				<li><a href="#rct-priority">Priority</a></li>
+			</ul>
+
+			<h3 id="rct-sample">Sample</h3>
+				<p>A given sample of values from which the TC is randomly drawn in each period.</p>
+		
+			<h3 id="rct-target">Target</h3>
+				<p>Specifies the target compartment of the transfer.</p>
+
+			<h3 id="rct-priority">Priority</h3>
+				<p>If random values for the transfer coefficients are normalized, a higher priority excludes the value from adjustment </p>
+			
+		<h2 id="stochastic-transfer">Stochastic transfer</h2>
+			<p>The stochastic transfer is a transfer where transfer coefficients are determined by an underlying probability distribution</p>
+		
+			<p>A stochastic transfer has the following parameters:</p>
+		
+			<ul>
+				<li><a href="#st-function">Function</a></li>
+				<li><a href="#st-parameters">Parameters</a></li>
+				<li><a href="#st-target">Target</a></li>
+				<li><a href="#st-priority">Priority</a></li>
+			</ul>
+
+			<h3 id="st-function">Function</h3>
+				<p>probability density function probability distribution function (e.g. from scipy.stats) to sample random values for the transfer coefficient</p>
+		
+			<h3 id="st-parameters">Parameters</h3>
+				<p>Parameter list of the probability distribution function</p>
+		
+			<h3 id="st-target">Target</h3>
+				<p>Specifies the target compartment of the transfer</p>
+			
+			<h3 id="st-priority">Priority</h3>
+				<p>If the sum of the transfer coefficients from a compartment are normalized, a higher priority excludes the value from adjustment</p>
+
+		<h2 id="aggregated-transfer">Aggregated transfer</h2>
+			<p>Transfer Coefficient from a combined set of several given samples and or probability distributin functions. A weighting factor for the
+    		partial samples can be defined.</p>
+		
+			<p>An aggregated transfer has the following parameters:</p>
+			
+			<ul>
+				<li><a href="#at-partial-distributions">Partial distributions</a></li>
+				<li><a href="#at-weighting-factors">Weighting factors</a></li>
+				<li><a href="#at-target">Target</a></li>
+				<li><a href="#at-priority">Priority</a></li>
+			</ul>
+			
+			<h3 id="at-partial-distributions">Partial distributions</h3>
+				<p>A list of stochastic transfers and/or random choice transfers to be considered in the combined distribution</p>
+			
+			<h3 id="at-weighting-factors">Weighting factors</h3>
+				<p>A list of weighting factors.</p>
+			
+			<h3 id="at-target">Target</h3>
+				<p>Specifies the target compartment of the transfer.</p>
+			
+			<h3 id="at-priority">Priority</h3>
+				<p>If the sum of the transfer coefficients from a compartment are normalized, a higher priority excludes the value from adjustment</p>
 </div>
 
 {% endblock %}
