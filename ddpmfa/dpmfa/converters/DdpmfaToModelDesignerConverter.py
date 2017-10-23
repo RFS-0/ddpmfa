@@ -39,13 +39,15 @@ class DdpmfaToModelDesignerConverter(object):
         self.connection_types.append(RandomChoiceTransferConnection(self).apply_default_configuration())
         self.connection_types.append(StochasticTransferConnection(self).apply_default_configuration())
 
-        for db_inflow in models.external_list_inflow.objects.filter(target__model=db_entity):
+        for db_inflow in models.external_list_inflow.objects.filter(model=db_entity):
             self.nodes.append(ExternalListInflow(self).configure_for(db_inflow))
-            self.connections.append(InflowTargetConnection(self).set_source_node_id('inflow_' + str(db_inflow.pk)).set_target_node_id('compartment_' + str(db_inflow.target.pk)))
+            if db_inflow.target:
+                self.connections.append(InflowTargetConnection(self).set_source_node_id('inflow_' + str(db_inflow.pk)).set_target_node_id('compartment_' + str(db_inflow.target.pk)))
 
-        for db_inflow in models.external_function_inflow.objects.filter(target__model=db_entity):
+        for db_inflow in models.external_function_inflow.objects.filter(model=db_entity):
             self.nodes.append(ExternalFunctionInflow(self).configure_for(db_inflow))
-            self.connections.append(InflowTargetConnection(self).set_source_node_id('inflow_' + str(db_inflow.pk)).set_target_node_id('compartment_' + str(db_inflow.target.pk)))
+            if db_inflow.target:
+                self.connections.append(InflowTargetConnection(self).set_source_node_id('inflow_' + str(db_inflow.pk)).set_target_node_id('compartment_' + str(db_inflow.target.pk)))
 
         for db_flow_compartment in models.flow_compartment.objects.filter(model=db_entity):
             db_stocks = models.stock.objects.filter(pk=db_flow_compartment.pk)
@@ -57,13 +59,13 @@ class DdpmfaToModelDesignerConverter(object):
         for db_sink in models.sink.objects.filter(model=db_entity):
             self.nodes.append(Sink(self).configure_for(db_sink))
 
-        for db_transfer in models.constant_transfer.objects.filter(target__model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
+        for db_transfer in models.constant_transfer.objects.filter(model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
             self.connections.append(ConstantTransferConnection(self).configure_for(db_transfer))
 
-        for db_transfer in models.random_choice_transfer.objects.filter(target__model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
+        for db_transfer in models.random_choice_transfer.objects.filter(model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
             self.connections.append(RandomChoiceTransferConnection(self).configure_for(db_transfer))
 
-        for db_transfer in models.stochastic_transfer.objects.filter(target__model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
+        for db_transfer in models.stochastic_transfer.objects.filter(model=db_entity, belongs_to_aggregated_transfer__id__isnull=True):
             self.connections.append(StochasticTransferConnection(self).configure_for(db_transfer))
 
         return self
@@ -1265,6 +1267,26 @@ class BinomialDistributionForm(Form):
         self.set_probability(parameters[1])
         return self
 
+class PoissonDistributionForm(Form):
+    #scale_field = None
+
+    def __init__(self, owner):
+        super(PoissonDistributionForm, self).__init__(owner, 'poissonDistribution', 'Poisson Distribution')
+        self.lambda_field = self.enter_fields().enter_new_text_field('lambda', 'lambda')\
+            .set_value(0)\
+            .enter_number_config().enter_min_bound().set_value(0).set_inclusive(True).exit().exit()
+
+    def set_lambda(self, lambda_):
+        self.lambda_field.set_value(lambda_)
+        return self
+
+    def enter_lambda_field(self):
+        return self.lambda_field
+
+    def set_parameters(self, parameters):
+        self.set_lambda(parameters[0])
+        return self
+
 class ExponentialDistributionForm(Form):
 
     #scale_field = None
@@ -1273,7 +1295,7 @@ class ExponentialDistributionForm(Form):
         super(ExponentialDistributionForm, self).__init__(owner, 'exponentialDistribution', 'Exponential Distribution')
         self.scale_field = self.enter_fields().enter_new_text_field('scale', 'Scale (1 / lambda)')\
             .set_value(1)\
-            .enter_number_config().enter_min_bound().set_value(0).set_inclusive(False)
+            .enter_number_config().enter_min_bound().set_value(0).set_inclusive(False).exit().exit()
 
     def set_scale(self, scale):
         self.scale_field.set_value(scale)
@@ -1414,7 +1436,8 @@ class NormalDistributionForm(Form):
 
     def set_parameters(self, parameters):
         self.set_mean(parameters[0])
-        self.set_variance(parameters[1])
+        if len(parameters) > 1:
+            self.set_variance(parameters[1])
         return self
     
 class ParetoDistributionForm(Form):
@@ -1453,13 +1476,13 @@ class TriangularDistributionForm(Form):
         super(TriangularDistributionForm, self).__init__(owner, 'triangularDistribution', 'Triangular Distribution')
         self.left_field = self.enter_fields().enter_new_text_field('left', 'Left')\
             .set_value(0)\
-            .enter_number_config()
+            .enter_number_config().exit()
         self.mode_field = self.enter_fields().enter_new_text_field('mode', 'Mode') \
             .set_value(0.5) \
-            .enter_number_config()
+            .enter_number_config().exit()
         self.right_field = self.enter_fields().enter_new_text_field('right', 'Right') \
             .set_value(1) \
-            .enter_number_config()
+            .enter_number_config().exit()
 
     def set_left(self, left):
         self.left_field.set_value(left)
@@ -1554,6 +1577,8 @@ class DistributionFormsField(FormsField):
             .append_and_enter(GammaDistributionForm(None))
         self.pareto_distribution_definition_form = form_definitions \
             .append_and_enter(ParetoDistributionForm(None))
+        self.poisson_distribution_definition_form = form_definitions \
+            .append_and_enter(PoissonDistributionForm(None))
 
     def apply_default_configuration(self):
         self.enter_new_normal_distribution_value_form()
@@ -1583,6 +1608,9 @@ class DistributionFormsField(FormsField):
     def enter_pareto_distribution_definition_form(self):
         return self.pareto_distribution_definition_form
 
+    def enter_poisson_distribution_definition_form(self):
+        return self.poisson_distribution_definition_form
+
     def enter_new_normal_distribution_value_form(self):
         return self.enter_value_forms().append_and_enter(NormalDistributionForm(None))
 
@@ -1607,6 +1635,9 @@ class DistributionFormsField(FormsField):
     def enter_new_pareto_distribution_value_form(self):
         return self.enter_value_forms().append_and_enter(ParetoDistributionForm(None))
 
+    def enter_new_poisson_distribution_value_form(self):
+        return self.enter_value_forms().append_and_enter(PoissonDistributionForm(None))
+
     def enter_new_distribution_value_form(self, distribution_code, parameters):
         if distribution_code == 'UNI':
             return self.enter_new_uniform_distribution_value_form().set_parameters(parameters)
@@ -1622,6 +1653,8 @@ class DistributionFormsField(FormsField):
             return self.enter_new_gamma_distribution_value_form().set_parameters(parameters)
         elif distribution_code == 'PAR':
             return self.enter_new_pareto_distribution_value_form().set_parameters(parameters)
+        elif distribution_code == 'POI':
+            return self.enter_new_poisson_distribution_value_form().set_parameters(parameters)
         else:
             return self.enter_new_normal_distribution_value_form().set_parameters(parameters)
 

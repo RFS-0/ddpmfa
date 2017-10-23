@@ -1,7 +1,7 @@
 {% extends "dpmfa/page.html" %}
 
 {% block title %}
-    {% if external_list_inflow.pk %}
+    {% if external_function_inflow.pk %}
         Edit External Function Inflow &quot;{{external_function_inflow.name}}&quot;
     {% else %}
         New External Function Inflow
@@ -9,26 +9,6 @@
 {% endblock %}
 
 {% block body %}
-<header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <span class="navbar-brand" href="#">
-                {% if external_function_inflow.pk %}
-                    Edit External Function Inflow &quot;{{external_function_inflow.name}}&quot;
-                {% else %}
-                    New External Function Inflow
-                {% endif %}
-          </span>
-        </div>
-        <ul class="nav navbar-nav">
-        </ul>
-      </div>
-    </nav>
-</header>
-
-
-
 
 <div class="container">
     <div class="row">

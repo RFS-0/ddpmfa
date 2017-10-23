@@ -103,7 +103,6 @@ class StockForm(forms.ModelForm):
         model = django_models.stock
         fields = ('name',
                   'description',
-                  'local_release',
                   'categories',
                   'log_inflows',
                   'log_outflows',
@@ -116,8 +115,6 @@ class StockForm(forms.ModelForm):
             'description': forms.widgets.Textarea(attrs={'class': 'form-control',
                                                          'id':'stockDescription',
                                                          'placeholder' : 'Enter a description'}),
-            'local_release':forms.widgets.Select(attrs={'class':'form-control',
-                                                 'id':'stockLocalRelease'}),
             'categories': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                          'id': 'stockCategories',
                                                          'placeholder' : 'Enter categories'}),
@@ -267,8 +264,8 @@ class RandomChoiceTransferForm(forms.ModelForm):
             'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
                                                    'id': 'randomChoiceTransferrPriority',
                                                    'placeholder' : 'Enter a priority'}),
-            'sample': forms.widgets.NumberInput(attrs={'class': 'form-control',
-                                                   'id': 'randomChoiceTransferrWeight',
+            'sample': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'randomChoiceTransferSample',
                                                    'placeholder' : 'Enter a sample'})
             }
         
@@ -311,14 +308,13 @@ class StochasticTransferForm(forms.ModelForm):
                                                    'id': 'stochasticTransferrName',
                                                    'placeholder' : 'Enter a name'}),
             'priority': forms.widgets.NumberInput(attrs={'class': 'form-control',
-                                                   'id': 'stochasticTransferrPriority',
+                                                   'id': 'stochasticTransferPriority',
                                                    'placeholder' : 'Enter a priority'}),
-            'function': forms.widgets.TextInput(attrs={'class': 'form-control',
-                                                   'id': 'stochasticTransferrWeights',
-                                                   'placeholder' : 'Enter weights'}),
+            'function': forms.widgets.Select(attrs={'class':'form-control',
+                                                                  'id':'stochasticTransferrFunction'}),
             'parameters': forms.widgets.TextInput(attrs={'class': 'form-control',
-                                                   'id': 'stochasticTransferrWeights',
-                                                   'placeholder' : 'Enter weights'})
+                                                   'id': 'stochasticTransferParameters',
+                                                   'placeholder' : 'Enter parameters'})
             }
 # ==============================================================================
 #  External Inflows
@@ -346,7 +342,43 @@ class ExternalListInflowForm(forms.ModelForm):
                                                                   'id':'externalListInflowDerivationDistribution'}),
             'derivation_parameters': forms.widgets.TextInput(attrs={'class': 'form-control',
                                                                     'id': 'externalListInflowDerivationParameters',
-                                                                    'placeholder' : 'Enter the derivation parameters'})
+                                                                    'placeholder' : 'Enter the derivation parameters'}),
+            'derivation_factor': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                    'id': 'externalListInflowDerivationFactor',
+                                                    'placeholder' : 'Enter derivation factor'})
+            }
+
+class ExternalFunctionInflowForm(forms.ModelForm):
+    class Meta:
+        model = django_models.external_function_inflow
+        fields = ('name',
+                  'start_delay',
+                  'derivation_distribution',
+                  'derivation_parameters',
+                  'derivation_factor',
+                  'inflow_function',
+                  'function_parameters')
+        
+        widgets = {
+            'name': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                   'id': 'externalFunctionInflowName',
+                                                    'placeholder' : 'Enter a name'}),
+            'start_delay': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                                            'id': 'externalFunctionInflowStartDelay',
+                                                            'placeholder' : 'Enter delay'}),
+            'derivation_distribution':forms.widgets.Select(attrs={'class':'form-control',
+                                                                  'id':'externalFunctionInflowDerivationDistribution'}),
+            'derivation_parameters': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                                    'id': 'externalFunctionInflowDerivationParameters',
+                                                                    'placeholder' : 'Enter the derivation parameters'}),
+            'inflow_function': forms.widgets.Select(attrs={'class':'form-control',
+                                                                  'id':'externalFunctionInflowInflowFunction'}),
+            'function_parameters': forms.widgets.TextInput(attrs={'class': 'form-control',
+                                                                    'id': 'externalFunctionInflowFunctionParameters',
+                                                                    'placeholder' : 'Enter the derivation parameters'}),
+            'derivation_factor': forms.widgets.NumberInput(attrs={'class': 'form-control',
+                                    'id': 'externalListInflowDerivationFactor',
+                                    'placeholder' : 'Enter derivation factor'})
             }
         
 # ==============================================================================
