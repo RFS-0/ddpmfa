@@ -15,6 +15,9 @@ Installation
    ```
    docker pull aurum79/ddpmfa:latest
    ```
+   
+   Note: On Windows you have to switch to linux containers. Refer to (https://docs.docker.com/docker-for-windows/#switch-between-windows-and-linux-containers) for details on how to do this.
+   
 3) Start container:
    
    ```
