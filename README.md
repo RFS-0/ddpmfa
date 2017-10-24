@@ -10,7 +10,7 @@ Installation
    - [Docker for Mac](https://www.docker.com/docker-mac)
    - Ubuntu: `sudo apt-get install docker.io`
 
-2) Pull the Docker image:
+2) Pull the Docker image by entering the following command into your system console:
    
    ```
    docker pull aurum79/ddpmfa:latest
@@ -18,7 +18,7 @@ Installation
    
    Note: On Windows you have to switch to linux containers. Refer to (https://docs.docker.com/docker-for-windows/#switch-between-windows-and-linux-containers) for details on how to do this.
    
-3) Start container:
+3) Start container by entering the following command into your system console:
    
    ```
    docker run -d -p 8001:8000 --restart unless-stopped aurum79/ddpmfa:latest
