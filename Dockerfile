@@ -6,7 +6,7 @@ WORKDIR /code
 # ADD requirements.txt /code/
 # RUN pip install -r requirements.txt
 
-RUN git clone https://github.com/RFS-0/ddpmfa.git ddpmfa_git
+RUN git -b master clone https://github.com/RFS-0/ddpmfa.git ddpmfa_git
 RUN mv ddpmfa_git/ddpmfa/* .
 RUN cp ddpmfa_git/requirements.txt .
 RUN rm -rf ddpmfa_git
